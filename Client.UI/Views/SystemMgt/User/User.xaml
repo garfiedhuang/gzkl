@@ -38,6 +38,9 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <Style x:Key="dgchStyle" TargetType="DataGridColumnHeader">
+       
+        </Style>
     </UserControl.Resources>
     <Grid Background="White" Margin="0,0,0,-124">
         <Grid.RowDefinitions>
@@ -72,16 +75,16 @@
             <Button Content="删除"  VerticalAlignment="Center" Margin="10 0 0 0" Style="{StaticResource DelBtnStyle}" />
         </WrapPanel>
         <StackPanel Margin="15" Grid.Row="2">
+            
             <DataGrid 
                   hc:DataGridAttach.CanUnselectAllWithBlankArea="True"
-                  RowStyle="{DynamicResource dgrStyle}"
                   HeadersVisibility="All"
                   AutoGenerateColumns="False" 
                   ItemsSource="{Binding GridModelList}" 
                   BorderThickness="1"
                   Background="#FFFFFF"
                   FontSize="16">
-  
+
                 <!--
                  RowHeaderWidth="60" 
                 <DataGrid.RowHeaderTemplate>
@@ -91,9 +94,9 @@
                 </DataGrid.RowHeaderTemplate>
                 -->
                 <DataGrid.Columns>
-                    <DataGridCheckBoxColumn Binding="{Binding IsSelected}" Width="60"  Header="选择"/>
-                    <DataGridTextColumn IsReadOnly="True" Width="80" CanUserResize="False" Binding="{Binding Index}" Header="序号"/>
-                    <DataGridTextColumn  Width="120" Binding="{Binding Name}" Header="姓名"/>
+                    <DataGridCheckBoxColumn Binding="{Binding IsSelected}" Width="60"  Header="选择" CanUserSort="False"/>
+                    <DataGridTextColumn IsReadOnly="True" Width="80" CanUserSort="False" CanUserResize="False" Binding="{Binding Index}" Header="序号"/>
+                    <DataGridTextColumn IsReadOnly="True"  Width="120" Binding="{Binding Name}" Header="姓名"/>
                     <DataGridTextColumn IsReadOnly="True" Width="150" Binding="{Binding Address}" Header="地址"/>
                     <DataGridTextColumn IsReadOnly="True" Width="*" Binding="{Binding Email}" Header="邮箱"/>
                 </DataGrid.Columns>
