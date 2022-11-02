@@ -59,6 +59,7 @@
       <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Management" />
     <Reference Include="System.Xml" />
@@ -89,6 +90,7 @@
     <Compile Include="Common\PasswordHelper.cs" />
     <Compile Include="Common\PlateValueConverter.cs" />
     <Compile Include="Common\PlateValueMuiltConverter.cs" />
+    <Compile Include="Common\SQLHelper.cs" />
     <Compile Include="Common\Win32Helper.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
