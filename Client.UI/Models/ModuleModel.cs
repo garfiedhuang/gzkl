@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace GZKL.Cilent.UI.Models
 {
+    /// <summary>
+    /// 模块模型
+    /// </summary>
      public class ModuleModel: ObservableObject
     {
         private string code;

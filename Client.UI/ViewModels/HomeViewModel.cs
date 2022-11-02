@@ -69,6 +69,7 @@ namespace GZKL.Cilent.UI.ViewsModels
             }
         }
         #endregion
+
         #region =====methods
         bool taskSwitch = true;
         Random random = new Random();

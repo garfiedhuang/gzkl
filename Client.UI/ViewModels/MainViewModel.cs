@@ -137,7 +137,7 @@ namespace GZKL.Cilent.UI.ViewsModels
 
                 ModuleGroups.Clear();
 
-                var menus = mApi.GetGroup();
+                var menus = mApi.GetModuleGroups();
                 foreach (var item in menus)
                 {                  
                     ModuleGroups.Add(item);

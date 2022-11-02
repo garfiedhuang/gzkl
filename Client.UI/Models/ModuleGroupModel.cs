@@ -8,12 +8,16 @@ using System.Threading.Tasks;
 
 namespace GZKL.Cilent.UI.Models
 {
+    /// <summary>
+    /// 模块分组模型
+    /// </summary>
      public class ModuleGroupModel : ObservableObject
     {
         private string groupName;
         private bool contractionTemplate = true;
         private ObservableCollection<ModuleModel> modules;
         private string icon;
+
         /// <summary>
         /// 组名称
         /// </summary>
@@ -22,6 +26,7 @@ namespace GZKL.Cilent.UI.Models
             get { return groupName; }
             set { groupName = value; RaisePropertyChanged(); }
         }
+
         /// <summary>
         /// Icon
         /// </summary>
@@ -30,6 +35,7 @@ namespace GZKL.Cilent.UI.Models
             get { return icon; }
             set { icon = value; RaisePropertyChanged(); }
         }
+
         /// <summary>
         /// 收缩面板-模板
         /// </summary>

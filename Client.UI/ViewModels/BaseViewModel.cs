@@ -11,15 +11,18 @@ using System.Windows.Input;
 
 namespace GZKL.Cilent.UI.ViewsModels
 {
-     public class BaseViewModel<TView>: ObservableObject where TView : Window, new()
+    public class BaseViewModel<TView> : ObservableObject where TView : Window, new()
     {
+        /// <summary>
+        /// 视图模型基类，构造函数
+        /// </summary>
         public BaseViewModel()
         {
             ExitCommand = new RelayCommand(Exit);
         }
+
         public TView view = new TView();
         public RelayCommand ExitCommand { get; private set; }
-
 
         /// <summary>
         /// 打开窗口
@@ -33,6 +36,7 @@ namespace GZKL.Cilent.UI.ViewsModels
             var result = view.ShowDialog();
             return await Task.FromResult((bool)result);
         }
+
         /// <summary>
         /// 注册默认事件
         /// </summary>
@@ -44,6 +48,10 @@ namespace GZKL.Cilent.UI.ViewsModels
                     view.DragMove();
             };
         }
+
+        /// <summary>
+        /// 订阅消息
+        /// </summary>
         public virtual void SubscribeMessenger()
         {
             //最小化
@@ -60,16 +68,21 @@ namespace GZKL.Cilent.UI.ViewsModels
                     view.WindowState = System.Windows.WindowState.Maximized;
             });
             //关闭系统
-            Messenger.Default.Register<string>(this, "Exit", async (sender) =>
+            Messenger.Default.Register<string>(this, "Exit", (sender) =>
             {
                 // if (!await Msg.Question("确认退出系统?")) return;
                 Environment.Exit(0);
             });
         }
+
+        /// <summary>
+        /// 取消订阅消息
+        /// </summary>
         public virtual void UnsubscribeMessenger()
         {
             Messenger.Default.Unregister(this);
         }
+
         /// <summary>
         /// 传递True代表需要确认用户是否关闭,你可以选择传递false强制关闭
         /// </summary>
@@ -77,9 +90,6 @@ namespace GZKL.Cilent.UI.ViewsModels
         {
             Messenger.Default.Send("", "Exit");
         }
-
-        private bool isOpen;
-
 
         /// <summary>
         /// 通知异常

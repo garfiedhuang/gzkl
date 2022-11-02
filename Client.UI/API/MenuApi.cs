@@ -9,7 +9,11 @@ namespace GZKL.Cilent.UI.API
 {
      public class MenuApi
     {
-        public List<ModuleGroupModel> GetGroup() 
+        /// <summary>
+        /// 获取模块分组集合
+        /// </summary>
+        /// <returns></returns>
+        public List<ModuleGroupModel> GetModuleGroups() 
         {
             List<ModuleGroupModel> list = new List<ModuleGroupModel>();
             list.Add(new ModuleGroupModel
@@ -17,7 +21,7 @@ namespace GZKL.Cilent.UI.API
                 GroupName = "系统管理",
                 Icon= "\ue691",
                 ContractionTemplate = false,
-                Modules = new System.Collections.ObjectModel.ObservableCollection<ModuleModel>(GetModule())
+                Modules = new System.Collections.ObjectModel.ObservableCollection<ModuleModel>(GetModules())
             });
             list.Add(new ModuleGroupModel
             {
@@ -32,7 +36,12 @@ namespace GZKL.Cilent.UI.API
             });
             return list;
         }
-        public List<ModuleModel> GetModule()
+
+        /// <summary>
+        /// 获取模块集合
+        /// </summary>
+        /// <returns></returns>
+        public List<ModuleModel> GetModules()
         {
             List<ModuleModel> list = new List<ModuleModel>();
             list.Add(new ModuleModel

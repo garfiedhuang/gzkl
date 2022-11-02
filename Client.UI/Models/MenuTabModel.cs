@@ -8,6 +8,9 @@ using GalaSoft.MvvmLight;
 
 namespace GZKL.Cilent.UI.Models
 {
+    /// <summary>
+    /// 菜单页签模型
+    /// </summary>
     public class MenuTabModel : ObservableObject
     {
         private string header;
@@ -26,6 +29,9 @@ namespace GZKL.Cilent.UI.Models
             set { content = value; RaisePropertyChanged(); }
         }
 
+        /// <summary>
+        /// 实际存储icon图标编码
+        /// </summary>
         public string Code
         {
             get { return code; }
