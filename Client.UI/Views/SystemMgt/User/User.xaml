@@ -14,10 +14,10 @@
     <UserControl.Resources>
         <!--  行样式触发  -->
         <!--  背景色改变必须先设置cellStyle 因为cellStyle会覆盖rowStyle样式  -->
-        <Style x:Key="eee" TargetType="DataGridRow">
+        <Style x:Key="dgrStyle" TargetType="DataGridRow">
             <Setter Property="Background" Value="#FFFFFF" />
-            <Setter Property="Foreground" Value="#FF666666" />
-            <Setter Property="Height" Value="50" />
+            <Setter Property="Foreground" Value="#666666" />
+            <Setter Property="Height" Value="40" />
             <Style.Triggers>
                 <!--  隔行换色  -->
                 <Trigger Property="AlternationIndex" Value="0">
@@ -28,12 +28,12 @@
                 </Trigger>
 
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#C6E2FF" />
-                    <!--<Setter Property="Foreground" Value="White"/>-->
+                    <Setter Property="Background" Value="#F8F8FF" />
+                    <Setter Property="Foreground" Value="#666666"/>
                 </Trigger>
 
                 <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="#409EFF" />
+                    <Setter Property="Background" Value="#4169E1" />
                     <Setter Property="Foreground" Value="White" />
                 </Trigger>
             </Style.Triggers>
@@ -74,12 +74,14 @@
         <StackPanel Margin="15" Grid.Row="2">
             <DataGrid 
                   hc:DataGridAttach.CanUnselectAllWithBlankArea="True"
-                  RowStyle="{DynamicResource eee}"
+                  RowStyle="{DynamicResource dgrStyle}"
                   HeadersVisibility="All"
                   AutoGenerateColumns="False" 
                   ItemsSource="{Binding GridModelList}" 
-                  Background="White" 
+                  BorderThickness="1"
+                  Background="#FFFFFF"
                   FontSize="16">
+  
                 <!--
                  RowHeaderWidth="60" 
                 <DataGrid.RowHeaderTemplate>
