@@ -70,9 +70,9 @@ namespace GZKL.Cilent.UI.ViewsModels
         }
 
         /// <summary>
-        /// 查询条件
+        /// 最大页面数
         /// </summary>
-        private int maxPageCount;
+        private int maxPageCount = 1;
 
         public int MaxPageCount
         {
@@ -80,6 +80,36 @@ namespace GZKL.Cilent.UI.ViewsModels
             set
             {
                 maxPageCount = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// 当前页数
+        /// </summary>
+        private int pageIndex = 1;
+
+        public int PageIndex
+        {
+            get { return pageIndex; }
+            set
+            {
+                pageIndex = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// 分页大小
+        /// </summary>
+        private int dataCountPerPage = 20;
+
+        public int DataCountPerPage
+        {
+            get { return dataCountPerPage; }
+            set
+            {
+                dataCountPerPage = value;
                 RaisePropertyChanged();
             }
         }
@@ -118,6 +148,7 @@ namespace GZKL.Cilent.UI.ViewsModels
         /// 分页
         /// </summary>
         public RelayCommand<FunctionEventArgs<int>> PageUpdatedCommand { get; set; }
+        
 
         #endregion
 
@@ -130,9 +161,10 @@ namespace GZKL.Cilent.UI.ViewsModels
         {
             try
             {
-                var sql = new StringBuilder(@"SELECT row_number()over(order by id)as row_num,[id],[name],[email],[address],[status],[user_type],[is_deleted],
+                var sql = new StringBuilder(@"SELECT [id],[name],[email],[address],[status],[user_type],[is_deleted],
                                                      [create_dt],[create_user_id],[update_dt],[update_user_id] 
                                               FROM [dbo].[sys_user] WHERE 1=1");
+
                 var parameters = new SqlParameter[] { };
 
                 if (!string.IsNullOrEmpty(Search.Trim()))
@@ -141,49 +173,41 @@ namespace GZKL.Cilent.UI.ViewsModels
                     parameters[0] = new SqlParameter("@search", $"%{Search}%");
                 }
 
+                sql.Append($" ORDER BY [update_dt] DESC");
+
+                UserModels.Clear();//清空前端分页数据
+
                 using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
                 {
                     if (data != null && data.Rows.Count > 0)
                     {
-                        //UserModels = DataTableHelper.ConvertTo<UserModel>(data).ToList();
-
                         foreach (DataRow dataRow in data.Rows)
                         {
-                            UserModels.Add(new UserModel() {
-                                Id =Convert.ToInt64(dataRow["id"]),
-                                RowNum= Convert.ToInt64(dataRow["row_num"]),
+                            UserModels.Add(new UserModel()
+                            {
+                                Id = Convert.ToInt64(dataRow["id"]),
                                 Name = dataRow["name"].ToString(),
                                 Email = dataRow["email"].ToString(),
                                 Address = dataRow["address"].ToString(),
                                 Status = dataRow["status"].ToString(),
                                 UserType = dataRow["user_type"].ToString(),
+                                CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
+                                UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
                             });
-
                         }
                     }
-                    else
-                    {
-                        UserModels.Clear();
-                    }
                 }
+
+                //当前页数
+                PageIndex = UserModels.Count > 0 ? 1 : 0;
+                MaxPageCount = 0;
 
                 //最大页数
-                MaxPageCount = UserModels.Count > 0 ? (int)Math.Ceiling((decimal)UserModels.Count / 20) : 0;
+                MaxPageCount = PageIndex > 0 ? (int)Math.Ceiling((decimal)UserModels.Count / DataCountPerPage) : 0;
 
-                //去分页数据
-                var pagedData = UserModels.Take(20).ToList();
+                //数据分页
+                Paging(PageIndex);
 
-                if (pagedData.Count > 0)
-                {
-                    pagedData.ForEach(item =>
-                    {
-                        GridModelList.Add(item);
-                    });
-                }
-                else
-                {
-                    GridModelList.Clear();
-                }
             }
             catch (Exception ex)
             {
@@ -259,8 +283,6 @@ namespace GZKL.Cilent.UI.ViewsModels
             //}
         }
 
-        #endregion
-
 
         //private void BtTest(object o)
         //{
@@ -279,11 +301,37 @@ namespace GZKL.Cilent.UI.ViewsModels
         /// <summary>
         /// 页面更新事件
         /// </summary>
-        private void PageUpdated(FunctionEventArgs<int> e)
+        public void PageUpdated(FunctionEventArgs<int> e)
         {
-            var pagedData = UserModels.Skip((e.Info - 1) * 20).Take(20);
-            GridModelList = new ObservableCollection<UserModel>(pagedData);
+            Paging(e.Info);
         }
+
+        #endregion
+
+
+        #region Privates
+
+        /// <summary>
+        /// 分页
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        private void Paging(int pageIndex)
+        {
+
+            GridModelList.Clear();//情况依赖属性
+
+            var pagedData = UserModels.Skip((pageIndex - 1) * DataCountPerPage).Take(DataCountPerPage).ToList();
+
+            if (pagedData.Count > 0)
+            {
+                pagedData.ForEach(item =>
+                {
+                    GridModelList.Add(item);
+                });
+            }
+        }
+
+        #endregion
 
     }
 }

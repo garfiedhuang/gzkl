@@ -8,7 +8,7 @@
         xmlns:common="clr-namespace:GZKL.Cilent.UI.Common" 
         xmlns:template="clr-namespace:GZKL.Cilent.UI.CustomControls.Template"
         mc:Ignorable="d"
-        Title="MainWindow"  Height="700" Width="1100" 
+        Title="MainWindow"  Height="800" Width="1400" 
         FontFamily="Microsoft Yahei"
         x:Name="MainW"
         ResizeMode="CanResize"  WindowStartupLocation="CenterScreen"

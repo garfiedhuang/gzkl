@@ -15,8 +15,6 @@ namespace GZKL.Cilent.UI.Models
     {
         public long Id { get; set; }
 
-        public long RowNum { get; set; }
-
         public string Name { get; set; }
 
         public string Email { get; set; }
@@ -26,6 +24,10 @@ namespace GZKL.Cilent.UI.Models
         public string Status { get; set; }
 
         public string UserType { get; set; }
+
+        public DateTime? CreateDt { get; set; }
+
+        public DateTime? UpdateDt { get; set; }
 
         public bool isSelected =false;
 

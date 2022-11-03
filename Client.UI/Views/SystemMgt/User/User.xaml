@@ -83,9 +83,23 @@
                   HeadersVisibility="All"
                   AutoGenerateColumns="False" 
                   ItemsSource="{Binding GridModelList}" 
+                  LoadingRow="DataGrid_LoadingRow"
                   BorderThickness="1"
                   Background="#FFFFFF"
                   FontSize="16">
+
+            <hc:Interaction.Triggers>
+                <hc:EventTrigger EventName="PageUpdated">
+                    <hc:EventToCommand  PassEventArgsToCommand="True" Command="{Binding PageUpdatedCommand}" />
+                </hc:EventTrigger>
+            </hc:Interaction.Triggers>
+            <!--<hc:Interaction.Triggers>
+                <i:EventTrigger EventName="Loaded">
+                    <i:InvokeCommandAction Command="{Binding Path=DatagridLoadedCommand}"
+                                   CommandParameter="{Binding ElementName=dataGridAllUsers}">
+                    </i:InvokeCommandAction>
+                </i:EventTrigger>
+            </hc:Interaction.Triggers>-->
             <!--
                  RowHeaderWidth="60" 
                 <DataGrid.RowHeaderTemplate>
@@ -95,14 +109,25 @@
                 </DataGrid.RowHeaderTemplate>
                 -->
             <DataGrid.Columns>
-                <DataGridCheckBoxColumn Binding="{Binding IsSelected}" Width="60"  Header="选择" CanUserSort="False"/>
-                <DataGridTextColumn IsReadOnly="True" Width="80" CanUserSort="False" CanUserResize="False" Binding="{Binding RowNum}" Header="序号"/>
+                <DataGridCheckBoxColumn Binding="{Binding IsSelected}" Width="60" CanUserSort="False" CanUserResize="False" Header="选择"/>
+                <DataGridTextColumn IsReadOnly="True" Width="80" CanUserSort="False" CanUserResize="False" Binding="{Binding Id}" Header="序号" Visibility="Hidden"/>
                 <DataGridTextColumn IsReadOnly="True"  Width="120" Binding="{Binding Name}" Header="姓名"/>
-                <DataGridTextColumn IsReadOnly="True" Width="150" Binding="{Binding Address}" Header="地址"/>
-                <DataGridTextColumn IsReadOnly="True" Width="*" Binding="{Binding Email}" Header="邮箱"/>
+                <DataGridTextColumn IsReadOnly="True" Width="200" Binding="{Binding Address}" Header="地址"/>
+                <DataGridTextColumn IsReadOnly="True" Width="200" Binding="{Binding Email}" Header="邮箱"/>
+                <DataGridTextColumn IsReadOnly="True" Width="60" Binding="{Binding Status}" Header="状态"/>
+                <DataGridTextColumn IsReadOnly="True" Width="60" Binding="{Binding UserType}" Header="类型"/>
+                <DataGridTextColumn IsReadOnly="True" Width="200" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
+                <DataGridTextColumn IsReadOnly="True" Width="200" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
             </DataGrid.Columns>
         </DataGrid>
-        <hc:Pagination Grid.Row="3" MaxPageCount="{Binding MaxPageCount}" PageIndex="1" IsJumpEnabled="True" HorizontalAlignment="Right" Margin="10">
+        <hc:Pagination x:Name="dgPagination" 
+                       Grid.Row="3" 
+                       MaxPageCount="{Binding MaxPageCount}" 
+                       PageIndex="{Binding PageIndex}" 
+                       DataCountPerPage="{Binding DataCountPerPage}" 
+                       IsJumpEnabled="True" 
+                       HorizontalAlignment="Right" 
+                       Margin="10">
             <hc:Interaction.Triggers>
                 <hc:EventTrigger EventName="PageUpdated">
                     <hc:EventToCommand  PassEventArgsToCommand="True" Command="{Binding PageUpdatedCommand}" />
