@@ -10,6 +10,7 @@
              x:Class="GZKL.Cilent.UI.Views.SystemMgt.User.User"
              mc:Ignorable="d" 
              DataContext="{Binding Source={StaticResource Locator},Path=User}"
+             Loaded="UserControl_Loaded"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <!--  行样式触发  -->
@@ -42,7 +43,6 @@
 
         </Style>
     </UserControl.Resources>
-    <!--<Grid Background="White" Margin="0,0,0,-124">-->
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -75,32 +75,23 @@
                     VerticalAlignment="Center" Margin="10 0 0 0" Command="{Binding EditCommand}"/>
             <Button Content="删除"  VerticalAlignment="Center" Margin="10 0 0 0" Style="{StaticResource DelBtnStyle}" Command="{Binding DeleteCommand}" />
         </WrapPanel>
-        <!--<DockPanel Margin="15" Grid.Row="2">-->
+
         <DataGrid Margin="15" Grid.Row="2"
                   hc:DataGridAttach.CanUnselectAllWithBlankArea="True"
                   hc:Empty.ShowEmpty="True"
                   VerticalScrollBarVisibility="Visible"
-                  HeadersVisibility="All"
                   AutoGenerateColumns="False" 
                   ItemsSource="{Binding GridModelList}" 
                   LoadingRow="DataGrid_LoadingRow"
-                  BorderThickness="1"
-                  Background="#FFFFFF"
-                  FontSize="16">
+                  RowHeaderWidth="60" >
 
             <hc:Interaction.Triggers>
                 <hc:EventTrigger EventName="PageUpdated">
                     <hc:EventToCommand  PassEventArgsToCommand="True" Command="{Binding PageUpdatedCommand}" />
                 </hc:EventTrigger>
             </hc:Interaction.Triggers>
-            <!--<hc:Interaction.Triggers>
-                <i:EventTrigger EventName="Loaded">
-                    <i:InvokeCommandAction Command="{Binding Path=DatagridLoadedCommand}"
-                                   CommandParameter="{Binding ElementName=dataGridAllUsers}">
-                    </i:InvokeCommandAction>
-                </i:EventTrigger>
-            </hc:Interaction.Triggers>-->
-            <!--
+
+             <!--
                  RowHeaderWidth="60" 
                 <DataGrid.RowHeaderTemplate>
                     <DataTemplate>
@@ -108,12 +99,13 @@
                     </DataTemplate>
                 </DataGrid.RowHeaderTemplate>
                 -->
+            
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Binding="{Binding IsSelected}" Width="60" CanUserSort="False" CanUserResize="False" Header="选择"/>
-                <DataGridTextColumn IsReadOnly="True" Width="80" CanUserSort="False" CanUserResize="False" Binding="{Binding Id}" Header="序号" Visibility="Hidden"/>
+                <DataGridTextColumn IsReadOnly="True" Width="60" CanUserSort="False" CanUserResize="False" Binding="{Binding Id}" Header="序号" Visibility="Hidden"/>
                 <DataGridTextColumn IsReadOnly="True"  Width="120" Binding="{Binding Name}" Header="姓名"/>
-                <DataGridTextColumn IsReadOnly="True" Width="200" Binding="{Binding Address}" Header="地址"/>
-                <DataGridTextColumn IsReadOnly="True" Width="200" Binding="{Binding Email}" Header="邮箱"/>
+                <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding Address}" Header="地址"/>
+                <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding Email}" Header="邮箱"/>
                 <DataGridTextColumn IsReadOnly="True" Width="60" Binding="{Binding Status}" Header="状态"/>
                 <DataGridTextColumn IsReadOnly="True" Width="60" Binding="{Binding UserType}" Header="类型"/>
                 <DataGridTextColumn IsReadOnly="True" Width="200" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
@@ -134,7 +126,6 @@
                 </hc:EventTrigger>
             </hc:Interaction.Triggers>
         </hc:Pagination>
-        <!--</DockPanel>-->
 
     </Grid>
 </UserControl>

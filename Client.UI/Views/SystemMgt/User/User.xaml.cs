@@ -25,9 +25,9 @@ namespace GZKL.Cilent.UI.Views.SystemMgt.User
     {
         public User()
         {
-            InitializeComponent();
+            InitializeComponent();        
         }
-
+        
         /// <summary>
         /// 加载行事件，处理序号显示问题
         /// </summary>
@@ -36,6 +36,11 @@ namespace GZKL.Cilent.UI.Views.SystemMgt.User
         private void DataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
         {
             e.Row.Header = e.Row.GetIndex() + 1 + ((dgPagination.PageIndex - 1) * dgPagination.DataCountPerPage);
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            (this.DataContext as UserViewModel).Query();
         }
     }
 }

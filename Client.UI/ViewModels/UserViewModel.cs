@@ -15,6 +15,7 @@ using GZKL.Client.UI.Common;
 using System.Data;
 using System.Windows.Controls;
 using MessageBox = HandyControl.Controls.MessageBox;
+using GZKL.Cilent.UI.Views.SystemMgt.User;
 
 namespace GZKL.Cilent.UI.ViewsModels
 {
@@ -272,13 +273,13 @@ namespace GZKL.Cilent.UI.ViewsModels
         /// </summary>
         public void Add()
         {
-            //Student model = new Student();
-            //StudentWindow view = new StudentWindow(model);
-            //var r = view.ShowDialog();
+            UserModel model = new UserModel();
+            Edit view = new Edit(model);
+            var r = view.ShowDialog();
             //if (r.Value)
             //{
             //    model.Id = GridModelList.Max(t => t.Id) + 1;
-            //    localDb.AddStudent(model);
+            //    //localDb.AddStudent(model);
             //    this.Query();
             //}
         }

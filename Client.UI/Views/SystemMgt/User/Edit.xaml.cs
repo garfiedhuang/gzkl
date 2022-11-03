@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GZKL.Cilent.UI.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,13 +16,25 @@ using System.Windows.Shapes;
 namespace GZKL.Cilent.UI.Views.SystemMgt.User
 {
     /// <summary>
-    /// AddOrUp.xaml 的交互逻辑
+    /// Edit.xaml 的交互逻辑
     /// </summary>
-    public partial class AddOrUpdate : Window
+    public partial class Edit : Window
     {
-        public AddOrUpdate()
+        public Edit(UserModel userModel)
         {
             InitializeComponent();
+
+            this.DataContext = new { Model = userModel };
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = true;
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = false;
         }
     }
 }

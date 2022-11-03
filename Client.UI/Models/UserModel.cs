@@ -29,6 +29,8 @@ namespace GZKL.Cilent.UI.Models
 
         public DateTime? UpdateDt { get; set; }
 
+
+
         public bool isSelected =false;
 
         public bool IsSelected
