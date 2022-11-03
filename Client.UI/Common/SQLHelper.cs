@@ -33,7 +33,7 @@ namespace GZKL.Client.UI.Common
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = sql;
-                    if (parameters != null && parameters.Count() > 0)
+                    if (parameters != null && parameters.Length > 0)
                     {
                         cmd.Parameters.AddRange(parameters);
                     }
@@ -56,7 +56,7 @@ namespace GZKL.Client.UI.Common
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = sql;
-                    if (parameters != null && parameters.Count() > 0)
+                    if (parameters != null && parameters.Length > 0)
                     {
                         cmd.Parameters.AddRange(parameters);
                     }
@@ -79,7 +79,7 @@ namespace GZKL.Client.UI.Common
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = sql;
-                    if (parameters != null && parameters.Count() > 0)
+                    if (parameters != null && parameters.Length > 0)
                     {
                         cmd.Parameters.AddRange(parameters);
                     }
@@ -107,7 +107,7 @@ namespace GZKL.Client.UI.Common
                 {
                     cmd.CommandText = sql;
 
-                    if (parameters != null && parameters.Count() > 0)
+                    if (parameters != null && parameters.Length > 0)
                     {
                         cmd.Parameters.AddRange(parameters);
                     }

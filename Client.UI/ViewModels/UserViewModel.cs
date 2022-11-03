@@ -8,25 +8,45 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GZKL.Cilent.UI.Models;
+using System.Windows;
+using HandyControl.Data;
+using System.Data.SqlClient;
+using GZKL.Client.UI.Common;
+using System.Data;
+using System.Windows.Controls;
+using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace GZKL.Cilent.UI.ViewsModels
 {
     public class UserViewModel : ViewModelBase
     {
+        #region Construct and property
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public UserViewModel()
         {
+            QueryCommand = new RelayCommand(this.Query);
+            ResetCommand = new RelayCommand(this.Reset);
+            EditCommand = new RelayCommand<int>(this.Edit);
+            DeleteCommand = new RelayCommand<int>(this.Delete);
+            AddCommand = new RelayCommand(this.Add);
+            PageUpdatedCommand = new RelayCommand<FunctionEventArgs<int>>(PageUpdated);
 
+            UserModels = new List<UserModel>();
             GridModelList = new ObservableCollection<UserModel>();
-            GridModelList.Add(new UserModel() { Index = "1", Name = "Vaughan", Address = "Delaware", Email = "jack163@outlook.com", UserType = "Quality inspector", Status = "S1", BackColor = "#FF7000", IsSelected = false });
-            GridModelList.Add(new UserModel() { Index = "2", Name = "Abbey", Address = "Florida", Email = "jack163@outlook.com", UserType = "Quality inspector", Status = "S2", BackColor = "#FFC100", IsSelected = false });
-            GridModelList.Add(new UserModel() { Index = "3", Name = "Dahlia", Address = "Illinois", Email = "jack163@outlook.com", UserType = "Quality inspector", Status = "S1", BackColor = "#FF7000", IsSelected = false });
-            GridModelList.Add(new UserModel() { Index = "4", Name = "Fallon", Address = "Tennessee", Email = "jack163@outlook.com", UserType = "Quality inspector", Status = "S3", BackColor = "#59E6B5", IsSelected = false });
-            GridModelList.Add(new UserModel() { Index = "5", Name = "Hannah", Address = "Washington", Email = "jack163@outlook.com", UserType = "Quality inspector", Status = "S4", BackColor = "#FFC100", IsSelected = false });
-            GridModelList.Add(new UserModel() { Index = "6", Name = "Laura", Address = "Mississippi", Email = "jack163@outlook.com", UserType = "Quality inspector", Status = "S2", BackColor = "#59E6B5", IsSelected = false });
-            GridModelList.Add(new UserModel() { Index = "7", Name = "Lauren", Address = "Wyoming", Email = "jack163@outlook.com", UserType = "Quality inspector", Status = "S3", BackColor = "#FFC100", IsSelected = false });
-
-            bt_test = new RelayCommand<object>(BtTest);
         }
+
+
+        /// <summary>
+        /// 查询之后的结果数据，用于分页显示
+        /// </summary>
+        private static List<UserModel> UserModels { get; set; }
+
+        /// <summary>
+        /// 网格数据集合
+        /// </summary>
         private ObservableCollection<UserModel> gridModelList;
         public ObservableCollection<UserModel> GridModelList
         {
@@ -34,23 +54,236 @@ namespace GZKL.Cilent.UI.ViewsModels
             set { gridModelList = value; RaisePropertyChanged(); }
         }
 
-        public RelayCommand<object> bt_test { get; set; }
+        /// <summary>
+        /// 查询条件
+        /// </summary>
+        private string search = string.Empty;
 
-        private void BtTest(object o)
+        public string Search
         {
-            string str = "";
-            for (int i = 0; i < GridModelList.Count; i++) {
-                UserModel temp = GridModelList[i];
-                Console.WriteLine(temp.IsSelected);
-                Console.WriteLine(temp.Name);
-                if (temp.IsSelected) { 
-                    str=string.IsNullOrEmpty(str)? temp.Name:(str+","+ temp.Name);
-                }
+            get { return search; }
+            set
+            {
+                search = value;
+                RaisePropertyChanged();
             }
-            MessageBox.Success(str,"提示信息" );
         }
 
+        /// <summary>
+        /// 查询条件
+        /// </summary>
+        private int maxPageCount;
 
+        public int MaxPageCount
+        {
+            get { return maxPageCount; }
+            set
+            {
+                maxPageCount = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        #endregion
+
+
+        #region Command
+
+        /// <summary>
+        /// 查询命令
+        /// </summary>
+        public RelayCommand QueryCommand { get; set; }
+
+        /// <summary>
+        /// 重置命令
+        /// </summary>
+        public RelayCommand ResetCommand { get; set; }
+
+        /// <summary>
+        /// 编辑
+        /// </summary>
+        public RelayCommand<int> EditCommand { get; set; }
+
+        /// <summary>
+        /// 删除
+        /// </summary>
+        public RelayCommand<int> DeleteCommand { get; set; }
+
+        /// <summary>
+        /// 新增
+        /// </summary>
+        public RelayCommand AddCommand { get; set; }
+
+        /// <summary>
+        /// 分页
+        /// </summary>
+        public RelayCommand<FunctionEventArgs<int>> PageUpdatedCommand { get; set; }
+
+        #endregion
+
+        #region Command implement
+
+        /// <summary>
+        /// 查询
+        /// </summary>
+        public void Query()
+        {
+            try
+            {
+                var sql = new StringBuilder(@"SELECT row_number()over(order by id)as row_num,[id],[name],[email],[address],[status],[user_type],[is_deleted],
+                                                     [create_dt],[create_user_id],[update_dt],[update_user_id] 
+                                              FROM [dbo].[sys_user] WHERE 1=1");
+                var parameters = new SqlParameter[] { };
+
+                if (!string.IsNullOrEmpty(Search.Trim()))
+                {
+                    sql.Append($" AND [name] LIKE @search");
+                    parameters[0] = new SqlParameter("@search", $"%{Search}%");
+                }
+
+                using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
+                {
+                    if (data != null && data.Rows.Count > 0)
+                    {
+                        //UserModels = DataTableHelper.ConvertTo<UserModel>(data).ToList();
+
+                        foreach (DataRow dataRow in data.Rows)
+                        {
+                            UserModels.Add(new UserModel() {
+                                Id =Convert.ToInt64(dataRow["id"]),
+                                RowNum= Convert.ToInt64(dataRow["row_num"]),
+                                Name = dataRow["name"].ToString(),
+                                Email = dataRow["email"].ToString(),
+                                Address = dataRow["address"].ToString(),
+                                Status = dataRow["status"].ToString(),
+                                UserType = dataRow["user_type"].ToString(),
+                            });
+
+                        }
+                    }
+                    else
+                    {
+                        UserModels.Clear();
+                    }
+                }
+
+                //最大页数
+                MaxPageCount = UserModels.Count > 0 ? (int)Math.Ceiling((decimal)UserModels.Count / 20) : 0;
+
+                //去分页数据
+                var pagedData = UserModels.Take(20).ToList();
+
+                if (pagedData.Count > 0)
+                {
+                    pagedData.ForEach(item =>
+                    {
+                        GridModelList.Add(item);
+                    });
+                }
+                else
+                {
+                    GridModelList.Clear();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 重置
+        /// </summary>
+        public void Reset()
+        {
+            this.Search = string.Empty;
+            this.Query();
+        }
+
+        /// <summary>
+        /// 编辑
+        /// </summary>
+        /// <param name="Id"></param>
+        public void Edit(int Id)
+        {
+            //var model = localDb.QueryById(Id);
+            //if (model != null)
+            //{
+            //    StudentWindow view = new StudentWindow(model);
+            //    var r = view.ShowDialog();
+            //    if (r.Value)
+            //    {
+            //        var newModel = GridModelList.FirstOrDefault(t => t.Id == model.Id);
+            //        if (newModel != null)
+            //        {
+            //            newModel.Name = model.Name;
+            //            newModel.Age = model.Age;
+            //            newModel.Classes = model.Classes;
+            //        }
+            //        this.Query();
+            //    }
+            //}
+        }
+
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="Id"></param>
+        public void Delete(int Id)
+        {
+            //var model = localDb.QueryById(Id);
+            //if (model != null)
+            //{
+            //    var r = MessageBox.Show($"确定要删除吗【{model.Name}】？", "提示", MessageBoxButton.YesNo);
+            //    if (r == MessageBoxResult.Yes)
+            //    {
+            //        localDb.DelStudent(Id);
+            //        this.Query();
+            //    }
+            //}
+        }
+
+        /// <summary>
+        /// 新增
+        /// </summary>
+        public void Add()
+        {
+            //Student model = new Student();
+            //StudentWindow view = new StudentWindow(model);
+            //var r = view.ShowDialog();
+            //if (r.Value)
+            //{
+            //    model.Id = GridModelList.Max(t => t.Id) + 1;
+            //    localDb.AddStudent(model);
+            //    this.Query();
+            //}
+        }
+
+        #endregion
+
+
+        //private void BtTest(object o)
+        //{
+        //    string str = "";
+        //    for (int i = 0; i < GridModelList.Count; i++) {
+        //        UserModel temp = GridModelList[i];
+        //        Console.WriteLine(temp.IsSelected);
+        //        Console.WriteLine(temp.Name);
+        //        if (temp.IsSelected) { 
+        //            str=string.IsNullOrEmpty(str)? temp.Name:(str+","+ temp.Name);
+        //        }
+        //    }
+        //    MessageBox.Success(str,"提示信息" );
+        //}
+
+        /// <summary>
+        /// 页面更新事件
+        /// </summary>
+        private void PageUpdated(FunctionEventArgs<int> e)
+        {
+            var pagedData = UserModels.Skip((e.Info - 1) * 20).Take(20);
+            GridModelList = new ObservableCollection<UserModel>(pagedData);
+        }
 
     }
 }

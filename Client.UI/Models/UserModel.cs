@@ -13,7 +13,9 @@ namespace GZKL.Cilent.UI.Models
     /// </summary>
      public class UserModel : ObservableObject
     {
-        public string Index { get; set; }
+        public long Id { get; set; }
+
+        public long RowNum { get; set; }
 
         public string Name { get; set; }
 
@@ -21,12 +23,9 @@ namespace GZKL.Cilent.UI.Models
 
         public string Address { get; set; }
 
-        public string BackColor { get; set; }
-
         public string Status { get; set; }
 
         public string UserType { get; set; }
-
 
         public bool isSelected =false;
 

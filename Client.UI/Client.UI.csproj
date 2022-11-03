@@ -86,12 +86,14 @@
     <Compile Include="API\MenuApi.cs" />
     <Compile Include="Common\AnimationHelper.cs" />
     <Compile Include="Common\ComputerInfo.cs" />
+    <Compile Include="Common\DatatableHelper.cs" />
     <Compile Include="Common\ParameterConvert.cs" />
     <Compile Include="Common\PasswordHelper.cs" />
     <Compile Include="Common\PlateValueConverter.cs" />
     <Compile Include="Common\PlateValueMuiltConverter.cs" />
     <Compile Include="Common\SQLHelper.cs" />
     <Compile Include="Common\Win32Helper.cs" />
+    <Compile Include="Dals\UserDal.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>

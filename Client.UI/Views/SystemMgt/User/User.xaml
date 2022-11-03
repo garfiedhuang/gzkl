@@ -39,53 +39,54 @@
             </Style.Triggers>
         </Style>
         <Style x:Key="dgchStyle" TargetType="DataGridColumnHeader">
-       
+
         </Style>
     </UserControl.Resources>
-    <Grid Background="White" Margin="0,0,0,-124">
+    <!--<Grid Background="White" Margin="0,0,0,-124">-->
+    <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
-            <RowDefinition />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <WrapPanel  VerticalAlignment="Bottom" Height="30" >
             <hc:TextBox x:Name="textBox" 
                     HorizontalAlignment="Left" 
                     Height="23" Margin="15,0,0,0" 
                     TextWrapping="Wrap" 
-                    Text="" 
-                     FontWeight="Bold"
+                    Text="{Binding Search}" 
+                    FontWeight="Bold"
                     Foreground="#5a5e66"
                     hc:InfoElement.TitlePlacement="Left"
                     hc:InfoElement.Title="姓名"
                     FontSize="13"
                     VerticalAlignment="Center" 
                     Width="193"/>
-            <Button Content="搜索" Width="70" Style="{wms:MultiStyle ButtonPrimary IconBtn}" bi:IconElement.Icon="&#xe696;"  VerticalAlignment="Center" Margin="10 0 0 0"/>
-            <Button Content="重置" Style="{wms:MultiStyle ButtonInfo IconBtn}" bi:IconElement.Icon="&#xe692;"  VerticalAlignment="Center" Margin="10 0 0 0"/>
+            <Button Content="搜索" Width="70" Style="{wms:MultiStyle ButtonPrimary IconBtn}" bi:IconElement.Icon="&#xe696;"  VerticalAlignment="Center" Margin="10 0 0 0" Command="{Binding QueryCommand}"/>
+            <Button Content="重置" Style="{wms:MultiStyle ButtonInfo IconBtn}" bi:IconElement.Icon="&#xe692;"  VerticalAlignment="Center" Margin="10 0 0 0" Command="{Binding ResetCommand}"/>
         </WrapPanel>
         <WrapPanel Grid.Row="1" VerticalAlignment="Center" Height="30" Margin="0,15,0,5">
             <Button Content="新增" 
-                    Command="{Binding bt_test}"
                     Style="{StaticResource AddBtnStyle}" 
                     VerticalAlignment="Center" 
-                    Margin="15 0 0 0"/>
+                    Margin="15 0 0 0" Command="{Binding AddCommand}"/>
             <Button Content="修改"  Style="{StaticResource EditBtnStyle}" 
-                    VerticalAlignment="Center" Margin="10 0 0 0"/>
-            <Button Content="删除"  VerticalAlignment="Center" Margin="10 0 0 0" Style="{StaticResource DelBtnStyle}" />
+                    VerticalAlignment="Center" Margin="10 0 0 0" Command="{Binding EditCommand}"/>
+            <Button Content="删除"  VerticalAlignment="Center" Margin="10 0 0 0" Style="{StaticResource DelBtnStyle}" Command="{Binding DeleteCommand}" />
         </WrapPanel>
-        <StackPanel Margin="15" Grid.Row="2">
-            
-            <DataGrid 
+        <!--<DockPanel Margin="15" Grid.Row="2">-->
+        <DataGrid Margin="15" Grid.Row="2"
                   hc:DataGridAttach.CanUnselectAllWithBlankArea="True"
+                  hc:Empty.ShowEmpty="True"
+                  VerticalScrollBarVisibility="Visible"
                   HeadersVisibility="All"
                   AutoGenerateColumns="False" 
                   ItemsSource="{Binding GridModelList}" 
                   BorderThickness="1"
                   Background="#FFFFFF"
                   FontSize="16">
-
-                <!--
+            <!--
                  RowHeaderWidth="60" 
                 <DataGrid.RowHeaderTemplate>
                     <DataTemplate>
@@ -93,22 +94,22 @@
                     </DataTemplate>
                 </DataGrid.RowHeaderTemplate>
                 -->
-                <DataGrid.Columns>
-                    <DataGridCheckBoxColumn Binding="{Binding IsSelected}" Width="60"  Header="选择" CanUserSort="False"/>
-                    <DataGridTextColumn IsReadOnly="True" Width="80" CanUserSort="False" CanUserResize="False" Binding="{Binding Index}" Header="序号"/>
-                    <DataGridTextColumn IsReadOnly="True"  Width="120" Binding="{Binding Name}" Header="姓名"/>
-                    <DataGridTextColumn IsReadOnly="True" Width="150" Binding="{Binding Address}" Header="地址"/>
-                    <DataGridTextColumn IsReadOnly="True" Width="*" Binding="{Binding Email}" Header="邮箱"/>
-                </DataGrid.Columns>
-            </DataGrid>
-            <hc:Pagination MaxPageCount="10" PageIndex="1" IsJumpEnabled="True" HorizontalAlignment="Right" Margin="10">
-                <hc:Interaction.Triggers>
-                    <hc:EventTrigger EventName="PageUpdated">
-                        <hc:EventToCommand  PassEventArgsToCommand="True" />
-                    </hc:EventTrigger>
-                </hc:Interaction.Triggers>
-            </hc:Pagination>
-        </StackPanel>
-       
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn Binding="{Binding IsSelected}" Width="60"  Header="选择" CanUserSort="False"/>
+                <DataGridTextColumn IsReadOnly="True" Width="80" CanUserSort="False" CanUserResize="False" Binding="{Binding RowNum}" Header="序号"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="120" Binding="{Binding Name}" Header="姓名"/>
+                <DataGridTextColumn IsReadOnly="True" Width="150" Binding="{Binding Address}" Header="地址"/>
+                <DataGridTextColumn IsReadOnly="True" Width="*" Binding="{Binding Email}" Header="邮箱"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <hc:Pagination Grid.Row="3" MaxPageCount="{Binding MaxPageCount}" PageIndex="1" IsJumpEnabled="True" HorizontalAlignment="Right" Margin="10">
+            <hc:Interaction.Triggers>
+                <hc:EventTrigger EventName="PageUpdated">
+                    <hc:EventToCommand  PassEventArgsToCommand="True" Command="{Binding PageUpdatedCommand}" />
+                </hc:EventTrigger>
+            </hc:Interaction.Triggers>
+        </hc:Pagination>
+        <!--</DockPanel>-->
+
     </Grid>
 </UserControl>

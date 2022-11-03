@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using GZKL.Cilent.UI.ViewsModels;
+using HandyControl.Controls;
+using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace GZKL.Cilent.UI.Views.SystemMgt.User
 {
@@ -24,11 +26,9 @@ namespace GZKL.Cilent.UI.Views.SystemMgt.User
         public User()
         {
             InitializeComponent();
-        }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
+            //UserViewModel userViewModel = new UserViewModel();
+            //this.DataContext = userViewModel;
         }
     }
 }
