@@ -117,7 +117,6 @@ namespace GZKL.Cilent.UI.ViewsModels
 
         #endregion
 
-
         #region Command
 
         /// <summary>
@@ -178,26 +177,26 @@ namespace GZKL.Cilent.UI.ViewsModels
 
                 UserModels.Clear();//清空前端分页数据
 
-                using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
-                {
-                    if (data != null && data.Rows.Count > 0)
-                    {
-                        foreach (DataRow dataRow in data.Rows)
-                        {
-                            UserModels.Add(new UserModel()
-                            {
-                                Id = Convert.ToInt64(dataRow["id"]),
-                                Name = dataRow["name"].ToString(),
-                                Email = dataRow["email"].ToString(),
-                                Address = dataRow["address"].ToString(),
-                                Status = dataRow["status"].ToString(),
-                                UserType = dataRow["user_type"].ToString(),
-                                CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
-                                UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
-                            });
-                        }
-                    }
-                }
+                //using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
+                //{
+                //    if (data != null && data.Rows.Count > 0)
+                //    {
+                //        foreach (DataRow dataRow in data.Rows)
+                //        {
+                //            UserModels.Add(new UserModel()
+                //            {
+                //                Id = Convert.ToInt64(dataRow["id"]),
+                //                Name = dataRow["name"].ToString(),
+                //                Email = dataRow["email"].ToString(),
+                //                Address = dataRow["address"].ToString(),
+                //                Status = dataRow["status"].ToString(),
+                //                UserType = dataRow["user_type"].ToString(),
+                //                CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
+                //                UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
+                //            });
+                //        }
+                //    }
+                //}
 
                 //当前页数
                 PageIndex = UserModels.Count > 0 ? 1 : 0;
@@ -309,7 +308,6 @@ namespace GZKL.Cilent.UI.ViewsModels
 
         #endregion
 
-
         #region Privates
 
         /// <summary>
@@ -333,6 +331,5 @@ namespace GZKL.Cilent.UI.ViewsModels
         }
 
         #endregion
-
     }
 }

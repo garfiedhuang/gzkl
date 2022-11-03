@@ -201,5 +201,11 @@
   <ItemGroup>
     <Folder Include="Views\QualityMgt\" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\SystemMgt\User\icon.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
