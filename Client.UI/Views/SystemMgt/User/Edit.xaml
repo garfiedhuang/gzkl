@@ -2,28 +2,51 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        DataContext="{Binding Source={StaticResource Locator},Path=Edit}"
         WindowStartupLocation="CenterScreen"
         Title="新增/编辑用户信息"
-        Height="480" 
-        Width="760" 
+        Height="450" 
+        Width="650" 
         Icon="/Views/SystemMgt/User/icon.ico" ResizeMode="NoResize">
-    <hc:TransitioningContentControl>
-        <StackPanel Orientation="Vertical">
-            <StackPanel Margin="32" Width="300">
-                <TextBox Text="This is the content"/>
-                <TextBox Text="This is the content" IsEnabled="False"/>
-                <TextBox hc:InfoElement.Title="This is the title" Style="{StaticResource TextBoxExtend}" Text="This is the content"/>
-                <TextBox Margin="0,0,0,32" hc:InfoElement.Placeholder="Necessary" hc:InfoElement.Title="Must be filled" Style="{StaticResource TextBoxExtend}" 
+    <!--<hc:TransitioningContentControl>-->
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="90"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <StackPanel Margin="32" Width="250">
+                <TextBox Margin="0,0,0,5" hc:InfoElement.Placeholder="请输入用户名" hc:InfoElement.Title="用户名" Style="{StaticResource TextBoxExtend}" 
                          hc:InfoElement.Necessary="True"/>
-                <TextBox hc:InfoElement.TitleWidth="70" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="Left title" 
-                         Style="{StaticResource TextBoxExtend}" Text="content"/>
-                <TextBox Margin="0,0,0,32" hc:InfoElement.TitleWidth="70" hc:InfoElement.Placeholder="Necessary" hc:InfoElement.TitlePlacement="Left" 
-                         hc:InfoElement.Title="Left title" hc:InfoElement.Necessary="True" Style="{StaticResource TextBoxExtend}"/>
+                <TextBox Margin="0,0,0,5" hc:InfoElement.Placeholder="请输入手机号码" hc:InfoElement.Title="手机号码" Style="{StaticResource TextBoxExtend}" 
+                         hc:InfoElement.Necessary="False"/>
+                <TextBox Margin="0,0,0,5" hc:InfoElement.Placeholder="请输入电子邮箱" hc:InfoElement.Title="电子邮箱" Style="{StaticResource TextBoxExtend}" 
+                         hc:InfoElement.Necessary="False"/>
+                <TextBox Margin="0,0,0,5" hc:InfoElement.Placeholder="请输入头像图标" hc:InfoElement.Title="头像图标" Style="{StaticResource TextBoxExtend}" 
+                         hc:InfoElement.Necessary="False"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Content="保存" Width="100" Margin="10" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource TextIconBrush}" hc:BorderElement.CornerRadius="5"/>
-                <Button Content="取消" Width="100" Margin="10" hc:BorderElement.CornerRadius="5"/>
+            <StackPanel Margin="32" Width="250">
+
+                <hc:ComboBox Margin="0,0,0,5" AutoComplete="True" SelectedIndex="0" ShowClearButton="True" IsEditable="False" hc:InfoElement.Placeholder="请选择性别"
+                          DisplayMemberPath="Value" SelectedValuePath="Key"
+                         hc:InfoElement.Title="性别" hc:InfoElement.Necessary="False" ItemsSource="{Binding SexData}">
+                </hc:ComboBox>
+
+                <DatePicker Margin="0,0,0,5" SelectedDate="{x:Static sys:DateTime.Now}" hc:InfoElement.Placeholder="请选择出生日期" hc:InfoElement.Title="出生日期" 
+                        Style="{StaticResource DatePickerExtend}" hc:InfoElement.Necessary="False"/>
+
+                <hc:ComboBox Margin="0,0,0,5" AutoComplete="True" SelectedIndex="0" ShowClearButton="True" IsEditable="False" hc:InfoElement.Placeholder="请选择是否启用"
+                          DisplayMemberPath="Value" SelectedValuePath="Key"
+                         hc:InfoElement.Title="是否启用" hc:InfoElement.Necessary="False" ItemsSource="{Binding IsEnabledData}">
+                </hc:ComboBox>
+
             </StackPanel>
         </StackPanel>
-    </hc:TransitioningContentControl>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="保存" Width="100" Margin="10" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource TextIconBrush}" hc:BorderElement.CornerRadius="5"/>
+            <Button Content="取消" Width="100" Margin="10" hc:BorderElement.CornerRadius="5"/>
+        </StackPanel>
+    </Grid>
+    <!--</hc:TransitioningContentControl>-->
 </Window>

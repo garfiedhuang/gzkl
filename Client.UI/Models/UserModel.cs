@@ -19,17 +19,17 @@ namespace GZKL.Cilent.UI.Models
 
         public string Email { get; set; }
 
-        public string Address { get; set; }
+        public string Phone { get; set; }
 
-        public string Status { get; set; }
+        public int Sex { get; set; }
 
-        public string UserType { get; set; }
+        public DateTime Birthday { get; set; }
+
+        public int IsEnabled { get; set; }
 
         public DateTime? CreateDt { get; set; }
 
         public DateTime? UpdateDt { get; set; }
-
-
 
         public bool isSelected =false;
 

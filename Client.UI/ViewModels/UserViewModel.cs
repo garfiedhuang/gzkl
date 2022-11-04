@@ -39,7 +39,6 @@ namespace GZKL.Cilent.UI.ViewsModels
             GridModelList = new ObservableCollection<UserModel>();
         }
 
-
         /// <summary>
         /// 查询之后的结果数据，用于分页显示
         /// </summary>
