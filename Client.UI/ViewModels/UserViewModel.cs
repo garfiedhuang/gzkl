@@ -16,6 +16,7 @@ using System.Data;
 using System.Windows.Controls;
 using MessageBox = HandyControl.Controls.MessageBox;
 using GZKL.Cilent.UI.Views.SystemMgt.User;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace GZKL.Cilent.UI.ViewsModels
 {
@@ -160,42 +161,47 @@ namespace GZKL.Cilent.UI.ViewsModels
         {
             try
             {
-                var sql = new StringBuilder(@"SELECT [id],[name],[email],[address],[status],[user_type],[is_deleted],
-                                                     [create_dt],[create_user_id],[update_dt],[update_user_id] 
-                                              FROM [dbo].[sys_user] WHERE 1=1");
+                var sql = new StringBuilder(@"SELECT row_number()over(order by update_dt desc )as row_num
+                ,[id],[name],[password],[head_img],[phone],[email]
+                ,[sex],[birthday],[is_enable],[is_deleted],[create_dt]
+                ,[create_user_id],[update_dt],[update_user_id]
+                FROM [dbo].[sys_user] WHERE [is_deleted]=0");
 
-                var parameters = new SqlParameter[] { };
+                SqlParameter[] parameters = null;
 
                 if (!string.IsNullOrEmpty(Search.Trim()))
                 {
                     sql.Append($" AND [name] LIKE @search");
-                    parameters[0] = new SqlParameter("@search", $"%{Search}%");
+                    parameters = new SqlParameter[1] { new SqlParameter("@search", $"%{Search}%") };
                 }
 
                 sql.Append($" ORDER BY [update_dt] DESC");
 
                 UserModels.Clear();//清空前端分页数据
 
-                //using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
-                //{
-                //    if (data != null && data.Rows.Count > 0)
-                //    {
-                //        foreach (DataRow dataRow in data.Rows)
-                //        {
-                //            UserModels.Add(new UserModel()
-                //            {
-                //                Id = Convert.ToInt64(dataRow["id"]),
-                //                Name = dataRow["name"].ToString(),
-                //                Email = dataRow["email"].ToString(),
-                //                Address = dataRow["address"].ToString(),
-                //                Status = dataRow["status"].ToString(),
-                //                UserType = dataRow["user_type"].ToString(),
-                //                CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
-                //                UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
-                //            });
-                //        }
-                //    }
-                //}
+                using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
+                {
+                    if (data != null && data.Rows.Count > 0)
+                    {
+                        foreach (DataRow dataRow in data.Rows)
+                        {
+                            UserModels.Add(new UserModel()
+                            {
+                                Id = Convert.ToInt64(dataRow["id"]),
+                                RowNum = Convert.ToInt64(dataRow["row_num"]),
+                                Name = dataRow["name"].ToString(),
+                                Email = dataRow["email"].ToString(),
+                                Phone = dataRow["phone"].ToString(),
+                                HeadImg = dataRow["head_img"].ToString(),
+                                Sex = Convert.ToInt32(dataRow["sex"]),
+                                Birthday = Convert.ToDateTime(dataRow["birthday"]??DateTime.MinValue),
+                                IsEnabled = Convert.ToInt32(dataRow["is_enable"]),
+                                CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
+                                UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
+                            });
+                        }
+                    }
+                }
 
                 //当前页数
                 PageIndex = UserModels.Count > 0 ? 1 : 0;
@@ -210,7 +216,7 @@ namespace GZKL.Cilent.UI.ViewsModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message,"提示信息" );
             }
         }
 
@@ -226,26 +232,82 @@ namespace GZKL.Cilent.UI.ViewsModels
         /// <summary>
         /// 编辑
         /// </summary>
-        /// <param name="Id"></param>
-        public void Edit(int Id)
+        /// <param name="id"></param>
+        public void Edit(int id)
         {
-            //var model = localDb.QueryById(Id);
-            //if (model != null)
-            //{
-            //    StudentWindow view = new StudentWindow(model);
-            //    var r = view.ShowDialog();
-            //    if (r.Value)
-            //    {
-            //        var newModel = GridModelList.FirstOrDefault(t => t.Id == model.Id);
-            //        if (newModel != null)
-            //        {
-            //            newModel.Name = model.Name;
-            //            newModel.Age = model.Age;
-            //            newModel.Classes = model.Classes;
-            //        }
-            //        this.Query();
-            //    }
-            //}
+            var selected = GridModelList.Where(w => w.IsSelected == true).ToList();
+
+            if (selected.Count != 1)
+            {
+                MessageBox.Show($"请选择一条记录进行编辑", "提示信息");
+                return;
+            }
+
+            id = (int)selected.First().Id;
+
+            var sql = new StringBuilder(@"SELECT [id],[name],[password],[head_img],[phone],[email]
+                ,[sex],[birthday],[is_enable],[is_deleted],[create_dt]
+                ,[create_user_id],[update_dt],[update_user_id]
+                FROM [dbo].[sys_user] WHERE [is_deleted]=0 AND [id]=@id");
+
+            var parameters = new SqlParameter[1] { new SqlParameter("@id", id) };
+            using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
+            {
+                if (data == null || data.Rows.Count == 0)
+                {
+                    MessageBox.Show($"数据库不存在 主键ID={id} 的记录", "提示信息");
+                    return;
+                }
+
+                var dataRow = data.Rows[0];
+                var model = new UserModel() {
+                    Id = Convert.ToInt64(dataRow["id"]),
+                    RowNum = Convert.ToInt64(dataRow["row_num"]),
+                    Name = dataRow["name"].ToString(),
+                    Email = dataRow["email"].ToString(),
+                    Phone = dataRow["phone"].ToString(),
+                    HeadImg = dataRow["head_img"].ToString(),
+                    Sex = Convert.ToInt32(dataRow["sex"]),
+                    Birthday = Convert.ToDateTime(dataRow["birthday"] ?? DateTime.MinValue),
+                    IsEnabled = Convert.ToInt32(dataRow["is_enable"]),
+                    CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
+                    UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
+                };
+
+                if (model != null)
+                {
+                    Edit view = new Edit(model);
+                    var r = view.ShowDialog();
+                    if (r.Value)
+                    {
+                        sql.Clear();
+                        sql.Append(@"UPDATE [dbo].[sys_user]
+   SET [head_img] = @head_img
+      ,[phone] = @phone
+      ,[email] = @email
+      ,[sex] = @sex
+      ,[birthday] = @birthday
+      ,[is_enable] = @is_enable
+      ,[update_dt] = @update_dt
+      ,[update_user_id] = @user_id
+ WHERE [id]=@id");
+                        parameters = new SqlParameter[] {
+                            new SqlParameter("@head_img", "/Assets/Images/default.png"),
+                            new SqlParameter("@phone", model.Phone),
+                            new SqlParameter("@email", model.Email),
+                            new SqlParameter("@sex", model.Sex),
+                            new SqlParameter("@birthday", model.Birthday),
+                            new SqlParameter("@update_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
+                            new SqlParameter("@user_id", SessionInfo.Instance.Session.Id),
+                            new SqlParameter("@id", id)
+                        };
+
+                       var result = SQLHelper.ExecuteNonQuery(sql.ToString(),parameters);
+
+                        this.Query();
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -274,12 +336,53 @@ namespace GZKL.Cilent.UI.ViewsModels
             UserModel model = new UserModel();
             Edit view = new Edit(model);
             var r = view.ShowDialog();
-            //if (r.Value)
-            //{
-            //    model.Id = GridModelList.Max(t => t.Id) + 1;
-            //    //localDb.AddStudent(model);
-            //    this.Query();
-            //}
+            if (r.Value)
+            {
+                var sql = @"INSERT INTO [dbo].[sys_user]
+           ([name]
+           ,[password]
+           ,[head_img]
+           ,[phone]
+           ,[email]
+           ,[sex]
+           ,[birthday]
+           ,[is_enable]
+           ,[is_deleted]
+           ,[create_dt]
+           ,[create_user_id]
+           ,[update_dt]
+           ,[update_user_id])
+     VALUES
+           (@name
+           ,@password
+           ,@head_img
+           ,@phone
+           ,@email
+           ,@sex
+           ,@birthday
+           ,1
+           ,0
+           ,@create_dt
+           ,@user_id
+           ,@create_dt
+           ,@user_id)";
+
+                var parameters = new SqlParameter[] {
+                    new SqlParameter("@name", model.Name),
+                    new SqlParameter("@password", "123456"),
+                    new SqlParameter("@head_img", "/Assets/Images/default.png"),
+                    new SqlParameter("@phone", model.Phone),
+                    new SqlParameter("@email", model.Email),
+                    new SqlParameter("@sex", model.Sex),
+                    new SqlParameter("@birthday", model.Birthday),
+                    new SqlParameter("@create_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
+                    new SqlParameter("@user_id", SessionInfo.Instance.Session.Id)
+                };
+
+                var result = SQLHelper.ExecuteNonQuery(sql, parameters);
+
+                this.Query();
+            }
         }
 
 

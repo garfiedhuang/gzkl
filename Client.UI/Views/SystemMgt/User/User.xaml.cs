@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,19 +29,36 @@ namespace GZKL.Cilent.UI.Views.SystemMgt.User
             InitializeComponent();        
         }
         
-        /// <summary>
-        /// 加载行事件，处理序号显示问题
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void DataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
-        {
-            e.Row.Header = e.Row.GetIndex() + 1 + ((dgPagination.PageIndex - 1) * dgPagination.DataCountPerPage);
-        }
+        ///// <summary>
+        ///// 加载行事件，处理序号显示问题
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        //private void DataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
+        //{
+        //    e.Row.Header = e.Row.GetIndex() + 1 + ((dgPagination.PageIndex - 1) * dgPagination.DataCountPerPage);
+        //}
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             (this.DataContext as UserViewModel).Query();
         }
+
+        private void ckbSelectedAll_Checked(object sender, RoutedEventArgs e)
+        {
+            //foreach (DataRow row in dt.Rows)
+            //{
+            //    row["IsChecked"] = true;
+            //}
+        }
+
+        private void ckbSelectedAll_Unchecked(object sender, RoutedEventArgs e)
+        {
+            //foreach (DataRow row in dt.Rows)
+            //{
+            //    row["IsChecked"] = false;
+            //}
+        }
+
     }
 }

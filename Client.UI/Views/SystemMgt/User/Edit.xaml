@@ -17,35 +17,75 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal">
             <StackPanel Margin="32" Width="250">
-                <TextBox Margin="0,0,0,5" hc:InfoElement.Placeholder="请输入用户名" hc:InfoElement.Title="用户名" Style="{StaticResource TextBoxExtend}" 
+                <hc:TextBox Margin="0,0,0,10" 
+                            x:Name="txtName" 
+                            hc:InfoElement.Placeholder="请输入用户名" 
+                            hc:InfoElement.Title="用户名" 
+                            Text="{Binding Model.Name,Mode=TwoWay}" 
+                            IsReadOnly="{Binding Model.Id>0}"
                          hc:InfoElement.Necessary="True"/>
-                <TextBox Margin="0,0,0,5" hc:InfoElement.Placeholder="请输入手机号码" hc:InfoElement.Title="手机号码" Style="{StaticResource TextBoxExtend}" 
+                <hc:TextBox Margin="0,0,0,10" 
+                            x:Name="txtPhone" 
+                            TextType="Phone" 
+                            hc:InfoElement.Placeholder="请输入手机号码" 
+                            hc:InfoElement.Title="手机号码" 
+                            Text="{Binding Model.Phone,Mode=TwoWay}"
                          hc:InfoElement.Necessary="False"/>
-                <TextBox Margin="0,0,0,5" hc:InfoElement.Placeholder="请输入电子邮箱" hc:InfoElement.Title="电子邮箱" Style="{StaticResource TextBoxExtend}" 
+                <hc:TextBox Margin="0,0,0,10" 
+                            x:Name="txtEmail" 
+                            TextType="Mail" 
+                            hc:InfoElement.Placeholder="请输入电子邮箱" 
+                            hc:InfoElement.Title="电子邮箱" 
+                            Text="{Binding Model.Email,Mode=TwoWay}"
                          hc:InfoElement.Necessary="False"/>
-                <TextBox Margin="0,0,0,5" hc:InfoElement.Placeholder="请输入头像图标" hc:InfoElement.Title="头像图标" Style="{StaticResource TextBoxExtend}" 
+                <hc:TextBox Margin="0,0,0,10" 
+                            x:Name="txtHeadIcon" 
+                            hc:InfoElement.Placeholder="请输入头像图标" 
+                            hc:InfoElement.Title="头像图标"
+                            Text="{Binding Model.HeadImg,Mode=TwoWay}"
                          hc:InfoElement.Necessary="False"/>
             </StackPanel>
-            <StackPanel Margin="32" Width="250">
-
-                <hc:ComboBox Margin="0,0,0,5" AutoComplete="True" SelectedIndex="0" ShowClearButton="True" IsEditable="False" hc:InfoElement.Placeholder="请选择性别"
-                          DisplayMemberPath="Value" SelectedValuePath="Key"
-                         hc:InfoElement.Title="性别" hc:InfoElement.Necessary="False" ItemsSource="{Binding SexData}">
-                </hc:ComboBox>
-
-                <DatePicker Margin="0,0,0,5" SelectedDate="{x:Static sys:DateTime.Now}" hc:InfoElement.Placeholder="请选择出生日期" hc:InfoElement.Title="出生日期" 
-                        Style="{StaticResource DatePickerExtend}" hc:InfoElement.Necessary="False"/>
-
-                <hc:ComboBox Margin="0,0,0,5" AutoComplete="True" SelectedIndex="0" ShowClearButton="True" IsEditable="False" hc:InfoElement.Placeholder="请选择是否启用"
-                          DisplayMemberPath="Value" SelectedValuePath="Key"
-                         hc:InfoElement.Title="是否启用" hc:InfoElement.Necessary="False" ItemsSource="{Binding IsEnabledData}">
-                </hc:ComboBox>
-
-            </StackPanel>
+                <StackPanel Margin="32" Width="250">
+                    <hc:ComboBox Margin="0,0,0,10" 
+                             x:Name="cmbSex" 
+                             AutoComplete="True" 
+                             SelectedIndex="0" 
+                             ShowClearButton="True" 
+                             IsEditable="False" 
+                             hc:InfoElement.Placeholder="请选择性别"
+                             DisplayMemberPath="Value" 
+                             SelectedValuePath="Key"
+                             SelectedValue="{Binding Model.Sex,Mode=TwoWay}"
+                             hc:InfoElement.Title="性别" 
+                             hc:InfoElement.Necessary="False" 
+                             ItemsSource="{Binding SexData}">
+                    </hc:ComboBox>
+                    <DatePicker Margin="0,0,0,10" 
+                            x:Name="dpBirthday" 
+                            SelectedDate="{Binding Model.Birthday, StringFormat=\{0:yyyy-MM-dd\}, Mode=TwoWay}"
+                            hc:InfoElement.Placeholder="请选择出生日期" 
+                            hc:InfoElement.Title="出生日期" 
+                            Style="{StaticResource DatePickerExtend}" 
+                            hc:InfoElement.Necessary="False"/>
+                    <hc:ComboBox Margin="0,0,0,10" 
+                             x:Name="cmbIsEnabled" 
+                             AutoComplete="True" 
+                             SelectedIndex="0" 
+                             ShowClearButton="True" 
+                             IsEditable="False" 
+                             hc:InfoElement.Placeholder="请选择是否启用"
+                             DisplayMemberPath="Value" 
+                             SelectedValuePath="Key"
+                             SelectedValue="{Binding Model.IsEnabled,Mode=TwoWay}"
+                             hc:InfoElement.Title="是否启用" 
+                             hc:InfoElement.Necessary="False" 
+                             ItemsSource="{Binding IsEnabledData}">
+                    </hc:ComboBox>
+                </StackPanel>
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Content="保存" Width="100" Margin="10" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource TextIconBrush}" hc:BorderElement.CornerRadius="5"/>
-            <Button Content="取消" Width="100" Margin="10" hc:BorderElement.CornerRadius="5"/>
+            <Button Content="保存" Width="100" Margin="10" Click="btnSave_Click" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource TextIconBrush}" hc:BorderElement.CornerRadius="5"/>
+            <Button Content="取消" Width="100" Margin="10" Click="btnCancel_Click" hc:BorderElement.CornerRadius="5"/>
         </StackPanel>
     </Grid>
     <!--</hc:TransitioningContentControl>-->

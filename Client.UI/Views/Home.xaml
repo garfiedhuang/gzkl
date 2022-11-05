@@ -18,7 +18,7 @@
             <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
     </UserControl.Resources>
-    <Grid>
+    <!--<Grid>
         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">
             <Grid>
                 <Grid.RowDefinitions>
@@ -354,7 +354,7 @@
 
                     <TextBlock Margin="15 0 0 0" VerticalAlignment="Center" Text="报表" FontSize="22" Foreground="#959595"/>
 
-                    <!--  VerticalGridLinesBrush="Transparent"  -->
+                    --><!--  VerticalGridLinesBrush="Transparent"  --><!--
                     <DataGrid Grid.Row="1" 
                               Background="Transparent"
                               HeadersVisibility="Column"
@@ -428,6 +428,6 @@
 
             </Grid>
         </ScrollViewer>
-    </Grid>
+    </Grid>-->
    
 </UserControl>

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GZKL.Cilent.UI.Views;
+using GZKL.Client.UI.Common;
 
 namespace GZKL.Cilent.UI.ViewsModels
 {
@@ -60,6 +61,15 @@ namespace GZKL.Cilent.UI.ViewsModels
                 psdControl.ErrorStr = "密码不能为空";
                 return;
             }
+
+            //保存登录会话
+            SessionInfo.Instance.Session = new Models.UserModel()
+            {
+                Id = 1,
+                Name = "admin",
+                Phone = "18611111234"
+            };
+
             MainWindow mainView = new MainWindow();
             (values[0] as System.Windows.Window).Close();
             mainView.ShowDialog();
