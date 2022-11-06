@@ -7,9 +7,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using GZKL.Cilent.UI.Common;
+using GZKL.Client.UI.Common;
 
-namespace GZKL.Cilent.UI
+namespace GZKL.Client.UI
 {
     /// <summary>
     /// App.xaml 的交互逻辑
@@ -19,7 +19,7 @@ namespace GZKL.Cilent.UI
         private static Mutex AppMutex;
         protected override void OnStartup(StartupEventArgs e)
         {
-            AppMutex = new Mutex(true, "GZKL.Cilent.UI", out var createdNew);
+            AppMutex = new Mutex(true, "GZKL.Client.UI", out var createdNew);
 
             if (!createdNew)
             {

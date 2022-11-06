@@ -13,11 +13,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using GZKL.Cilent.UI.ViewsModels;
+using GZKL.Client.UI.ViewsModels;
 using HandyControl.Controls;
 using MessageBox = HandyControl.Controls.MessageBox;
 
-namespace GZKL.Cilent.UI.Views.SystemMgt.User
+namespace GZKL.Client.UI.Views.SystemMgt.User
 {
     /// <summary>
     /// User.xaml 的交互逻辑

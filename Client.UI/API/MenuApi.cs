@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GZKL.Cilent.UI.Models;
+using GZKL.Client.UI.Models;
 
-namespace GZKL.Cilent.UI.API
+namespace GZKL.Client.UI.API
 {
      public class MenuApi
     {

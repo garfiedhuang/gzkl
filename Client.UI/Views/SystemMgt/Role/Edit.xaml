@@ -1,14 +1,18 @@
-﻿<Window x:Class="GZKL.Client.UI.Views.SystemMgt.User.Edit"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:hc="https://handyorg.github.io/handycontrol"
-        xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        DataContext="{Binding Source={StaticResource Locator},Path=Edit}"
-        WindowStartupLocation="CenterScreen"
-        Title="新增/编辑用户信息"
-        Height="450" 
-        Width="650" 
-        ResizeMode="NoResize">
+﻿<Window x:Class="GZKL.Client.UI.Views.SystemMgt.Role.Edit"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GZKL.Client.UI.Views.SystemMgt.Role"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             DataContext="{Binding Source={StaticResource Locator},Path=Edit}"
+             WindowStartupLocation="CenterScreen"
+             mc:Ignorable="d" 
+             Title="新增/编辑用户信息"
+             Height="450" 
+             Width="650" 
+             ResizeMode="NoResize">
     <!--<hc:TransitioningContentControl>-->
     <Grid Background="White">
         <Grid.RowDefinitions>
@@ -44,8 +48,8 @@
                             Text="{Binding Model.HeadImg,Mode=TwoWay}"
                          hc:InfoElement.Necessary="False"/>
             </StackPanel>
-                <StackPanel Margin="32" Width="250">
-                    <hc:ComboBox Margin="0,0,0,10" 
+            <StackPanel Margin="32" Width="250">
+                <hc:ComboBox Margin="0,0,0,10" 
                              x:Name="cmbSex" 
                              AutoComplete="True"
                              ShowClearButton="True" 
@@ -57,15 +61,15 @@
                              SelectedValue="{Binding Model.Sex}"
                              hc:InfoElement.Title="性别" 
                              hc:InfoElement.Necessary="False">
-                    </hc:ComboBox>
-                    <DatePicker Margin="0,0,0,10" 
+                </hc:ComboBox>
+                <DatePicker Margin="0,0,0,10" 
                             x:Name="dpBirthday" 
                             SelectedDate="{Binding Model.Birthday, StringFormat=\{0:yyyy-MM-dd\}, Mode=TwoWay}"
                             hc:InfoElement.Placeholder="请选择出生日期" 
                             hc:InfoElement.Title="出生日期" 
                             Style="{StaticResource DatePickerExtend}" 
                             hc:InfoElement.Necessary="False"/>
-                    <hc:ComboBox Margin="0,0,0,10" 
+                <hc:ComboBox Margin="0,0,0,10" 
                              x:Name="cmbIsEnabled" 
                              AutoComplete="True"
                              ShowClearButton="True" 
@@ -77,8 +81,8 @@
                              SelectedValue="{Binding Model.IsEnabled}"
                              hc:InfoElement.Title="是否启用" 
                              hc:InfoElement.Necessary="False">
-                    </hc:ComboBox>
-                </StackPanel>
+                </hc:ComboBox>
+            </StackPanel>
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Content="保存" Width="100" Margin="10" Click="btnSave_Click" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource TextIconBrush}" hc:BorderElement.CornerRadius="5"/>

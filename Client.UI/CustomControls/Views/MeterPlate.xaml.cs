@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace GZKL.Cilent.UI.CustomControls.Views
+namespace GZKL.Client.UI.CustomControls.Views
 {
     /// <summary>
     /// MeterPlate.xaml 的交互逻辑

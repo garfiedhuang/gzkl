@@ -12,11 +12,11 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using GZKL.Cilent.UI.Common;
-using GZKL.Cilent.UI.ViewsModels;
+using GZKL.Client.UI.Common;
+using GZKL.Client.UI.ViewsModels;
 using System.Windows.Controls.Primitives;
 
-namespace GZKL.Cilent.UI
+namespace GZKL.Client.UI
 {
     /// <summary>
     /// MainWindow.xaml 的交互逻辑

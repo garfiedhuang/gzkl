@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace GZKL.Cilent.UI.Common
+namespace GZKL.Client.UI.Common
 {
     public class ParameterConvert : IMultiValueConverter
     {

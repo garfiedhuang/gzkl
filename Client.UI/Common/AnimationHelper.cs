@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Animation;
 
-namespace GZKL.Cilent.UI.Common
+namespace GZKL.Client.UI.Common
 {
     public class AnimationHelper
     {

@@ -6,10 +6,10 @@ using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using GZKL.Cilent.UI.API;
-using GZKL.Cilent.UI.Models;
+using GZKL.Client.UI.API;
+using GZKL.Client.UI.Models;
 
-namespace GZKL.Cilent.UI.ViewsModels
+namespace GZKL.Client.UI.ViewsModels
 {
     public class MainViewModel : ViewModelBase
     {
@@ -107,12 +107,13 @@ namespace GZKL.Cilent.UI.ViewsModels
                 tabName = values[1].ToString();
             }
            
-            Type type = Type.GetType("GZKL.Cilent.UI.Views." + typeName);
+            Type type = Type.GetType("GZKL.Client.UI.Views." + typeName);
             ConstructorInfo constructor = type.GetConstructor(Type.EmptyTypes);
             bool needAdd = true;
             for (int i = 0; i < TabModels.Count; i++)
             {
-                if (TabModels[i].Code==o.ToString())
+                //if (TabModels[i].Code==o.ToString())
+                if (TabModels[i].Code == o.ToString())
                 {
                     TabIndex = i;
                     needAdd = false;

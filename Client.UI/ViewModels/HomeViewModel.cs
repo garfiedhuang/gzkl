@@ -7,10 +7,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GZKL.Cilent.UI.Common;
-using GZKL.Cilent.UI.Models;
+using GZKL.Client.UI.Common;
+using GZKL.Client.UI.Models;
 
-namespace GZKL.Cilent.UI.ViewsModels
+namespace GZKL.Client.UI.ViewsModels
 {
     public class HomeViewModel : ViewModelBase
     {

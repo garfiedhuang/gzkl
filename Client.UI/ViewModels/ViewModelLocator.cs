@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace GZKL.Cilent.UI.ViewsModels
+namespace GZKL.Client.UI.ViewsModels
 {
      public class ViewModelLocator
     {

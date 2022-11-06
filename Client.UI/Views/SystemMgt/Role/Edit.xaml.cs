@@ -1,5 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
-using GZKL.Client.UI.Models;
+﻿using GZKL.Client.UI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,19 +9,19 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace GZKL.Client.UI.Views.SystemMgt.User
+namespace GZKL.Client.UI.Views.SystemMgt.Role
 {
     /// <summary>
     /// Edit.xaml 的交互逻辑
     /// </summary>
     public partial class Edit : Window
     {
-        public Edit(UserModel userModel)
+        public Edit(RoleModel roleModel)
         {
             InitializeComponent();
 
@@ -35,9 +34,9 @@ namespace GZKL.Client.UI.Views.SystemMgt.User
             isEnabledData.Add(new KeyValuePair<int, string>(0, "0-否"));
             isEnabledData.Add(new KeyValuePair<int, string>(1, "1-是"));
 
-            this.DataContext = new { Model = userModel, SexData = sexData, IsEnabledData = isEnabledData };
+            this.DataContext = new { Model = roleModel, SexData = sexData, IsEnabledData = isEnabledData };
 
-            if (userModel.Id != 0)
+            if (roleModel.Id != 0)
             {
                 this.txtName.IsReadOnly = true;
             }

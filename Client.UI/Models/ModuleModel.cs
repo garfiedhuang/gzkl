@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GZKL.Cilent.UI.Models
+namespace GZKL.Client.UI.Models
 {
     /// <summary>
     /// 模块模型

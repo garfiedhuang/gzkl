@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using GalaSoft.MvvmLight;
 
-namespace GZKL.Cilent.UI.Models
+namespace GZKL.Client.UI.Models
 {
     /// <summary>
     /// 菜单页签模型

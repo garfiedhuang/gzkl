@@ -11,7 +11,7 @@ namespace GZKL.Client.UI.Models
     /// <summary>
     /// 用户模型
     /// </summary>
-    public class UserModel : ObservableObject
+    public class RoleModel : ObservableObject
     {
         /// <summary>
         /// 主键ID

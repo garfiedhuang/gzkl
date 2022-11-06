@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace GZKL.Cilent.UI.CustomControls.Attach
+namespace GZKL.Client.UI.CustomControls.Attach
 {
      public class IconElement
     {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GZKL.Client.UI.ViewsModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,18 +13,22 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using GZKL.Client.UI.ViewsModels;
 
-namespace GZKL.Client.UI.Views
+namespace GZKL.Client.UI.Views.SystemMgt.Role
 {
     /// <summary>
-    /// home.xaml 的交互逻辑
+    /// Role.xaml 的交互逻辑
     /// </summary>
-    public partial class Home : UserControl
+    public partial class Role : UserControl
     {
-        public Home()
+        public Role()
         {
             InitializeComponent();
+        }
+
+        private void RoleControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            (this.DataContext as RoleViewModel).Query();
         }
     }
 }

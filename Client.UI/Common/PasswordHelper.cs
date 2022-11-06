@@ -3,7 +3,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace GZKL.Cilent.UI.Common
+namespace GZKL.Client.UI.Common
 {
     public class PasswordHelper
     {

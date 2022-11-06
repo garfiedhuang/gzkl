@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using GZKL.Cilent.UI.Models;
+using GZKL.Client.UI.Models;
 
-namespace GZKL.Cilent.UI.CustomControls.Template
+namespace GZKL.Client.UI.CustomControls.Template
 {
     public class MenuTemplateSelector: DataTemplateSelector
     {

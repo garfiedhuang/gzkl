@@ -2,9 +2,9 @@
 using GalaSoft.MvvmLight.Messaging;
 using System.Windows;
 using System.Windows.Input;
-using GZKL.Cilent.UI.ViewsModels;
+using GZKL.Client.UI.ViewsModels;
 
-namespace GZKL.Cilent.UI.Views
+namespace GZKL.Client.UI.Views
 {
     /// <summary>
     /// Login.xaml 的交互逻辑

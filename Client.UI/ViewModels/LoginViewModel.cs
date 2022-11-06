@@ -7,10 +7,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GZKL.Cilent.UI.Views;
+using GZKL.Client.UI.Views;
 using GZKL.Client.UI.Common;
 
-namespace GZKL.Cilent.UI.ViewsModels
+namespace GZKL.Client.UI.ViewsModels
 {
      public class LoginViewModel: ViewModelBase
     {

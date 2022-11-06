@@ -1,4 +1,4 @@
-﻿using GZKL.Cilent.UI.Models;
+﻿using GZKL.Client.UI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

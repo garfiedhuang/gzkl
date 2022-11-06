@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace GZKL.Cilent.UI.ViewsModels
+namespace GZKL.Client.UI.ViewsModels
 {
     public class BaseViewModel<TView> : ObservableObject where TView : Window, new()
     {
