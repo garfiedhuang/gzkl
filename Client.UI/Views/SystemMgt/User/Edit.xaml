@@ -22,7 +22,6 @@
                             hc:InfoElement.Placeholder="请输入用户名" 
                             hc:InfoElement.Title="用户名" 
                             Text="{Binding Model.Name,Mode=TwoWay}" 
-                            IsReadOnly="{Binding Model.Id>0}"
                          hc:InfoElement.Necessary="True"/>
                 <hc:TextBox Margin="0,0,0,10" 
                             x:Name="txtPhone" 
@@ -48,17 +47,16 @@
                 <StackPanel Margin="32" Width="250">
                     <hc:ComboBox Margin="0,0,0,10" 
                              x:Name="cmbSex" 
-                             AutoComplete="True" 
-                             SelectedIndex="0" 
+                             AutoComplete="True"
                              ShowClearButton="True" 
                              IsEditable="False" 
                              hc:InfoElement.Placeholder="请选择性别"
                              DisplayMemberPath="Value" 
                              SelectedValuePath="Key"
-                             SelectedValue="{Binding Model.Sex,Mode=TwoWay}"
+                             ItemsSource="{Binding SexData}"
+                             SelectedValue="{Binding Model.Sex}"
                              hc:InfoElement.Title="性别" 
-                             hc:InfoElement.Necessary="False" 
-                             ItemsSource="{Binding SexData}">
+                             hc:InfoElement.Necessary="False">
                     </hc:ComboBox>
                     <DatePicker Margin="0,0,0,10" 
                             x:Name="dpBirthday" 
@@ -69,17 +67,16 @@
                             hc:InfoElement.Necessary="False"/>
                     <hc:ComboBox Margin="0,0,0,10" 
                              x:Name="cmbIsEnabled" 
-                             AutoComplete="True" 
-                             SelectedIndex="0" 
+                             AutoComplete="True"
                              ShowClearButton="True" 
                              IsEditable="False" 
                              hc:InfoElement.Placeholder="请选择是否启用"
                              DisplayMemberPath="Value" 
                              SelectedValuePath="Key"
-                             SelectedValue="{Binding Model.IsEnabled,Mode=TwoWay}"
+                             ItemsSource="{Binding IsEnabledData}"
+                             SelectedValue="{Binding Model.IsEnabled}"
                              hc:InfoElement.Title="是否启用" 
-                             hc:InfoElement.Necessary="False" 
-                             ItemsSource="{Binding IsEnabledData}">
+                             hc:InfoElement.Necessary="False">
                     </hc:ComboBox>
                 </StackPanel>
         </StackPanel>

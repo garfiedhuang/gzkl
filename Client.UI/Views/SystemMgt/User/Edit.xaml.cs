@@ -36,6 +36,11 @@ namespace GZKL.Cilent.UI.Views.SystemMgt.User
             isEnabledData.Add(new KeyValuePair<int, string>(1, "1-是"));
 
             this.DataContext = new { Model = userModel, SexData = sexData, IsEnabledData = isEnabledData };
+
+            if (userModel.Id != 0)
+            {
+                this.txtName.IsReadOnly = true;
+            }
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)

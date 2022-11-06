@@ -148,7 +148,7 @@ namespace GZKL.Cilent.UI.ViewsModels
         /// 分页
         /// </summary>
         public RelayCommand<FunctionEventArgs<int>> PageUpdatedCommand { get; set; }
-        
+
 
         #endregion
 
@@ -194,7 +194,7 @@ namespace GZKL.Cilent.UI.ViewsModels
                                 Phone = dataRow["phone"].ToString(),
                                 HeadImg = dataRow["head_img"].ToString(),
                                 Sex = Convert.ToInt32(dataRow["sex"]),
-                                Birthday = Convert.ToDateTime(dataRow["birthday"]??DateTime.MinValue),
+                                Birthday = Convert.ToDateTime(dataRow["birthday"] ?? DateTime.MinValue),
                                 IsEnabled = Convert.ToInt32(dataRow["is_enable"]),
                                 CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
                                 UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
@@ -216,7 +216,7 @@ namespace GZKL.Cilent.UI.ViewsModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message,"提示信息" );
+                MessageBox.Show(ex.Message, "提示信息");
             }
         }
 
@@ -235,53 +235,55 @@ namespace GZKL.Cilent.UI.ViewsModels
         /// <param name="id"></param>
         public void Edit(int id)
         {
-            var selected = GridModelList.Where(w => w.IsSelected == true).ToList();
-
-            if (selected.Count != 1)
+            try
             {
-                MessageBox.Show($"请选择一条记录进行编辑", "提示信息");
-                return;
-            }
+                var selected = GridModelList.Where(w => w.IsSelected == true).ToList();
 
-            id = (int)selected.First().Id;
+                if (selected.Count != 1)
+                {
+                    MessageBox.Show($"请选择一条记录进行编辑", "提示信息");
+                    return;
+                }
 
-            var sql = new StringBuilder(@"SELECT [id],[name],[password],[head_img],[phone],[email]
+                id = (int)selected.First().Id;
+
+                var sql = new StringBuilder(@"SELECT [id],[name],[password],[head_img],[phone],[email]
                 ,[sex],[birthday],[is_enable],[is_deleted],[create_dt]
                 ,[create_user_id],[update_dt],[update_user_id]
                 FROM [dbo].[sys_user] WHERE [is_deleted]=0 AND [id]=@id");
 
-            var parameters = new SqlParameter[1] { new SqlParameter("@id", id) };
-            using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
-            {
-                if (data == null || data.Rows.Count == 0)
+                var parameters = new SqlParameter[1] { new SqlParameter("@id", id) };
+                using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
                 {
-                    MessageBox.Show($"数据库不存在 主键ID={id} 的记录", "提示信息");
-                    return;
-                }
-
-                var dataRow = data.Rows[0];
-                var model = new UserModel() {
-                    Id = Convert.ToInt64(dataRow["id"]),
-                    RowNum = Convert.ToInt64(dataRow["row_num"]),
-                    Name = dataRow["name"].ToString(),
-                    Email = dataRow["email"].ToString(),
-                    Phone = dataRow["phone"].ToString(),
-                    HeadImg = dataRow["head_img"].ToString(),
-                    Sex = Convert.ToInt32(dataRow["sex"]),
-                    Birthday = Convert.ToDateTime(dataRow["birthday"] ?? DateTime.MinValue),
-                    IsEnabled = Convert.ToInt32(dataRow["is_enable"]),
-                    CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
-                    UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
-                };
-
-                if (model != null)
-                {
-                    Edit view = new Edit(model);
-                    var r = view.ShowDialog();
-                    if (r.Value)
+                    if (data == null || data.Rows.Count == 0)
                     {
-                        sql.Clear();
-                        sql.Append(@"UPDATE [dbo].[sys_user]
+                        MessageBox.Show($"数据库不存在 主键ID={id} 的记录", "提示信息");
+                        return;
+                    }
+
+                    var dataRow = data.Rows[0];
+                    var model = new UserModel()
+                    {
+                        Id = Convert.ToInt64(dataRow["id"]),
+                        Name = dataRow["name"].ToString(),
+                        Email = dataRow["email"].ToString(),
+                        Phone = dataRow["phone"].ToString(),
+                        HeadImg = dataRow["head_img"].ToString(),
+                        Sex = Convert.ToInt32(dataRow["sex"]),
+                        Birthday = Convert.ToDateTime(dataRow["birthday"] ?? DateTime.MinValue),
+                        IsEnabled = Convert.ToInt32(dataRow["is_enable"]),
+                        CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
+                        UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
+                    };
+
+                    if (model != null)
+                    {
+                        Edit view = new Edit(model);
+                        var r = view.ShowDialog();
+                        if (r.Value)
+                        {
+                            sql.Clear();
+                            sql.Append(@"UPDATE [dbo].[sys_user]
    SET [head_img] = @head_img
       ,[phone] = @phone
       ,[email] = @email
@@ -291,41 +293,69 @@ namespace GZKL.Cilent.UI.ViewsModels
       ,[update_dt] = @update_dt
       ,[update_user_id] = @user_id
  WHERE [id]=@id");
-                        parameters = new SqlParameter[] {
+                            parameters = new SqlParameter[] {
                             new SqlParameter("@head_img", "/Assets/Images/default.png"),
                             new SqlParameter("@phone", model.Phone),
                             new SqlParameter("@email", model.Email),
                             new SqlParameter("@sex", model.Sex),
                             new SqlParameter("@birthday", model.Birthday),
+                            new SqlParameter("@is_enable", model.IsEnabled),
                             new SqlParameter("@update_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
                             new SqlParameter("@user_id", SessionInfo.Instance.Session.Id),
                             new SqlParameter("@id", id)
                         };
 
-                       var result = SQLHelper.ExecuteNonQuery(sql.ToString(),parameters);
+                            var result = SQLHelper.ExecuteNonQuery(sql.ToString(), parameters);
 
-                        this.Query();
+                            this.Query();
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "提示信息");
             }
         }
 
         /// <summary>
         /// 删除
         /// </summary>
-        /// <param name="Id"></param>
-        public void Delete(int Id)
+        /// <param name="id"></param>
+        public void Delete(int id)
         {
-            //var model = localDb.QueryById(Id);
-            //if (model != null)
-            //{
-            //    var r = MessageBox.Show($"确定要删除吗【{model.Name}】？", "提示", MessageBoxButton.YesNo);
-            //    if (r == MessageBoxResult.Yes)
-            //    {
-            //        localDb.DelStudent(Id);
-            //        this.Query();
-            //    }
-            //}
+            try
+            {
+                var selected = GridModelList.Where(w => w.IsSelected == true).ToList();
+
+                if (selected.Count == 0)
+                {
+                    MessageBox.Show($"请至少选择一条记录进行删除", "提示信息");
+                    return;
+                }
+
+                if (selected != null)
+                {
+                    var r = MessageBox.Show($"确定要删除【{string.Join(",", selected.Select(s => s.Name))}】吗？", "提示", MessageBoxButton.YesNo);
+                    if (r == MessageBoxResult.Yes)
+                    {
+                        foreach (var dr in selected)
+                        {
+                            //var sql = new StringBuilder(@"DELETE FROM [dbo].[sys_user] WHERE [id] IN(@id)");
+                            var sql = new StringBuilder(@"UPDATE [dbo].[sys_user] SET [is_deleted]=1 WHERE [id]=(@id)");
+
+                            var parameters = new SqlParameter[1] { new SqlParameter("@id", dr.Id) };
+                            var result = SQLHelper.ExecuteNonQuery(sql.ToString(), parameters);
+                        }
+
+                        this.Query();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "提示信息");
+            }
         }
 
         /// <summary>
@@ -333,12 +363,14 @@ namespace GZKL.Cilent.UI.ViewsModels
         /// </summary>
         public void Add()
         {
-            UserModel model = new UserModel();
-            Edit view = new Edit(model);
-            var r = view.ShowDialog();
-            if (r.Value)
+            try
             {
-                var sql = @"INSERT INTO [dbo].[sys_user]
+                UserModel model = new UserModel();
+                Edit view = new Edit(model);
+                var r = view.ShowDialog();
+                if (r.Value)
+                {
+                    var sql = @"INSERT INTO [dbo].[sys_user]
            ([name]
            ,[password]
            ,[head_img]
@@ -367,7 +399,7 @@ namespace GZKL.Cilent.UI.ViewsModels
            ,@create_dt
            ,@user_id)";
 
-                var parameters = new SqlParameter[] {
+                    var parameters = new SqlParameter[] {
                     new SqlParameter("@name", model.Name),
                     new SqlParameter("@password", "123456"),
                     new SqlParameter("@head_img", "/Assets/Images/default.png"),
@@ -379,26 +411,16 @@ namespace GZKL.Cilent.UI.ViewsModels
                     new SqlParameter("@user_id", SessionInfo.Instance.Session.Id)
                 };
 
-                var result = SQLHelper.ExecuteNonQuery(sql, parameters);
+                    var result = SQLHelper.ExecuteNonQuery(sql, parameters);
 
-                this.Query();
+                    this.Query();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "提示信息");
             }
         }
-
-
-        //private void BtTest(object o)
-        //{
-        //    string str = "";
-        //    for (int i = 0; i < GridModelList.Count; i++) {
-        //        UserModel temp = GridModelList[i];
-        //        Console.WriteLine(temp.IsSelected);
-        //        Console.WriteLine(temp.Name);
-        //        if (temp.IsSelected) { 
-        //            str=string.IsNullOrEmpty(str)? temp.Name:(str+","+ temp.Name);
-        //        }
-        //    }
-        //    MessageBox.Success(str,"提示信息" );
-        //}
 
         /// <summary>
         /// 页面更新事件

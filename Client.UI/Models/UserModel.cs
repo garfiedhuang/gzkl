@@ -76,7 +76,7 @@ namespace GZKL.Cilent.UI.Models
         public bool IsSelected
         {
             get { return isSelected; }
-            set { isSelected = value; RaisePropertyChanged(); }
+            set { isSelected = value; RaisePropertyChanged("IsSelected"); }
         }
 
     }

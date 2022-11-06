@@ -50,24 +50,27 @@
         </WrapPanel>
 
         <DataGrid Margin="15" Grid.Row="2"
+                  x:Name="dgData"
                   hc:DataGridAttach.CanUnselectAllWithBlankArea="True"
                   hc:Empty.ShowEmpty="True"
-                  AutoGenerateColumns="False" 
+                  HeadersVisibility="Column"
+                  AutoGenerateColumns="False"
                   ItemsSource="{Binding GridModelList}" 
                   RowHeaderWidth="60" >
 
-            <DataGrid.RowHeaderTemplate>
+            <!--<DataGrid.RowHeaderTemplate>
                 <DataTemplate>
-                    <CheckBox IsChecked="{Binding IsSelected ,Mode=OneWay}"/>
+                    <CheckBox Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" IsChecked="{Binding IsSelected ,RelativeSource={RelativeSource AncestorType=DataGridRow}}"/>
                 </DataTemplate>
-            </DataGrid.RowHeaderTemplate>
+            </DataGrid.RowHeaderTemplate>-->
 
             <DataGrid.Columns>
+                <DataGridCheckBoxColumn Binding="{Binding IsSelected}" Width="50" CanUserSort="False" CanUserResize="False" Header="选择"/>
                 <DataGridTextColumn Binding="{Binding RowNum}" Width="60" CanUserSort="False" CanUserResize="False" Header="序号"/>
                 <DataGridTextColumn IsReadOnly="True" Width="60" CanUserSort="False" CanUserResize="False" Binding="{Binding Id}" Header="主键ID" Visibility="Hidden"/>
                 <DataGridTextColumn IsReadOnly="True"  Width="120" Binding="{Binding Name}" Header="用户名"/>
-                <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding Email}" Header="电子邮箱"/>
                 <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding Phone}" Header="手机号码"/>
+                <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding Email}" Header="电子邮箱"/>
                 <DataGridTextColumn IsReadOnly="True" Width="60" Binding="{Binding Sex,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=sex}" Header="性别"/>
                 <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding Birthday, StringFormat=\{0:yyyy-MM-dd\}, Mode=OneWay}" Header="生日"/>
                 <DataGridTextColumn IsReadOnly="True" Width="60" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>
