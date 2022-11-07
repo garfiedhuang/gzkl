@@ -19,13 +19,13 @@ namespace GZKL.Client.UI.ViewsModels
         {
             ModuleGroups = new ObservableCollection<ModuleGroupModel>();
             TabModels = new ObservableCollection<MenuTabModel>();
-            Modules = new ObservableCollection<Models.ModuleModel>();
-            Models.ModuleModel userModel = new Models.ModuleModel{
-                Code = "\ue600",
-                Name = "用户管理",
-                TypeName = "SystemMgt.User.User"
-            };
-            Modules.Add(userModel);
+            //Modules = new ObservableCollection<Models.ModuleModel>();
+            //Models.ModuleModel userModel = new Models.ModuleModel{
+            //    Code = "\ue600",
+            //    Name = "用户管理",
+            //    TypeName = "SystemMgt.User.User"
+            //};
+            //Modules.Add(userModel);
             tabIndex = 0;
             ChangeContentCommand = new RelayCommand<object>(NavChanged);
             ExpandMenuCommand = new RelayCommand(()=> {
@@ -37,12 +37,13 @@ namespace GZKL.Client.UI.ViewsModels
                 Messenger.Default.Send("", "ExpandMenu");
             });
             GetMenu();
+
             NavChanged("Home");
         }
         #region =====data
         private ObservableCollection<ModuleGroupModel> moduleGroups;
         private ObservableCollection<MenuTabModel> tabModels;
-        private ObservableCollection<Models.ModuleModel> modules;
+        //private ObservableCollection<Models.ModuleModel> modules;
         private int tabIndex;
         public int TabIndex
         {
@@ -67,14 +68,14 @@ namespace GZKL.Client.UI.ViewsModels
             get { return moduleGroups; }
             set { moduleGroups = value; RaisePropertyChanged(); }
         }
-        /// <summary>
-        /// 已加载模块
-        /// </summary>
-        public ObservableCollection<Models.ModuleModel> Modules
-        {
-            get { return modules; }
-            set { modules = value; RaisePropertyChanged(); }
-        }
+        ///// <summary>
+        ///// 已加载模块
+        ///// </summary>
+        //public ObservableCollection<Models.ModuleModel> Modules
+        //{
+        //    get { return modules; }
+        //    set { modules = value; RaisePropertyChanged(); }
+        //}
         /// <summary>
         /// 已点击模块
         /// </summary>
@@ -112,8 +113,7 @@ namespace GZKL.Client.UI.ViewsModels
             bool needAdd = true;
             for (int i = 0; i < TabModels.Count; i++)
             {
-                //if (TabModels[i].Code==o.ToString())
-                if (TabModels[i].Code == o.ToString())
+                if (TabModels[i].Code == typeName)
                 {
                     TabIndex = i;
                     needAdd = false;
@@ -124,7 +124,9 @@ namespace GZKL.Client.UI.ViewsModels
             {
                 MenuTabModel tabs = new MenuTabModel();
                 tabs.Header = tabName;
-                tabs.Code = o.ToString();
+                //tabs.Code = o.ToString();//多页签跳转存在bug
+                tabs.Code= typeName;
+
                 tabs.Content = (FrameworkElement)constructor.Invoke(null);
                 TabModels.Add(tabs);
                 TabIndex = TabModels.Count - 1;

@@ -163,7 +163,7 @@
                         <RowDefinition Height="135"></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="ZR" FontWeight="Bold" 
+                    <TextBlock Text="GZKL" FontWeight="Bold" 
                        FontSize="33" Foreground="#3DD0FB" 
                                TextAlignment="Center"
                                VerticalAlignment="Top"
@@ -176,7 +176,7 @@
                             </Image.Clip>
                         </Image>
                         <StackPanel VerticalAlignment="Center" Margin="5 0 0 0" Name="userName">
-                            <TextBlock Text="贾玲" Foreground="#BFCBD9"/>
+                            <TextBlock Text="系统管理员" Foreground="#BFCBD9"/>
                             <TextBlock Text="Admin" Foreground="#959595"/>
                         </StackPanel>
                     </StackPanel>

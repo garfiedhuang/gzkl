@@ -28,7 +28,7 @@ namespace GZKL.Client.UI.Views.SystemMgt.Role
 
         private void RoleControl_Loaded(object sender, RoutedEventArgs e)
         {
-            (this.DataContext as RoleViewModel).Query();
+            //(this.DataContext as RoleViewModel).Query();
         }
     }
 }
