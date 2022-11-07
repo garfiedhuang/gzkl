@@ -15,19 +15,19 @@ using GZKL.Client.UI.Common;
 using System.Data;
 using System.Windows.Controls;
 using MessageBox = HandyControl.Controls.MessageBox;
-using GZKL.Client.UI.Views.SystemMgt.Config;
+using GZKL.Client.UI.Views.SystemMgt.Permission;
 using GalaSoft.MvvmLight.Messaging;
 
 namespace GZKL.Client.UI.ViewsModels
 {
-    public class ConfigViewModel : ViewModelBase
+    public class PermissionViewModel : ViewModelBase
     {
         #region Construct and property
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        public ConfigViewModel()
+        public PermissionViewModel()
         {
             QueryCommand = new RelayCommand(this.Query);
             ResetCommand = new RelayCommand(this.Reset);
@@ -36,20 +36,20 @@ namespace GZKL.Client.UI.ViewsModels
             AddCommand = new RelayCommand(this.Add);
             PageUpdatedCommand = new RelayCommand<FunctionEventArgs<int>>(PageUpdated);
 
-            ConfigModels = new List<ConfigModel>();
-            GridModelList = new ObservableCollection<ConfigModel>();
+            PermissionModels = new List<PermissionModel>();
+            GridModelList = new ObservableCollection<PermissionModel>();
         }
 
         /// <summary>
         /// 查询之后的结果数据，用于分页显示
         /// </summary>
-        private static List<ConfigModel> ConfigModels { get; set; }
+        private static List<PermissionModel> PermissionModels { get; set; }
 
         /// <summary>
         /// 网格数据集合
         /// </summary>
-        private ObservableCollection<ConfigModel> gridModelList;
-        public ObservableCollection<ConfigModel> GridModelList
+        private ObservableCollection<PermissionModel> gridModelList;
+        public ObservableCollection<PermissionModel> GridModelList
         {
             get { return gridModelList; }
             set { gridModelList = value; RaisePropertyChanged(); }
@@ -161,22 +161,32 @@ namespace GZKL.Client.UI.ViewsModels
         {
             try
             {
-                var sql = new StringBuilder(@"SELECT row_number()over(order by update_dt desc )as row_num
-                ,[id],[category],[value],[text],[remark],[is_enabled],[is_deleted],[create_dt]
-                ,[create_user_id],[update_dt],[update_user_id]
-                FROM [dbo].[sys_config] WHERE [is_deleted]=0");
+                var sql = new StringBuilder(@"SELECT row_number()over(order by ur.update_dt desc )as row_num
+      ,ur.[id]
+      ,ur.[user_id]
+	  ,u.[name] AS [user_name]
+      ,ur.[role_id]
+	  ,r.[name] AS [role_name]
+      ,ur.[is_deleted]
+      ,ur.[create_dt]
+      ,ur.[create_user_id]
+      ,ur.[update_dt]
+      ,ur.[update_user_id]
+  FROM [dbo].[sys_user_role] ur INNER JOIN [dbo].[sys_user] u ON ur.user_id = u.id
+  INNER JOIN [dbo].[sys_role] r ON ur.role_id = r.id
+  WHERE ur.is_deleted=0 AND u.is_deleted=0 AND r.is_deleted=0");
 
                 SqlParameter[] parameters = null;
 
                 if (!string.IsNullOrEmpty(Search.Trim()))
                 {
-                    sql.Append($" AND ([category] LIKE @search or [value] LIKE @search or [text] LIKE @search)");
+                    sql.Append($" AND (u.[name] LIKE @search OR r.[name] LIKE @search)");
                     parameters = new SqlParameter[1] { new SqlParameter("@search", $"%{Search}%") };
                 }
 
-                sql.Append($" ORDER BY [update_dt] DESC");
+                sql.Append($" ORDER BY ur.[update_dt] DESC");
 
-                ConfigModels.Clear();//清空前端分页数据
+                PermissionModels.Clear();//清空前端分页数据
 
                 using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
                 {
@@ -184,15 +194,14 @@ namespace GZKL.Client.UI.ViewsModels
                     {
                         foreach (DataRow dataRow in data.Rows)
                         {
-                            ConfigModels.Add(new ConfigModel()
+                            PermissionModels.Add(new PermissionModel()
                             {
                                 Id = Convert.ToInt64(dataRow["id"]),
                                 RowNum = Convert.ToInt64(dataRow["row_num"]),
-                                Category = dataRow["category"].ToString(),
-                                Value = dataRow["value"].ToString(),
-                                Text = dataRow["text"].ToString(),
-                                Remark = dataRow["remark"].ToString(),
-                                IsEnabled = Convert.ToInt32(dataRow["is_enabled"]),
+                                UserId = Convert.ToInt32(dataRow["user_id"]),
+                                RoleId = Convert.ToInt32(dataRow["role_id"]),
+                                UserName = dataRow["user_name"].ToString(),
+                                RoleName = dataRow["role_name"].ToString(),
                                 CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
                                 UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
                             });
@@ -201,11 +210,11 @@ namespace GZKL.Client.UI.ViewsModels
                 }
 
                 //当前页数
-                PageIndex = ConfigModels.Count > 0 ? 1 : 0;
+                PageIndex = PermissionModels.Count > 0 ? 1 : 0;
                 MaxPageCount = 0;
 
                 //最大页数
-                MaxPageCount = PageIndex > 0 ? (int)Math.Ceiling((decimal)ConfigModels.Count / DataCountPerPage) : 0;
+                MaxPageCount = PageIndex > 0 ? (int)Math.Ceiling((decimal)PermissionModels.Count / DataCountPerPage) : 0;
 
                 //数据分页
                 Paging(PageIndex);
@@ -244,9 +253,19 @@ namespace GZKL.Client.UI.ViewsModels
 
                 id = (int)selected.First().Id;
 
-                var sql = new StringBuilder(@"SELECT [id],[category],[value],[text],[remark],[is_enabled],[is_deleted],[create_dt]
-                ,[create_user_id],[update_dt],[update_user_id]
-                FROM [dbo].[sys_config] WHERE [is_deleted]=0 AND [id]=@id");
+                var sql = new StringBuilder(@"SELECT ur.[id]
+      ,ur.[user_id]
+	  ,u.[name] AS [user_name]
+      ,ur.[role_id]
+	  ,r.[name] AS [role_name]
+      ,ur.[is_deleted]
+      ,ur.[create_dt]
+      ,ur.[create_user_id]
+      ,ur.[update_dt]
+      ,ur.[update_user_id]
+  FROM [dbo].[sys_user_role] ur INNER JOIN [dbo].[sys_user] u ON ur.user_id = u.id
+  INNER JOIN [dbo].[sys_role] r ON ur.role_id = r.id
+  WHERE ur.is_deleted=0 AND u.is_deleted=0 AND r.is_deleted=0 AND ur.[id]=@id");
 
                 var parameters = new SqlParameter[1] { new SqlParameter("@id", id) };
                 using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
@@ -258,14 +277,13 @@ namespace GZKL.Client.UI.ViewsModels
                     }
 
                     var dataRow = data.Rows[0];
-                    var model = new ConfigModel()
+                    var model = new PermissionModel()
                     {
                         Id = Convert.ToInt64(dataRow["id"]),
-                        Category = dataRow["category"].ToString(),
-                        Value = dataRow["value"].ToString(),
-                        Text = dataRow["text"].ToString(),
-                        Remark = dataRow["remark"].ToString(),
-                        IsEnabled = Convert.ToInt32(dataRow["is_enabled"]),
+                        UserId = Convert.ToInt32(dataRow["user_id"]),
+                        RoleId = Convert.ToInt32(dataRow["role_id"]),
+                        UserName = dataRow["user_name"].ToString(),
+                        RoleName = dataRow["role_name"].ToString(),
                         CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
                         UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
                     };
@@ -277,21 +295,15 @@ namespace GZKL.Client.UI.ViewsModels
                         if (r.Value)
                         {
                             sql.Clear();
-                            sql.Append(@"UPDATE [dbo].[sys_config]
-   SET [category] = @category
-      ,[value] = @value
-      ,[text] = @text
-      ,[remark] = @remark
-      ,[is_enabled] = @is_enabled
+                            sql.Append(@"UPDATE [dbo].[sys_user_role]
+   SET [user_id] = @userId
+      ,[role_id] = @roleId
       ,[update_dt] = @update_dt
       ,[update_user_id] = @user_id
  WHERE [id]=@id");
                             parameters = new SqlParameter[] {
-                            new SqlParameter("@category", model.Category),
-                            new SqlParameter("@value", model.Value),
-                            new SqlParameter("@text", model.Text),
-                            new SqlParameter("@remark", model.Remark),
-                            new SqlParameter("@is_enabled", model.IsEnabled),
+                            new SqlParameter("@userId", model.UserId),
+                            new SqlParameter("@roleId", model.RoleId),
                             new SqlParameter("@update_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
                             new SqlParameter("@user_id", SessionInfo.Instance.Session.Id),
                             new SqlParameter("@id", id)
@@ -328,13 +340,13 @@ namespace GZKL.Client.UI.ViewsModels
 
                 if (selected != null)
                 {
-                    var r = MessageBox.Show($"确定要删除【{string.Join(",", selected.Select(s => $"{s.Category}|{s.Value}|{s.Text}"))}】吗？", "提示", MessageBoxButton.YesNo);
+                    var r = MessageBox.Show($"确定要删除【{string.Join(",", selected.Select(s => $"{s.UserName}|{s.RoleName}"))}】吗？", "提示", MessageBoxButton.YesNo);
                     if (r == MessageBoxResult.Yes)
                     {
                         foreach (var dr in selected)
                         {
-                            //var sql = new StringBuilder(@"DELETE FROM [dbo].[sys_config] WHERE [id] IN(@id)");
-                            var sql = new StringBuilder(@"UPDATE [dbo].[sys_config] SET [is_deleted]=1 WHERE [id]=@id");
+                            //var sql = new StringBuilder(@"DELETE FROM [dbo].[sys_user_role] WHERE [id] IN(@id)");
+                            var sql = new StringBuilder(@"UPDATE [dbo].[sys_user_role] SET [is_deleted]=1 WHERE [id]=@id");
 
                             var parameters = new SqlParameter[1] { new SqlParameter("@id", dr.Id) };
                             var result = SQLHelper.ExecuteNonQuery(sql.ToString(), parameters);
@@ -357,28 +369,22 @@ namespace GZKL.Client.UI.ViewsModels
         {
             try
             {
-                ConfigModel model = new ConfigModel();
+                PermissionModel model = new PermissionModel();
                 Edit view = new Edit(model);
                 var r = view.ShowDialog();
                 if (r.Value)
                 {
-                    var sql = @"INSERT INTO [dbo].[sys_config]
-           ([category]
-           ,[value]
-           ,[text]
-           ,[remark]
-           ,[is_enabled]
+                    var sql = @"INSERT INTO [dbo].[sys_user_role]
+           ([user_id]
+           ,[role_id]
            ,[is_deleted]
            ,[create_dt]
            ,[create_user_id]
            ,[update_dt]
            ,[update_user_id])
      VALUES
-           (@category
-           ,@value
-           ,@text
-           ,@remark
-           ,@is_enabled
+           (@userId
+           ,@roleId
            ,0
            ,@create_dt
            ,@user_id
@@ -386,11 +392,8 @@ namespace GZKL.Client.UI.ViewsModels
            ,@user_id)";
 
                     var parameters = new SqlParameter[] {
-                    new SqlParameter("@category", model.Category),
-                    new SqlParameter("@value", model.Value),
-                    new SqlParameter("@text", model.Text),
-                    new SqlParameter("@remark", model.Remark),
-                    new SqlParameter("@is_enabled", model.IsEnabled),
+                    new SqlParameter("@userId", model.UserId),
+                    new SqlParameter("@roleId", model.RoleId),
                     new SqlParameter("@create_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
                     new SqlParameter("@user_id", SessionInfo.Instance.Session.Id)
                 };
@@ -427,7 +430,7 @@ namespace GZKL.Client.UI.ViewsModels
 
             GridModelList.Clear();//情况依赖属性
 
-            var pagedData = ConfigModels.Skip((pageIndex - 1) * DataCountPerPage).Take(DataCountPerPage).ToList();
+            var pagedData = PermissionModels.Skip((pageIndex - 1) * DataCountPerPage).Take(DataCountPerPage).ToList();
 
             if (pagedData.Count > 0)
             {

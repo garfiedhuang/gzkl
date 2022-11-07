@@ -104,6 +104,7 @@
     <Compile Include="Models\MenuTabModel.cs" />
     <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Models\ConfigModel.cs" />
+    <Compile Include="Models\PermissionModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="CustomControls\Attach\IconElement.cs" />
     <Compile Include="CustomControls\Views\MeterPlate.xaml.cs">
@@ -116,6 +117,7 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\RoleViewModel.cs" />
     <Compile Include="ViewModels\ConfigViewModel.cs" />
+    <Compile Include="ViewModels\PermissionViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\Home.xaml.cs">
@@ -133,6 +135,12 @@
     </Compile>
     <Compile Include="Views\SystemMgt\Config\Config.xaml.cs">
       <DependentUpon>Config.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SystemMgt\Permission\Edit.xaml.cs">
+      <DependentUpon>Edit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SystemMgt\Permission\Permission.xaml.cs">
+      <DependentUpon>Permission.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SystemMgt\Role\Edit.xaml.cs">
       <DependentUpon>Edit.xaml</DependentUpon>
@@ -171,6 +179,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\SystemMgt\Config\Config.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SystemMgt\Permission\Edit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SystemMgt\Permission\Permission.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

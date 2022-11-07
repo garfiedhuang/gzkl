@@ -58,6 +58,12 @@ namespace GZKL.Client.UI.API
             });
             list.Add(new ModuleModel
             {
+                Code = "\ue66e",
+                Name = "权限管理",
+                TypeName = "SystemMgt.Permission.Permission"
+            });
+            list.Add(new ModuleModel
+            {
                 Code = "\ue66a",
                 Name = "数据字典",
                 TypeName = "SystemMgt.Config.Config"
