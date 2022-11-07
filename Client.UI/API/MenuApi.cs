@@ -60,7 +60,7 @@ namespace GZKL.Client.UI.API
             {
                 Code = "\ue66a",
                 Name = "数据字典",
-                TypeName = "SystemMgt.Dictionary.Dictionary"
+                TypeName = "SystemMgt.Config.Config"
             });
             return list;
         }

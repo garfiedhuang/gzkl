@@ -103,6 +103,7 @@
     <Compile Include="Models\ModuleGroupModel.cs" />
     <Compile Include="Models\MenuTabModel.cs" />
     <Compile Include="Models\RoleModel.cs" />
+    <Compile Include="Models\ConfigModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="CustomControls\Attach\IconElement.cs" />
     <Compile Include="CustomControls\Views\MeterPlate.xaml.cs">
@@ -114,6 +115,7 @@
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\RoleViewModel.cs" />
+    <Compile Include="ViewModels\ConfigViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\Home.xaml.cs">
@@ -125,6 +127,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Views\SystemMgt\Config\Edit.xaml.cs">
+      <DependentUpon>Edit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SystemMgt\Config\Config.xaml.cs">
+      <DependentUpon>Config.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SystemMgt\Role\Edit.xaml.cs">
       <DependentUpon>Edit.xaml</DependentUpon>
@@ -157,6 +165,14 @@
     <Page Include="Views\LoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SystemMgt\Config\Edit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SystemMgt\Config\Config.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\SystemMgt\Role\Edit.xaml">
       <SubType>Designer</SubType>
