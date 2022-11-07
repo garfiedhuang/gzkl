@@ -25,16 +25,7 @@ namespace GZKL.Client.UI.Views.SystemMgt.Role
         {
             InitializeComponent();
 
-            var sexData = new List<KeyValuePair<int, string>>();
-            sexData.Add(new KeyValuePair<int, string>(0, "0-未知"));
-            sexData.Add(new KeyValuePair<int, string>(1, "1-男"));
-            sexData.Add(new KeyValuePair<int, string>(2, "2-女"));
-
-            var isEnabledData = new List<KeyValuePair<int, string>>();
-            isEnabledData.Add(new KeyValuePair<int, string>(0, "0-否"));
-            isEnabledData.Add(new KeyValuePair<int, string>(1, "1-是"));
-
-            this.DataContext = new { Model = roleModel, SexData = sexData, IsEnabledData = isEnabledData };
+            this.DataContext = new { Model = roleModel};
 
             if (roleModel.Id != 0)
             {

@@ -9,7 +9,7 @@
              DataContext="{Binding Source={StaticResource Locator},Path=Edit}"
              WindowStartupLocation="CenterScreen"
              mc:Ignorable="d" 
-             Title="新增/编辑用户信息"
+             Title="新增/编辑角色信息"
              Height="450" 
              Width="650" 
              ResizeMode="NoResize">
@@ -23,65 +23,17 @@
             <StackPanel Margin="32" Width="250">
                 <hc:TextBox Margin="0,0,0,10" 
                             x:Name="txtName" 
-                            hc:InfoElement.Placeholder="请输入用户名" 
-                            hc:InfoElement.Title="用户名" 
+                            hc:InfoElement.Placeholder="请输入角色名称" 
+                            hc:InfoElement.Title="角色名称" 
                             Text="{Binding Model.Name,Mode=TwoWay}" 
                          hc:InfoElement.Necessary="True"/>
                 <hc:TextBox Margin="0,0,0,10" 
-                            x:Name="txtPhone" 
-                            TextType="Phone" 
-                            hc:InfoElement.Placeholder="请输入手机号码" 
-                            hc:InfoElement.Title="手机号码" 
-                            Text="{Binding Model.Phone,Mode=TwoWay}"
+                            x:Name="txtRemark"
+                            TextWrapping="Wrap"
+                            hc:InfoElement.Placeholder="请输入备注" 
+                            hc:InfoElement.Title="备注" 
+                            Text="{Binding Model.Remark,Mode=TwoWay}"
                          hc:InfoElement.Necessary="False"/>
-                <hc:TextBox Margin="0,0,0,10" 
-                            x:Name="txtEmail" 
-                            TextType="Mail" 
-                            hc:InfoElement.Placeholder="请输入电子邮箱" 
-                            hc:InfoElement.Title="电子邮箱" 
-                            Text="{Binding Model.Email,Mode=TwoWay}"
-                         hc:InfoElement.Necessary="False"/>
-                <hc:TextBox Margin="0,0,0,10" 
-                            x:Name="txtHeadIcon" 
-                            hc:InfoElement.Placeholder="请输入头像图标" 
-                            hc:InfoElement.Title="头像图标"
-                            Text="{Binding Model.HeadImg,Mode=TwoWay}"
-                         hc:InfoElement.Necessary="False"/>
-            </StackPanel>
-            <StackPanel Margin="32" Width="250">
-                <hc:ComboBox Margin="0,0,0,10" 
-                             x:Name="cmbSex" 
-                             AutoComplete="True"
-                             ShowClearButton="True" 
-                             IsEditable="False" 
-                             hc:InfoElement.Placeholder="请选择性别"
-                             DisplayMemberPath="Value" 
-                             SelectedValuePath="Key"
-                             ItemsSource="{Binding SexData}"
-                             SelectedValue="{Binding Model.Sex}"
-                             hc:InfoElement.Title="性别" 
-                             hc:InfoElement.Necessary="False">
-                </hc:ComboBox>
-                <DatePicker Margin="0,0,0,10" 
-                            x:Name="dpBirthday" 
-                            SelectedDate="{Binding Model.Birthday, StringFormat=\{0:yyyy-MM-dd\}, Mode=TwoWay}"
-                            hc:InfoElement.Placeholder="请选择出生日期" 
-                            hc:InfoElement.Title="出生日期" 
-                            Style="{StaticResource DatePickerExtend}" 
-                            hc:InfoElement.Necessary="False"/>
-                <hc:ComboBox Margin="0,0,0,10" 
-                             x:Name="cmbIsEnabled" 
-                             AutoComplete="True"
-                             ShowClearButton="True" 
-                             IsEditable="False" 
-                             hc:InfoElement.Placeholder="请选择是否启用"
-                             DisplayMemberPath="Value" 
-                             SelectedValuePath="Key"
-                             ItemsSource="{Binding IsEnabledData}"
-                             SelectedValue="{Binding Model.IsEnabled}"
-                             hc:InfoElement.Title="是否启用" 
-                             hc:InfoElement.Necessary="False">
-                </hc:ComboBox>
             </StackPanel>
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">

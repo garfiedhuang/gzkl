@@ -58,9 +58,9 @@ namespace GZKL.Client.UI.API
             });
             list.Add(new ModuleModel
             {
-                Code = "\ue695",
-                Name = "通知公告",
-                TypeName = "SystemMgt.Notice.Notice"
+                Code = "\ue66a",
+                Name = "数据字典",
+                TypeName = "SystemMgt.Dictionary.Dictionary"
             });
             return list;
         }
