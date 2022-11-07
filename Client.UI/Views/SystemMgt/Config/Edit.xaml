@@ -6,11 +6,10 @@
              xmlns:local="clr-namespace:GZKL.Client.UI.Views.SystemMgt.Config"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             DataContext="{Binding Source={StaticResource Locator},Path=Edit}"
              WindowStartupLocation="CenterScreen"
              mc:Ignorable="d" 
-             Title="新增/编辑角色信息"
-             Height="450" 
+             Title="新增/编辑数据字典信息"
+             Height="535" 
              Width="650" 
              ResizeMode="NoResize">
     <!--<hc:TransitioningContentControl>-->
@@ -19,17 +18,43 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="90"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <StackPanel Margin="32" Width="250">
-                <hc:TextBox Margin="0,0,0,10" 
-                            x:Name="txtName" 
-                            hc:InfoElement.Placeholder="请输入角色名称" 
-                            hc:InfoElement.Title="角色名称" 
-                            Text="{Binding Model.Name,Mode=TwoWay}" 
+        <StackPanel Grid.Row="0" Orientation="Vertical">
+            <StackPanel Margin="32">
+                <hc:TextBox Margin="0,0,0,10" Width="250"
+                            x:Name="txtCategory" 
+                            hc:InfoElement.Placeholder="请输入分类" 
+                            hc:InfoElement.Title="分类" 
+                            Text="{Binding Model.Category,Mode=TwoWay}" 
                          hc:InfoElement.Necessary="True"/>
-                <hc:TextBox Margin="0,0,0,10" 
+                <hc:TextBox Margin="0,0,0,10" Width="250" 
+                            x:Name="txtValue" 
+                            hc:InfoElement.Placeholder="请输入键" 
+                            hc:InfoElement.Title="键" 
+                            Text="{Binding Model.Value,Mode=TwoWay}" 
+                         hc:InfoElement.Necessary="True"/>
+                <hc:TextBox Margin="0,0,0,10" Width="250" 
+                            x:Name="txtText" 
+                            hc:InfoElement.Placeholder="请输入值" 
+                            hc:InfoElement.Title="值" 
+                            Text="{Binding Model.Text,Mode=TwoWay}" 
+                         hc:InfoElement.Necessary="True"/>
+                <hc:ComboBox Margin="0,0,0,10" Width="250" 
+                             x:Name="cmbIsEnabled" 
+                             AutoComplete="True"
+                             ShowClearButton="True" 
+                             IsEditable="False" 
+                             hc:InfoElement.Placeholder="请选择是否启用"
+                             DisplayMemberPath="Value" 
+                             SelectedValuePath="Key"
+                             ItemsSource="{Binding IsEnabledData}"
+                             SelectedValue="{Binding Model.IsEnabled}"
+                             hc:InfoElement.Title="是否启用" 
+                             hc:InfoElement.Necessary="False">
+                </hc:ComboBox>
+                <hc:TextBox Margin="0,0,0,10" Width="250"
                             x:Name="txtRemark"
                             TextWrapping="Wrap"
+                            MinLines="2"
                             hc:InfoElement.Placeholder="请输入备注" 
                             hc:InfoElement.Title="备注" 
                             Text="{Binding Model.Remark,Mode=TwoWay}"

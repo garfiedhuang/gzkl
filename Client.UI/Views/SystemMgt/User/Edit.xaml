@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        DataContext="{Binding Source={StaticResource Locator},Path=Edit}"
         WindowStartupLocation="CenterScreen"
         Title="新增/编辑用户信息"
         Height="450" 

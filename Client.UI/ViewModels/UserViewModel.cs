@@ -163,7 +163,7 @@ namespace GZKL.Client.UI.ViewsModels
             {
                 var sql = new StringBuilder(@"SELECT row_number()over(order by update_dt desc )as row_num
                 ,[id],[name],[password],[head_img],[phone],[email]
-                ,[sex],[birthday],[is_enable],[is_deleted],[create_dt]
+                ,[sex],[birthday],[is_enabled],[is_deleted],[create_dt]
                 ,[create_user_id],[update_dt],[update_user_id]
                 FROM [dbo].[sys_user] WHERE [is_deleted]=0");
 
@@ -195,7 +195,7 @@ namespace GZKL.Client.UI.ViewsModels
                                 HeadImg = dataRow["head_img"].ToString(),
                                 Sex = Convert.ToInt32(dataRow["sex"]),
                                 Birthday = Convert.ToDateTime(dataRow["birthday"] ?? DateTime.MinValue),
-                                IsEnabled = Convert.ToInt32(dataRow["is_enable"]),
+                                IsEnabled = Convert.ToInt32(dataRow["is_enabled"]),
                                 CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
                                 UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
                             });
@@ -248,7 +248,7 @@ namespace GZKL.Client.UI.ViewsModels
                 id = (int)selected.First().Id;
 
                 var sql = new StringBuilder(@"SELECT [id],[name],[password],[head_img],[phone],[email]
-                ,[sex],[birthday],[is_enable],[is_deleted],[create_dt]
+                ,[sex],[birthday],[is_enabled],[is_deleted],[create_dt]
                 ,[create_user_id],[update_dt],[update_user_id]
                 FROM [dbo].[sys_user] WHERE [is_deleted]=0 AND [id]=@id");
 
@@ -271,7 +271,7 @@ namespace GZKL.Client.UI.ViewsModels
                         HeadImg = dataRow["head_img"].ToString(),
                         Sex = Convert.ToInt32(dataRow["sex"]),
                         Birthday = Convert.ToDateTime(dataRow["birthday"] ?? DateTime.MinValue),
-                        IsEnabled = Convert.ToInt32(dataRow["is_enable"]),
+                        IsEnabled = Convert.ToInt32(dataRow["is_enabled"]),
                         CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
                         UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
                     };
@@ -289,7 +289,7 @@ namespace GZKL.Client.UI.ViewsModels
       ,[email] = @email
       ,[sex] = @sex
       ,[birthday] = @birthday
-      ,[is_enable] = @is_enable
+      ,[is_enabled] = @is_enabled
       ,[update_dt] = @update_dt
       ,[update_user_id] = @user_id
  WHERE [id]=@id");
@@ -299,7 +299,7 @@ namespace GZKL.Client.UI.ViewsModels
                             new SqlParameter("@email", model.Email),
                             new SqlParameter("@sex", model.Sex),
                             new SqlParameter("@birthday", model.Birthday),
-                            new SqlParameter("@is_enable", model.IsEnabled),
+                            new SqlParameter("@is_enabled", model.IsEnabled),
                             new SqlParameter("@update_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
                             new SqlParameter("@user_id", SessionInfo.Instance.Session.Id),
                             new SqlParameter("@id", id)
@@ -378,7 +378,7 @@ namespace GZKL.Client.UI.ViewsModels
            ,[email]
            ,[sex]
            ,[birthday]
-           ,[is_enable]
+           ,[is_enabled]
            ,[is_deleted]
            ,[create_dt]
            ,[create_user_id]

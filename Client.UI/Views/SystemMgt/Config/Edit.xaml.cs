@@ -21,24 +21,46 @@ namespace GZKL.Client.UI.Views.SystemMgt.Config
     /// </summary>
     public partial class Edit : Window
     {
-        public Edit(ConfigModel ConfigModel)
+        public Edit(ConfigModel configModel)
         {
             InitializeComponent();
 
-            this.DataContext = new { Model = ConfigModel};
+            var isEnabledData = new List<KeyValuePair<int, string>>();
+            isEnabledData.Add(new KeyValuePair<int, string>(0, "0-否"));
+            isEnabledData.Add(new KeyValuePair<int, string>(1, "1-是"));
 
-            if (ConfigModel.Id != 0)
+            this.DataContext = new { Model = configModel, IsEnabledData = isEnabledData };
+
+            if (configModel.Id != 0)
             {
-                this.txtName.IsReadOnly = true;
+                this.txtCategory.IsReadOnly = true;
             }
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(this.txtName.Text))
+            if (string.IsNullOrEmpty(this.txtCategory.Text))
             {
-                this.txtName.IsError = true;
-                this.txtName.ErrorStr = "不能为空";
+                this.txtCategory.IsError = true;
+                this.txtCategory.ErrorStr = "不能为空";
+                return;
+            }
+            if (string.IsNullOrEmpty(this.txtValue.Text))
+            {
+                this.txtValue.IsError = true;
+                this.txtValue.ErrorStr = "不能为空";
+                return;
+            }
+            if (string.IsNullOrEmpty(this.txtText.Text))
+            {
+                this.txtText.IsError = true;
+                this.txtText.ErrorStr = "不能为空";
+                return;
+            }
+            if (string.IsNullOrEmpty(this.cmbIsEnabled.Text))
+            {
+                this.cmbIsEnabled.IsError = true;
+                this.cmbIsEnabled.ErrorStr = "不能为空";
                 return;
             }
             this.DialogResult = true;

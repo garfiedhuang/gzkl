@@ -162,16 +162,15 @@ namespace GZKL.Client.UI.ViewsModels
             try
             {
                 var sql = new StringBuilder(@"SELECT row_number()over(order by update_dt desc )as row_num
-                ,[id],[name],[password],[head_img],[phone],[email]
-                ,[sex],[birthday],[is_enable],[is_deleted],[create_dt]
-                ,[create_Config_id],[update_dt],[update_Config_id]
-                FROM [dbo].[sys_Config] WHERE [is_deleted]=0");
+                ,[id],[category],[value],[text],[remark],[is_enabled],[is_deleted],[create_dt]
+                ,[create_user_id],[update_dt],[update_user_id]
+                FROM [dbo].[sys_config] WHERE [is_deleted]=0");
 
                 SqlParameter[] parameters = null;
 
                 if (!string.IsNullOrEmpty(Search.Trim()))
                 {
-                    sql.Append($" AND [name] LIKE @search");
+                    sql.Append($" AND ([category] LIKE @search or [value] LIKE @search or [text] LIKE @search)");
                     parameters = new SqlParameter[1] { new SqlParameter("@search", $"%{Search}%") };
                 }
 
@@ -189,13 +188,11 @@ namespace GZKL.Client.UI.ViewsModels
                             {
                                 Id = Convert.ToInt64(dataRow["id"]),
                                 RowNum = Convert.ToInt64(dataRow["row_num"]),
-                                Name = dataRow["name"].ToString(),
-                                Email = dataRow["email"].ToString(),
-                                Phone = dataRow["phone"].ToString(),
-                                HeadImg = dataRow["head_img"].ToString(),
-                                Sex = Convert.ToInt32(dataRow["sex"]),
-                                Birthday = Convert.ToDateTime(dataRow["birthday"] ?? DateTime.MinValue),
-                                IsEnabled = Convert.ToInt32(dataRow["is_enable"]),
+                                Category = dataRow["category"].ToString(),
+                                Value = dataRow["value"].ToString(),
+                                Text = dataRow["text"].ToString(),
+                                Remark = dataRow["remark"].ToString(),
+                                IsEnabled = Convert.ToInt32(dataRow["is_enabled"]),
                                 CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
                                 UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
                             });
@@ -247,10 +244,9 @@ namespace GZKL.Client.UI.ViewsModels
 
                 id = (int)selected.First().Id;
 
-                var sql = new StringBuilder(@"SELECT [id],[name],[password],[head_img],[phone],[email]
-                ,[sex],[birthday],[is_enable],[is_deleted],[create_dt]
-                ,[create_Config_id],[update_dt],[update_Config_id]
-                FROM [dbo].[sys_Config] WHERE [is_deleted]=0 AND [id]=@id");
+                var sql = new StringBuilder(@"SELECT [id],[category],[value],[text],[remark],[is_enabled],[is_deleted],[create_dt]
+                ,[create_user_id],[update_dt],[update_user_id]
+                FROM [dbo].[sys_config] WHERE [is_deleted]=0 AND [id]=@id");
 
                 var parameters = new SqlParameter[1] { new SqlParameter("@id", id) };
                 using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
@@ -265,13 +261,11 @@ namespace GZKL.Client.UI.ViewsModels
                     var model = new ConfigModel()
                     {
                         Id = Convert.ToInt64(dataRow["id"]),
-                        Name = dataRow["name"].ToString(),
-                        Email = dataRow["email"].ToString(),
-                        Phone = dataRow["phone"].ToString(),
-                        HeadImg = dataRow["head_img"].ToString(),
-                        Sex = Convert.ToInt32(dataRow["sex"]),
-                        Birthday = Convert.ToDateTime(dataRow["birthday"] ?? DateTime.MinValue),
-                        IsEnabled = Convert.ToInt32(dataRow["is_enable"]),
+                        Category = dataRow["category"].ToString(),
+                        Value = dataRow["value"].ToString(),
+                        Text = dataRow["text"].ToString(),
+                        Remark = dataRow["remark"].ToString(),
+                        IsEnabled = Convert.ToInt32(dataRow["is_enabled"]),
                         CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
                         UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
                     };
@@ -283,25 +277,23 @@ namespace GZKL.Client.UI.ViewsModels
                         if (r.Value)
                         {
                             sql.Clear();
-                            sql.Append(@"UPDATE [dbo].[sys_Config]
-   SET [head_img] = @head_img
-      ,[phone] = @phone
-      ,[email] = @email
-      ,[sex] = @sex
-      ,[birthday] = @birthday
-      ,[is_enable] = @is_enable
+                            sql.Append(@"UPDATE [dbo].[sys_config]
+   SET [category] = @category
+      ,[value] = @value
+      ,[text] = @text
+      ,[remark] = @remark
+      ,[is_enabled] = @is_enabled
       ,[update_dt] = @update_dt
-      ,[update_Config_id] = @Config_id
+      ,[update_user_id] = @user_id
  WHERE [id]=@id");
                             parameters = new SqlParameter[] {
-                            new SqlParameter("@head_img", "/Assets/Images/default.png"),
-                            new SqlParameter("@phone", model.Phone),
-                            new SqlParameter("@email", model.Email),
-                            new SqlParameter("@sex", model.Sex),
-                            new SqlParameter("@birthday", model.Birthday),
-                            new SqlParameter("@is_enable", model.IsEnabled),
+                            new SqlParameter("@category", model.Category),
+                            new SqlParameter("@value", model.Value),
+                            new SqlParameter("@text", model.Text),
+                            new SqlParameter("@remark", model.Remark),
+                            new SqlParameter("@is_enabled", model.IsEnabled),
                             new SqlParameter("@update_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
-                            new SqlParameter("@Config_id", SessionInfo.Instance.Session.Id),
+                            new SqlParameter("@user_id", SessionInfo.Instance.Session.Id),
                             new SqlParameter("@id", id)
                         };
 
@@ -336,13 +328,13 @@ namespace GZKL.Client.UI.ViewsModels
 
                 if (selected != null)
                 {
-                    var r = MessageBox.Show($"确定要删除【{string.Join(",", selected.Select(s => s.Name))}】吗？", "提示", MessageBoxButton.YesNo);
+                    var r = MessageBox.Show($"确定要删除【{string.Join(",", selected.Select(s => $"{s.Category}|{s.Value}|{s.Text}"))}】吗？", "提示", MessageBoxButton.YesNo);
                     if (r == MessageBoxResult.Yes)
                     {
                         foreach (var dr in selected)
                         {
-                            //var sql = new StringBuilder(@"DELETE FROM [dbo].[sys_Config] WHERE [id] IN(@id)");
-                            var sql = new StringBuilder(@"UPDATE [dbo].[sys_Config] SET [is_deleted]=1 WHERE [id]=@id");
+                            //var sql = new StringBuilder(@"DELETE FROM [dbo].[sys_config] WHERE [id] IN(@id)");
+                            var sql = new StringBuilder(@"UPDATE [dbo].[sys_config] SET [is_deleted]=1 WHERE [id]=@id");
 
                             var parameters = new SqlParameter[1] { new SqlParameter("@id", dr.Id) };
                             var result = SQLHelper.ExecuteNonQuery(sql.ToString(), parameters);
@@ -370,45 +362,36 @@ namespace GZKL.Client.UI.ViewsModels
                 var r = view.ShowDialog();
                 if (r.Value)
                 {
-                    var sql = @"INSERT INTO [dbo].[sys_Config]
-           ([name]
-           ,[password]
-           ,[head_img]
-           ,[phone]
-           ,[email]
-           ,[sex]
-           ,[birthday]
-           ,[is_enable]
+                    var sql = @"INSERT INTO [dbo].[sys_config]
+           ([category]
+           ,[value]
+           ,[text]
+           ,[remark]
+           ,[is_enabled]
            ,[is_deleted]
            ,[create_dt]
-           ,[create_Config_id]
+           ,[create_user_id]
            ,[update_dt]
-           ,[update_Config_id])
+           ,[update_user_id])
      VALUES
-           (@name
-           ,@password
-           ,@head_img
-           ,@phone
-           ,@email
-           ,@sex
-           ,@birthday
+           (@category
+           ,@value
+           ,@text
+           ,@remark
            ,1
            ,0
            ,@create_dt
-           ,@Config_id
+           ,@user_id
            ,@create_dt
-           ,@Config_id)";
+           ,@user_id)";
 
                     var parameters = new SqlParameter[] {
-                    new SqlParameter("@name", model.Name),
-                    new SqlParameter("@password", "123456"),
-                    new SqlParameter("@head_img", "/Assets/Images/default.png"),
-                    new SqlParameter("@phone", model.Phone),
-                    new SqlParameter("@email", model.Email),
-                    new SqlParameter("@sex", model.Sex),
-                    new SqlParameter("@birthday", model.Birthday),
+                    new SqlParameter("@category", model.Category),
+                    new SqlParameter("@value", model.Value),
+                    new SqlParameter("@text", model.Text),
+                    new SqlParameter("@remark", model.Remark),
                     new SqlParameter("@create_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
-                    new SqlParameter("@Config_id", SessionInfo.Instance.Session.Id)
+                    new SqlParameter("@user_id", SessionInfo.Instance.Session.Id)
                 };
 
                     var result = SQLHelper.ExecuteNonQuery(sql, parameters);

@@ -6,7 +6,6 @@
              xmlns:local="clr-namespace:GZKL.Client.UI.Views.SystemMgt.Role"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             DataContext="{Binding Source={StaticResource Locator},Path=Edit}"
              WindowStartupLocation="CenterScreen"
              mc:Ignorable="d" 
              Title="新增/编辑角色信息"
