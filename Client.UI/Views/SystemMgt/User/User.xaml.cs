@@ -14,8 +14,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using GZKL.Client.UI.ViewsModels;
-using HandyControl.Controls;
-using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace GZKL.Client.UI.Views.SystemMgt.User
 {

@@ -342,7 +342,7 @@ namespace GZKL.Client.UI.ViewsModels
                         foreach (var dr in selected)
                         {
                             //var sql = new StringBuilder(@"DELETE FROM [dbo].[sys_user] WHERE [id] IN(@id)");
-                            var sql = new StringBuilder(@"UPDATE [dbo].[sys_user] SET [is_deleted]=1 WHERE [id]=(@id)");
+                            var sql = new StringBuilder(@"UPDATE [dbo].[sys_user] SET [is_deleted]=1 WHERE [id]=@id");
 
                             var parameters = new SqlParameter[1] { new SqlParameter("@id", dr.Id) };
                             var result = SQLHelper.ExecuteNonQuery(sql.ToString(), parameters);

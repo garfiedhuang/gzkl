@@ -21,6 +21,7 @@ namespace GZKL.Client.UI.ViewsModels
             SimpleIoc.Default.Register<LoginViewModel>();
             SimpleIoc.Default.Register<HomeViewModel>();
             SimpleIoc.Default.Register<UserViewModel>();
+            SimpleIoc.Default.Register<RoleViewModel>();
         }
 
         #region 实例化
@@ -31,6 +32,8 @@ namespace GZKL.Client.UI.ViewsModels
         public LoginViewModel Login => ServiceLocator.Current.GetInstance<LoginViewModel>();
         public HomeViewModel Home => ServiceLocator.Current.GetInstance<HomeViewModel>();
         public UserViewModel User => ServiceLocator.Current.GetInstance<UserViewModel>();
+
+        public RoleViewModel Role => ServiceLocator.Current.GetInstance<RoleViewModel>();
 
         #endregion
 

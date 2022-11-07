@@ -159,14 +159,11 @@ namespace GZKL.Client.UI.ViewsModels
         /// </summary>
         public void Query()
         {
-            return;
-
             try
             {
                 var sql = new StringBuilder(@"SELECT row_number()over(order by update_dt desc )as row_num
-                ,[id],[name],[password],[head_img],[phone],[email]
-                ,[sex],[birthday],[is_enable],[is_deleted],[create_dt]
-                ,[create_Role_id],[update_dt],[update_Role_id]
+                ,[id],[name],[remark],[is_deleted],[create_dt]
+                ,[create_user_id],[update_dt],[update_user_id]
                 FROM [dbo].[sys_role] WHERE [is_deleted]=0");
 
                 SqlParameter[] parameters = null;
@@ -192,12 +189,7 @@ namespace GZKL.Client.UI.ViewsModels
                                 Id = Convert.ToInt64(dataRow["id"]),
                                 RowNum = Convert.ToInt64(dataRow["row_num"]),
                                 Name = dataRow["name"].ToString(),
-                                Email = dataRow["email"].ToString(),
-                                Phone = dataRow["phone"].ToString(),
-                                HeadImg = dataRow["head_img"].ToString(),
-                                Sex = Convert.ToInt32(dataRow["sex"]),
-                                Birthday = Convert.ToDateTime(dataRow["birthday"] ?? DateTime.MinValue),
-                                IsEnabled = Convert.ToInt32(dataRow["is_enable"]),
+                                Remark = dataRow["remark"].ToString(),
                                 CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
                                 UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
                             });
@@ -249,10 +241,9 @@ namespace GZKL.Client.UI.ViewsModels
 
                 id = (int)selected.First().Id;
 
-                var sql = new StringBuilder(@"SELECT [id],[name],[password],[head_img],[phone],[email]
-                ,[sex],[birthday],[is_enable],[is_deleted],[create_dt]
-                ,[create_Role_id],[update_dt],[update_Role_id]
-                FROM [dbo].[sys_Role] WHERE [is_deleted]=0 AND [id]=@id");
+                var sql = new StringBuilder(@"SELECT [id],[name],[remark],[is_deleted],[create_dt]
+                ,[create_user_id],[update_dt],[update_user_id]
+                FROM [dbo].[sys_role] WHERE [is_deleted]=0 AND [id]=@id");
 
                 var parameters = new SqlParameter[1] { new SqlParameter("@id", id) };
                 using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
@@ -268,12 +259,7 @@ namespace GZKL.Client.UI.ViewsModels
                     {
                         Id = Convert.ToInt64(dataRow["id"]),
                         Name = dataRow["name"].ToString(),
-                        Email = dataRow["email"].ToString(),
-                        Phone = dataRow["phone"].ToString(),
-                        HeadImg = dataRow["head_img"].ToString(),
-                        Sex = Convert.ToInt32(dataRow["sex"]),
-                        Birthday = Convert.ToDateTime(dataRow["birthday"] ?? DateTime.MinValue),
-                        IsEnabled = Convert.ToInt32(dataRow["is_enable"]),
+                        Remark = dataRow["remark"].ToString(),
                         CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
                         UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
                     };
@@ -285,23 +271,15 @@ namespace GZKL.Client.UI.ViewsModels
                         if (r.Value)
                         {
                             sql.Clear();
-                            sql.Append(@"UPDATE [dbo].[sys_Role]
-   SET [head_img] = @head_img
-      ,[phone] = @phone
-      ,[email] = @email
-      ,[sex] = @sex
-      ,[birthday] = @birthday
-      ,[is_enable] = @is_enable
+                            sql.Append(@"UPDATE [dbo].[sys_role]
+   SET [name] = @name
+      ,[remark] = @remark
       ,[update_dt] = @update_dt
-      ,[update_Role_id] = @Role_id
+      ,[update_user_id] = @user_id
  WHERE [id]=@id");
                             parameters = new SqlParameter[] {
-                            new SqlParameter("@head_img", "/Assets/Images/default.png"),
-                            new SqlParameter("@phone", model.Phone),
-                            new SqlParameter("@email", model.Email),
-                            new SqlParameter("@sex", model.Sex),
-                            new SqlParameter("@birthday", model.Birthday),
-                            new SqlParameter("@is_enable", model.IsEnabled),
+                            new SqlParameter("@name", model.Name),
+                            new SqlParameter("@remark", model.Remark),
                             new SqlParameter("@update_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
                             new SqlParameter("@Role_id", SessionInfo.Instance.Session.Id),
                             new SqlParameter("@id", id)
@@ -344,7 +322,7 @@ namespace GZKL.Client.UI.ViewsModels
                         foreach (var dr in selected)
                         {
                             //var sql = new StringBuilder(@"DELETE FROM [dbo].[sys_Role] WHERE [id] IN(@id)");
-                            var sql = new StringBuilder(@"UPDATE [dbo].[sys_Role] SET [is_deleted]=1 WHERE [id]=(@id)");
+                            var sql = new StringBuilder(@"UPDATE [dbo].[sys_role] SET [is_deleted]=1 WHERE [id]=@id");
 
                             var parameters = new SqlParameter[1] { new SqlParameter("@id", dr.Id) };
                             var result = SQLHelper.ExecuteNonQuery(sql.ToString(), parameters);
@@ -372,45 +350,28 @@ namespace GZKL.Client.UI.ViewsModels
                 var r = view.ShowDialog();
                 if (r.Value)
                 {
-                    var sql = @"INSERT INTO [dbo].[sys_Role]
+                    var sql = @"INSERT INTO [dbo].[sys_role]
            ([name]
-           ,[password]
-           ,[head_img]
-           ,[phone]
-           ,[email]
-           ,[sex]
-           ,[birthday]
-           ,[is_enable]
+           ,[remark]
            ,[is_deleted]
            ,[create_dt]
-           ,[create_Role_id]
+           ,[create_user_id]
            ,[update_dt]
-           ,[update_Role_id])
+           ,[update_user_id])
      VALUES
            (@name
-           ,@password
-           ,@head_img
-           ,@phone
-           ,@email
-           ,@sex
-           ,@birthday
-           ,1
+           ,@remark
            ,0
            ,@create_dt
-           ,@Role_id
+           ,@user_id
            ,@create_dt
-           ,@Role_id)";
+           ,@user_id)";
 
                     var parameters = new SqlParameter[] {
                     new SqlParameter("@name", model.Name),
-                    new SqlParameter("@password", "123456"),
-                    new SqlParameter("@head_img", "/Assets/Images/default.png"),
-                    new SqlParameter("@phone", model.Phone),
-                    new SqlParameter("@email", model.Email),
-                    new SqlParameter("@sex", model.Sex),
-                    new SqlParameter("@birthday", model.Birthday),
+                    new SqlParameter("@remark", "123456"),
                     new SqlParameter("@create_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
-                    new SqlParameter("@Role_id", SessionInfo.Instance.Session.Id)
+                    new SqlParameter("@user_id", SessionInfo.Instance.Session.Id)
                 };
 
                     var result = SQLHelper.ExecuteNonQuery(sql, parameters);

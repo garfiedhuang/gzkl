@@ -1,6 +1,6 @@
-﻿using GZKL.Client.UI.ViewsModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using GZKL.Client.UI.ViewsModels;
 
 namespace GZKL.Client.UI.Views.SystemMgt.Role
 {
@@ -28,7 +29,7 @@ namespace GZKL.Client.UI.Views.SystemMgt.Role
 
         private void RoleControl_Loaded(object sender, RoutedEventArgs e)
         {
-            //(this.DataContext as RoleViewModel).Query();
+            (this.DataContext as RoleViewModel).Query();
         }
     }
 }

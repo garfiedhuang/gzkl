@@ -29,34 +29,9 @@ namespace GZKL.Client.UI.Models
         public string Name { set; get; }
 
         /// <summary>
-        /// 电子邮箱
+        /// 备注
         /// </summary>
-        public string Email { get; set; }
-
-        /// <summary>
-        /// 手机号码
-        /// </summary>
-        public string Phone { get; set; }
-
-        /// <summary>
-        /// 头像
-        /// </summary>
-        public string HeadImg { get; set; }
-
-        /// <summary>
-        /// 性别 0-未知 1-男 2-女
-        /// </summary>
-        public int Sex { get; set; }
-
-        /// <summary>
-        /// 出生日期
-        /// </summary>
-        public DateTime Birthday { get; set; } = DateTime.Now;
-
-        /// <summary>
-        /// 是否启用 0-否 1-是
-        /// </summary>
-        public int IsEnabled { get; set; }
+        public string Remark { get; set; }
 
         /// <summary>
         /// 创建时间

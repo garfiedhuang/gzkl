@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:GZKL.Client.UI.Views.SystemMgt.Role"
+             xmlns:local="clr-namespace:GZKL.Client.UI.Views"
              xmlns:bi="clr-namespace:GZKL.Client.UI.CustomControls.Attach"
              xmlns:wms="clr-namespace:WpfMultiStyle;assembly=WpfMultiStyle"
              xmlns:hc="https://handyorg.github.io/handycontrol"
@@ -27,7 +27,7 @@
                     FontWeight="Bold"
                     Foreground="#5a5e66"
                     hc:InfoElement.TitlePlacement="Left"
-                    hc:InfoElement.Title="姓名"
+                    hc:InfoElement.Title="角色"
                     FontSize="13"
                     VerticalAlignment="Center" 
                     Width="193"/>
@@ -63,12 +63,8 @@
                 <DataGridCheckBoxColumn Binding="{Binding IsSelected}" Width="50" CanUserSort="False" CanUserResize="False" Header="选择"/>
                 <DataGridTextColumn Binding="{Binding RowNum}" Width="60" CanUserSort="False" CanUserResize="False" Header="序号"/>
                 <DataGridTextColumn IsReadOnly="True" Width="60" CanUserSort="False" CanUserResize="False" Binding="{Binding Id}" Header="主键ID" Visibility="Hidden"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="120" Binding="{Binding Name}" Header="用户名"/>
-                <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding Phone}" Header="手机号码"/>
-                <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding Email}" Header="电子邮箱"/>
-                <DataGridTextColumn IsReadOnly="True" Width="60" Binding="{Binding Sex}" Header="性别"/>
-                <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding Birthday, StringFormat=\{0:yyyy-MM-dd\}, Mode=OneWay}" Header="生日"/>
-                <DataGridTextColumn IsReadOnly="True" Width="60" Binding="{Binding IsEnabled}" Header="启用"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="120" Binding="{Binding Name}" Header="角色"/>
+                <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding Phone}" Header="备注"/>
                 <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
                 <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
             </DataGrid.Columns>

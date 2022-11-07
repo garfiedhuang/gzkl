@@ -24,7 +24,7 @@ namespace GZKL.Client.UI.ViewsModels
         /// <summary>
         /// 用户名
         /// </summary>
-        private string userName;
+        private string userName="admin";
         public string UserName
         {
             get { return userName; }
@@ -33,7 +33,7 @@ namespace GZKL.Client.UI.ViewsModels
         /// <summary>
         /// 密码
         /// </summary>
-        private string passWord;
+        private string passWord="123456";
         public string PassWord
         {
             get { return passWord; }
