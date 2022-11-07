@@ -41,7 +41,7 @@ namespace GZKL.Client.UI.Models
         /// <summary>
         /// 备注
         /// </summary>
-        public string Remark { set; get; }
+        public string Remark { set; get; } = "";
 
         /// <summary>
         /// 是否启用 0-否 1-是
