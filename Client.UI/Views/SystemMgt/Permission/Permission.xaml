@@ -32,7 +32,7 @@
                     FontWeight="Bold"
                     Foreground="#5a5e66"
                     hc:InfoElement.TitlePlacement="Left"
-                    hc:InfoElement.Title="姓名"
+                    hc:InfoElement.Title="用户名|角色"
                     FontSize="13"
                     VerticalAlignment="Center" 
                     Width="193"/>

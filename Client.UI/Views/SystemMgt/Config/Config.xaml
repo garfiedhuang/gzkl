@@ -31,7 +31,7 @@
                     FontWeight="Bold"
                     Foreground="#5a5e66"
                     hc:InfoElement.TitlePlacement="Left"
-                    hc:InfoElement.Title="角色"
+                    hc:InfoElement.Title="分类|键|值"
                     FontSize="13"
                     VerticalAlignment="Center" 
                     Width="193"/>
