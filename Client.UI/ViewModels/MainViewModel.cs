@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using GZKL.Client.UI.API;
 using GZKL.Client.UI.Models;
+using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace GZKL.Client.UI.ViewsModels
 {
@@ -109,6 +110,13 @@ namespace GZKL.Client.UI.ViewsModels
             }
            
             Type type = Type.GetType("GZKL.Client.UI.Views." + typeName);
+
+            if (type == null)
+            {
+                MessageBox.Show($"当前功能【{tabName}】未实现，请与系统管理员联系", "操作提示");
+                return;
+            }
+
             ConstructorInfo constructor = type.GetConstructor(Type.EmptyTypes);
             bool needAdd = true;
             for (int i = 0; i < TabModels.Count; i++)

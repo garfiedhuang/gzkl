@@ -21,13 +21,14 @@ namespace GZKL.Client.UI.API
                 GroupName = "系统管理",
                 Icon= "\ue691",
                 ContractionTemplate = false,
-                Modules = new System.Collections.ObjectModel.ObservableCollection<ModuleModel>(GetModules())
+                Modules = new System.Collections.ObjectModel.ObservableCollection<ModuleModel>(GetModules("系统管理"))
             });
             list.Add(new ModuleGroupModel
             {
-                GroupName = "质量管理",
+                GroupName = "采集管理",
                 ContractionTemplate = false,
-                Icon = "\ue668"
+                Icon = "\ue668",
+                Modules = new System.Collections.ObjectModel.ObservableCollection<ModuleModel>(GetModules("采集管理"))
             });
             list.Add(new ModuleGroupModel { 
               GroupName="统计报表",
@@ -40,34 +41,84 @@ namespace GZKL.Client.UI.API
         /// <summary>
         /// 获取模块集合
         /// </summary>
+        /// <param name="group"></param>
         /// <returns></returns>
-        public List<ModuleModel> GetModules()
+        public List<ModuleModel> GetModules(string group)
         {
             List<ModuleModel> list = new List<ModuleModel>();
-            list.Add(new ModuleModel
+            if (group == "系统管理")
             {
-                Code = "\ue693",
-                Name = "用户管理",
-                TypeName = "SystemMgt.User.User"
-            });
-            list.Add(new ModuleModel
+                list.Add(new ModuleModel
+                {
+                    Code = "\ue693",
+                    Name = "用户管理",
+                    TypeName = "SystemMgt.User.User"
+                });
+                list.Add(new ModuleModel
+                {
+                    Code = "\ue663",
+                    Name = "角色管理",
+                    TypeName = "SystemMgt.Role.Role"
+                });
+                list.Add(new ModuleModel
+                {
+                    Code = "\ue66e",
+                    Name = "权限管理",
+                    TypeName = "SystemMgt.Permission.Permission"
+                });
+                list.Add(new ModuleModel
+                {
+                    Code = "\ue66a",
+                    Name = "数据字典",
+                    TypeName = "SystemMgt.Config.Config"
+                });
+            }
+            else if(group=="采集管理")
             {
-                Code = "\ue663",
-                Name = "角色管理",
-                TypeName = "SystemMgt.Role.Role"
-            });
-            list.Add(new ModuleModel
-            {
-                Code = "\ue66e",
-                Name = "权限管理",
-                TypeName = "SystemMgt.Permission.Permission"
-            });
-            list.Add(new ModuleModel
-            {
-                Code = "\ue66a",
-                Name = "数据字典",
-                TypeName = "SystemMgt.Config.Config"
-            });
+                list.Add(new ModuleModel
+                {
+                    Code = "\ue669",
+                    Name = "自动采集",
+                    TypeName = "CollectMgt.AutoCollect.AutoCollect"
+                });
+                list.Add(new ModuleModel
+                {
+                    Code = "\ue669",
+                    Name = "数据备份",
+                    TypeName = "CollectMgt.Backup.Backup"
+                });
+                list.Add(new ModuleModel
+                {
+                    Code = "\ue669",
+                    Name = "数据清理",
+                    TypeName = "CollectMgt.Clear.Clear"
+                });
+                list.Add(new ModuleModel
+                {
+                    Code = "\ue669",
+                    Name = "数据导出",
+                    TypeName = "CollectMgt.Export.Export"
+                });
+                list.Add(new ModuleModel
+                {
+                    Code = "\ue669",
+                    Name = "参数设置",
+                    TypeName = "CollectMgt.Config.Config"
+                });
+                list.Add(new ModuleModel
+                {
+                    Code = "\ue669",
+                    Name = "单位设置",
+                    TypeName = "CollectMgt.Org.Org"
+                });
+                list.Add(new ModuleModel
+                {
+                    Code = "\ue669",
+                    Name = "软件注册",
+                    TypeName = "CollectMgt.Register.Register"
+                });
+
+            }
             return list;
         }
     }

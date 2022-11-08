@@ -249,7 +249,8 @@
     <Resource Include="Assets\Images\bg.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\QualityMgt\" />
+    <Folder Include="Views\CollectMgt\" />
+    <Folder Include="Views\ReportMgt\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Images\icon.ico" />
