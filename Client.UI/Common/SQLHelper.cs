@@ -17,7 +17,9 @@ namespace GZKL.Client.UI.Common
     public abstract class SQLHelper
     {
 
-        private static string connStr = ConfigurationManager.ConnectionStrings["dbConnStr"].ConnectionString;
+        //private static string connStr = ConfigurationManager.ConnectionStrings["dbConnStr"].ConnectionString;
+
+        private static string connStr = "Data Source=.; Initial Catalog=gzkldb;User ID=sa;Password=abc123!!";
 
         /// <summary>
         /// 执行非查询语句

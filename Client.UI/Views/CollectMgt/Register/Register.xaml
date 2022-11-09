@@ -1,0 +1,73 @@
+﻿<UserControl x:Class="GZKL.Client.UI.Views.CollectMgt.Register.Register"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GZKL.Client.UI.Views"
+             xmlns:bi="clr-namespace:GZKL.Client.UI.CustomControls.Attach"
+             xmlns:wms="clr-namespace:WpfMultiStyle;assembly=WpfMultiStyle"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             mc:Ignorable="d" 
+             DataContext="{Binding Source={StaticResource Locator},Path=Register}"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="90"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Vertical">
+            <StackPanel Margin="32">
+                <hc:TextBox Margin="50,0,50,20" 
+                            hc:InfoElement.TitleWidth="100" 
+                            hc:InfoElement.TitlePlacement="Left" 
+                            hc:InfoElement.Title="注册状态：" 
+                            hc:BorderThickness="0" 
+                            IsReadOnly="True"
+                            Text="{Binding Status,Mode=OneWay}" />
+                
+                <hc:TextBox Margin="50,0,50,20" 
+                            hc:InfoElement.TitleWidth="100" 
+                            hc:InfoElement.TitlePlacement="Left" 
+                            hc:InfoElement.Title="主机名称：" 
+                            hc:BorderThickness="0" 
+                            IsReadOnly="True"
+                            Text="{Binding HostName,Mode=OneWay}" />
+                
+                <hc:TextBox Margin="50,0,50,20" 
+                            hc:InfoElement.TitleWidth="100" 
+                            hc:InfoElement.TitlePlacement="Left" 
+                            hc:InfoElement.Title="CPU ID:" 
+                            hc:BorderThickness="0" 
+                            IsReadOnly="True"
+                            Text="{Binding CPU,Mode=OneWay}" />
+                
+                <hc:TextBox Margin="50,0,50,20" 
+                            hc:InfoElement.TitleWidth="100" 
+                            hc:InfoElement.TitlePlacement="Left" 
+                            hc:InfoElement.Title="本机信息：" 
+                            hc:BorderThickness="0" 
+                            IsReadOnly="True"
+                            Text="{Binding FullName,Mode=OneWay}" />
+                
+                <hc:TextBox Margin="50,0,50,20" 
+                            hc:InfoElement.TitleWidth="100" 
+                            hc:InfoElement.TitlePlacement="Left" 
+                            hc:InfoElement.Title="注册码：" 
+                            hc:BorderThickness="0" 
+                            IsReadOnly="True"
+                            Text="{Binding RegisterCode,Mode=TwoWay}" />
+
+                <hc:TextBox Margin="50,0,50,20" 
+                            hc:InfoElement.TitleWidth="100" 
+                            hc:InfoElement.TitlePlacement="Left" 
+                            hc:InfoElement.Title="注册时间：" 
+                            hc:BorderThickness="0" 
+                            IsReadOnly="True"
+                            Text="{Binding RegisterTime,Mode=TwoWay}" />
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button x:Name="btnRegister" Visibility="{Binding RegisterButtonVisibility}" Content="注册" Width="100" Margin="10" Command="{Binding RegisterCommand}" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource TextIconBrush}" hc:BorderElement.CornerRadius="5"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

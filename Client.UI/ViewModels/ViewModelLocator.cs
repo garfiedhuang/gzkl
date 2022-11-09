@@ -26,6 +26,7 @@ namespace GZKL.Client.UI.ViewsModels
             SimpleIoc.Default.Register<PermissionViewModel>();
 
             SimpleIoc.Default.Register<OrgViewModel>();
+            SimpleIoc.Default.Register<RegisterViewModel>();
         }
 
         #region 实例化
@@ -35,14 +36,22 @@ namespace GZKL.Client.UI.ViewsModels
         public MainViewModel Main => SimpleIoc.Default.GetInstance<MainViewModel>();
         public LoginViewModel Login => ServiceLocator.Current.GetInstance<LoginViewModel>();
         public HomeViewModel Home => ServiceLocator.Current.GetInstance<HomeViewModel>();
-        public UserViewModel User => ServiceLocator.Current.GetInstance<UserViewModel>();
 
+        #region 系统管理
+        public UserViewModel User => ServiceLocator.Current.GetInstance<UserViewModel>();
         public RoleViewModel Role => ServiceLocator.Current.GetInstance<RoleViewModel>();
         public ConfigViewModel Config => ServiceLocator.Current.GetInstance<ConfigViewModel>();
         public PermissionViewModel Permission => ServiceLocator.Current.GetInstance<PermissionViewModel>();
 
+        #endregion
+
+        #region 采集管理
 
         public OrgViewModel Org => ServiceLocator.Current.GetInstance<OrgViewModel>();
+        public RegisterViewModel Register => ServiceLocator.Current.GetInstance<RegisterViewModel>();
+
+
+        #endregion
 
         #endregion
 

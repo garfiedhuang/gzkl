@@ -83,16 +83,16 @@ namespace GZKL.Client.UI.ViewsModels
 
             ComputerInfo monitor = ComputerInfo.GetInstance();
 
-            var task = Task.Factory.StartNew(new Action(async () =>
-            {
-                while (taskSwitch)
-                {
-                    this.CurrentCPU = monitor.GetCPUInfo();
-                    await Task.Delay(1000);
-                }
-            }));
+            //var task = Task.Factory.StartNew(new Action(async () =>
+            //{
+            //    while (taskSwitch)
+            //    {
+            //        this.CurrentCPU = monitor.GetCPUInfo();
+            //        await Task.Delay(1000);
+            //    }
+            //}));
 
-            this.taskList.Add(task);
+            //this.taskList.Add(task);
         }
         private void InitMemDatas()
         {
