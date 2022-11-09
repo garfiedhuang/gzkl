@@ -99,6 +99,7 @@
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\OrgModel.cs" />
     <Compile Include="Models\ModuleModel.cs" />
     <Compile Include="Models\ModuleGroupModel.cs" />
     <Compile Include="Models\MenuTabModel.cs" />
@@ -112,6 +113,7 @@
     </Compile>
     <Compile Include="CustomControls\Template\MenuTemplateSelector.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\OrgViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -120,6 +122,12 @@
     <Compile Include="ViewModels\PermissionViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
+    <Compile Include="Views\CollectMgt\Org\Org.xaml.cs">
+      <DependentUpon>Org.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CollectMgt\Org\Edit.xaml.cs">
+      <DependentUpon>Edit.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Home.xaml.cs">
       <DependentUpon>Home.xaml</DependentUpon>
     </Compile>
@@ -165,6 +173,14 @@
     <Page Include="CustomControls\Views\MeterPlate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CollectMgt\Org\Org.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CollectMgt\Org\Edit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Home.xaml">
       <SubType>Designer</SubType>
@@ -249,7 +265,6 @@
     <Resource Include="Assets\Images\bg.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\CollectMgt\" />
     <Folder Include="Views\ReportMgt\" />
   </ItemGroup>
   <ItemGroup>

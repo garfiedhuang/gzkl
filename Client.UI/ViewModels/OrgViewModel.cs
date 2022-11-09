@@ -15,19 +15,19 @@ using GZKL.Client.UI.Common;
 using System.Data;
 using System.Windows.Controls;
 using MessageBox = HandyControl.Controls.MessageBox;
-using GZKL.Client.UI.Views.SystemMgt.Config;
+using GZKL.Client.UI.Views.CollectMgt.Org;
 using GalaSoft.MvvmLight.Messaging;
 
 namespace GZKL.Client.UI.ViewsModels
 {
-    public class ConfigViewModel : ViewModelBase
+    public class OrgViewModel : ViewModelBase
     {
         #region Construct and property
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        public ConfigViewModel()
+        public OrgViewModel()
         {
             QueryCommand = new RelayCommand(this.Query);
             ResetCommand = new RelayCommand(this.Reset);
@@ -36,20 +36,20 @@ namespace GZKL.Client.UI.ViewsModels
             AddCommand = new RelayCommand(this.Add);
             PageUpdatedCommand = new RelayCommand<FunctionEventArgs<int>>(PageUpdated);
 
-            ConfigModels = new List<ConfigModel>();
-            GridModelList = new ObservableCollection<ConfigModel>();
+            OrgModels = new List<OrgModel>();
+            GridModelList = new ObservableCollection<OrgModel>();
         }
 
         /// <summary>
         /// 查询之后的结果数据，用于分页显示
         /// </summary>
-        private static List<ConfigModel> ConfigModels { get; set; }
+        private static List<OrgModel> OrgModels { get; set; }
 
         /// <summary>
         /// 网格数据集合
         /// </summary>
-        private ObservableCollection<ConfigModel> gridModelList;
-        public ObservableCollection<ConfigModel> GridModelList
+        private ObservableCollection<OrgModel> gridModelList;
+        public ObservableCollection<OrgModel> GridModelList
         {
             get { return gridModelList; }
             set { gridModelList = value; RaisePropertyChanged(); }
@@ -164,19 +164,19 @@ namespace GZKL.Client.UI.ViewsModels
                 var sql = new StringBuilder(@"SELECT row_number()over(order by update_dt desc )as row_num
                 ,[id],[category],[value],[text],[remark],[is_enabled],[is_deleted],[create_dt]
                 ,[create_user_id],[update_dt],[update_user_id]
-                FROM [dbo].[sys_config] WHERE [is_deleted]=0");
+                FROM [dbo].[sys_config] WHERE [category]='Org' AND [is_deleted]=0");
 
                 SqlParameter[] parameters = null;
 
                 if (!string.IsNullOrEmpty(Search.Trim()))
                 {
-                    sql.Append($" AND ([category] LIKE @search or [value] LIKE @search or [text] LIKE @search)");
+                    sql.Append($" AND ([value] LIKE @search or [text] LIKE @search)");
                     parameters = new SqlParameter[1] { new SqlParameter("@search", $"%{Search}%") };
                 }
 
-                sql.Append($" ORDER BY [category] DESC");
+                sql.Append($" ORDER BY [update_dt] DESC");
 
-                ConfigModels.Clear();//清空前端分页数据
+                OrgModels.Clear();//清空前端分页数据
 
                 using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
                 {
@@ -184,7 +184,7 @@ namespace GZKL.Client.UI.ViewsModels
                     {
                         foreach (DataRow dataRow in data.Rows)
                         {
-                            ConfigModels.Add(new ConfigModel()
+                            OrgModels.Add(new OrgModel()
                             {
                                 Id = Convert.ToInt64(dataRow["id"]),
                                 RowNum = Convert.ToInt64(dataRow["row_num"]),
@@ -201,11 +201,11 @@ namespace GZKL.Client.UI.ViewsModels
                 }
 
                 //当前页数
-                PageIndex = ConfigModels.Count > 0 ? 1 : 0;
+                PageIndex = OrgModels.Count > 0 ? 1 : 0;
                 MaxPageCount = 0;
 
                 //最大页数
-                MaxPageCount = PageIndex > 0 ? (int)Math.Ceiling((decimal)ConfigModels.Count / DataCountPerPage) : 0;
+                MaxPageCount = PageIndex > 0 ? (int)Math.Ceiling((decimal)OrgModels.Count / DataCountPerPage) : 0;
 
                 //数据分页
                 Paging(PageIndex);
@@ -246,7 +246,7 @@ namespace GZKL.Client.UI.ViewsModels
 
                 var sql = new StringBuilder(@"SELECT [id],[category],[value],[text],[remark],[is_enabled],[is_deleted],[create_dt]
                 ,[create_user_id],[update_dt],[update_user_id]
-                FROM [dbo].[sys_config] WHERE [is_deleted]=0 AND [id]=@id");
+                FROM [dbo].[sys_config] WHERE [category]='Org' AND [is_deleted]=0 AND [id]=@id");
 
                 var parameters = new SqlParameter[1] { new SqlParameter("@id", id) };
                 using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
@@ -258,7 +258,7 @@ namespace GZKL.Client.UI.ViewsModels
                     }
 
                     var dataRow = data.Rows[0];
-                    var model = new ConfigModel()
+                    var model = new OrgModel()
                     {
                         Id = Convert.ToInt64(dataRow["id"]),
                         Category = dataRow["category"].ToString(),
@@ -278,16 +278,14 @@ namespace GZKL.Client.UI.ViewsModels
                         {
                             sql.Clear();
                             sql.Append(@"UPDATE [dbo].[sys_config]
-   SET [category] = @category
-      ,[value] = @value
+   SET [value] = @value
       ,[text] = @text
       ,[remark] = @remark
       ,[is_enabled] = @is_enabled
       ,[update_dt] = @update_dt
       ,[update_user_id] = @user_id
- WHERE [id]=@id");
+ WHERE [category]='Org' AND [id]=@id");
                             parameters = new SqlParameter[] {
-                            new SqlParameter("@category", model.Category),
                             new SqlParameter("@value", model.Value),
                             new SqlParameter("@text", model.Text),
                             new SqlParameter("@remark", model.Remark),
@@ -328,13 +326,13 @@ namespace GZKL.Client.UI.ViewsModels
 
                 if (selected != null)
                 {
-                    var r = MessageBox.Show($"确定要删除【{string.Join(",", selected.Select(s => $"{s.Category}|{s.Value}|{s.Text}"))}】吗？", "提示", MessageBoxButton.YesNo);
+                    var r = MessageBox.Show($"确定要删除【{string.Join(",", selected.Select(s => $"{s.Value}|{s.Text}"))}】吗？", "提示", MessageBoxButton.YesNo);
                     if (r == MessageBoxResult.Yes)
                     {
                         foreach (var dr in selected)
                         {
                             //var sql = new StringBuilder(@"DELETE FROM [dbo].[sys_config] WHERE [id] IN(@id)");
-                            var sql = new StringBuilder(@"UPDATE [dbo].[sys_config] SET [is_deleted]=1 WHERE [id]=@id");
+                            var sql = new StringBuilder(@"UPDATE [dbo].[sys_config] SET [is_deleted]=1 WHERE [category]='Org' AND [id]=@id");
 
                             var parameters = new SqlParameter[1] { new SqlParameter("@id", dr.Id) };
                             var result = SQLHelper.ExecuteNonQuery(sql.ToString(), parameters);
@@ -357,7 +355,7 @@ namespace GZKL.Client.UI.ViewsModels
         {
             try
             {
-                ConfigModel model = new ConfigModel();
+                OrgModel model = new OrgModel();
                 Edit view = new Edit(model);
                 var r = view.ShowDialog();
                 if (r.Value)
@@ -386,7 +384,7 @@ namespace GZKL.Client.UI.ViewsModels
            ,@user_id)";
 
                     var parameters = new SqlParameter[] {
-                    new SqlParameter("@category", model.Category),
+                    new SqlParameter("@category", "Org"),
                     new SqlParameter("@value", model.Value),
                     new SqlParameter("@text", model.Text),
                     new SqlParameter("@remark", model.Remark),
@@ -427,7 +425,7 @@ namespace GZKL.Client.UI.ViewsModels
 
             GridModelList.Clear();//情况依赖属性
 
-            var pagedData = ConfigModels.Skip((pageIndex - 1) * DataCountPerPage).Take(DataCountPerPage).ToList();
+            var pagedData = OrgModels.Skip((pageIndex - 1) * DataCountPerPage).Take(DataCountPerPage).ToList();
 
             if (pagedData.Count > 0)
             {

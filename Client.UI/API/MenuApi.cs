@@ -103,7 +103,7 @@ namespace GZKL.Client.UI.API
                 {
                     Code = "\ue669",
                     Name = "参数设置",
-                    TypeName = "CollectMgt.Config.Config"
+                    TypeName = "CollectMgt.Parameter.Parameter"
                 });
                 list.Add(new ModuleModel
                 {
