@@ -174,7 +174,7 @@ namespace GZKL.Client.UI.ViewsModels
                     parameters = new SqlParameter[1] { new SqlParameter("@search", $"%{Search}%") };
                 }
 
-                sql.Append($" ORDER BY [category] DESC");
+                //sql.Append($" ORDER BY [category] DESC");
 
                 ConfigModels.Clear();//清空前端分页数据
 

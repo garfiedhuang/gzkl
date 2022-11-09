@@ -32,6 +32,7 @@ namespace GZKL.Client.UI.ViewsModels
             RegisterCommand = new RelayCommand(this.Register);
         }
 
+        private string status;
         /// <summary>
         /// 注册状态 未注册/已注册
         /// </summary>
@@ -39,14 +40,11 @@ namespace GZKL.Client.UI.ViewsModels
         {
             get
             {
-                if (string.IsNullOrEmpty(RegisterCode))
-                {
-                   return "未注册";
-                }
-                else
-                {
-                   return "已注册";
-                }
+                return status;
+            }
+            set
+            {
+                status = value; RaisePropertyChanged();
             }
         }
 
@@ -80,7 +78,7 @@ namespace GZKL.Client.UI.ViewsModels
             {
                 return fullName = $"{HostName}-{CPU}";
             }
-            set { fullName = value;RaisePropertyChanged(); }
+            set { fullName = value; RaisePropertyChanged(); }
         }
 
         private string registerCode;
@@ -179,7 +177,6 @@ namespace GZKL.Client.UI.ViewsModels
                 SqlParameter[] parameters = null;
                 int rowCount = 0;
 
-
                 //判断是否存在注册信息？
                 sql = "SELECT COUNT(1) FROM [dbo].[sys_config] WHERE [category]=@category AND [value]=@value AND [is_deleted]=0";
                 parameters = new SqlParameter[] { new SqlParameter("@category", "System"), new SqlParameter("@value", $"Register-{FullName}") };
@@ -191,6 +188,9 @@ namespace GZKL.Client.UI.ViewsModels
                     MessageBox.Show($"当前电脑【{FullName}】已存在注册记录，请勿重复注册", "提示信息");
                     return;
                 }
+
+                var registerCode = SecurityHelper.DESEncrypt(FullName);
+                var registerTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
                 //注册信息写入数据库
                 sql = @"INSERT INTO [dbo].[sys_config]
@@ -219,8 +219,8 @@ namespace GZKL.Client.UI.ViewsModels
                 parameters = new SqlParameter[] {
                     new SqlParameter("@category", "System"),
                     new SqlParameter("@value", $"Register-{FullName}"),
-                    new SqlParameter("@text", model.Text),
-                    new SqlParameter("@remark", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
+                    new SqlParameter("@text", registerCode),
+                    new SqlParameter("@remark", registerTime),
                     new SqlParameter("@is_enabled", 1),
                     new SqlParameter("@create_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
                     new SqlParameter("@user_id", SessionInfo.Instance.Session.Id)
@@ -228,9 +228,18 @@ namespace GZKL.Client.UI.ViewsModels
 
                 var result = SQLHelper.ExecuteNonQuery(sql, parameters);
 
-
-
-
+                if (result > 0)
+                {
+                    RegisterCode = registerCode;
+                    RegisterTime = registerTime;
+                    Status = "已注册";
+                    RegisterButtonVisibility = Visibility.Hidden;
+                    var res = MessageBox.Show($"当前电脑{HostName}注册成功", "提示信息");
+                }
+                else
+                {
+                    throw new Exception($"当前电脑【{FullName}】注册失败，请与管理员联系");
+                }
             }
             catch (Exception ex)
             {

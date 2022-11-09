@@ -47,7 +47,13 @@ namespace GZKL.Client.UI.Views.CollectMgt.Register
 
             if (string.IsNullOrEmpty(model?.RegisterCode))
             {
-                model.RegisterButtonVisibility = (int)Visibility.Visible;
+                model.RegisterButtonVisibility = Visibility.Visible;
+                model.Status = "未注册";
+            }
+            else
+            {
+                model.RegisterButtonVisibility = Visibility.Hidden;
+                model.Status = "已注册";
             }
         }
 
