@@ -83,7 +83,7 @@
                        DataCountPerPage="{Binding DataCountPerPage}" 
                        IsJumpEnabled="True" 
                        HorizontalAlignment="Right" 
-                       Margin="10">
+                       Margin="20,0,20,5">
             <hc:Interaction.Triggers>
                 <hc:EventTrigger EventName="PageUpdated">
                     <hc:EventToCommand  PassEventArgsToCommand="True" Command="{Binding PageUpdatedCommand}" />
