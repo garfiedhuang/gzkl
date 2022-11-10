@@ -27,6 +27,7 @@ namespace GZKL.Client.UI.ViewsModels
 
             SimpleIoc.Default.Register<OrgViewModel>();
             SimpleIoc.Default.Register<RegisterViewModel>();
+            SimpleIoc.Default.Register<ParameterViewModel>();
         }
 
         #region 实例化
@@ -49,6 +50,7 @@ namespace GZKL.Client.UI.ViewsModels
 
         public OrgViewModel Org => ServiceLocator.Current.GetInstance<OrgViewModel>();
         public RegisterViewModel Register => ServiceLocator.Current.GetInstance<RegisterViewModel>();
+        public ParameterViewModel Parameter => ServiceLocator.Current.GetInstance<ParameterViewModel>();
 
 
         #endregion

@@ -103,6 +103,7 @@
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\ParameterModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\OrgModel.cs" />
     <Compile Include="Models\ModuleModel.cs" />
@@ -118,6 +119,7 @@
     </Compile>
     <Compile Include="CustomControls\Template\MenuTemplateSelector.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\ParameterViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\OrgViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
@@ -133,6 +135,9 @@
     </Compile>
     <Compile Include="Views\CollectMgt\Org\Edit.xaml.cs">
       <DependentUpon>Edit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CollectMgt\Parameter\Parameter.xaml.cs">
+      <DependentUpon>Parameter.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CollectMgt\Register\Register.xaml.cs">
       <DependentUpon>Register.xaml</DependentUpon>
@@ -188,6 +193,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\CollectMgt\Org\Edit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CollectMgt\Parameter\Parameter.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -15,21 +15,21 @@ using GZKL.Client.UI.Common;
 using System.Data;
 using System.Windows.Controls;
 using MessageBox = HandyControl.Controls.MessageBox;
-using GZKL.Client.UI.Views.CollectMgt.Register;
+using GZKL.Client.UI.Views.CollectMgt.Parameter;
 using GalaSoft.MvvmLight.Messaging;
 
 namespace GZKL.Client.UI.ViewsModels
 {
-    public class RegisterViewModel : ViewModelBase
+    public class ParameterViewModel : ViewModelBase
     {
         #region Construct and property
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        public RegisterViewModel()
+        public ParameterViewModel()
         {
-            RegisterCommand = new RelayCommand(this.Register);
+            ParameterCommand = new RelayCommand(this.Parameter);
         }
 
         private string status;
@@ -81,39 +81,39 @@ namespace GZKL.Client.UI.ViewsModels
             set { fullName = value; RaisePropertyChanged(); }
         }
 
-        private string registerCode;
+        private string parameterCode;
         /// <summary>
         /// 注册码
         /// </summary>
-        public string RegisterCode
+        public string ParameterCode
         {
-            get { return registerCode; }
-            set { registerCode = value; RaisePropertyChanged(); }
+            get { return parameterCode; }
+            set { parameterCode = value; RaisePropertyChanged(); }
         }
 
-        private string registerTime;
+        private string parameterTime;
         /// <summary>
         /// 注册时间
         /// </summary>
-        public string RegisterTime
+        public string ParameterTime
         {
-            get { return registerTime; }
+            get { return parameterTime; }
             set
             {
-                registerTime = value; RaisePropertyChanged();
+                parameterTime = value; RaisePropertyChanged();
             }
         }
 
-        private Visibility registerButtonVisibility = Visibility.Hidden;
+        private Visibility parameterButtonVisibility = Visibility.Hidden;
         /// <summary>
         /// 注册按钮可见
         /// </summary>
-        public Visibility RegisterButtonVisibility
+        public Visibility ParameterButtonVisibility
         {
-            get { return registerButtonVisibility; }
+            get { return parameterButtonVisibility; }
             set
             {
-                registerButtonVisibility = value; RaisePropertyChanged();
+                parameterButtonVisibility = value; RaisePropertyChanged();
             }
         }
 
@@ -124,7 +124,7 @@ namespace GZKL.Client.UI.ViewsModels
         /// <summary>
         /// 注册
         /// </summary>
-        public RelayCommand RegisterCommand { get; set; }
+        public RelayCommand ParameterCommand { get; set; }
 
         #endregion
 
@@ -136,46 +136,25 @@ namespace GZKL.Client.UI.ViewsModels
         /// </summary>
         /// <param name="fullName">格式：HostName-CPU</param>
         /// <returns></returns>
-        public (string, string,string,string) GetRegisterInfo(string fullName)
+        public (string, string) GetParameterInfo(string fullName)
         {
-            var registerCode = string.Empty;
-            var registerTime = string.Empty;
-            var hostName = string.Empty;
-            var cpu = string.Empty;
+            var ParameterCode = string.Empty;
+            var ParameterTime = string.Empty;
 
             try
             {
                 var sql = new StringBuilder(@"SELECT [id],[category],[value],[text],[remark]
                 ,[is_enabled],[is_deleted],[create_dt],[create_user_id],[update_dt],[update_user_id]
-                FROM [dbo].[sys_config] WHERE [category]=@category AND [is_deleted]=0");
+                FROM [dbo].[sys_config] WHERE [category]='System' AND [Value]=@value AND [is_deleted]=0");
 
-                var parameters = new SqlParameter[] { new SqlParameter("@category", $"System-{fullName}") };
+                var parameters = new SqlParameter[] { new SqlParameter("@value", $"Parameter-{fullName}") };
 
                 using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
                 {
-                    if (data != null && data.Rows.Count == 3)
+                    if (data != null && data.Rows.Count > 0)
                     {
-                        var value = string.Empty;
-                        foreach (DataRow dr in data.Rows)
-                        {
-                            value = data.Rows[0]["value"].ToString();
-
-                            switch (value)
-                            {
-                                case "Register":
-                                    registerCode = data.Rows[0]["text"].ToString();
-                                    registerTime = data.Rows[0]["remark"].ToString();
-                                    break;
-                                case "HostName":
-                                    hostName = data.Rows[0]["text"].ToString();
-                                    break;
-                                case "CPU":
-                                    cpu = data.Rows[0]["text"].ToString();
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
+                        ParameterCode = data.Rows[0]["text"].ToString();
+                        ParameterTime = data.Rows[0]["remark"].ToString();
                     }
                 }
             }
@@ -184,13 +163,13 @@ namespace GZKL.Client.UI.ViewsModels
                 MessageBox.Show(ex.Message, "提示信息");
             }
 
-            return (registerCode, registerTime,hostName,cpu);
+            return (ParameterCode, ParameterTime);
         }
 
         /// <summary>
         /// 注册
         /// </summary>
-        public void Register()
+        public void Parameter()
         {
             try
             {
@@ -200,7 +179,7 @@ namespace GZKL.Client.UI.ViewsModels
 
                 //判断是否存在注册信息？
                 sql = "SELECT COUNT(1) FROM [dbo].[sys_config] WHERE [category]=@category AND [value]=@value AND [is_deleted]=0";
-                parameters = new SqlParameter[] { new SqlParameter("@category", $"System-{FullName}"), new SqlParameter("@value", $"Register") };
+                parameters = new SqlParameter[] { new SqlParameter("@category", "System"), new SqlParameter("@value", $"Parameter-{FullName}") };
 
                 rowCount = Convert.ToInt32(SQLHelper.ExecuteScalar(sql, parameters) ?? "0");
 
@@ -210,13 +189,8 @@ namespace GZKL.Client.UI.ViewsModels
                     return;
                 }
 
-                var result = 0;
-                var registerCode = SecurityHelper.DESEncrypt(FullName);
-                var registerTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-
-                var value = string.Empty;
-                var text = string.Empty;
-                var remark = string.Empty;
+                var parameterCode = SecurityHelper.DESEncrypt(FullName);
+                var parameterTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
                 //注册信息写入数据库
                 sql = @"INSERT INTO [dbo].[sys_config]
@@ -242,45 +216,24 @@ namespace GZKL.Client.UI.ViewsModels
            ,@create_dt
            ,@user_id)";
 
-                for (var i = 0; i < 3; i++)
-                {
-                    switch (i)
-                    {
-                        case 0:
-                            value = "Register";
-                            text = registerCode;
-                            remark = registerTime;
-                            break;
-                        case 1:
-                            value = "HostName";
-                            text = HostName;
-                            remark = "系统信息";
-                            break;
-                        case 2:
-                            value = "CPU";
-                            text = CPU;
-                            remark = "系统信息";
-                            break;
-                    }
-                    parameters = new SqlParameter[] {
-                    new SqlParameter("@category", $"System-{FullName}"),
-                    new SqlParameter("@value", value),
-                    new SqlParameter("@text", text),
-                    new SqlParameter("@remark", remark),
+                parameters = new SqlParameter[] {
+                    new SqlParameter("@category", "System"),
+                    new SqlParameter("@value", $"Parameter-{FullName}"),
+                    new SqlParameter("@text", parameterCode),
+                    new SqlParameter("@remark", parameterTime),
                     new SqlParameter("@is_enabled", 1),
                     new SqlParameter("@create_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
                     new SqlParameter("@user_id", SessionInfo.Instance.Session.Id)
-                    };
+                };
 
-                    result += SQLHelper.ExecuteNonQuery(sql, parameters);
-                }
+                var result = SQLHelper.ExecuteNonQuery(sql, parameters);
 
-                if (result == 3)
+                if (result > 0)
                 {
-                    RegisterCode = registerCode;
-                    RegisterTime = registerTime;
+                    ParameterCode = parameterCode;
+                    ParameterTime = parameterTime;
                     Status = "已注册";
-                    RegisterButtonVisibility = Visibility.Hidden;
+                    ParameterButtonVisibility = Visibility.Hidden;
                     var res = MessageBox.Show($"当前电脑{HostName}注册成功", "提示信息");
                 }
                 else
