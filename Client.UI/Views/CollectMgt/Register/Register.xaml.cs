@@ -32,7 +32,9 @@ namespace GZKL.Client.UI.Views.CollectMgt.Register
 
             var model = this.DataContext as RegisterViewModel;
 
-            var computerInfo = ComputerInfo.GetInstance().ReadComputerInfo();
+            //var computerInfo = ComputerInfo.GetInstance().ReadComputerInfo();
+            var computerInfo = SessionInfo.Instance.ComputerInfo;
+
             if (computerInfo != null)
             {
                 model.HostName = computerInfo.HostName;

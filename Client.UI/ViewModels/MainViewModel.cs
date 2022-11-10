@@ -9,6 +9,7 @@ using System.Windows;
 using GZKL.Client.UI.API;
 using GZKL.Client.UI.Models;
 using MessageBox = HandyControl.Controls.MessageBox;
+using GZKL.Client.UI.Common;
 
 namespace GZKL.Client.UI.ViewsModels
 {
@@ -33,6 +34,8 @@ namespace GZKL.Client.UI.ViewsModels
             GetMenu();
 
             NavChanged("Home");
+
+            GetComputerInfo();//Add by garfield 20221110
         }
         #region =====data
         private ObservableCollection<ModuleGroupModel> moduleGroups;
@@ -139,6 +142,15 @@ namespace GZKL.Client.UI.ViewsModels
                 {                  
                     ModuleGroups.Add(item);
                 }
+            }));
+        }
+
+        private void GetComputerInfo()
+        {
+            Task.Run(new Action(() =>
+            {
+                SessionInfo.Instance.ComputerInfo = ComputerInfo.GetInstance().ReadComputerInfo();
+
             }));
         }
     }

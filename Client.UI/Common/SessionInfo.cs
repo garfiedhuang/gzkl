@@ -34,5 +34,10 @@ namespace GZKL.Client.UI.Common
         /// 当前会话
         /// </summary>
         internal UserModel Session { get; set; }
+
+        /// <summary>
+        /// 电脑信息
+        /// </summary>
+        internal ComputerInfo ComputerInfo { get; set; }
     }
 }
