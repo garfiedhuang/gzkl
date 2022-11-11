@@ -20,6 +20,7 @@ using GalaSoft.MvvmLight.Messaging;
 using System.Reflection;
 using System.ComponentModel;
 using System.Security.Cryptography;
+using System.Windows.Media.Media3D;
 
 namespace GZKL.Client.UI.ViewsModels
 {
@@ -35,8 +36,8 @@ namespace GZKL.Client.UI.ViewsModels
             SaveCommand = new RelayCommand(this.Save);
             BackupCommand = new RelayCommand(this.Backup);
             SelectCommand = new RelayCommand(this.Select);
-            TesterTypeCheckedCommand = new RelayCommand(this.TesterTypeChecked);
-            DecimalDigitsTypeCheckedCommand = new RelayCommand(this.DecimalDigitsTypeChecked);
+            CollectTypeCheckedCommand = new RelayCommand<string>(this.CollectTypeChecked);
+            DecimalDigitsTypeCheckedCommand = new RelayCommand<string>(this.DecimalDigitsTypeChecked);
 
             GetDropdownListData();
 
@@ -49,8 +50,8 @@ namespace GZKL.Client.UI.ViewsModels
         /// </summary>
         private List<ConfigModel> currentParameters = new List<ConfigModel>();
 
-        private CompBottonModel currentCollectType = null;
-        private CompBottonModel currentWuxiSuggestedDecimalDigitType = null;
+        public CompBottonModel CurrentCollectType { get; set; }
+        public CompBottonModel CurrentWuxiSuggestedDecimalDigitType { get; set; }
 
         /// <summary>
         /// 数据集合
@@ -125,14 +126,14 @@ namespace GZKL.Client.UI.ViewsModels
         public RelayCommand SelectCommand { get; set; }
 
         /// <summary>
-        /// 试验机类型
+        /// 采集类型
         /// </summary>
-        public RelayCommand TesterTypeCheckedCommand { get; set; }
+        public RelayCommand<string> CollectTypeCheckedCommand { get; set; }
 
         /// <summary>
         /// 无锡建议小数位
         /// </summary>
-        public RelayCommand DecimalDigitsTypeCheckedCommand { get; set; }
+        public RelayCommand<string> DecimalDigitsTypeCheckedCommand { get; set; }
 
         #endregion
 
@@ -203,13 +204,13 @@ END";
                             text = "3";
                             break;
                         case "补偿有效":
-                            text = "false";
+                            text = "False";
                             break;
                         case "采集类型":
-                            text = $"{currentCollectType?.Tag}#{currentCollectType.Content}";
+                            text = $"{CurrentCollectType?.Tag}#{CurrentCollectType.Content}";
                             break;
                         case "TYE小数位":
-                            text = $"{currentCollectType?.Tag}#{currentCollectType.Content}";
+                            text = $"{CurrentWuxiSuggestedDecimalDigitType?.Tag}#{CurrentWuxiSuggestedDecimalDigitType.Content}";
                             break;
                         default:
                             break;
@@ -220,7 +221,7 @@ END";
                         new SqlParameter("@value", value),
                         new SqlParameter("@text", text),
                         new SqlParameter("@remark", remark),
-                        new SqlParameter("@user_id", userInfo.Id)
+                        new SqlParameter("@userId", userInfo.Id)
                     };
 
                     effectRowCount += SQLHelper.ExecuteNonQuery(sql, parameters);
@@ -228,11 +229,11 @@ END";
 
                 if (effectRowCount > 0)
                 {
-                    var res = MessageBox.Show($"当前电脑{fullName}参数设置成功", "提示信息");
+                    var res = MessageBox.Show($"参数设置成功", "提示信息");
                 }
                 else
                 {
-                    throw new Exception($"当前电脑【{fullName}】参数设置失败，请与管理员联系");
+                    throw new Exception($"参数设置失败，请与管理员联系");
                 }
             }
             catch (Exception ex)
@@ -272,13 +273,19 @@ END";
         }
 
         /// <summary>
-        /// 选择试验机类型
+        /// 选择采集类型
         /// </summary>
-        public void TesterTypeChecked()
+        /// <param name="tag"></param>
+        public void CollectTypeChecked(string tag)
         {
             try
             {
-
+                var properties = typeof(CollectTypeModel).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                if (properties != null && properties.Length > 0)
+                {
+                    var selectedProperty = properties.Where(w => w.Name == tag).FirstOrDefault();
+                    CurrentCollectType = selectedProperty.GetValue(Model.CollectType, null) as CompBottonModel;
+                }
             }
             catch (Exception ex)
             {
@@ -289,11 +296,17 @@ END";
         /// <summary>
         /// 选择无锡建议小数位
         /// </summary>
-        public void DecimalDigitsTypeChecked()
+        /// <param name="tag"></param>
+        public void DecimalDigitsTypeChecked(string tag)
         {
             try
             {
-
+                var properties = typeof(WuxiSuggestedDecimalDigitModel).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                if (properties != null && properties.Length > 0)
+                {
+                    var selectedProperty = properties.Where(w => w.Name == tag).FirstOrDefault();
+                    CurrentWuxiSuggestedDecimalDigitType = selectedProperty.GetValue(Model.WuxiSuggestedDecimalDigit, null) as CompBottonModel;
+                }
             }
             catch (Exception ex)
             {
@@ -358,21 +371,29 @@ END";
         /// 获取参数配置信息
         /// </summary>
         /// <param name="fullName"></param>
-        private void GetParameterInfo(string fullName)
+        internal void GetParameterInfo(string fullName)
         {
             try
             {
+                //初始化模型
+                Model = new ParameterModel();
+                Model.CollectType = new CollectTypeModel();
+                Model.WuxiSuggestedDecimalDigit = new WuxiSuggestedDecimalDigitModel();
+
+                //查询数据库并赋值
                 var sql = new StringBuilder(@"SELECT [id],[category],[value],[text],[remark]
                 ,[is_enabled],[is_deleted],[create_dt],[create_user_id],[update_dt],[update_user_id]
                 FROM [dbo].[sys_config] WHERE ([category] =@category1 OR [category] LIKE @category2) AND [is_deleted]=0");
 
-                //CommonParams-{HostName}-{CPU}
-                //ChannelParams-{HostName}-{CPU}-{No}
-                var category1 = $"CommonParams-{fullName}";
-                var category2 = $"ChannelParams-{fullName}-";
-                var parameters = new SqlParameter[] { new SqlParameter("@category1", category1), new SqlParameter("@category2", $"{category2}%") };
+                var category1 = $"CommonParams-{fullName}";//CommonParams-{HostName}-{CPU}
+                var category2 = $"ChannelParams-{fullName}-";//ChannelParams-{HostName}-{CPU}-{No}
 
-                using (var data = SQLHelper.GetDataTable(sql.ToString()))
+                var parameters = new SqlParameter[] {
+                    new SqlParameter("@category1", category1), 
+                    new SqlParameter("@category2", $"{category2}%") 
+                };
+
+                using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
                 {
                     currentParameters.Clear();
 
@@ -384,7 +405,6 @@ END";
                             currentParameters.Add(new ConfigModel()
                             {
                                 Id = Convert.ToInt64(dataRow["id"]),
-                                RowNum = Convert.ToInt64(dataRow["row_num"]),
                                 Category = dataRow["category"].ToString(),
                                 Value = dataRow["value"].ToString(),
                                 Text = dataRow["text"].ToString(),
@@ -397,19 +417,18 @@ END";
                     }
                 }
 
-                //公用参数
                 var commParams = currentParameters.Where(w => w.Category == category1)?.ToList();
 
-                //通道参数
                 if (commParams != null && commParams.Count > 0)
                 {
+                    //公用参数
                     Model.SerialPort = commParams.FirstOrDefault(s => s.Value == "串行口")?.Text;
                     Model.Tester = commParams.FirstOrDefault(s => s.Value == "通道号")?.Text;//与[试验机]下拉框映射
                     Model.ExitMinValue = commParams.FirstOrDefault(s => s.Value == "自动结束最小值")?.Text;
                     Model.FailureJudgment = commParams.FirstOrDefault(s => s.Value == "破坏判断")?.Text;
-                    Model.CurrentRangeNo = commParams.FirstOrDefault(s => s.Value == "当前量程号")?.Text;
+                    Model.CurrentRangeNo = commParams.FirstOrDefault(s => s.Value == "当前量程号")?.Text??"2";
                     Model.DrawnRange = commParams.FirstOrDefault(s => s.Value == "绘图范围")?.Text;
-                    Model.DrawnInterval = commParams.FirstOrDefault(s => s.Value == "绘图间隔")?.Text;//没有维护输入
+                    Model.DrawnInterval = commParams.FirstOrDefault(s => s.Value == "绘图间隔")?.Text??"3";//没有维护输入
                     Model.AdjustedFactor = commParams.FirstOrDefault(s => s.Value == "调整系数")?.Text;
                     Model.TwoChannel = Convert.ToBoolean(commParams.FirstOrDefault(s => s.Value == "双通道")?.Text);
                     Model.AutoSwitch = Convert.ToBoolean(commParams.FirstOrDefault(s => s.Value == "自动切换")?.Text);
@@ -417,10 +436,123 @@ END";
                     Model.CompensationEffect = Convert.ToBoolean(commParams.FirstOrDefault(s => s.Value == "补偿有效")?.Text);//没有维护输入
                     Model.SaveData = Convert.ToBoolean(commParams.FirstOrDefault(s => s.Value == "是否保存数据")?.Text);
                     Model.SaveGraph = Convert.ToBoolean(commParams.FirstOrDefault(s => s.Value == "是否保存图片")?.Text);
-                    Model.SavePath = commParams.FirstOrDefault(s => s.Value == "保存目录")?.Text;
-                    Model.CollectType = new CollectTypeModel() { };// commParams.FirstOrDefault(s => s.Value == "采集类型")?.Text;
-                    Model.WuxiSuggestedDecimalDigit = new WuxiSuggestedDecimalDigitModel() { };// commParams.FirstOrDefault(s => s.Value == "TYE小数位")?.Text;
+                    Model.SavePath = commParams.FirstOrDefault(s => s.Value == "保存路径")?.Text;
 
+                    var collectType = commParams.FirstOrDefault(s => s.Value == "采集类型")?.Text ?? "";//格式：T001#三和采集SSY
+                    if (collectType.Split('#').Length == 2)
+                    {
+                        var tag = collectType.Split('#')[0];
+                        switch (tag)
+                        {
+                            case "T001":
+                                Model.CollectType.T001.IsCheck= true;
+                                CurrentCollectType = Model.CollectType.T001;
+                                break;
+                            case "T002":
+                                Model.CollectType.T002.IsCheck = true;
+                                CurrentCollectType = Model.CollectType.T002;
+                                break;
+                            case "T003":
+                                Model.CollectType.T003.IsCheck = true;
+                                CurrentCollectType = Model.CollectType.T003;
+                                break;
+                            case "T004":
+                                Model.CollectType.T004.IsCheck = true;
+                                CurrentCollectType = Model.CollectType.T004;
+                                break;
+                            case "T005":
+                                Model.CollectType.T005.IsCheck = true;
+                                CurrentCollectType = Model.CollectType.T005;
+                                break;
+                            case "T006":
+                                Model.CollectType.T006.IsCheck = true;
+                                CurrentCollectType = Model.CollectType.T006;
+                                break;
+                            case "T007":
+                                Model.CollectType.T007.IsCheck = true;
+                                CurrentCollectType = Model.CollectType.T007;
+                                break;
+                            case "T008":
+                                Model.CollectType.T008.IsCheck = true;
+                                CurrentCollectType = Model.CollectType.T008;
+                                break;
+                            case "T009":
+                                Model.CollectType.T009.IsCheck = true;
+                                CurrentCollectType = Model.CollectType.T009;
+                                break;
+                            case "T010":
+                                Model.CollectType.T010.IsCheck = true;
+                                CurrentCollectType = Model.CollectType.T010;
+                                break;
+                            case "T011":
+                                Model.CollectType.T011.IsCheck = true;
+                                CurrentCollectType = Model.CollectType.T011;
+                                break;
+                            case "T012":
+                                Model.CollectType.T012.IsCheck = true;
+                                CurrentCollectType = Model.CollectType.T012;
+                                break;
+                            case "T013":
+                                Model.CollectType.T013.IsCheck = true;
+                                CurrentCollectType = Model.CollectType.T013;
+                                break;
+                            case "T014":
+                                Model.CollectType.T014.IsCheck = true;
+                                CurrentCollectType = Model.CollectType.T014;
+                                break;
+                            default:
+
+                                break;
+                        }
+
+                        /*
+                        var properties = typeof(CollectTypeModel).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                        if (properties != null && properties.Length > 0)
+                        {
+                            var selectedProperty = properties.Where(w => w.Name == tag).FirstOrDefault();
+                            CurrentCollectType = selectedProperty.GetValue(Model.CollectType, null) as CompBottonModel;
+
+                            CurrentCollectType.IsCheck = true;
+                        }
+                        */
+                    }
+
+                    var wuxiSuggestedDecimalDigit = commParams.FirstOrDefault(s => s.Value == "TYE小数位")?.Text ?? "";
+                    if (wuxiSuggestedDecimalDigit.Split('#').Length == 2)
+                    {
+                        var tag = wuxiSuggestedDecimalDigit.Split('#')[0];
+
+                        switch (tag)
+                        {
+                            case "DDT001":
+                                Model.WuxiSuggestedDecimalDigit.DDT001.IsCheck = true;
+                                CurrentWuxiSuggestedDecimalDigitType = Model.WuxiSuggestedDecimalDigit.DDT001;
+                                break;
+                            case "DDT002":
+                                Model.WuxiSuggestedDecimalDigit.DDT002.IsCheck = true;
+                                CurrentWuxiSuggestedDecimalDigitType = Model.WuxiSuggestedDecimalDigit.DDT002;
+                                break;
+                            case "DDT003":
+                                Model.WuxiSuggestedDecimalDigit.DDT003.IsCheck = true;
+                                CurrentWuxiSuggestedDecimalDigitType = Model.WuxiSuggestedDecimalDigit.DDT003;
+                                break;
+                            default:
+                                break;
+                        }
+
+                                /*
+                                var properties = typeof(WuxiSuggestedDecimalDigitModel).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                                if (properties != null && properties.Length > 0)
+                                {
+                                    var selectedProperty = properties.Where(w => w.Name == tag).FirstOrDefault();
+                                    CurrentWuxiSuggestedDecimalDigitType = selectedProperty.GetValue(Model.WuxiSuggestedDecimalDigit, null) as CompBottonModel;
+
+                                    CurrentWuxiSuggestedDecimalDigitType.IsCheck = true;
+                                }
+                                */
+                        }
+
+                    //通道参数
                     var channelParams = currentParameters.Where(w => w.Category == $"{category2}{Model.Tester}")?.ToList();
                     if (channelParams != null && channelParams.Count > 0)
                     {
@@ -439,13 +571,6 @@ END";
             }
         }
 
-        /// <summary>
-        /// 验证参数
-        /// </summary>
-        private void ValidateParams()
-        { 
-        
-        }
         #endregion
     }
 }

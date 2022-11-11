@@ -14,6 +14,9 @@ namespace GZKL.Client.UI.Models
     /// </summary>
     public class ParameterModel : ObservableObject
     {
+        public ParameterModel()
+        { }
+
         /// <summary>
         /// 串行口
         /// </summary>
@@ -38,11 +41,25 @@ namespace GZKL.Client.UI.Models
         [Description("最大量程")]
         public string SensorRange { get; set; }
 
+
+        private string rangeFactor;
         /// <summary>
         /// 量程系数 = 传感器量程(kN) / 4095
         /// </summary>
         [Description("量程系数")]
-        public string RangeFactor { get; set; }
+        //public string RangeFactor { get; set; }
+        public string RangeFactor
+        {
+            get
+            {
+                int.TryParse(SensorRange, out var value);
+                return rangeFactor = System.Math.Round(value / 4095 * 1.0, 4).ToString();
+            }
+            set
+            {
+                rangeFactor = value;
+            }
+        }
 
         /// <summary>
         /// 第一档
@@ -90,7 +107,7 @@ namespace GZKL.Client.UI.Models
         /// 绘图间隔
         /// </summary>
         [Description("绘图间隔")]
-        public string DrawnInterval { get; set; }
+        public string DrawnInterval { get; set; } = "3";
 
         /// <summary>
         /// 调整系数
@@ -155,27 +172,27 @@ namespace GZKL.Client.UI.Models
 
     public class CollectTypeModel
     {
-        public CompBottonModel T001 { get; set; } = new CompBottonModel();
-        public CompBottonModel T002 { get; set; } = new CompBottonModel();
-        public CompBottonModel T003 { get; set; } = new CompBottonModel();
-        public CompBottonModel T004 { get; set; } = new CompBottonModel();
-        public CompBottonModel T005 { get; set; } = new CompBottonModel();
-        public CompBottonModel T006 { get; set; } = new CompBottonModel();
-        public CompBottonModel T007 { get; set; } = new CompBottonModel();
-        public CompBottonModel T008 { get; set; } = new CompBottonModel();
-        public CompBottonModel T009 { get; set; } = new CompBottonModel();
-        public CompBottonModel T010 { get; set; } = new CompBottonModel();
-        public CompBottonModel T011 { get; set; } = new CompBottonModel();
-        public CompBottonModel T012 { get; set; } = new CompBottonModel();
-        public CompBottonModel T013 { get; set; } = new CompBottonModel();
-        public CompBottonModel T014 { get; set; } = new CompBottonModel();
+        public CompBottonModel T001 { get; set; } = new CompBottonModel() { Tag = "T001", Content = "三和采集SSY" };
+        public CompBottonModel T002 { get; set; } = new CompBottonModel() { Tag = "T002", Content = "三和采集KLGK" };
+        public CompBottonModel T003 { get; set; } = new CompBottonModel() { Tag = "T003", Content = "无锡建议TYE" };
+        public CompBottonModel T004 { get; set; } = new CompBottonModel() { Tag = "T004", Content = "无锡中科SYE" };
+        public CompBottonModel T005 { get; set; } = new CompBottonModel() { Tag = "T005", Content = "上海申克" };
+        public CompBottonModel T006 { get; set; } = new CompBottonModel() { Tag = "T006", Content = "上海华龙HL-3" };
+        public CompBottonModel T007 { get; set; } = new CompBottonModel() { Tag = "T007", Content = "龙盛SZ**E(惠州)" };
+        public CompBottonModel T008 { get; set; } = new CompBottonModel() { Tag = "T008", Content = "杭州鑫高WES-06" };
+        public CompBottonModel T009 { get; set; } = new CompBottonModel() { Tag = "T009", Content = "杭州鑫高YA-06" };
+        public CompBottonModel T010 { get; set; } = new CompBottonModel() { Tag = "T010", Content = "无锡建议TYE-2000C" };
+        public CompBottonModel T011 { get; set; } = new CompBottonModel() { Tag = "T011", Content = "龙盛LM-02(潮安)" };
+        public CompBottonModel T012 { get; set; } = new CompBottonModel() { Tag = "T012", Content = "龙盛LM-02(广州)" };
+        public CompBottonModel T013 { get; set; } = new CompBottonModel() { Tag = "T013", Content = "龙盛LM-02" };
+        public CompBottonModel T014 { get; set; } = new CompBottonModel() { Tag = "T014", Content = "肯特WE-300S" };
     }
 
     public class WuxiSuggestedDecimalDigitModel
     {
-        public CompBottonModel DDT001 { get; set; } = new CompBottonModel();
-        public CompBottonModel DDT002 { get; set; } = new CompBottonModel();
-        public CompBottonModel DDT003 { get; set; } = new CompBottonModel();
+        public CompBottonModel DDT001 { get; set; } = new CompBottonModel() { Tag = "DDT001", Content = "0.100" };
+        public CompBottonModel DDT002 { get; set; } = new CompBottonModel() { Tag = "DDT002", Content = "0.010" };
+        public CompBottonModel DDT003 { get; set; } = new CompBottonModel() { Tag = "DDT003", Content = "0.001" };
     }
 
     public class CompBottonModel : ObservableObject

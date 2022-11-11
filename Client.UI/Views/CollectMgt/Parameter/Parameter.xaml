@@ -59,7 +59,7 @@
                 <ComboBox x:Name="cmbTester" 
                           Margin="0,0,0,20" 
                           hc:InfoElement.Placeholder="请选择试验机" 
-                          hc:InfoElement.Title="择试验机" 
+                          hc:InfoElement.Title="试验机" 
                           Style="{StaticResource ComboBoxExtend}" 
                           hc:InfoElement.Necessary="True" 
                           hc:InfoElement.Symbol="*" 
@@ -147,7 +147,7 @@
                          hc:InfoElement.Symbol="*"
                          hc:InfoElement.Necessary="True"
                          Text="{Binding Model.ExitMinValue}"/>
-                
+
                 <TextBox x:Name="txtAutoSwitchRatio" 
                          Margin="0,0,0,20" 
                          hc:InfoElement.Placeholder="请输入自动切换比例" 
@@ -156,7 +156,7 @@
                          hc:InfoElement.Symbol="*"
                          hc:InfoElement.Necessary="True"
                          Text="{Binding Model.AutoSwitchRatio}"/>
-                
+
                 <CheckBox x:Name="chkSaveGraph" 
                           Content="保存图形" 
                           IsChecked="{Binding Model.SaveGraph}" 
@@ -190,7 +190,7 @@
         <StackPanel Orientation="Horizontal" Grid.Row="2">
 
             <StackPanel Margin="20,0,0,0" Width="550">
-                <GroupBox Header="采集类型" Margin="10" Style="{StaticResource GroupBoxOriginal}" hc:InfoElement.Necessary="True"  hc:InfoElement.Symbol="*" HorizontalContentAlignment="Left">
+                <GroupBox x:Name="gbCollectType" Header="采集类型" Margin="10" Style="{StaticResource GroupBoxOriginal}" hc:InfoElement.Necessary="True"  hc:InfoElement.Symbol="*" HorizontalContentAlignment="Left">
                     <Border BorderBrush="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" BorderThickness="1,1,1,1" CornerRadius="5" Height="190">
                         <Grid >
                             <Grid.ColumnDefinitions>
@@ -224,7 +224,7 @@
                 </GroupBox>
             </StackPanel>
             <StackPanel Margin="10,0,0,0" Width="210">
-                <GroupBox Header="无锡建议小数位" Margin="10" Style="{StaticResource GroupBoxOriginal}" hc:InfoElement.Necessary="True"  hc:InfoElement.Symbol="*" HorizontalContentAlignment="Left">
+                <GroupBox x:Name="gbWuxiSuggestedDecimalDigitsType" Header="无锡建议小数位" Margin="10" Style="{StaticResource GroupBoxOriginal}" hc:InfoElement.Necessary="True"  hc:InfoElement.Symbol="*" HorizontalContentAlignment="Left">
                     <Border BorderBrush="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" BorderThickness="1,1,1,1" CornerRadius="5" Height="190">
                         <Grid >
                             <Grid.RowDefinitions>
@@ -233,8 +233,8 @@
                                 <RowDefinition></RowDefinition>
                             </Grid.RowDefinitions>
                             <RadioButton x:Name="rbDDT001" Grid.Row="0" IsChecked="{Binding Model.WuxiSuggestedDecimalDigit.DDT001.IsCheck}" Command="{Binding DecimalDigitsTypeCheckedCommand}" CommandParameter="DDT001" GroupName="gWuxiSuggestedDecimalDigitsType" HorizontalAlignment="Center"  Content="0.100" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton x:Name="rbDDT002" Grid.Row="1" IsChecked="{Binding Model.WuxiSuggestedDecimalDigit.DDT001.IsCheck}" Command="{Binding DecimalDigitsTypeCheckedCommand}" CommandParameter="DDT002" GroupName="gWuxiSuggestedDecimalDigitsType" HorizontalAlignment="Center"  Content="0.010" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton x:Name="rbDDT003" Grid.Row="2" IsChecked="{Binding Model.WuxiSuggestedDecimalDigit.DDT001.IsCheck}" Command="{Binding DecimalDigitsTypeCheckedCommand}" CommandParameter="DDT003" GroupName="gWuxiSuggestedDecimalDigitsType" HorizontalAlignment="Center"  Content="0.001" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton x:Name="rbDDT002" Grid.Row="1" IsChecked="{Binding Model.WuxiSuggestedDecimalDigit.DDT002.IsCheck}" Command="{Binding DecimalDigitsTypeCheckedCommand}" CommandParameter="DDT002" GroupName="gWuxiSuggestedDecimalDigitsType" HorizontalAlignment="Center"  Content="0.010" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton x:Name="rbDDT003" Grid.Row="2" IsChecked="{Binding Model.WuxiSuggestedDecimalDigit.DDT003.IsCheck}" Command="{Binding DecimalDigitsTypeCheckedCommand}" CommandParameter="DDT003" GroupName="gWuxiSuggestedDecimalDigitsType" HorizontalAlignment="Center"  Content="0.001" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
                         </Grid>
                     </Border>
                 </GroupBox>
@@ -242,8 +242,8 @@
         </StackPanel>
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button x:Name="btnSave" Visibility="Visible" Content="保存" Width="100" Margin="10" Command="{Binding SaveCommand}" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource TextIconBrush}" hc:BorderElement.CornerRadius="5"/>
-            <Button x:Name="btnBackup" Visibility="Visible" Content="备份" Width="100" Margin="10" Command="{Binding BackupCommand}" hc:BorderElement.CornerRadius="5"/>
+            <Button x:Name="btnSave" Visibility="Visible" Content="保存" Width="100" Margin="10" Click="btnSave_Click" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource TextIconBrush}" hc:BorderElement.CornerRadius="5"/>
+            <Button x:Name="btnBackup" Visibility="Visible" Content="备份" Width="100" Margin="10" Click="btnBackup_Click" hc:BorderElement.CornerRadius="5"/>
         </StackPanel>
     </Grid>
 </UserControl>
