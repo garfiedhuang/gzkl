@@ -32,29 +32,29 @@ namespace GZKL.Client.UI.Views.CollectMgt.Parameter
 
             var model = this.DataContext as ParameterViewModel;
 
-            var computerInfo = ComputerInfo.GetInstance().ReadComputerInfo();
-            if (computerInfo != null)
-            {
-                model.HostName = computerInfo.HostName;
-                model.CPU = computerInfo.CPU;
-                model.FullName = $"{model.HostName}-{model.CPU}";
+            //var computerInfo = ComputerInfo.GetInstance().ReadComputerInfo();
+            //if (computerInfo != null)
+            //{
+            //    model.HostName = computerInfo.HostName;
+            //    model.CPU = computerInfo.CPU;
+            //    model.FullName = $"{model.HostName}-{model.CPU}";
 
-                var ParameterInfo = model.GetParameterInfo($"{computerInfo.HostName}-{computerInfo.CPU}");
+            //    var ParameterInfo = model.GetParameterInfo($"{computerInfo.HostName}-{computerInfo.CPU}");
 
-                model.ParameterCode = ParameterInfo.Item1;
-                model.ParameterTime = ParameterInfo.Item2;
-            }
+            //    model.ParameterCode = ParameterInfo.Item1;
+            //    model.ParameterTime = ParameterInfo.Item2;
+            //}
 
-            if (string.IsNullOrEmpty(model?.ParameterCode))
-            {
-                model.ParameterButtonVisibility = Visibility.Visible;
-                model.Status = "未注册";
-            }
-            else
-            {
-                model.ParameterButtonVisibility = Visibility.Hidden;
-                model.Status = "已注册";
-            }
+            //if (string.IsNullOrEmpty(model?.ParameterCode))
+            //{
+            //    model.ParameterButtonVisibility = Visibility.Visible;
+            //    model.Status = "未注册";
+            //}
+            //else
+            //{
+            //    model.ParameterButtonVisibility = Visibility.Hidden;
+            //    model.Status = "已注册";
+            //}
         }
 
     }

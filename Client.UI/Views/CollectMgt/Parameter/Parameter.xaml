@@ -9,65 +9,120 @@
              xmlns:hc="https://handyorg.github.io/handycontrol"
              mc:Ignorable="d" 
              DataContext="{Binding Source={StaticResource Locator},Path=Parameter}"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="850">
     <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="90"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Vertical">
-            <StackPanel Margin="32">
-                <hc:TextBox Margin="50,0,50,20" 
-                            hc:InfoElement.TitleWidth="100" 
-                            hc:InfoElement.TitlePlacement="Left" 
-                            hc:InfoElement.Title="注册状态：" 
-                            hc:BorderThickness="0" 
-                            IsReadOnly="True"
-                            Text="{Binding Status,Mode=OneWay}" />
-                
-                <hc:TextBox Margin="50,0,50,20" 
-                            hc:InfoElement.TitleWidth="100" 
-                            hc:InfoElement.TitlePlacement="Left" 
-                            hc:InfoElement.Title="主机名称：" 
-                            hc:BorderThickness="0" 
-                            IsReadOnly="True"
-                            Text="{Binding HostName,Mode=OneWay}" />
-                
-                <hc:TextBox Margin="50,0,50,20" 
-                            hc:InfoElement.TitleWidth="100" 
-                            hc:InfoElement.TitlePlacement="Left" 
-                            hc:InfoElement.Title="CPU ID:" 
-                            hc:BorderThickness="0" 
-                            IsReadOnly="True"
-                            Text="{Binding CPU,Mode=OneWay}" />
-                
-                <hc:TextBox Margin="50,0,50,20" 
-                            hc:InfoElement.TitleWidth="100" 
-                            hc:InfoElement.TitlePlacement="Left" 
-                            hc:InfoElement.Title="本机信息：" 
-                            hc:BorderThickness="0" 
-                            IsReadOnly="True"
-                            Text="{Binding FullName,Mode=OneWay}" />
-                
-                <hc:TextBox Margin="50,0,50,20" 
-                            hc:InfoElement.TitleWidth="100" 
-                            hc:InfoElement.TitlePlacement="Left" 
-                            hc:InfoElement.Title="注册码：" 
-                            hc:BorderThickness="0" 
-                            IsReadOnly="True"
-                            Text="{Binding ParameterCode,Mode=TwoWay}" />
-
-                <hc:TextBox Margin="50,0,50,20" 
-                            hc:InfoElement.TitleWidth="100" 
-                            hc:InfoElement.TitlePlacement="Left" 
-                            hc:InfoElement.Title="注册时间：" 
-                            hc:BorderThickness="0" 
-                            IsReadOnly="True"
-                            Text="{Binding ParameterTime,Mode=TwoWay}" />
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <StackPanel Margin="25" Width="150">
+                <ComboBox Margin="0,0,0,20" hc:InfoElement.Placeholder="请选择串行口" hc:InfoElement.Title="串行口" 
+                          Style="{StaticResource ComboBoxExtend}" hc:InfoElement.Necessary="True" hc:InfoElement.Symbol="*" 
+                          ItemsSource="{Binding DataList}"/>
+                <TextBox Margin="0,0,0,20" hc:InfoElement.Placeholder="请输入第一档" hc:InfoElement.Title="第一档" Style="{StaticResource TextBoxExtend}"  hc:InfoElement.Symbol="*"
+                         hc:InfoElement.Necessary="True"/>
+                <TextBox Margin="0,0,0,20" hc:InfoElement.Placeholder="请输入破坏判断" hc:InfoElement.Title="破坏判断" Style="{StaticResource TextBoxExtend}"  hc:InfoElement.Symbol="*"
+                         hc:InfoElement.Necessary="True"/>
+                <CheckBox Content="双通道" IsChecked="False" HorizontalAlignment="Left" Foreground="{DynamicResource PrimaryTextBrush}"/>
+            </StackPanel>
+            <StackPanel Margin="25" Width="150">
+                <ComboBox Margin="0,0,0,20" hc:InfoElement.Placeholder="请选择试验机" hc:InfoElement.Title="择试验机" 
+                          Style="{StaticResource ComboBoxExtend}" hc:InfoElement.Necessary="True" hc:InfoElement.Symbol="*" 
+                          ItemsSource="{Binding DataList}"/>
+                <TextBox Margin="0,0,0,20" hc:InfoElement.Placeholder="请输入第二档" hc:InfoElement.Title="第二档" Style="{StaticResource TextBoxExtend}"  hc:InfoElement.Symbol="*"
+                         hc:InfoElement.Necessary="True"/>
+                <TextBox Margin="0,0,0,20" hc:InfoElement.Placeholder="请输入绘图范围" hc:InfoElement.Title="绘图范围" Style="{StaticResource TextBoxExtend}"  hc:InfoElement.Symbol="*"
+                         hc:InfoElement.Necessary="True"/>
+                <CheckBox Content="自动切换" IsChecked="False" HorizontalAlignment="Left" Foreground="{DynamicResource PrimaryTextBrush}"/>
+            </StackPanel>
+            <StackPanel Margin="25" Width="150">
+                <TextBox Margin="0,0,0,20" hc:InfoElement.Placeholder="请输入试验机名称" hc:InfoElement.Title="试验机名称" Style="{StaticResource TextBoxExtend}"  hc:InfoElement.Symbol="*"
+                         hc:InfoElement.Necessary="True"/>
+                <TextBox Margin="0,0,0,20" hc:InfoElement.Placeholder="请输入第三档" hc:InfoElement.Title="第三档" Style="{StaticResource TextBoxExtend}"  hc:InfoElement.Symbol="*"
+                         hc:InfoElement.Necessary="True"/>
+                <TextBox Margin="0,0,0,20" hc:InfoElement.Placeholder="请输入调整系数" hc:InfoElement.Title="调整系数" Style="{StaticResource TextBoxExtend}"  hc:InfoElement.Symbol="*"
+                         hc:InfoElement.Necessary="True"/>
+                <CheckBox Content="保存数据" IsChecked="False" HorizontalAlignment="Left" Foreground="{DynamicResource PrimaryTextBrush}"/>
+            </StackPanel>
+            <StackPanel Margin="25" Width="150">
+                <ComboBox Margin="0,0,0,20" hc:InfoElement.Placeholder="请选择传感器里程" hc:InfoElement.Title="传感器里程" 
+                              Style="{StaticResource ComboBoxExtend}" hc:InfoElement.Necessary="True" hc:InfoElement.Symbol="*" 
+                              ItemsSource="{Binding DataList}"/>
+                <TextBox Margin="0,0,0,20" hc:InfoElement.Placeholder="请输入退出最小值" hc:InfoElement.Title="退出最小值(%)" Style="{StaticResource TextBoxExtend}"  hc:InfoElement.Symbol="*"
+                         hc:InfoElement.Necessary="True"/>
+                <TextBox Margin="0,0,0,20" hc:InfoElement.Placeholder="请输入自动切换比例" hc:InfoElement.Title="自动切换比例(%)" Style="{StaticResource TextBoxExtend}"  hc:InfoElement.Symbol="*"
+                         hc:InfoElement.Necessary="True"/>
+                <CheckBox Content="保存图形" IsChecked="False" HorizontalAlignment="Left" Foreground="{DynamicResource PrimaryTextBrush}"/>
             </StackPanel>
         </StackPanel>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button x:Name="btnParameter" Visibility="{Binding ParameterButtonVisibility}" Content="注册" Width="100" Margin="10" Command="{Binding ParameterCommand}" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource TextIconBrush}" hc:BorderElement.CornerRadius="5"/>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <TextBox Margin="40,0,0,0" Width="650" Height="20" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Placeholder="请选择保存路径" hc:InfoElement.Title="保存路径" Style="{StaticResource TextBoxExtend}"  hc:InfoElement.Symbol="*"
+                         hc:InfoElement.Necessary="True"/>
+            <Button Margin="10,0,0,0"  x:Name="btnSelect" Visibility="Visible" Content="选择..." Width="60" Command="{Binding ParameterCommand}" hc:BorderElement.CornerRadius="5"/>
+
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="2">
+
+            <StackPanel Margin="20,0,0,0" Width="550">
+                <GroupBox Header="试验机类型" Margin="10" Style="{StaticResource GroupBoxOriginal}" hc:InfoElement.Necessary="True"  hc:InfoElement.Symbol="*" HorizontalContentAlignment="Left">
+                    <Border BorderBrush="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" BorderThickness="1,1,1,1" CornerRadius="5" Height="190">
+                        <Grid >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="33*"></ColumnDefinition>
+                                <ColumnDefinition Width="33*"></ColumnDefinition>
+                                <ColumnDefinition Width="33*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <RadioButton Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Margin="10" Content="三和采集SSY" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left"  Margin="10" Content="三和采集KLGK" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left"  Margin="10" Content="无锡建议TYE" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left"  Margin="10" Content="无锡中科SYE" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left"  Margin="10" Content="上海申克" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left"  Margin="10" Content="上海华龙HL-3" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left"  Margin="10" Content="龙盛SZ**E(惠州)" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left"  Margin="10" Content="杭州鑫高WES-06" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left"  Margin="10" Content="杭州鑫高YA-06" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left"  Margin="10" Content="无锡建议TYE-2000C" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left"  Margin="10" Content="龙盛LM-02(潮安)" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="3" Grid.Column="2" HorizontalAlignment="Left"  Margin="10" Content="龙盛LM-02(广州)" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="4" Grid.Column="0" HorizontalAlignment="Left"  Margin="10" Content="龙盛LM-02" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left"  Margin="10" Content="肯特WE-300S" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                        </Grid>
+                    </Border>
+                </GroupBox>
+            </StackPanel>
+            <StackPanel Margin="10,0,0,0" Width="255">
+                <GroupBox Header="无锡建议小数位" Margin="10" Style="{StaticResource GroupBoxOriginal}" hc:InfoElement.Necessary="True"  hc:InfoElement.Symbol="*" HorizontalContentAlignment="Left">
+                    <Border BorderBrush="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" BorderThickness="1,1,1,1" CornerRadius="5" Height="190">
+                        <Grid >
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <RadioButton Grid.Row="0" HorizontalAlignment="Center"  Content="0.100" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="1" HorizontalAlignment="Center"  Content="0.010" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="2" HorizontalAlignment="Center"  Content="0.001" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                        </Grid>
+                    </Border>
+                </GroupBox>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button x:Name="btnSave" Visibility="Visible" Content="保存" Width="100" Margin="10" Command="{Binding ParameterCommand}" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource TextIconBrush}" hc:BorderElement.CornerRadius="5"/>
+            <Button x:Name="btnBackup" Visibility="Visible" Content="备份" Width="100" Margin="10" Command="{Binding ParameterCommand}" hc:BorderElement.CornerRadius="5"/>
         </StackPanel>
     </Grid>
 </UserControl>
