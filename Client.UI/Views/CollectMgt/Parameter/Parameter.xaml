@@ -9,7 +9,7 @@
              xmlns:hc="https://handyorg.github.io/handycontrol"
              mc:Ignorable="d" 
              DataContext="{Binding Source={StaticResource Locator},Path=Parameter}"
-             d:DesignHeight="450" d:DesignWidth="850">
+             d:DesignHeight="700" d:DesignWidth="850">
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -190,7 +190,7 @@
         <StackPanel Orientation="Horizontal" Grid.Row="2">
 
             <StackPanel Margin="20,0,0,0" Width="550">
-                <GroupBox Header="试验机类型" Margin="10" Style="{StaticResource GroupBoxOriginal}" hc:InfoElement.Necessary="True"  hc:InfoElement.Symbol="*" HorizontalContentAlignment="Left">
+                <GroupBox Header="采集类型" Margin="10" Style="{StaticResource GroupBoxOriginal}" hc:InfoElement.Necessary="True"  hc:InfoElement.Symbol="*" HorizontalContentAlignment="Left">
                     <Border BorderBrush="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" BorderThickness="1,1,1,1" CornerRadius="5" Height="190">
                         <Grid >
                             <Grid.ColumnDefinitions>
@@ -205,25 +205,25 @@
                                 <RowDefinition></RowDefinition>
                                 <RowDefinition></RowDefinition>
                             </Grid.RowDefinitions>
-                            <RadioButton Grid.Row="0" Grid.Column="0" GroupName="gTesterType" IsChecked="{Binding Model.TesterType}" HorizontalAlignment="Left" Margin="10" Content="三和采集SSY" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton Grid.Row="0" Grid.Column="1" GroupName="gTesterType" IsChecked="{Binding Model.TesterType}" HorizontalAlignment="Left"  Margin="10" Content="三和采集KLGK" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton Grid.Row="0" Grid.Column="2" GroupName="gTesterType" IsChecked="{Binding Model.TesterType}" HorizontalAlignment="Left"  Margin="10" Content="无锡建议TYE" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton Grid.Row="1" Grid.Column="0" GroupName="gTesterType" IsChecked="{Binding Model.TesterType}" HorizontalAlignment="Left"  Margin="10" Content="无锡中科SYE" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton Grid.Row="1" Grid.Column="1" GroupName="gTesterType" IsChecked="{Binding Model.TesterType}" HorizontalAlignment="Left"  Margin="10" Content="上海申克" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton Grid.Row="1" Grid.Column="2" GroupName="gTesterType" IsChecked="{Binding Model.TesterType}" HorizontalAlignment="Left"  Margin="10" Content="上海华龙HL-3" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton Grid.Row="2" Grid.Column="0" GroupName="gTesterType" IsChecked="{Binding Model.TesterType}" HorizontalAlignment="Left"  Margin="10" Content="龙盛SZ**E(惠州)" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton Grid.Row="2" Grid.Column="1" GroupName="gTesterType" IsChecked="{Binding Model.TesterType}" HorizontalAlignment="Left"  Margin="10" Content="杭州鑫高WES-06" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton Grid.Row="2" Grid.Column="2" GroupName="gTesterType" IsChecked="{Binding Model.TesterType}" HorizontalAlignment="Left"  Margin="10" Content="杭州鑫高YA-06" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton Grid.Row="3" Grid.Column="0" GroupName="gTesterType" IsChecked="{Binding Model.TesterType}" HorizontalAlignment="Left"  Margin="10" Content="无锡建议TYE-2000C" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton Grid.Row="3" Grid.Column="1" GroupName="gTesterType" IsChecked="{Binding Model.TesterType}" HorizontalAlignment="Left"  Margin="10" Content="龙盛LM-02(潮安)" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton Grid.Row="3" Grid.Column="2" GroupName="gTesterType" IsChecked="{Binding Model.TesterType}" HorizontalAlignment="Left"  Margin="10" Content="龙盛LM-02(广州)" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton Grid.Row="4" Grid.Column="0" GroupName="gTesterType" IsChecked="{Binding Model.TesterType}" HorizontalAlignment="Left"  Margin="10" Content="龙盛LM-02" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton Grid.Row="4" Grid.Column="1" GroupName="gTesterType" IsChecked="{Binding Model.TesterType}" HorizontalAlignment="Left"  Margin="10" Content="肯特WE-300S" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton x:Name="rbT001" Grid.Row="0" Grid.Column="0" IsChecked="{Binding Model.CollectType.T001.IsCheck}" Command="{Binding CollectTypeCheckedCommand}" CommandParameter="T001" GroupName="gCollectType" HorizontalAlignment="Left" Margin="10" Content="三和采集SSY" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton x:Name="rbT002" Grid.Row="0" Grid.Column="1" IsChecked="{Binding Model.CollectType.T002.IsCheck}" Command="{Binding CollectTypeCheckedCommand}" CommandParameter="T002" GroupName="gCollectType" HorizontalAlignment="Left"  Margin="10" Content="三和采集KLGK" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton x:Name="rbT003" Grid.Row="0" Grid.Column="2" IsChecked="{Binding Model.CollectType.T003.IsCheck}" Command="{Binding CollectTypeCheckedCommand}" CommandParameter="T003" GroupName="gCollectType" HorizontalAlignment="Left"  Margin="10" Content="无锡建议TYE" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton x:Name="rbT004" Grid.Row="1" Grid.Column="0" IsChecked="{Binding Model.CollectType.T004.IsCheck}" Command="{Binding CollectTypeCheckedCommand}" CommandParameter="T004" GroupName="gCollectType" HorizontalAlignment="Left"  Margin="10" Content="无锡中科SYE" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton x:Name="rbT005" Grid.Row="1" Grid.Column="1" IsChecked="{Binding Model.CollectType.T005.IsCheck}" Command="{Binding CollectTypeCheckedCommand}" CommandParameter="T005" GroupName="gCollectType" HorizontalAlignment="Left"  Margin="10" Content="上海申克" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton x:Name="rbT006" Grid.Row="1" Grid.Column="2" IsChecked="{Binding Model.CollectType.T006.IsCheck}" Command="{Binding CollectTypeCheckedCommand}" CommandParameter="T006" GroupName="gCollectType" HorizontalAlignment="Left"  Margin="10" Content="上海华龙HL-3" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton x:Name="rbT007" Grid.Row="2" Grid.Column="0" IsChecked="{Binding Model.CollectType.T007.IsCheck}" Command="{Binding CollectTypeCheckedCommand}" CommandParameter="T007" GroupName="gCollectType" HorizontalAlignment="Left"  Margin="10" Content="龙盛SZ**E(惠州)" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton x:Name="rbT008" Grid.Row="2" Grid.Column="1" IsChecked="{Binding Model.CollectType.T008.IsCheck}" Command="{Binding CollectTypeCheckedCommand}" CommandParameter="T008" GroupName="gCollectType" HorizontalAlignment="Left"  Margin="10" Content="杭州鑫高WES-06" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton x:Name="rbT009" Grid.Row="2" Grid.Column="2" IsChecked="{Binding Model.CollectType.T009.IsCheck}" Command="{Binding CollectTypeCheckedCommand}" CommandParameter="T009" GroupName="gCollectType" HorizontalAlignment="Left"  Margin="10" Content="杭州鑫高YA-06" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton x:Name="rbT010" Grid.Row="3" Grid.Column="0" IsChecked="{Binding Model.CollectType.T010.IsCheck}" Command="{Binding CollectTypeCheckedCommand}" CommandParameter="T010" GroupName="gCollectType" HorizontalAlignment="Left"  Margin="10" Content="无锡建议TYE-2000C" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton x:Name="rbT011" Grid.Row="3" Grid.Column="1" IsChecked="{Binding Model.CollectType.T011.IsCheck}" Command="{Binding CollectTypeCheckedCommand}" CommandParameter="T011" GroupName="gCollectType" HorizontalAlignment="Left"  Margin="10" Content="龙盛LM-02(潮安)" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton x:Name="rbT012" Grid.Row="3" Grid.Column="2" IsChecked="{Binding Model.CollectType.T012.IsCheck}" Command="{Binding CollectTypeCheckedCommand}" CommandParameter="T012" GroupName="gCollectType" HorizontalAlignment="Left"  Margin="10" Content="龙盛LM-02(广州)" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton x:Name="rbT013" Grid.Row="4" Grid.Column="0" IsChecked="{Binding Model.CollectType.T013.IsCheck}" Command="{Binding CollectTypeCheckedCommand}" CommandParameter="T013" GroupName="gCollectType" HorizontalAlignment="Left"  Margin="10" Content="龙盛LM-02" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton x:Name="rbT014" Grid.Row="4" Grid.Column="1" IsChecked="{Binding Model.CollectType.T014.IsCheck}" Command="{Binding CollectTypeCheckedCommand}" CommandParameter="T014" GroupName="gCollectType" HorizontalAlignment="Left"  Margin="10" Content="肯特WE-300S" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
                         </Grid>
                     </Border>
                 </GroupBox>
             </StackPanel>
-            <StackPanel Margin="10,0,0,0" Width="255">
+            <StackPanel Margin="10,0,0,0" Width="210">
                 <GroupBox Header="无锡建议小数位" Margin="10" Style="{StaticResource GroupBoxOriginal}" hc:InfoElement.Necessary="True"  hc:InfoElement.Symbol="*" HorizontalContentAlignment="Left">
                     <Border BorderBrush="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" BorderThickness="1,1,1,1" CornerRadius="5" Height="190">
                         <Grid >
@@ -232,9 +232,9 @@
                                 <RowDefinition></RowDefinition>
                                 <RowDefinition></RowDefinition>
                             </Grid.RowDefinitions>
-                            <RadioButton Grid.Row="0" GroupName="gWuxiSuggestedDecimalDigitsType" IsChecked="{Binding Model.WuxiSuggestedDecimalDigits}" HorizontalAlignment="Center"  Content="0.100" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton Grid.Row="1" GroupName="gWuxiSuggestedDecimalDigitsType" IsChecked="{Binding Model.WuxiSuggestedDecimalDigits}" HorizontalAlignment="Center"  Content="0.010" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton Grid.Row="2" GroupName="gWuxiSuggestedDecimalDigitsType" IsChecked="{Binding Model.WuxiSuggestedDecimalDigits}" HorizontalAlignment="Center"  Content="0.001" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton x:Name="rbDDT001" Grid.Row="0" IsChecked="{Binding Model.WuxiSuggestedDecimalDigit.DDT001.IsCheck}" Command="{Binding DecimalDigitsTypeCheckedCommand}" CommandParameter="DDT001" GroupName="gWuxiSuggestedDecimalDigitsType" HorizontalAlignment="Center"  Content="0.100" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton x:Name="rbDDT002" Grid.Row="1" IsChecked="{Binding Model.WuxiSuggestedDecimalDigit.DDT001.IsCheck}" Command="{Binding DecimalDigitsTypeCheckedCommand}" CommandParameter="DDT002" GroupName="gWuxiSuggestedDecimalDigitsType" HorizontalAlignment="Center"  Content="0.010" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton x:Name="rbDDT003" Grid.Row="2" IsChecked="{Binding Model.WuxiSuggestedDecimalDigit.DDT001.IsCheck}" Command="{Binding DecimalDigitsTypeCheckedCommand}" CommandParameter="DDT003" GroupName="gWuxiSuggestedDecimalDigitsType" HorizontalAlignment="Center"  Content="0.001" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
                         </Grid>
                     </Border>
                 </GroupBox>

@@ -136,13 +136,8 @@ namespace GZKL.Client.UI.ViewsModels
         /// </summary>
         /// <param name="fullName">格式：HostName-CPU</param>
         /// <returns></returns>
-        public (string, string,string,string) GetRegisterInfo(string fullName)
+        public (string registerCode, string registerTime, string hostName, string cpu) GetRegisterInfo(string fullName)
         {
-            var registerCode = string.Empty;
-            var registerTime = string.Empty;
-            var hostName = string.Empty;
-            var cpu = string.Empty;
-
             try
             {
                 var sql = new StringBuilder(@"SELECT [id],[category],[value],[text],[remark]
@@ -158,19 +153,19 @@ namespace GZKL.Client.UI.ViewsModels
                         var value = string.Empty;
                         foreach (DataRow dr in data.Rows)
                         {
-                            value = data.Rows[0]["value"].ToString();
+                            value = dr["value"].ToString();
 
                             switch (value)
                             {
                                 case "Register":
-                                    registerCode = data.Rows[0]["text"].ToString();
-                                    registerTime = data.Rows[0]["remark"].ToString();
+                                    registerCode = dr["text"].ToString();
+                                    registerTime = dr["remark"].ToString();
                                     break;
                                 case "HostName":
-                                    hostName = data.Rows[0]["text"].ToString();
+                                    hostName = dr["text"].ToString();
                                     break;
                                 case "CPU":
-                                    cpu = data.Rows[0]["text"].ToString();
+                                    cpu = dr["text"].ToString();
                                     break;
                                 default:
                                     break;
