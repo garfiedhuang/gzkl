@@ -29,102 +29,38 @@ namespace GZKL.Client.UI.ViewsModels
         /// </summary>
         public ParameterViewModel()
         {
-            ParameterCommand = new RelayCommand(this.Parameter);
+            SaveCommand = new RelayCommand(this.Save);
+            BackupCommand = new RelayCommand(this.Backup);
+            SelectCommand = new RelayCommand(this.Select);
         }
 
-        private string status;
         /// <summary>
-        /// 注册状态 未注册/已注册
+        /// 数据集合
         /// </summary>
-        public string Status
+        private ParameterModel model;
+        public ParameterModel Model
         {
-            get
-            {
-                return status;
-            }
-            set
-            {
-                status = value; RaisePropertyChanged();
-            }
+            get { return model; }
+            set { model = value; RaisePropertyChanged(); }
         }
-
-        private string hostName;
-        /// <summary>
-        /// 主机名称
-        /// </summary>
-        public string HostName
-        {
-            get { return hostName; }
-            set { hostName = value; RaisePropertyChanged(); }
-        }
-
-        private string cpu;
-        /// <summary>
-        /// cpu
-        /// </summary>
-        public string CPU
-        {
-            get { return cpu; }
-            set { cpu = value; RaisePropertyChanged(); }
-        }
-
-        private string fullName;
-        /// <summary>
-        /// 本机信息
-        /// </summary>
-        public string FullName
-        {
-            get
-            {
-                return fullName = $"{HostName}-{CPU}";
-            }
-            set { fullName = value; RaisePropertyChanged(); }
-        }
-
-        private string parameterCode;
-        /// <summary>
-        /// 注册码
-        /// </summary>
-        public string ParameterCode
-        {
-            get { return parameterCode; }
-            set { parameterCode = value; RaisePropertyChanged(); }
-        }
-
-        private string parameterTime;
-        /// <summary>
-        /// 注册时间
-        /// </summary>
-        public string ParameterTime
-        {
-            get { return parameterTime; }
-            set
-            {
-                parameterTime = value; RaisePropertyChanged();
-            }
-        }
-
-        private Visibility parameterButtonVisibility = Visibility.Hidden;
-        /// <summary>
-        /// 注册按钮可见
-        /// </summary>
-        public Visibility ParameterButtonVisibility
-        {
-            get { return parameterButtonVisibility; }
-            set
-            {
-                parameterButtonVisibility = value; RaisePropertyChanged();
-            }
-        }
-
         #endregion
 
         #region Command
 
         /// <summary>
-        /// 注册
+        /// 保存
         /// </summary>
-        public RelayCommand ParameterCommand { get; set; }
+        public RelayCommand SaveCommand { get; set; }
+
+        /// <summary>
+        /// 备份
+        /// </summary>
+        public RelayCommand BackupCommand { get; set; }
+
+        /// <summary>
+        /// 选择
+        /// </summary>
+        public RelayCommand SelectCommand { get; set; }
 
         #endregion
 
@@ -167,9 +103,9 @@ namespace GZKL.Client.UI.ViewsModels
         }
 
         /// <summary>
-        /// 注册
+        /// 保存
         /// </summary>
-        public void Parameter()
+        public void Save()
         {
             try
             {
@@ -177,75 +113,106 @@ namespace GZKL.Client.UI.ViewsModels
                 SqlParameter[] parameters = null;
                 int rowCount = 0;
 
-                //判断是否存在注册信息？
-                sql = "SELECT COUNT(1) FROM [dbo].[sys_config] WHERE [category]=@category AND [value]=@value AND [is_deleted]=0";
-                parameters = new SqlParameter[] { new SqlParameter("@category", "System"), new SqlParameter("@value", $"Parameter-{FullName}") };
+     //           //判断是否存在注册信息？
+     //           sql = "SELECT COUNT(1) FROM [dbo].[sys_config] WHERE [category]=@category AND [value]=@value AND [is_deleted]=0";
+     //           parameters = new SqlParameter[] { new SqlParameter("@category", "System"), new SqlParameter("@value", $"Parameter-{FullName}") };
 
-                rowCount = Convert.ToInt32(SQLHelper.ExecuteScalar(sql, parameters) ?? "0");
+     //           rowCount = Convert.ToInt32(SQLHelper.ExecuteScalar(sql, parameters) ?? "0");
 
-                if (rowCount > 0)
-                {
-                    MessageBox.Show($"当前电脑【{FullName}】已存在注册记录，请勿重复注册", "提示信息");
-                    return;
-                }
+     //           if (rowCount > 0)
+     //           {
+     //               MessageBox.Show($"当前电脑【{FullName}】已存在注册记录，请勿重复注册", "提示信息");
+     //               return;
+     //           }
 
-                var parameterCode = SecurityHelper.DESEncrypt(FullName);
-                var parameterTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+     //           var parameterCode = SecurityHelper.DESEncrypt(FullName);
+     //           var parameterTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
-                //注册信息写入数据库
-                sql = @"INSERT INTO [dbo].[sys_config]
-           ([category]
-           ,[value]
-           ,[text]
-           ,[remark]
-           ,[is_enabled]
-           ,[is_deleted]
-           ,[create_dt]
-           ,[create_user_id]
-           ,[update_dt]
-           ,[update_user_id])
-     VALUES
-           (@category
-           ,@value
-           ,@text
-           ,@remark
-           ,@is_enabled
-           ,0
-           ,@create_dt
-           ,@user_id
-           ,@create_dt
-           ,@user_id)";
+     //           //注册信息写入数据库
+     //           sql = @"INSERT INTO [dbo].[sys_config]
+     //      ([category]
+     //      ,[value]
+     //      ,[text]
+     //      ,[remark]
+     //      ,[is_enabled]
+     //      ,[is_deleted]
+     //      ,[create_dt]
+     //      ,[create_user_id]
+     //      ,[update_dt]
+     //      ,[update_user_id])
+     //VALUES
+     //      (@category
+     //      ,@value
+     //      ,@text
+     //      ,@remark
+     //      ,@is_enabled
+     //      ,0
+     //      ,@create_dt
+     //      ,@user_id
+     //      ,@create_dt
+     //      ,@user_id)";
 
-                parameters = new SqlParameter[] {
-                    new SqlParameter("@category", "System"),
-                    new SqlParameter("@value", $"Parameter-{FullName}"),
-                    new SqlParameter("@text", parameterCode),
-                    new SqlParameter("@remark", parameterTime),
-                    new SqlParameter("@is_enabled", 1),
-                    new SqlParameter("@create_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
-                    new SqlParameter("@user_id", SessionInfo.Instance.Session.Id)
-                };
+     //           parameters = new SqlParameter[] {
+     //               new SqlParameter("@category", "System"),
+     //               new SqlParameter("@value", $"Parameter-{FullName}"),
+     //               new SqlParameter("@text", parameterCode),
+     //               new SqlParameter("@remark", parameterTime),
+     //               new SqlParameter("@is_enabled", 1),
+     //               new SqlParameter("@create_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
+     //               new SqlParameter("@user_id", SessionInfo.Instance.Session.Id)
+     //           };
 
-                var result = SQLHelper.ExecuteNonQuery(sql, parameters);
+     //           var result = SQLHelper.ExecuteNonQuery(sql, parameters);
 
-                if (result > 0)
-                {
-                    ParameterCode = parameterCode;
-                    ParameterTime = parameterTime;
-                    Status = "已注册";
-                    ParameterButtonVisibility = Visibility.Hidden;
-                    var res = MessageBox.Show($"当前电脑{HostName}注册成功", "提示信息");
-                }
-                else
-                {
-                    throw new Exception($"当前电脑【{FullName}】注册失败，请与管理员联系");
-                }
+     //           if (result > 0)
+     //           {
+     //               ParameterCode = parameterCode;
+     //               ParameterTime = parameterTime;
+     //               Status = "已注册";
+     //               ParameterButtonVisibility = Visibility.Hidden;
+     //               var res = MessageBox.Show($"当前电脑{HostName}注册成功", "提示信息");
+     //           }
+     //           else
+     //           {
+     //               throw new Exception($"当前电脑【{FullName}】注册失败，请与管理员联系");
+     //           }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "提示信息");
             }
         }
+
+        /// <summary>
+        /// 保存
+        /// </summary>
+        public void Backup()
+        {
+            try
+            { 
+            
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "提示信息");
+            }
+        }
+
+        /// <summary>
+        /// 保存
+        /// </summary>
+        public void Select()
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "提示信息");
+            }
+        }
+
 
         #endregion
 

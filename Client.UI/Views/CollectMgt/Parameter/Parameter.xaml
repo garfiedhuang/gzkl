@@ -19,51 +19,172 @@
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" Grid.Row="0">
             <StackPanel Margin="25" Width="150">
-                <ComboBox Margin="0,0,0,20" hc:InfoElement.Placeholder="请选择串行口" hc:InfoElement.Title="串行口" 
-                          Style="{StaticResource ComboBoxExtend}" hc:InfoElement.Necessary="True" hc:InfoElement.Symbol="*" 
-                          ItemsSource="{Binding DataList}"/>
-                <TextBox Margin="0,0,0,20" hc:InfoElement.Placeholder="请输入第一档" hc:InfoElement.Title="第一档" Style="{StaticResource TextBoxExtend}"  hc:InfoElement.Symbol="*"
-                         hc:InfoElement.Necessary="True"/>
-                <TextBox Margin="0,0,0,20" hc:InfoElement.Placeholder="请输入破坏判断" hc:InfoElement.Title="破坏判断" Style="{StaticResource TextBoxExtend}"  hc:InfoElement.Symbol="*"
-                         hc:InfoElement.Necessary="True"/>
-                <CheckBox Content="双通道" IsChecked="False" HorizontalAlignment="Left" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                <ComboBox x:Name="cmbSerialPort" 
+                          Margin="0,0,0,20" 
+                          hc:InfoElement.Placeholder="请选择串行口" 
+                          hc:InfoElement.Title="串行口" 
+                          Style="{StaticResource ComboBoxExtend}" 
+                          hc:InfoElement.Necessary="True" 
+                          hc:InfoElement.Symbol="*" 
+                          DisplayMemberPath="Value" 
+                          SelectedValuePath="Key"
+                          ItemsSource="{Binding SerialPortData}"
+                          SelectedValue="{Binding Model.SerialPort}"/>
+                
+                <TextBox x:Name="txtFirstGear" 
+                         Margin="0,0,0,20" 
+                         hc:InfoElement.Placeholder="请输入第一档" 
+                         hc:InfoElement.Title="第一档" 
+                         Style="{StaticResource TextBoxExtend}"  
+                         hc:InfoElement.Symbol="*"
+                         hc:InfoElement.Necessary="True"
+                         Text="{Binding Model.FirstGear}"/>
+                
+                <TextBox x:Name="txtFailureJudgment" 
+                         Margin="0,0,0,20" 
+                         hc:InfoElement.Placeholder="请输入破坏判断" 
+                         hc:InfoElement.Title="破坏判断" 
+                         Style="{StaticResource TextBoxExtend}"  
+                         hc:InfoElement.Symbol="*"
+                         hc:InfoElement.Necessary="True"
+                         Text="{Binding Model.FailureJudgment}"/>
+                
+                <CheckBox x:Name="chkTwoChannel" 
+                          Content="双通道" 
+                          IsChecked="{Binding Model.TwoChannel}" 
+                          HorizontalAlignment="Left" 
+                          Foreground="{DynamicResource PrimaryTextBrush}"/>
             </StackPanel>
             <StackPanel Margin="25" Width="150">
-                <ComboBox Margin="0,0,0,20" hc:InfoElement.Placeholder="请选择试验机" hc:InfoElement.Title="择试验机" 
-                          Style="{StaticResource ComboBoxExtend}" hc:InfoElement.Necessary="True" hc:InfoElement.Symbol="*" 
-                          ItemsSource="{Binding DataList}"/>
-                <TextBox Margin="0,0,0,20" hc:InfoElement.Placeholder="请输入第二档" hc:InfoElement.Title="第二档" Style="{StaticResource TextBoxExtend}"  hc:InfoElement.Symbol="*"
-                         hc:InfoElement.Necessary="True"/>
-                <TextBox Margin="0,0,0,20" hc:InfoElement.Placeholder="请输入绘图范围" hc:InfoElement.Title="绘图范围" Style="{StaticResource TextBoxExtend}"  hc:InfoElement.Symbol="*"
-                         hc:InfoElement.Necessary="True"/>
-                <CheckBox Content="自动切换" IsChecked="False" HorizontalAlignment="Left" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                <ComboBox x:Name="cmbTester" 
+                          Margin="0,0,0,20" 
+                          hc:InfoElement.Placeholder="请选择试验机" 
+                          hc:InfoElement.Title="择试验机" 
+                          Style="{StaticResource ComboBoxExtend}" 
+                          hc:InfoElement.Necessary="True" 
+                          hc:InfoElement.Symbol="*" 
+                          DisplayMemberPath="Value" 
+                          SelectedValuePath="Key"
+                          ItemsSource="{Binding TesterData}"
+                          SelectedValue="{Binding Model.Tester}"/>
+                
+                <TextBox x:Name="txtSecondGear" 
+                         Margin="0,0,0,20" 
+                         hc:InfoElement.Placeholder="请输入第二档" 
+                         hc:InfoElement.Title="第二档" 
+                         Style="{StaticResource TextBoxExtend}"  
+                         hc:InfoElement.Symbol="*"
+                         hc:InfoElement.Necessary="True"
+                         Text="{Binding Model.SecondGear}"/>
+                
+                <TextBox x:Name="txtDrawnRange" 
+                         Margin="0,0,0,20" 
+                         hc:InfoElement.Placeholder="请输入绘图范围" 
+                         hc:InfoElement.Title="绘图范围" 
+                         Style="{StaticResource TextBoxExtend}"  
+                         hc:InfoElement.Symbol="*"
+                         hc:InfoElement.Necessary="True"
+                         Text="{Binding Model.DrawnRange}"/>
+                
+                <CheckBox x:Name="chkAutoSwitch" 
+                          Content="自动切换" 
+                          IsChecked="{Binding Model.AutoSwitch}" 
+                          HorizontalAlignment="Left" 
+                          Foreground="{DynamicResource PrimaryTextBrush}"/>
             </StackPanel>
             <StackPanel Margin="25" Width="150">
-                <TextBox Margin="0,0,0,20" hc:InfoElement.Placeholder="请输入试验机名称" hc:InfoElement.Title="试验机名称" Style="{StaticResource TextBoxExtend}"  hc:InfoElement.Symbol="*"
-                         hc:InfoElement.Necessary="True"/>
-                <TextBox Margin="0,0,0,20" hc:InfoElement.Placeholder="请输入第三档" hc:InfoElement.Title="第三档" Style="{StaticResource TextBoxExtend}"  hc:InfoElement.Symbol="*"
-                         hc:InfoElement.Necessary="True"/>
-                <TextBox Margin="0,0,0,20" hc:InfoElement.Placeholder="请输入调整系数" hc:InfoElement.Title="调整系数" Style="{StaticResource TextBoxExtend}"  hc:InfoElement.Symbol="*"
-                         hc:InfoElement.Necessary="True"/>
-                <CheckBox Content="保存数据" IsChecked="False" HorizontalAlignment="Left" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                <TextBox x:Name="cmbTesterName" 
+                         Margin="0,0,0,20" 
+                         hc:InfoElement.Placeholder="请输入试验机名称" 
+                         hc:InfoElement.Title="试验机名称" 
+                         Style="{StaticResource TextBoxExtend}"
+                         hc:InfoElement.Symbol="*"
+                         hc:InfoElement.Necessary="True"
+                         Text="{Binding Model.TesterName}"/>
+                
+                <TextBox x:Name="txtThirdGear" 
+                         Margin="0,0,0,20" 
+                         hc:InfoElement.Placeholder="请输入第三档" 
+                         hc:InfoElement.Title="第三档" 
+                         Style="{StaticResource TextBoxExtend}"  
+                         hc:InfoElement.Symbol="*"
+                         hc:InfoElement.Necessary="True"
+                         Text="{Binding Model.ThirdGear}"/>
+                
+                <TextBox x:Name="txtAdjustedFactor" 
+                         Margin="0,0,0,20" 
+                         hc:InfoElement.Placeholder="请输入调整系数" 
+                         hc:InfoElement.Title="调整系数" 
+                         Style="{StaticResource TextBoxExtend}" 
+                         hc:InfoElement.Symbol="*"
+                         hc:InfoElement.Necessary="True"
+                         Text="{Binding Model.AdjustedFactor}"/>
+                
+                <CheckBox x:Name="chkSaveData" 
+                          Content="保存数据" 
+                          IsChecked="{Binding Model.SaveData}" 
+                          HorizontalAlignment="Left" 
+                          Foreground="{DynamicResource PrimaryTextBrush}"/>
             </StackPanel>
             <StackPanel Margin="25" Width="150">
-                <ComboBox Margin="0,0,0,20" hc:InfoElement.Placeholder="请选择传感器里程" hc:InfoElement.Title="传感器里程" 
-                              Style="{StaticResource ComboBoxExtend}" hc:InfoElement.Necessary="True" hc:InfoElement.Symbol="*" 
-                              ItemsSource="{Binding DataList}"/>
-                <TextBox Margin="0,0,0,20" hc:InfoElement.Placeholder="请输入退出最小值" hc:InfoElement.Title="退出最小值(%)" Style="{StaticResource TextBoxExtend}"  hc:InfoElement.Symbol="*"
-                         hc:InfoElement.Necessary="True"/>
-                <TextBox Margin="0,0,0,20" hc:InfoElement.Placeholder="请输入自动切换比例" hc:InfoElement.Title="自动切换比例(%)" Style="{StaticResource TextBoxExtend}"  hc:InfoElement.Symbol="*"
-                         hc:InfoElement.Necessary="True"/>
-                <CheckBox Content="保存图形" IsChecked="False" HorizontalAlignment="Left" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                <ComboBox x:Name="cmbSensorRange" 
+                          Margin="0,0,0,20" 
+                          hc:InfoElement.Placeholder="请选择传感器量程" 
+                          hc:InfoElement.Title="传感器量程(kN)" 
+                          Style="{StaticResource ComboBoxExtend}" 
+                          hc:InfoElement.Necessary="True" 
+                          hc:InfoElement.Symbol="*" 
+                          DisplayMemberPath="Value" 
+                          SelectedValuePath="Key"
+                          ItemsSource="{Binding SensorRangeData}"
+                          SelectedValue="{Binding Model.SensorRange}"/>
+                
+                <TextBox x:Name="txtExitMinValue"
+                         Margin="0,0,0,20" 
+                         hc:InfoElement.Placeholder="请输入退出最小值" 
+                         hc:InfoElement.Title="退出最小值(%)" 
+                         Style="{StaticResource TextBoxExtend}"  
+                         hc:InfoElement.Symbol="*"
+                         hc:InfoElement.Necessary="True"
+                         Text="{Binding Model.ExitMinValue}"/>
+                
+                <TextBox x:Name="txtAutoSwitchRatio" 
+                         Margin="0,0,0,20" 
+                         hc:InfoElement.Placeholder="请输入自动切换比例" 
+                         hc:InfoElement.Title="自动切换比例(%)" 
+                         Style="{StaticResource TextBoxExtend}"  
+                         hc:InfoElement.Symbol="*"
+                         hc:InfoElement.Necessary="True"
+                         Text="{Binding Model.AutoSwitchRatio}"/>
+                
+                <CheckBox x:Name="chkSaveGraph" 
+                          Content="保存图形" 
+                          IsChecked="{Binding Model.SaveGraph}" 
+                          HorizontalAlignment="Left" 
+                          Foreground="{DynamicResource PrimaryTextBrush}"/>
             </StackPanel>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Grid.Row="1">
-            <TextBox Margin="40,0,0,0" Width="650" Height="20" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Placeholder="请选择保存路径" hc:InfoElement.Title="保存路径" Style="{StaticResource TextBoxExtend}"  hc:InfoElement.Symbol="*"
-                         hc:InfoElement.Necessary="True"/>
-            <Button Margin="10,0,0,0"  x:Name="btnSelect" Visibility="Visible" Content="选择..." Width="60" Command="{Binding ParameterCommand}" hc:BorderElement.CornerRadius="5"/>
+            <TextBox x:Name="txtSavePath" 
+                     Margin="40,0,0,0" 
+                     Width="650" 
+                     Height="20" 
+                     hc:InfoElement.TitlePlacement="Left" 
+                     hc:InfoElement.Placeholder="请选择保存路径" 
+                     hc:InfoElement.Title="保存路径" 
+                     Style="{StaticResource TextBoxExtend}"  
+                     hc:InfoElement.Symbol="*"
+                     hc:InfoElement.Necessary="True"
+                     Text="{Binding Model.SavePath}"/>
 
+            <Button x:Name="btnSelect" 
+                    Margin="10,0,0,0" 
+                    Visibility="Visible" 
+                    Content="选择..." 
+                    Width="60" 
+                    Command="{Binding SelectCommand}" 
+                    hc:BorderElement.CornerRadius="5"/>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Grid.Row="2">
@@ -84,20 +205,20 @@
                                 <RowDefinition></RowDefinition>
                                 <RowDefinition></RowDefinition>
                             </Grid.RowDefinitions>
-                            <RadioButton Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Margin="10" Content="三和采集SSY" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left"  Margin="10" Content="三和采集KLGK" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left"  Margin="10" Content="无锡建议TYE" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left"  Margin="10" Content="无锡中科SYE" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left"  Margin="10" Content="上海申克" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left"  Margin="10" Content="上海华龙HL-3" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left"  Margin="10" Content="龙盛SZ**E(惠州)" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left"  Margin="10" Content="杭州鑫高WES-06" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left"  Margin="10" Content="杭州鑫高YA-06" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left"  Margin="10" Content="无锡建议TYE-2000C" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left"  Margin="10" Content="龙盛LM-02(潮安)" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton Grid.Row="3" Grid.Column="2" HorizontalAlignment="Left"  Margin="10" Content="龙盛LM-02(广州)" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton Grid.Row="4" Grid.Column="0" HorizontalAlignment="Left"  Margin="10" Content="龙盛LM-02" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left"  Margin="10" Content="肯特WE-300S" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="0" Grid.Column="0" GroupName="gTesterType" IsChecked="{Binding Model.TesterType}" HorizontalAlignment="Left" Margin="10" Content="三和采集SSY" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="0" Grid.Column="1" GroupName="gTesterType" IsChecked="{Binding Model.TesterType}" HorizontalAlignment="Left"  Margin="10" Content="三和采集KLGK" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="0" Grid.Column="2" GroupName="gTesterType" IsChecked="{Binding Model.TesterType}" HorizontalAlignment="Left"  Margin="10" Content="无锡建议TYE" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="1" Grid.Column="0" GroupName="gTesterType" IsChecked="{Binding Model.TesterType}" HorizontalAlignment="Left"  Margin="10" Content="无锡中科SYE" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="1" Grid.Column="1" GroupName="gTesterType" IsChecked="{Binding Model.TesterType}" HorizontalAlignment="Left"  Margin="10" Content="上海申克" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="1" Grid.Column="2" GroupName="gTesterType" IsChecked="{Binding Model.TesterType}" HorizontalAlignment="Left"  Margin="10" Content="上海华龙HL-3" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="2" Grid.Column="0" GroupName="gTesterType" IsChecked="{Binding Model.TesterType}" HorizontalAlignment="Left"  Margin="10" Content="龙盛SZ**E(惠州)" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="2" Grid.Column="1" GroupName="gTesterType" IsChecked="{Binding Model.TesterType}" HorizontalAlignment="Left"  Margin="10" Content="杭州鑫高WES-06" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="2" Grid.Column="2" GroupName="gTesterType" IsChecked="{Binding Model.TesterType}" HorizontalAlignment="Left"  Margin="10" Content="杭州鑫高YA-06" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="3" Grid.Column="0" GroupName="gTesterType" IsChecked="{Binding Model.TesterType}" HorizontalAlignment="Left"  Margin="10" Content="无锡建议TYE-2000C" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="3" Grid.Column="1" GroupName="gTesterType" IsChecked="{Binding Model.TesterType}" HorizontalAlignment="Left"  Margin="10" Content="龙盛LM-02(潮安)" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="3" Grid.Column="2" GroupName="gTesterType" IsChecked="{Binding Model.TesterType}" HorizontalAlignment="Left"  Margin="10" Content="龙盛LM-02(广州)" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="4" Grid.Column="0" GroupName="gTesterType" IsChecked="{Binding Model.TesterType}" HorizontalAlignment="Left"  Margin="10" Content="龙盛LM-02" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="4" Grid.Column="1" GroupName="gTesterType" IsChecked="{Binding Model.TesterType}" HorizontalAlignment="Left"  Margin="10" Content="肯特WE-300S" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
                         </Grid>
                     </Border>
                 </GroupBox>
@@ -111,9 +232,9 @@
                                 <RowDefinition></RowDefinition>
                                 <RowDefinition></RowDefinition>
                             </Grid.RowDefinitions>
-                            <RadioButton Grid.Row="0" HorizontalAlignment="Center"  Content="0.100" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton Grid.Row="1" HorizontalAlignment="Center"  Content="0.010" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <RadioButton Grid.Row="2" HorizontalAlignment="Center"  Content="0.001" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="0" GroupName="gWuxiSuggestedDecimalDigitsType" IsChecked="{Binding Model.WuxiSuggestedDecimalDigits}" HorizontalAlignment="Center"  Content="0.100" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="1" GroupName="gWuxiSuggestedDecimalDigitsType" IsChecked="{Binding Model.WuxiSuggestedDecimalDigits}" HorizontalAlignment="Center"  Content="0.010" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <RadioButton Grid.Row="2" GroupName="gWuxiSuggestedDecimalDigitsType" IsChecked="{Binding Model.WuxiSuggestedDecimalDigits}" HorizontalAlignment="Center"  Content="0.001" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
                         </Grid>
                     </Border>
                 </GroupBox>
@@ -121,8 +242,8 @@
         </StackPanel>
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button x:Name="btnSave" Visibility="Visible" Content="保存" Width="100" Margin="10" Command="{Binding ParameterCommand}" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource TextIconBrush}" hc:BorderElement.CornerRadius="5"/>
-            <Button x:Name="btnBackup" Visibility="Visible" Content="备份" Width="100" Margin="10" Command="{Binding ParameterCommand}" hc:BorderElement.CornerRadius="5"/>
+            <Button x:Name="btnSave" Visibility="Visible" Content="保存" Width="100" Margin="10" Command="{Binding SaveCommand}" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource TextIconBrush}" hc:BorderElement.CornerRadius="5"/>
+            <Button x:Name="btnBackup" Visibility="Visible" Content="备份" Width="100" Margin="10" Command="{Binding BackupCommand}" hc:BorderElement.CornerRadius="5"/>
         </StackPanel>
     </Grid>
 </UserControl>
