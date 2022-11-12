@@ -21,6 +21,7 @@ using System.Reflection;
 using System.ComponentModel;
 using System.Security.Cryptography;
 using System.Windows.Media.Media3D;
+using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace GZKL.Client.UI.ViewsModels
 {
@@ -33,8 +34,8 @@ namespace GZKL.Client.UI.ViewsModels
         /// </summary>
         public ParameterViewModel()
         {
-            BackupCommand = new RelayCommand(this.Backup);
             SelectCommand = new RelayCommand(this.Select);
+            BackupCommand = new RelayCommand(this.Backup);
 
             GetDropdownListData();
 
@@ -104,24 +105,14 @@ namespace GZKL.Client.UI.ViewsModels
         #region Command
 
         /// <summary>
-        /// 备份
-        /// </summary>
-        public RelayCommand BackupCommand { get; set; }
-
-        /// <summary>
         /// 选择
         /// </summary>
         public RelayCommand SelectCommand { get; set; }
 
         /// <summary>
-        /// 采集类型
+        /// 备份
         /// </summary>
-        public RelayCommand<string> CollectTypeCheckedCommand { get; set; }
-
-        /// <summary>
-        /// 无锡建议小数位
-        /// </summary>
-        public RelayCommand<string> DecimalDigitsTypeCheckedCommand { get; set; }
+        public RelayCommand BackupCommand { get; set; }
 
         #endregion
 
@@ -239,13 +230,18 @@ END";
         }
 
         /// <summary>
-        /// 备份
+        /// 选择
         /// </summary>
-        public void Backup()
+        public void Select()
         {
             try
             {
-
+                CommonOpenFileDialog dialog = new CommonOpenFileDialog("请选择一个文件夹");
+                dialog.IsFolderPicker = true; //选择文件还是文件夹（true:选择文件夹，false:选择文件）
+                if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+                {
+                    Model.SavePath= dialog.FileName;
+                }
             }
             catch (Exception ex)
             {
@@ -254,9 +250,9 @@ END";
         }
 
         /// <summary>
-        /// 选择
+        /// 备份
         /// </summary>
-        public void Select()
+        public void Backup()
         {
             try
             {

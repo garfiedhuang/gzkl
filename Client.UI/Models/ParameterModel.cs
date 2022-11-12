@@ -13,7 +13,7 @@ namespace GZKL.Client.UI.Models
     /// <summary>
     /// 参数模型
     /// </summary>
-    public class ParameterModel
+    public class ParameterModel:ObservableObject
     {
         public ParameterModel()
         { }
@@ -152,11 +152,17 @@ namespace GZKL.Client.UI.Models
         [Description("是否保存图片")]
         public bool SaveGraph { get; set; }
 
+
+        private string savePath;
         /// <summary>
         /// 保存路径
         /// </summary>
         [Description("保存路径")]
-        public string SavePath { get; set; }
+        public string SavePath
+        {
+            get { return savePath; }
+            set { savePath = value;RaisePropertyChanged(); }
+        }
 
 
         /// <summary>

@@ -33,7 +33,7 @@
                           DisplayMemberPath="Value" 
                           SelectedValuePath="Key"
                           ItemsSource="{Binding SerialPortData}"
-                          SelectedValue="{Binding Model.SerialPort}"/>
+                          SelectedValue="{Binding Model.SerialPort,Mode=TwoWay}"/>
 
                 <TextBox x:Name="txtFirstGear" 
                          Margin="0,0,0,20" 
@@ -42,7 +42,7 @@
                          Style="{StaticResource TextBoxExtend}"  
                          hc:InfoElement.Symbol="*"
                          hc:InfoElement.Necessary="True"
-                         Text="{Binding Model.FirstGear}"/>
+                         Text="{Binding Model.FirstGear,Mode=TwoWay}"/>
 
                 <TextBox x:Name="txtFailureJudgment" 
                          Margin="0,0,0,20" 
@@ -51,11 +51,11 @@
                          Style="{StaticResource TextBoxExtend}"  
                          hc:InfoElement.Symbol="*"
                          hc:InfoElement.Necessary="True"
-                         Text="{Binding Model.FailureJudgment}"/>
+                         Text="{Binding Model.FailureJudgment,Mode=TwoWay}"/>
 
                 <CheckBox x:Name="chkTwoChannel" 
                           Content="双通道" 
-                          IsChecked="{Binding Model.TwoChannel}" 
+                          IsChecked="{Binding Model.TwoChannel,Mode=TwoWay}" 
                           HorizontalAlignment="Left" 
                           Foreground="{DynamicResource PrimaryTextBrush}"/>
             </StackPanel>
@@ -70,7 +70,7 @@
                           DisplayMemberPath="Value" 
                           SelectedValuePath="Key"
                           ItemsSource="{Binding TesterData}"
-                          SelectedValue="{Binding Model.Tester}"/>
+                          SelectedValue="{Binding Model.Tester,Mode=TwoWay}"/>
 
                 <TextBox x:Name="txtSecondGear" 
                          Margin="0,0,0,20" 
@@ -79,7 +79,7 @@
                          Style="{StaticResource TextBoxExtend}"  
                          hc:InfoElement.Symbol="*"
                          hc:InfoElement.Necessary="True"
-                         Text="{Binding Model.SecondGear}"/>
+                         Text="{Binding Model.SecondGear,Mode=TwoWay}"/>
 
                 <TextBox x:Name="txtDrawnRange" 
                          Margin="0,0,0,20" 
@@ -88,11 +88,11 @@
                          Style="{StaticResource TextBoxExtend}"  
                          hc:InfoElement.Symbol="*"
                          hc:InfoElement.Necessary="True"
-                         Text="{Binding Model.DrawnRange}"/>
+                         Text="{Binding Model.DrawnRange,Mode=TwoWay}"/>
 
                 <CheckBox x:Name="chkAutoSwitch" 
                           Content="自动切换" 
-                          IsChecked="{Binding Model.AutoSwitch}" 
+                          IsChecked="{Binding Model.AutoSwitch,Mode=TwoWay}" 
                           HorizontalAlignment="Left" 
                           Foreground="{DynamicResource PrimaryTextBrush}"/>
             </StackPanel>
@@ -104,7 +104,7 @@
                          Style="{StaticResource TextBoxExtend}"
                          hc:InfoElement.Symbol="*"
                          hc:InfoElement.Necessary="True"
-                         Text="{Binding Model.TesterName}"/>
+                         Text="{Binding Model.TesterName,Mode=TwoWay}"/>
 
                 <TextBox x:Name="txtThirdGear" 
                          Margin="0,0,0,20" 
@@ -113,7 +113,7 @@
                          Style="{StaticResource TextBoxExtend}"  
                          hc:InfoElement.Symbol="*"
                          hc:InfoElement.Necessary="True"
-                         Text="{Binding Model.ThirdGear}"/>
+                         Text="{Binding Model.ThirdGear,Mode=TwoWay}"/>
 
                 <TextBox x:Name="txtAdjustedFactor" 
                          Margin="0,0,0,20" 
@@ -122,11 +122,11 @@
                          Style="{StaticResource TextBoxExtend}" 
                          hc:InfoElement.Symbol="*"
                          hc:InfoElement.Necessary="True"
-                         Text="{Binding Model.AdjustedFactor}"/>
+                         Text="{Binding Model.AdjustedFactor,Mode=TwoWay}"/>
 
                 <CheckBox x:Name="chkSaveData" 
                           Content="保存数据" 
-                          IsChecked="{Binding Model.SaveData}" 
+                          IsChecked="{Binding Model.SaveData,Mode=TwoWay}" 
                           HorizontalAlignment="Left" 
                           Foreground="{DynamicResource PrimaryTextBrush}"/>
             </StackPanel>
@@ -141,7 +141,7 @@
                           DisplayMemberPath="Value" 
                           SelectedValuePath="Key"
                           ItemsSource="{Binding SensorRangeData}"
-                          SelectedValue="{Binding Model.SensorRange}"/>
+                          SelectedValue="{Binding Model.SensorRange,Mode=TwoWay}"/>
 
                 <TextBox x:Name="txtExitMinValue"
                          Margin="0,0,0,20" 
@@ -150,7 +150,7 @@
                          Style="{StaticResource TextBoxExtend}"  
                          hc:InfoElement.Symbol="*"
                          hc:InfoElement.Necessary="True"
-                         Text="{Binding Model.ExitMinValue}"/>
+                         Text="{Binding Model.ExitMinValue,Mode=TwoWay}"/>
 
                 <TextBox x:Name="txtAutoSwitchRatio" 
                          Margin="0,0,0,20" 
@@ -159,11 +159,11 @@
                          Style="{StaticResource TextBoxExtend}"  
                          hc:InfoElement.Symbol="*"
                          hc:InfoElement.Necessary="True"
-                         Text="{Binding Model.AutoSwitchRatio}"/>
+                         Text="{Binding Model.AutoSwitchRatio,Mode=TwoWay}"/>
 
                 <CheckBox x:Name="chkSaveGraph" 
                           Content="保存图形" 
-                          IsChecked="{Binding Model.SaveGraph}" 
+                          IsChecked="{Binding Model.SaveGraph,Mode=TwoWay}" 
                           HorizontalAlignment="Left" 
                           Foreground="{DynamicResource PrimaryTextBrush}"/>
             </StackPanel>
@@ -180,14 +180,14 @@
                      Style="{StaticResource TextBoxExtend}"  
                      hc:InfoElement.Symbol="*"
                      hc:InfoElement.Necessary="True"
-                     Text="{Binding Model.SavePath}"/>
+                     Text="{Binding Model.SavePath,Mode=TwoWay}"/>
 
             <Button x:Name="btnSelect" 
                     Margin="10,0,0,0" 
                     Visibility="Visible" 
                     Content="选择..." 
                     Width="60" 
-                    Command="{Binding SelectCommand}" 
+                    Command="{Binding SelectCommand}"
                     hc:BorderElement.CornerRadius="5"/>
         </StackPanel>
 
@@ -247,7 +247,7 @@
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button x:Name="btnSave" Visibility="Visible" Content="保存" Width="100" Margin="10" Click="btnSave_Click" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource TextIconBrush}" hc:BorderElement.CornerRadius="5"/>
-            <Button x:Name="btnBackup" Visibility="Visible" Content="备份" Width="100" Margin="10" Click="btnBackup_Click" hc:BorderElement.CornerRadius="5"/>
+            <Button x:Name="btnBackup" Visibility="Visible" Content="备份" Width="100" Margin="10" Command="{Binding BackupCommand}" hc:BorderElement.CornerRadius="5"/>
         </StackPanel>
     </Grid>
 </UserControl>

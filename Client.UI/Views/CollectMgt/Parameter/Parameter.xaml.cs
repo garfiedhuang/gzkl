@@ -30,16 +30,10 @@ namespace GZKL.Client.UI.Views.CollectMgt.Parameter
         public Parameter()
         {
             InitializeComponent();
-
-            var model = this.DataContext as ParameterViewModel;
-
-            //var computerInfo = SessionInfo.Instance.ComputerInfo;
-            //model.GetParameterInfo($"{computerInfo.HostName}-{computerInfo.CPU}");
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-
             var model = this.DataContext as ParameterViewModel;
 
             if (string.IsNullOrEmpty(model.Model.SerialPort))
@@ -163,12 +157,6 @@ namespace GZKL.Client.UI.Views.CollectMgt.Parameter
             }
 
             model.Save(collectType, decimalDigitType);
-        }
-
-        private void btnBackup_Click(object sender, RoutedEventArgs e)
-        {
-            var model = this.DataContext as ParameterViewModel;
-            model.Backup();
         }
     }
 }
