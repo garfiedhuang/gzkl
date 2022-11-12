@@ -450,7 +450,7 @@ END";
                     Model.Tester = commParams.FirstOrDefault(s => s.Value == "通道号")?.Text;//与[试验机]下拉框映射
                     Model.ExitMinValue = commParams.FirstOrDefault(s => s.Value == "自动结束最小值")?.Text;
                     Model.FailureJudgment = commParams.FirstOrDefault(s => s.Value == "破坏判断")?.Text;
-                    Model.CurrentRangeNo = commParams.FirstOrDefault(s => s.Value == "当前量程号")?.Text??"2";
+                    Model.CurrentRangeNo = commParams.FirstOrDefault(s => s.Value == "当前量程号")?.Text??"2";//没有维护输入
                     Model.DrawnRange = commParams.FirstOrDefault(s => s.Value == "绘图范围")?.Text;
                     Model.DrawnInterval = commParams.FirstOrDefault(s => s.Value == "绘图间隔")?.Text??"3";//没有维护输入
                     Model.AdjustedFactor = commParams.FirstOrDefault(s => s.Value == "调整系数")?.Text;

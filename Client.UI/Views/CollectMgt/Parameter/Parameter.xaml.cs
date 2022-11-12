@@ -57,21 +57,51 @@ namespace GZKL.Client.UI.Views.CollectMgt.Parameter
                 MessageBox.Show("请选择【传感器量程(kN)】", "操作提示");
                 return;
             }
+
+            var firstGear = 0.0;
+            var secondGear = 0.0;
+            var thirdGear = 0.0;
+
             if (string.IsNullOrEmpty(model.Model.FirstGear))
             {
                 MessageBox.Show("请输入【第一档】", "操作提示");
                 return;
             }
+            else if (!double.TryParse(model.Model.FirstGear, out firstGear))
+            {
+                MessageBox.Show("【第一档】必须是数字", "操作提示");
+                return;
+            }
+
             if (string.IsNullOrEmpty(model.Model.SecondGear))
             {
                 MessageBox.Show("请输入【第二档】", "操作提示");
                 return;
             }
+            else if (!double.TryParse(model.Model.SecondGear, out secondGear))
+            {
+                MessageBox.Show("【第二档】必须是数字", "操作提示");
+                return;
+            }
+
             if (string.IsNullOrEmpty(model.Model.ThirdGear))
             {
                 MessageBox.Show("请输入【第三档】", "操作提示");
                 return;
             }
+            else if (!double.TryParse(model.Model.ThirdGear, out thirdGear))
+            {
+                MessageBox.Show("【第三档】必须是数字", "操作提示");
+                return;
+            }
+
+            if (firstGear <= secondGear || secondGear <= thirdGear)
+            {
+                MessageBox.Show("输入错误,第一二三档依次减小,请正确输入", "操作提示");
+                return;
+            }
+
+
             if (string.IsNullOrEmpty(model.Model.ExitMinValue))
             {
                 MessageBox.Show("请输入【退出最小值(%)】", "操作提示");
@@ -79,7 +109,7 @@ namespace GZKL.Client.UI.Views.CollectMgt.Parameter
             }
             else if (int.TryParse(model.Model.ExitMinValue, out var percent))
             {
-                if (percent < 0 || percent > 100)
+                if (percent < 1 || percent > 100)
                 {
                     MessageBox.Show("【退出最小值(%)】取值范围1-100", "操作提示");
                     return;
@@ -90,21 +120,64 @@ namespace GZKL.Client.UI.Views.CollectMgt.Parameter
                 MessageBox.Show("【退出最小值(%)】必须是数字，且取值范围1-100", "操作提示");
                 return;
             }
+
             if (string.IsNullOrEmpty(model.Model.FailureJudgment))
             {
                 MessageBox.Show("请输入【破坏判断】", "操作提示");
                 return;
             }
+            else if (int.TryParse(model.Model.FailureJudgment, out var percent))
+            {
+                if (percent < 1 || percent > 100)
+                {
+                    MessageBox.Show("【破坏判断】取值范围1-100", "操作提示");
+                    return;
+                }
+            }
+            else
+            {
+                MessageBox.Show("【破坏判断】必须是数字，且取值范围1-100", "操作提示");
+                return;
+            }
+
             if (string.IsNullOrEmpty(model.Model.DrawnRange))
             {
                 MessageBox.Show("请输入【绘图范围】", "操作提示");
                 return;
             }
+            else if (int.TryParse(model.Model.DrawnRange, out var percent))
+            {
+                if (percent < 1 || percent > 100)
+                {
+                    MessageBox.Show("【绘图范围】取值范围1-100", "操作提示");
+                    return;
+                }
+            }
+            else
+            {
+                MessageBox.Show("【绘图范围】必须是数字，且取值范围1-100", "操作提示");
+                return;
+            }
+
             if (string.IsNullOrEmpty(model.Model.AdjustedFactor))
             {
                 MessageBox.Show("请输入【调整系数】", "操作提示");
                 return;
             }
+            else if (double.TryParse(model.Model.AdjustedFactor, out var percent))
+            {
+                if (percent < 0.1 || percent > 1.0)
+                {
+                    MessageBox.Show("【调整系数】取值范围0.1-1.0", "操作提示");
+                    return;
+                }
+            }
+            else
+            {
+                MessageBox.Show("【调整系数】必须是数字，且取值范围0.1-1.0", "操作提示");
+                return;
+            }
+
             if (string.IsNullOrEmpty(model.Model.AutoSwitchRatio))
             {
                 MessageBox.Show("请输入【自动切换比例(%)】", "操作提示");
@@ -112,7 +185,7 @@ namespace GZKL.Client.UI.Views.CollectMgt.Parameter
             }
             else if (int.TryParse(model.Model.AutoSwitchRatio, out var percent))
             {
-                if (percent < 0 || percent > 100)
+                if (percent < 1 || percent > 100)
                 {
                     MessageBox.Show("【自动切换比例(%)】取值范围1-100", "操作提示");
                     return;
@@ -131,7 +204,7 @@ namespace GZKL.Client.UI.Views.CollectMgt.Parameter
 
             if (string.IsNullOrEmpty(model.Model.CollectType))
             {
-                MessageBox.Show("请选择【采集类型】","操作提示");
+                MessageBox.Show("请选择【采集类型】", "操作提示");
                 return;
             }
 
