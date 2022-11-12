@@ -83,6 +83,19 @@ namespace GZKL.Client.UI.Views.CollectMgt.Parameter
                 MessageBox.Show("请输入【退出最小值(%)】", "操作提示");
                 return;
             }
+            else if (int.TryParse(model.Model.ExitMinValue, out var percent))
+            {
+                if (percent < 0 || percent > 100)
+                {
+                    MessageBox.Show("【退出最小值(%)】取值范围1-100", "操作提示");
+                    return;
+                }
+            }
+            else
+            {
+                MessageBox.Show("【退出最小值(%)】必须是数字，且取值范围1-100", "操作提示");
+                return;
+            }
             if (string.IsNullOrEmpty(model.Model.FailureJudgment))
             {
                 MessageBox.Show("请输入【破坏判断】", "操作提示");
@@ -103,6 +116,19 @@ namespace GZKL.Client.UI.Views.CollectMgt.Parameter
                 MessageBox.Show("请输入【自动切换比例(%)】", "操作提示");
                 return;
             }
+            else if (int.TryParse(model.Model.AutoSwitchRatio, out var percent))
+            {
+                if (percent < 0 || percent > 100)
+                {
+                    MessageBox.Show("【自动切换比例(%)】取值范围1-100", "操作提示");
+                    return;
+                }
+            }
+            else
+            {
+                MessageBox.Show("【自动切换比例(%)】必须是数字，且取值范围1-100", "操作提示");
+                return;
+            }
             if (string.IsNullOrEmpty(model.Model.SavePath))
             {
                 MessageBox.Show("请选择【保存路径】", "操作提示");
@@ -121,8 +147,22 @@ namespace GZKL.Client.UI.Views.CollectMgt.Parameter
                 return;
             }
 
-            model.Save();
+            var rbCollectType = this.gbCollectType.FindName($"rb{model.Model.CollectType}") as RadioButton;
+            var rbDecimalDigitType = this.gbCollectType.FindName($"rb{model.Model.WuxiSuggestedDecimalDigit}") as RadioButton;
 
+            var collectType = model.Model.CollectType;
+            var decimalDigitType = model.Model.WuxiSuggestedDecimalDigit;
+
+            if (rbCollectType != null)
+            {
+                collectType = $"{collectType}#{rbCollectType.Content}";
+            }
+            if (rbDecimalDigitType != null)
+            {
+                decimalDigitType = $"{decimalDigitType}#{rbDecimalDigitType.Content}";
+            }
+
+            model.Save(collectType, decimalDigitType);
         }
 
         private void btnBackup_Click(object sender, RoutedEventArgs e)

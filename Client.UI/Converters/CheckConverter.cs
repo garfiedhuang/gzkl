@@ -19,12 +19,6 @@ namespace GZKL.Client.UI.Converters
             }
             string checkValue = value.ToString();
             string targetValue = parameter.ToString();
-
-            if (checkValue == "T014"&&targetValue=="T014")
-            {
-                ;
-            }
-
             bool r = checkValue.Equals(targetValue);
             return r;
         }

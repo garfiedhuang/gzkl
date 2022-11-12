@@ -33,7 +33,6 @@ namespace GZKL.Client.UI.ViewsModels
         /// </summary>
         public ParameterViewModel()
         {
-            SaveCommand = new RelayCommand(this.Save);
             BackupCommand = new RelayCommand(this.Backup);
             SelectCommand = new RelayCommand(this.Select);
 
@@ -41,7 +40,6 @@ namespace GZKL.Client.UI.ViewsModels
 
             var computerInfo = SessionInfo.Instance.ComputerInfo;
             GetParameterInfo($"{computerInfo.HostName}-{computerInfo.CPU}");
-
         }
 
         /// <summary>
@@ -106,11 +104,6 @@ namespace GZKL.Client.UI.ViewsModels
         #region Command
 
         /// <summary>
-        /// 保存
-        /// </summary>
-        public RelayCommand SaveCommand { get; set; }
-
-        /// <summary>
         /// 备份
         /// </summary>
         public RelayCommand BackupCommand { get; set; }
@@ -138,7 +131,9 @@ namespace GZKL.Client.UI.ViewsModels
         /// <summary>
         /// 保存
         /// </summary>
-        public void Save()
+        /// <param name="collectType"></param>
+        /// <param name="decimalDigitsType"></param>
+        public void Save(string collectType,string decimalDigitsType)
         {
             try
             {
@@ -202,10 +197,16 @@ END";
                             text = "False";
                             break;
                         case "采集类型":
-                            ////text = $"{CurrentCollectType?.Tag}#{CurrentCollectType.Content}";
+                            if (!string.IsNullOrEmpty(collectType))
+                            {
+                                text= collectType;//$"{rbCollectType?.Tag}#{rbCollectType.Content}";
+                            }
                             break;
                         case "TYE小数位":
-                            ////text = $"{CurrentWuxiSuggestedDecimalDigitType?.Tag}#{CurrentWuxiSuggestedDecimalDigitType.Content}";
+                            if (!string.IsNullOrEmpty(decimalDigitsType))
+                            {
+                                text = decimalDigitsType;//$"{rbDecimalDigitType?.Tag}#{rbDecimalDigitType.Content}";
+                            }
                             break;
                         default:
                             break;
@@ -238,7 +239,7 @@ END";
         }
 
         /// <summary>
-        /// 保存
+        /// 备份
         /// </summary>
         public void Backup()
         {
@@ -253,7 +254,7 @@ END";
         }
 
         /// <summary>
-        /// 保存
+        /// 选择
         /// </summary>
         public void Select()
         {
@@ -382,54 +383,7 @@ END";
 
                 if (commParams != null && commParams.Count > 0)
                 {
-
                     //公用参数
-
-                    var collectType = commParams.FirstOrDefault(s => s.Value == "采集类型")?.Text ?? "";//格式：T001#三和采集SSY
-                    if (collectType.Split('#').Length == 2)
-                    {
-                        var tag = collectType.Split('#')[0];
-
-                        Model.CollectType = tag;
-                        /*
-                        var properties = typeof(CollectTypeModel).GetProperties(BindingFlags.Public | BindingFlags.Instance);
-                        if (properties != null && properties.Length > 0)
-                        {
-                            var selectedProperty = properties.Where(w => w.Name == tag).FirstOrDefault();
-                            CurrentCollectType = selectedProperty.GetValue(Model.CollectType, null) as CompBottonModel;
-
-                            CurrentCollectType.IsCheck = true;
-                        }
-                        */
-                    }
-                    else
-                    {
-                        Model.CollectType = collectType;
-                    }
-
-                    var wuxiSuggestedDecimalDigit = commParams.FirstOrDefault(s => s.Value == "TYE小数位")?.Text ?? "";
-                    if (wuxiSuggestedDecimalDigit.Split('#').Length == 2)
-                    {
-                        var tag = wuxiSuggestedDecimalDigit.Split('#')[0];
-
-                        Model.WuxiSuggestedDecimalDigit = tag;
-                        /*
-                        var properties = typeof(WuxiSuggestedDecimalDigitModel).GetProperties(BindingFlags.Public | BindingFlags.Instance);
-                        if (properties != null && properties.Length > 0)
-                        {
-                            var selectedProperty = properties.Where(w => w.Name == tag).FirstOrDefault();
-                            CurrentWuxiSuggestedDecimalDigitType = selectedProperty.GetValue(Model.WuxiSuggestedDecimalDigit, null) as CompBottonModel;
-
-                            CurrentWuxiSuggestedDecimalDigitType.IsCheck = true;
-                        }
-                        */
-                    }
-                    else
-                    {
-                        Model.WuxiSuggestedDecimalDigit = wuxiSuggestedDecimalDigit;
-                    }
-
-
                     Model.SerialPort = commParams.FirstOrDefault(s => s.Value == "串行口")?.Text;
                     Model.Tester = commParams.FirstOrDefault(s => s.Value == "通道号")?.Text;//与[试验机]下拉框映射
                     Model.ExitMinValue = commParams.FirstOrDefault(s => s.Value == "自动结束最小值")?.Text;
@@ -444,7 +398,27 @@ END";
                     Model.CompensationEffect = Convert.ToBoolean(commParams.FirstOrDefault(s => s.Value == "补偿有效")?.Text);//没有维护输入
                     Model.SaveData = Convert.ToBoolean(commParams.FirstOrDefault(s => s.Value == "是否保存数据")?.Text);
                     Model.SaveGraph = Convert.ToBoolean(commParams.FirstOrDefault(s => s.Value == "是否保存图片")?.Text);
-                    Model.SavePath = commParams.FirstOrDefault(s => s.Value == "保存路径")?.Text;          
+                    Model.SavePath = commParams.FirstOrDefault(s => s.Value == "保存路径")?.Text;
+
+                    var collectType = commParams.FirstOrDefault(s => s.Value == "采集类型")?.Text ?? "";//格式：T001#三和采集SSY
+                    if (collectType.Split('#').Length == 2)
+                    {
+                        Model.CollectType = collectType.Split('#')[0];
+                    }
+                    else
+                    {
+                        Model.CollectType = collectType;
+                    }
+
+                    var wuxiSuggestedDecimalDigit = commParams.FirstOrDefault(s => s.Value == "TYE小数位")?.Text ?? "";
+                    if (wuxiSuggestedDecimalDigit.Split('#').Length == 2)
+                    {
+                        Model.WuxiSuggestedDecimalDigit = wuxiSuggestedDecimalDigit.Split('#')[0];
+                    }
+                    else
+                    {
+                        Model.WuxiSuggestedDecimalDigit = wuxiSuggestedDecimalDigit;
+                    }
 
                     //通道参数
                     var channelParams = CurrentParameters.Where(w => w.Category == $"{category2}{Model.Tester}")?.ToList();
