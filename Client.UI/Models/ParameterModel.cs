@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GZKL.Client.UI.Common;
+using HandyControl.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,7 +13,7 @@ namespace GZKL.Client.UI.Models
     /// <summary>
     /// 参数模型
     /// </summary>
-    public class ParameterModel : ObservableObject
+    public class ParameterModel
     {
         public ParameterModel()
         { }
@@ -157,19 +158,33 @@ namespace GZKL.Client.UI.Models
         [Description("保存路径")]
         public string SavePath { get; set; }
 
+
         /// <summary>
         /// 试验机类型
         /// </summary>
         [Description("采集类型")]
-        public CollectTypeModel CollectType { get; set; } = new CollectTypeModel();
+        public string CollectType { get; set; }
 
         /// <summary>
         /// 无锡建议小数位
         /// </summary>
         [Description("TYE小数位")]
-        public WuxiSuggestedDecimalDigitModel WuxiSuggestedDecimalDigit { get; set; } = new WuxiSuggestedDecimalDigitModel();
+        public string WuxiSuggestedDecimalDigit { get; set; }
+
+        ///// <summary>
+        ///// 试验机类型
+        ///// </summary>
+        //[Description("采集类型")]
+        //public CollectTypeModel CollectType { get; set; } = new CollectTypeModel();
+
+        ///// <summary>
+        ///// 无锡建议小数位
+        ///// </summary>
+        //[Description("TYE小数位")]
+        //public WuxiSuggestedDecimalDigitModel WuxiSuggestedDecimalDigit { get; set; } = new WuxiSuggestedDecimalDigitModel();
     }
 
+    /*
     public class CollectTypeModel
     {
         public CompBottonModel T001 { get; set; } = new CompBottonModel() { Tag = "T001", Content = "三和采集SSY" };
@@ -232,4 +247,5 @@ namespace GZKL.Client.UI.Models
             set { isCheck = value; RaisePropertyChanged(() => IsCheck); }
         }
     }
+    */
 }

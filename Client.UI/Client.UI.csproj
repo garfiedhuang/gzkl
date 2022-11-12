@@ -99,6 +99,7 @@
     <Compile Include="Common\SessionInfo.cs" />
     <Compile Include="Common\SQLHelper.cs" />
     <Compile Include="Common\Win32Helper.cs" />
+    <Compile Include="Converters\CheckConverter.cs" />
     <Compile Include="Converters\EnumConverter.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

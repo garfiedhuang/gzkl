@@ -109,13 +109,13 @@ namespace GZKL.Client.UI.Views.CollectMgt.Parameter
                 return;
             }
 
-            if (model.CurrentCollectType == null)
+            if (string.IsNullOrEmpty(model.Model.CollectType))
             {
                 MessageBox.Show("请选择【采集类型】","操作提示");
                 return;
             }
 
-            if (model.CurrentWuxiSuggestedDecimalDigitType == null)
+            if (string.IsNullOrEmpty(model.Model.WuxiSuggestedDecimalDigit))
             {
                 MessageBox.Show("请选择【无锡建议小数位】", "操作提示");
                 return;

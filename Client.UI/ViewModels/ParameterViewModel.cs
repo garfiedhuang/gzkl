@@ -36,22 +36,18 @@ namespace GZKL.Client.UI.ViewsModels
             SaveCommand = new RelayCommand(this.Save);
             BackupCommand = new RelayCommand(this.Backup);
             SelectCommand = new RelayCommand(this.Select);
-            CollectTypeCheckedCommand = new RelayCommand<string>(this.CollectTypeChecked);
-            DecimalDigitsTypeCheckedCommand = new RelayCommand<string>(this.DecimalDigitsTypeChecked);
 
             GetDropdownListData();
 
             var computerInfo = SessionInfo.Instance.ComputerInfo;
             GetParameterInfo($"{computerInfo.HostName}-{computerInfo.CPU}");
+
         }
 
         /// <summary>
         /// 当前电脑所有参数配置
         /// </summary>
-        private List<ConfigModel> currentParameters = new List<ConfigModel>();
-
-        public CompBottonModel CurrentCollectType { get; set; }
-        public CompBottonModel CurrentWuxiSuggestedDecimalDigitType { get; set; }
+        private List<ConfigModel> CurrentParameters { get; set; }
 
         /// <summary>
         /// 数据集合
@@ -62,7 +58,6 @@ namespace GZKL.Client.UI.ViewsModels
             get { return model; }
             set { model = value; RaisePropertyChanged(); }
         }
-
 
         private List<KeyValuePair<string, string>> serialPortData = new List<KeyValuePair<string, string>>();
 
@@ -207,10 +202,10 @@ END";
                             text = "False";
                             break;
                         case "采集类型":
-                            text = $"{CurrentCollectType?.Tag}#{CurrentCollectType.Content}";
+                            ////text = $"{CurrentCollectType?.Tag}#{CurrentCollectType.Content}";
                             break;
                         case "TYE小数位":
-                            text = $"{CurrentWuxiSuggestedDecimalDigitType?.Tag}#{CurrentWuxiSuggestedDecimalDigitType.Content}";
+                            ////text = $"{CurrentWuxiSuggestedDecimalDigitType?.Tag}#{CurrentWuxiSuggestedDecimalDigitType.Content}";
                             break;
                         default:
                             break;
@@ -265,48 +260,6 @@ END";
             try
             {
 
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "提示信息");
-            }
-        }
-
-        /// <summary>
-        /// 选择采集类型
-        /// </summary>
-        /// <param name="tag"></param>
-        public void CollectTypeChecked(string tag)
-        {
-            try
-            {
-                var properties = typeof(CollectTypeModel).GetProperties(BindingFlags.Public | BindingFlags.Instance);
-                if (properties != null && properties.Length > 0)
-                {
-                    var selectedProperty = properties.Where(w => w.Name == tag).FirstOrDefault();
-                    CurrentCollectType = selectedProperty.GetValue(Model.CollectType, null) as CompBottonModel;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "提示信息");
-            }
-        }
-
-        /// <summary>
-        /// 选择无锡建议小数位
-        /// </summary>
-        /// <param name="tag"></param>
-        public void DecimalDigitsTypeChecked(string tag)
-        {
-            try
-            {
-                var properties = typeof(WuxiSuggestedDecimalDigitModel).GetProperties(BindingFlags.Public | BindingFlags.Instance);
-                if (properties != null && properties.Length > 0)
-                {
-                    var selectedProperty = properties.Where(w => w.Name == tag).FirstOrDefault();
-                    CurrentWuxiSuggestedDecimalDigitType = selectedProperty.GetValue(Model.WuxiSuggestedDecimalDigit, null) as CompBottonModel;
-                }
             }
             catch (Exception ex)
             {
@@ -376,9 +329,10 @@ END";
             try
             {
                 //初始化模型
-                Model = new ParameterModel();
-                Model.CollectType = new CollectTypeModel();
-                Model.WuxiSuggestedDecimalDigit = new WuxiSuggestedDecimalDigitModel();
+                if (Model == null)
+                {
+                    Model = new ParameterModel();
+                }
 
                 //查询数据库并赋值
                 var sql = new StringBuilder(@"SELECT [id],[category],[value],[text],[remark]
@@ -395,14 +349,21 @@ END";
 
                 using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
                 {
-                    currentParameters.Clear();
+                    if (CurrentParameters == null)
+                    {
+                        CurrentParameters = new List<ConfigModel>();
+                    }
+                    else
+                    {
+                        CurrentParameters.Clear();
+                    }
 
                     if (data != null && data.Rows.Count > 0)
                     {
                         var value = string.Empty;
                         foreach (DataRow dataRow in data.Rows)
                         {
-                            currentParameters.Add(new ConfigModel()
+                            CurrentParameters.Add(new ConfigModel()
                             {
                                 Id = Convert.ToInt64(dataRow["id"]),
                                 Category = dataRow["category"].ToString(),
@@ -417,11 +378,58 @@ END";
                     }
                 }
 
-                var commParams = currentParameters.Where(w => w.Category == category1)?.ToList();
+                var commParams = CurrentParameters.Where(w => w.Category == category1)?.ToList();
 
                 if (commParams != null && commParams.Count > 0)
                 {
+
                     //公用参数
+
+                    var collectType = commParams.FirstOrDefault(s => s.Value == "采集类型")?.Text ?? "";//格式：T001#三和采集SSY
+                    if (collectType.Split('#').Length == 2)
+                    {
+                        var tag = collectType.Split('#')[0];
+
+                        Model.CollectType = tag;
+                        /*
+                        var properties = typeof(CollectTypeModel).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                        if (properties != null && properties.Length > 0)
+                        {
+                            var selectedProperty = properties.Where(w => w.Name == tag).FirstOrDefault();
+                            CurrentCollectType = selectedProperty.GetValue(Model.CollectType, null) as CompBottonModel;
+
+                            CurrentCollectType.IsCheck = true;
+                        }
+                        */
+                    }
+                    else
+                    {
+                        Model.CollectType = collectType;
+                    }
+
+                    var wuxiSuggestedDecimalDigit = commParams.FirstOrDefault(s => s.Value == "TYE小数位")?.Text ?? "";
+                    if (wuxiSuggestedDecimalDigit.Split('#').Length == 2)
+                    {
+                        var tag = wuxiSuggestedDecimalDigit.Split('#')[0];
+
+                        Model.WuxiSuggestedDecimalDigit = tag;
+                        /*
+                        var properties = typeof(WuxiSuggestedDecimalDigitModel).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                        if (properties != null && properties.Length > 0)
+                        {
+                            var selectedProperty = properties.Where(w => w.Name == tag).FirstOrDefault();
+                            CurrentWuxiSuggestedDecimalDigitType = selectedProperty.GetValue(Model.WuxiSuggestedDecimalDigit, null) as CompBottonModel;
+
+                            CurrentWuxiSuggestedDecimalDigitType.IsCheck = true;
+                        }
+                        */
+                    }
+                    else
+                    {
+                        Model.WuxiSuggestedDecimalDigit = wuxiSuggestedDecimalDigit;
+                    }
+
+
                     Model.SerialPort = commParams.FirstOrDefault(s => s.Value == "串行口")?.Text;
                     Model.Tester = commParams.FirstOrDefault(s => s.Value == "通道号")?.Text;//与[试验机]下拉框映射
                     Model.ExitMinValue = commParams.FirstOrDefault(s => s.Value == "自动结束最小值")?.Text;
@@ -436,124 +444,10 @@ END";
                     Model.CompensationEffect = Convert.ToBoolean(commParams.FirstOrDefault(s => s.Value == "补偿有效")?.Text);//没有维护输入
                     Model.SaveData = Convert.ToBoolean(commParams.FirstOrDefault(s => s.Value == "是否保存数据")?.Text);
                     Model.SaveGraph = Convert.ToBoolean(commParams.FirstOrDefault(s => s.Value == "是否保存图片")?.Text);
-                    Model.SavePath = commParams.FirstOrDefault(s => s.Value == "保存路径")?.Text;
-
-                    var collectType = commParams.FirstOrDefault(s => s.Value == "采集类型")?.Text ?? "";//格式：T001#三和采集SSY
-                    if (collectType.Split('#').Length == 2)
-                    {
-                        var tag = collectType.Split('#')[0];
-                        switch (tag)
-                        {
-                            case "T001":
-                                Model.CollectType.T001.IsCheck= true;
-                                CurrentCollectType = Model.CollectType.T001;
-                                break;
-                            case "T002":
-                                Model.CollectType.T002.IsCheck = true;
-                                CurrentCollectType = Model.CollectType.T002;
-                                break;
-                            case "T003":
-                                Model.CollectType.T003.IsCheck = true;
-                                CurrentCollectType = Model.CollectType.T003;
-                                break;
-                            case "T004":
-                                Model.CollectType.T004.IsCheck = true;
-                                CurrentCollectType = Model.CollectType.T004;
-                                break;
-                            case "T005":
-                                Model.CollectType.T005.IsCheck = true;
-                                CurrentCollectType = Model.CollectType.T005;
-                                break;
-                            case "T006":
-                                Model.CollectType.T006.IsCheck = true;
-                                CurrentCollectType = Model.CollectType.T006;
-                                break;
-                            case "T007":
-                                Model.CollectType.T007.IsCheck = true;
-                                CurrentCollectType = Model.CollectType.T007;
-                                break;
-                            case "T008":
-                                Model.CollectType.T008.IsCheck = true;
-                                CurrentCollectType = Model.CollectType.T008;
-                                break;
-                            case "T009":
-                                Model.CollectType.T009.IsCheck = true;
-                                CurrentCollectType = Model.CollectType.T009;
-                                break;
-                            case "T010":
-                                Model.CollectType.T010.IsCheck = true;
-                                CurrentCollectType = Model.CollectType.T010;
-                                break;
-                            case "T011":
-                                Model.CollectType.T011.IsCheck = true;
-                                CurrentCollectType = Model.CollectType.T011;
-                                break;
-                            case "T012":
-                                Model.CollectType.T012.IsCheck = true;
-                                CurrentCollectType = Model.CollectType.T012;
-                                break;
-                            case "T013":
-                                Model.CollectType.T013.IsCheck = true;
-                                CurrentCollectType = Model.CollectType.T013;
-                                break;
-                            case "T014":
-                                Model.CollectType.T014.IsCheck = true;
-                                CurrentCollectType = Model.CollectType.T014;
-                                break;
-                            default:
-
-                                break;
-                        }
-
-                        /*
-                        var properties = typeof(CollectTypeModel).GetProperties(BindingFlags.Public | BindingFlags.Instance);
-                        if (properties != null && properties.Length > 0)
-                        {
-                            var selectedProperty = properties.Where(w => w.Name == tag).FirstOrDefault();
-                            CurrentCollectType = selectedProperty.GetValue(Model.CollectType, null) as CompBottonModel;
-
-                            CurrentCollectType.IsCheck = true;
-                        }
-                        */
-                    }
-
-                    var wuxiSuggestedDecimalDigit = commParams.FirstOrDefault(s => s.Value == "TYE小数位")?.Text ?? "";
-                    if (wuxiSuggestedDecimalDigit.Split('#').Length == 2)
-                    {
-                        var tag = wuxiSuggestedDecimalDigit.Split('#')[0];
-
-                        switch (tag)
-                        {
-                            case "DDT001":
-                                Model.WuxiSuggestedDecimalDigit.DDT001.IsCheck = true;
-                                CurrentWuxiSuggestedDecimalDigitType = Model.WuxiSuggestedDecimalDigit.DDT001;
-                                break;
-                            case "DDT002":
-                                Model.WuxiSuggestedDecimalDigit.DDT002.IsCheck = true;
-                                CurrentWuxiSuggestedDecimalDigitType = Model.WuxiSuggestedDecimalDigit.DDT002;
-                                break;
-                            case "DDT003":
-                                Model.WuxiSuggestedDecimalDigit.DDT003.IsCheck = true;
-                                CurrentWuxiSuggestedDecimalDigitType = Model.WuxiSuggestedDecimalDigit.DDT003;
-                                break;
-                            default:
-                                break;
-                        }
-
-                                /*
-                                var properties = typeof(WuxiSuggestedDecimalDigitModel).GetProperties(BindingFlags.Public | BindingFlags.Instance);
-                                if (properties != null && properties.Length > 0)
-                                {
-                                    var selectedProperty = properties.Where(w => w.Name == tag).FirstOrDefault();
-                                    CurrentWuxiSuggestedDecimalDigitType = selectedProperty.GetValue(Model.WuxiSuggestedDecimalDigit, null) as CompBottonModel;
-
-                                    CurrentWuxiSuggestedDecimalDigitType.IsCheck = true;
-                                }
-                                */
-                        }
+                    Model.SavePath = commParams.FirstOrDefault(s => s.Value == "保存路径")?.Text;          
 
                     //通道参数
-                    var channelParams = currentParameters.Where(w => w.Category == $"{category2}{Model.Tester}")?.ToList();
+                    var channelParams = CurrentParameters.Where(w => w.Category == $"{category2}{Model.Tester}")?.ToList();
                     if (channelParams != null && channelParams.Count > 0)
                     {
                         Model.FirstGear = channelParams.FirstOrDefault(s => s.Value == "量程1")?.Text;
