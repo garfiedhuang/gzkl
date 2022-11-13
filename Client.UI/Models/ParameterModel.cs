@@ -116,11 +116,17 @@ namespace GZKL.Client.UI.Models
         [Description("调整系数")]
         public string AdjustedFactor { get; set; }
 
+
+        private string autoSwitchRatio;
         /// <summary>
         /// 自动切换比例(%)
         /// </summary>
         [Description("切换比例")]
-        public string AutoSwitchRatio { get; set; }
+        public string AutoSwitchRatio
+        {
+            get { return autoSwitchRatio; }
+            set { autoSwitchRatio = value; RaisePropertyChanged(); }
+        }
 
         /// <summary>
         /// 补偿有效
@@ -134,11 +140,17 @@ namespace GZKL.Client.UI.Models
         [Description("双通道")]
         public bool TwoChannel { get; set; }
 
+
+        private bool autoSwitch;
         /// <summary>
         /// 自动切换
         /// </summary>
         [Description("自动切换")]
-        public bool AutoSwitch { get; set; }
+        public bool AutoSwitch
+        {
+            get { return autoSwitch; }
+            set { autoSwitch = value; RaisePropertyChanged(); }
+        }
 
         /// <summary>
         /// 保存数据

@@ -34,6 +34,7 @@ namespace GZKL.Client.UI.ViewsModels
         /// </summary>
         public ParameterViewModel()
         {
+            AutoSwitchCheckedCommand= new RelayCommand(this.AutoSwitchChecked);
             SelectCommand = new RelayCommand(this.Select);
             BackupCommand = new RelayCommand(this.Backup);
 
@@ -103,6 +104,11 @@ namespace GZKL.Client.UI.ViewsModels
         #endregion
 
         #region Command
+
+        /// <summary>
+        /// 自动切换选择
+        /// </summary>
+        public RelayCommand AutoSwitchCheckedCommand { get; set; }
 
         /// <summary>
         /// 选择
@@ -221,6 +227,24 @@ END";
                 else
                 {
                     throw new Exception($"参数设置失败，请与管理员联系");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "提示信息");
+            }
+        }
+
+        /// <summary>
+        /// 自动切换选择
+        /// </summary>
+        public void AutoSwitchChecked()
+        {
+            try
+            {
+                if (Model.AutoSwitch)
+                { 
+                
                 }
             }
             catch (Exception ex)
@@ -456,7 +480,7 @@ END";
                     Model.AdjustedFactor = commParams.FirstOrDefault(s => s.Value == "调整系数")?.Text;
                     Model.TwoChannel = Convert.ToBoolean(commParams.FirstOrDefault(s => s.Value == "双通道")?.Text);
                     Model.AutoSwitch = Convert.ToBoolean(commParams.FirstOrDefault(s => s.Value == "自动切换")?.Text);
-                    Model.AutoSwitchRatio = commParams.FirstOrDefault(s => s.Value == "切换比例")?.Text;
+                    Model.AutoSwitchRatio = commParams.FirstOrDefault(s => s.Value == "切换比例")?.Text??"80";//默认80
                     Model.CompensationEffect = Convert.ToBoolean(commParams.FirstOrDefault(s => s.Value == "补偿有效")?.Text);//没有维护输入
                     Model.SaveData = Convert.ToBoolean(commParams.FirstOrDefault(s => s.Value == "是否保存数据")?.Text);
                     Model.SaveGraph = Convert.ToBoolean(commParams.FirstOrDefault(s => s.Value == "是否保存图片")?.Text);
