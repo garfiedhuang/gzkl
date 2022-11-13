@@ -34,16 +34,18 @@ namespace GZKL.Client.UI.ViewsModels
         /// </summary>
         public ParameterViewModel()
         {
-            AutoSwitchCheckedCommand= new RelayCommand(this.AutoSwitchChecked);
+            AutoSwitchCheckedCommand = new RelayCommand(this.AutoSwitchChecked);
+            TesterSelectionChangedCommand = new RelayCommand(this.TesterSelectionChanged);
             SelectCommand = new RelayCommand(this.Select);
             BackupCommand = new RelayCommand(this.Backup);
 
             GetDropdownListData();
 
-            var computerInfo = SessionInfo.Instance.ComputerInfo;
-            GetParameterInfo($"{computerInfo.HostName}-{computerInfo.CPU}");
+            _computerInfo = SessionInfo.Instance.ComputerInfo;
+            GetParameterInfo($"{_computerInfo.HostName}-{_computerInfo.CPU}");
         }
 
+        private ComputerInfo _computerInfo;
         /// <summary>
         /// 当前电脑所有参数配置
         /// </summary>
@@ -105,6 +107,12 @@ namespace GZKL.Client.UI.ViewsModels
 
         #region Command
 
+
+        /// <summary>
+        /// 选择试验机
+        /// </summary>
+        public RelayCommand TesterSelectionChangedCommand { get; set; }
+
         /// <summary>
         /// 自动切换选择
         /// </summary>
@@ -130,7 +138,7 @@ namespace GZKL.Client.UI.ViewsModels
         /// </summary>
         /// <param name="collectType"></param>
         /// <param name="decimalDigitsType"></param>
-        public void Save(string collectType,string decimalDigitsType)
+        public void Save(string collectType, string decimalDigitsType)
         {
             try
             {
@@ -156,8 +164,7 @@ END";
                 //获取当前Model所有属性
                 var properties = typeof(ParameterModel).GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
-                var computerInfo = SessionInfo.Instance.ComputerInfo;
-                var fullName = $"{computerInfo.HostName}-{computerInfo.CPU}";
+                var fullName = $"{_computerInfo.HostName}-{_computerInfo.CPU}";
                 var userInfo = SessionInfo.Instance.Session;
 
                 var category = string.Empty;
@@ -196,7 +203,7 @@ END";
                         case "采集类型":
                             if (!string.IsNullOrEmpty(collectType))
                             {
-                                text= collectType;//$"{rbCollectType?.Tag}#{rbCollectType.Content}";
+                                text = collectType;//$"{rbCollectType?.Tag}#{rbCollectType.Content}";
                             }
                             break;
                         case "TYE小数位":
@@ -222,11 +229,52 @@ END";
 
                 if (effectRowCount > 0)
                 {
+                    GetParameterInfo(fullName, true);//刷新参数配置缓存数据
+
                     var res = MessageBox.Show($"参数设置成功", "提示信息");
                 }
                 else
                 {
                     throw new Exception($"参数设置失败，请与管理员联系");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "提示信息");
+            }
+        }
+
+        /// <summary>
+        /// 选择试验机
+        /// </summary>
+        public void TesterSelectionChanged()
+        {
+            try
+            {
+                //当前选中的通道号
+                var tester = Model.Tester;
+                var fullName = $"{_computerInfo.HostName}-{_computerInfo.CPU}";
+
+                var category = $"ChannelParams-{fullName}-{tester}";//ChannelParams-{HostName}-{CPU}-{No}
+
+                var channelParams = new List<ConfigModel>();
+                if (CurrentParameters != null && CurrentParameters.Count > 0)
+                {
+                    channelParams = CurrentParameters.Where(w => w.Category == category)?.ToList();
+                }
+
+                Model.FirstGear = channelParams?.FirstOrDefault(s => s.Value == "量程1")?.Text ?? "300";
+                Model.SecondGear = channelParams?.FirstOrDefault(s => s.Value == "量程2")?.Text ?? "150";
+                Model.ThirdGear = channelParams?.FirstOrDefault(s => s.Value == "量程3")?.Text ?? "60";
+                Model.SensorRange = channelParams?.FirstOrDefault(s => s.Value == "最大量程")?.Text ?? "310";
+                Model.TesterName = channelParams?.FirstOrDefault(s => s.Value == "试验机型号")?.Text ?? "";
+                Model.RangeFactor = channelParams?.FirstOrDefault(s => s.Value == "量程系数")?.Text;
+
+                if (string.IsNullOrEmpty(Model.RangeFactor))
+                {
+                    //设置默认的量程系数
+                    int.TryParse(Model.SensorRange, out var value);
+                    Model.RangeFactor = System.Math.Round((value * 1.0) / 4095, 4).ToString();
                 }
             }
             catch (Exception ex)
@@ -243,8 +291,8 @@ END";
             try
             {
                 if (Model.AutoSwitch)
-                { 
-                
+                {
+
                 }
             }
             catch (Exception ex)
@@ -264,7 +312,7 @@ END";
                 dialog.IsFolderPicker = true; //选择文件还是文件夹（true:选择文件夹，false:选择文件）
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
-                    Model.SavePath= dialog.FileName;
+                    Model.SavePath = dialog.FileName;
                 }
             }
             catch (Exception ex)
@@ -280,8 +328,7 @@ END";
         {
             try
             {
-                var computerInfo = SessionInfo.Instance.ComputerInfo;
-                var fullName = $"{computerInfo.HostName}-{computerInfo.CPU}";
+                var fullName = $"{_computerInfo.HostName}-{_computerInfo.CPU}";
                 var userInfo = SessionInfo.Instance.Session;
 
                 //查询数据库并赋值
@@ -340,7 +387,7 @@ END";
                     new SqlParameter("@userId", userInfo.Id),
                     };
 
-                    var result = SQLHelper.ExecuteNonQuery(sql.ToString(),parameters);
+                    var result = SQLHelper.ExecuteNonQuery(sql.ToString(), parameters);
                     MessageBox.Show($"参数备份成功，备份码：{backupNo}", "提示信息");
 
                 }
@@ -412,7 +459,8 @@ END";
         /// 获取参数配置信息
         /// </summary>
         /// <param name="fullName"></param>
-        internal void GetParameterInfo(string fullName)
+        /// <param name="isRefresh"></param>
+        internal void GetParameterInfo(string fullName,bool isRefresh=false)
         {
             try
             {
@@ -431,8 +479,8 @@ END";
                 var category2 = $"ChannelParams-{fullName}-";//ChannelParams-{HostName}-{CPU}-{No}
 
                 var parameters = new SqlParameter[] {
-                    new SqlParameter("@category1", category1), 
-                    new SqlParameter("@category2", $"{category2}%") 
+                    new SqlParameter("@category1", category1),
+                    new SqlParameter("@category2", $"{category2}%")
                 };
 
                 using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
@@ -465,58 +513,63 @@ END";
                     }
                 }
 
+                //刷新当前参数配置缓存数据
+                if (isRefresh) return;
+
                 var commParams = CurrentParameters.Where(w => w.Category == category1)?.ToList();
 
-                if (commParams != null && commParams.Count > 0)
+                //公用参数
+                Model.SerialPort = commParams?.FirstOrDefault(s => s.Value == "串行口")?.Text ?? "COM1";                         //默认COM1
+                Model.Tester = commParams?.FirstOrDefault(s => s.Value == "通道号")?.Text ?? "1";                                //与[试验机]下拉框映射,默认1
+                Model.ExitMinValue = commParams?.FirstOrDefault(s => s.Value == "自动结束最小值")?.Text ?? "10";                 //默认10
+                Model.FailureJudgment = commParams?.FirstOrDefault(s => s.Value == "破坏判断")?.Text ?? "70";                    //默认70
+                Model.CurrentRangeNo = commParams?.FirstOrDefault(s => s.Value == "当前量程号")?.Text ?? "2";                    //没有维护输入，默认2
+                Model.DrawnRange = commParams?.FirstOrDefault(s => s.Value == "绘图范围")?.Text ?? "80";                         //默认80
+                Model.DrawnInterval = commParams?.FirstOrDefault(s => s.Value == "绘图间隔")?.Text ?? "3";                       //没有维护输入，默认3
+                Model.AdjustedFactor = commParams?.FirstOrDefault(s => s.Value == "调整系数")?.Text ?? "0.5";                    //默认0.5
+                Model.TwoChannel = Convert.ToBoolean(commParams?.FirstOrDefault(s => s.Value == "双通道")?.Text);
+                Model.AutoSwitch = Convert.ToBoolean(commParams?.FirstOrDefault(s => s.Value == "自动切换")?.Text);
+                Model.AutoSwitchRatio = commParams?.FirstOrDefault(s => s.Value == "切换比例")?.Text ?? "80";                    //默认80
+                Model.CompensationEffect = Convert.ToBoolean(commParams?.FirstOrDefault(s => s.Value == "补偿有效")?.Text);      //没有维护输入
+                Model.SaveData = Convert.ToBoolean(commParams?.FirstOrDefault(s => s.Value == "是否保存数据")?.Text);
+                Model.SaveGraph = Convert.ToBoolean(commParams?.FirstOrDefault(s => s.Value == "是否保存图片")?.Text);
+                Model.SavePath = commParams?.FirstOrDefault(s => s.Value == "保存路径")?.Text??"";
+
+                var collectType = commParams?.FirstOrDefault(s => s.Value == "采集类型")?.Text ?? "";                           //格式：T001#三和采集SSY
+                if (collectType.Split('#').Length == 2)
                 {
-                    //公用参数
-                    Model.SerialPort = commParams.FirstOrDefault(s => s.Value == "串行口")?.Text;
-                    Model.Tester = commParams.FirstOrDefault(s => s.Value == "通道号")?.Text;//与[试验机]下拉框映射
-                    Model.ExitMinValue = commParams.FirstOrDefault(s => s.Value == "自动结束最小值")?.Text;
-                    Model.FailureJudgment = commParams.FirstOrDefault(s => s.Value == "破坏判断")?.Text;
-                    Model.CurrentRangeNo = commParams.FirstOrDefault(s => s.Value == "当前量程号")?.Text??"2";//没有维护输入
-                    Model.DrawnRange = commParams.FirstOrDefault(s => s.Value == "绘图范围")?.Text;
-                    Model.DrawnInterval = commParams.FirstOrDefault(s => s.Value == "绘图间隔")?.Text??"3";//没有维护输入
-                    Model.AdjustedFactor = commParams.FirstOrDefault(s => s.Value == "调整系数")?.Text;
-                    Model.TwoChannel = Convert.ToBoolean(commParams.FirstOrDefault(s => s.Value == "双通道")?.Text);
-                    Model.AutoSwitch = Convert.ToBoolean(commParams.FirstOrDefault(s => s.Value == "自动切换")?.Text);
-                    Model.AutoSwitchRatio = commParams.FirstOrDefault(s => s.Value == "切换比例")?.Text??"80";//默认80
-                    Model.CompensationEffect = Convert.ToBoolean(commParams.FirstOrDefault(s => s.Value == "补偿有效")?.Text);//没有维护输入
-                    Model.SaveData = Convert.ToBoolean(commParams.FirstOrDefault(s => s.Value == "是否保存数据")?.Text);
-                    Model.SaveGraph = Convert.ToBoolean(commParams.FirstOrDefault(s => s.Value == "是否保存图片")?.Text);
-                    Model.SavePath = commParams.FirstOrDefault(s => s.Value == "保存路径")?.Text;
+                    Model.CollectType = collectType.Split('#')[0];
+                }
+                else
+                {
+                    Model.CollectType = collectType;
+                }
 
-                    var collectType = commParams.FirstOrDefault(s => s.Value == "采集类型")?.Text ?? "";//格式：T001#三和采集SSY
-                    if (collectType.Split('#').Length == 2)
-                    {
-                        Model.CollectType = collectType.Split('#')[0];
-                    }
-                    else
-                    {
-                        Model.CollectType = collectType;
-                    }
+                var wuxiSuggestedDecimalDigit = commParams?.FirstOrDefault(s => s.Value == "TYE小数位")?.Text ?? "";
+                if (wuxiSuggestedDecimalDigit.Split('#').Length == 2)
+                {
+                    Model.WuxiSuggestedDecimalDigit = wuxiSuggestedDecimalDigit.Split('#')[0];
+                }
+                else
+                {
+                    Model.WuxiSuggestedDecimalDigit = wuxiSuggestedDecimalDigit;
+                }
 
-                    var wuxiSuggestedDecimalDigit = commParams.FirstOrDefault(s => s.Value == "TYE小数位")?.Text ?? "";
-                    if (wuxiSuggestedDecimalDigit.Split('#').Length == 2)
-                    {
-                        Model.WuxiSuggestedDecimalDigit = wuxiSuggestedDecimalDigit.Split('#')[0];
-                    }
-                    else
-                    {
-                        Model.WuxiSuggestedDecimalDigit = wuxiSuggestedDecimalDigit;
-                    }
+                //通道参数
+                var channelParams = CurrentParameters.Where(w => w.Category == $"{category2}{Model.Tester}")?.ToList();
 
-                    //通道参数
-                    var channelParams = CurrentParameters.Where(w => w.Category == $"{category2}{Model.Tester}")?.ToList();
-                    if (channelParams != null && channelParams.Count > 0)
-                    {
-                        Model.FirstGear = channelParams.FirstOrDefault(s => s.Value == "量程1")?.Text;
-                        Model.SecondGear = channelParams.FirstOrDefault(s => s.Value == "量程2")?.Text;
-                        Model.ThirdGear = channelParams.FirstOrDefault(s => s.Value == "量程3")?.Text;
-                        Model.SensorRange = channelParams.FirstOrDefault(s => s.Value == "最大量程")?.Text;
-                        Model.TesterName = channelParams.FirstOrDefault(s => s.Value == "试验机型号")?.Text;
-                        Model.RangeFactor = channelParams.FirstOrDefault(s => s.Value == "量程系数")?.Text;
-                    }
+                Model.FirstGear = channelParams?.FirstOrDefault(s => s.Value == "量程1")?.Text ?? "300";
+                Model.SecondGear = channelParams?.FirstOrDefault(s => s.Value == "量程2")?.Text ?? "150";
+                Model.ThirdGear = channelParams?.FirstOrDefault(s => s.Value == "量程3")?.Text ?? "60";
+                Model.SensorRange = channelParams?.FirstOrDefault(s => s.Value == "最大量程")?.Text ?? "310";
+                Model.TesterName = channelParams?.FirstOrDefault(s => s.Value == "试验机型号")?.Text ?? "";
+                Model.RangeFactor = channelParams?.FirstOrDefault(s => s.Value == "量程系数")?.Text;
+
+                if (string.IsNullOrEmpty(Model.RangeFactor))
+                {
+                    //设置默认的量程系数
+                    int.TryParse(Model.SensorRange, out var value);
+                    Model.RangeFactor = System.Math.Round((value * 1.0) / 4095, 4).ToString();
                 }
             }
             catch (Exception ex)

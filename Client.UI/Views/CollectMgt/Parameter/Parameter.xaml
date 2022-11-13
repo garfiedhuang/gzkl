@@ -71,7 +71,9 @@
                           DisplayMemberPath="Value" 
                           SelectedValuePath="Key"
                           ItemsSource="{Binding TesterData}"
-                          SelectedValue="{Binding Model.Tester,Mode=TwoWay}"/>
+                          IsEnabled ="{c:Binding Model.TwoChannel,Mode=TwoWay}"
+                          SelectedValue="{Binding Model.Tester,Mode=TwoWay}"
+                          SelectionChanged="cmbTester_SelectionChanged" />
 
                 <TextBox x:Name="txtSecondGear" 
                          Margin="0,0,0,20" 

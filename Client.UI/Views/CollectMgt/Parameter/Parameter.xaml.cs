@@ -231,5 +231,12 @@ namespace GZKL.Client.UI.Views.CollectMgt.Parameter
 
             model.Save(collectType, decimalDigitType);
         }
+
+        private void cmbTester_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var model = this.DataContext as ParameterViewModel;
+
+            model.TesterSelectionChanged();
+        }
     }
 }

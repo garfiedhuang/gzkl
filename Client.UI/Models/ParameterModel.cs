@@ -13,111 +13,188 @@ namespace GZKL.Client.UI.Models
     /// <summary>
     /// 参数模型
     /// </summary>
-    public class ParameterModel:ObservableObject
+    public class ParameterModel : ObservableObject
     {
         public ParameterModel()
         { }
 
+        private string serialPort="COM1";
         /// <summary>
         /// 串行口
         /// </summary>
         [Description("串行口")]
-        public string SerialPort { get; set; }
+        public string SerialPort
+        {
+            get { return serialPort; }
+            set { serialPort = value; RaisePropertyChanged(); }
+        }
 
+        private string tester = "1";
         /// <summary>
         /// 试验机
         /// </summary>
         [Description("通道号")]
-        public string Tester { get; set; }
+        public string Tester
+        {
+            get { return tester; }
+            set { tester = value; RaisePropertyChanged(); }
+        }
 
+        private string testerName="";
         /// <summary>
         /// 试验机名称
         /// </summary>
         [Description("试验机型号")]
-        public string TesterName { get; set; }
+        public string TesterName
+        {
+            get { return testerName; }
+            set
+            {
+                testerName = value; RaisePropertyChanged();
+            }
+        }
 
+        private string sensorRange = "310";
         /// <summary>
         /// 传感器量程(kN)
         /// </summary>
         [Description("最大量程")]
-        public string SensorRange { get; set; }
+        public string SensorRange
+        {
+            get { return sensorRange; }
+            set { sensorRange = value; RaisePropertyChanged(); }
+        }
 
-
-        private string rangeFactor;
+        private string rangeFactor="";
         /// <summary>
         /// 量程系数 = 传感器量程(kN) / 4095
         /// </summary>
         [Description("量程系数")]
-        //public string RangeFactor { get; set; }
         public string RangeFactor
         {
             get
             {
-                int.TryParse(SensorRange, out var value);
-                return rangeFactor = System.Math.Round(value / 4095 * 1.0, 4).ToString();
+                if (int.TryParse(sensorRange, out var value))
+                {
+                    return System.Math.Round((value*1.0) /4095, 4).ToString(); ;
+                }
+                else
+                {
+                    return "";
+                }
             }
             set
             {
-                rangeFactor = value;
+                rangeFactor = value; RaisePropertyChanged();
             }
         }
 
+        private string firstGear= "300";
         /// <summary>
         /// 第一档
         /// </summary>
         [Description("量程1")]
-        public string FirstGear { get; set; }
+        public string FirstGear
+        {
+            get { return firstGear; }
+            set { firstGear = value; RaisePropertyChanged(); }
+        }
 
+        private string secondGear = "150";
         /// <summary>
         /// 第二档
         /// </summary>
         [Description("量程2")]
-        public string SecondGear { get; set; }
+        public string SecondGear
+        {
+            get { return secondGear; }
+            set { secondGear = value; RaisePropertyChanged(); }
+        }
 
+        private string thirdGear = "60";
         /// <summary>
         /// 第三档
         /// </summary>
         [Description("量程3")]
-        public string ThirdGear { get; set; }
+        public string ThirdGear
+        {
+            get { return thirdGear; }
+            set { thirdGear = value; RaisePropertyChanged(); }
+        }
 
+        private string exitMinValue = "10";
         /// <summary>
         /// 退出最小值(%)
         /// </summary>
         [Description("自动结束最小值")]
-        public string ExitMinValue { get; set; }
+        public string ExitMinValue
+        {
+            get { return exitMinValue; }
+            set
+            {
+                exitMinValue = value; RaisePropertyChanged();
+            }
+        }
 
+        private string failureJudgment = "70";
         /// <summary>
         /// 破坏判断
         /// </summary>
         [Description("破坏判断")]
-        public string FailureJudgment { get; set; }
+        public string FailureJudgment
+        {
+            get { return failureJudgment; }
+            set { failureJudgment = value; RaisePropertyChanged(); }
+        }
 
+        private string currentRangeNo = "2";
         /// <summary>
         /// 当前量程号
         /// </summary>
         [Description("当前量程号")]
-        public string CurrentRangeNo { get; set; }
+        public string CurrentRangeNo
+        {
+            get { return currentRangeNo; }
+            set { currentRangeNo = value; RaisePropertyChanged(); }
+        }
 
+        private string drawnRange = "80";
         /// <summary>
         /// 绘图范围
         /// </summary>
         [Description("绘图范围")]
-        public string DrawnRange { get; set; }
+        public string DrawnRange
+        {
+            get { return drawnRange; }
+            set { drawnRange = value; RaisePropertyChanged(); }
+        }
 
+        private string drawnInterval = "3";
         /// <summary>
         /// 绘图间隔
         /// </summary>
         [Description("绘图间隔")]
-        public string DrawnInterval { get; set; } = "3";
+        public string DrawnInterval
+        {
+            get { return drawnInterval; }
+            set
+            {
+                drawnInterval = value; RaisePropertyChanged();
+            }
+        }
 
+        private string adjustedFactor = "0.5";
         /// <summary>
         /// 调整系数
         /// </summary>
         [Description("调整系数")]
-        public string AdjustedFactor { get; set; }
+        public string AdjustedFactor
+        {
+            get { return adjustedFactor; }
+            set { adjustedFactor = value; RaisePropertyChanged(); }
+        }
 
-
-        private string autoSwitchRatio;
+        private string autoSwitchRatio = "80";
         /// <summary>
         /// 自动切换比例(%)
         /// </summary>
@@ -128,18 +205,27 @@ namespace GZKL.Client.UI.Models
             set { autoSwitchRatio = value; RaisePropertyChanged(); }
         }
 
+        private bool compensationEffect;
         /// <summary>
         /// 补偿有效
         /// </summary>
         [Description("补偿有效")]
-        public bool CompensationEffect { get; set; }
+        public bool CompensationEffect
+        {
+            get { return compensationEffect; }
+            set { compensationEffect = value; RaisePropertyChanged(); }
+        }
 
+        private bool twoChannel;
         /// <summary>
         /// 双通道
         /// </summary>
         [Description("双通道")]
-        public bool TwoChannel { get; set; }
-
+        public bool TwoChannel
+        {
+            get { return twoChannel; }
+            set { twoChannel = value; RaisePropertyChanged(); }
+        }
 
         private bool autoSwitch;
         /// <summary>
@@ -152,20 +238,29 @@ namespace GZKL.Client.UI.Models
             set { autoSwitch = value; RaisePropertyChanged(); }
         }
 
+        private bool saveData;
         /// <summary>
         /// 保存数据
         /// </summary>
         [Description("是否保存数据")]
-        public bool SaveData { get; set; }
+        public bool SaveData
+        {
+            get { return saveData; }
+            set { saveData = value; RaisePropertyChanged(); }
+        }
 
+        private bool saveGraph;
         /// <summary>
         /// 保存图形
         /// </summary>
         [Description("是否保存图片")]
-        public bool SaveGraph { get; set; }
+        public bool SaveGraph
+        {
+            get { return saveGraph; }
+            set { saveGraph = value; RaisePropertyChanged(); }
+        }
 
-
-        private string savePath;
+        private string savePath = "";
         /// <summary>
         /// 保存路径
         /// </summary>
@@ -173,21 +268,30 @@ namespace GZKL.Client.UI.Models
         public string SavePath
         {
             get { return savePath; }
-            set { savePath = value;RaisePropertyChanged(); }
+            set { savePath = value; RaisePropertyChanged(); }
         }
 
-
+        private string collectType = "";
         /// <summary>
         /// 试验机类型
         /// </summary>
         [Description("采集类型")]
-        public string CollectType { get; set; }
+        public string CollectType
+        {
+            get { return collectType; }
+            set { collectType = value; RaisePropertyChanged(); }
+        }
 
+        private string wuxiSuggestedDecimalDigit = "";
         /// <summary>
         /// 无锡建议小数位
         /// </summary>
         [Description("TYE小数位")]
-        public string WuxiSuggestedDecimalDigit { get; set; }
+        public string WuxiSuggestedDecimalDigit
+        {
+            get { return wuxiSuggestedDecimalDigit; }
+            set { wuxiSuggestedDecimalDigit = value; RaisePropertyChanged(); }
+        }
 
         ///// <summary>
         ///// 试验机类型
