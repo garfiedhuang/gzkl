@@ -129,6 +129,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\BackupModel.cs" />
+    <Compile Include="Models\ExportModel.cs" />
     <Compile Include="Models\ParameterModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\OrgModel.cs" />
@@ -146,6 +147,7 @@
     <Compile Include="CustomControls\Template\MenuTemplateSelector.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\BackupViewModel.cs" />
+    <Compile Include="ViewModels\ExportViewModel.cs" />
     <Compile Include="ViewModels\ParameterViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\OrgViewModel.cs" />
@@ -159,6 +161,12 @@
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\CollectMgt\Backup\Backup.xaml.cs">
       <DependentUpon>Backup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CollectMgt\Export\Export.xaml.cs">
+      <DependentUpon>Export.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CollectMgt\Export\ViewCurve.xaml.cs">
+      <DependentUpon>ViewCurve.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CollectMgt\Org\Org.xaml.cs">
       <DependentUpon>Org.xaml</DependentUpon>
@@ -219,6 +227,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CollectMgt\Backup\Backup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CollectMgt\Export\Export.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CollectMgt\Export\ViewCurve.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

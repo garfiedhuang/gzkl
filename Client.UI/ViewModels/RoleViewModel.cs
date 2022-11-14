@@ -404,7 +404,7 @@ namespace GZKL.Client.UI.ViewsModels
         private void Paging(int pageIndex)
         {
 
-            GridModelList.Clear();//情况依赖属性
+            GridModelList.Clear();//清空依赖属性
 
             var pagedData = RoleModels.Skip((pageIndex - 1) * DataCountPerPage).Take(DataCountPerPage).ToList();
 
