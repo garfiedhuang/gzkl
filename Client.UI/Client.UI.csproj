@@ -128,6 +128,7 @@
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\BackupModel.cs" />
     <Compile Include="Models\ParameterModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\OrgModel.cs" />
@@ -144,6 +145,7 @@
     </Compile>
     <Compile Include="CustomControls\Template\MenuTemplateSelector.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\BackupViewModel.cs" />
     <Compile Include="ViewModels\ParameterViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\OrgViewModel.cs" />
@@ -155,6 +157,9 @@
     <Compile Include="ViewModels\PermissionViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
+    <Compile Include="Views\CollectMgt\Backup\Backup.xaml.cs">
+      <DependentUpon>Backup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CollectMgt\Org\Org.xaml.cs">
       <DependentUpon>Org.xaml</DependentUpon>
     </Compile>
@@ -212,6 +217,10 @@
     <Page Include="CustomControls\Views\MeterPlate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CollectMgt\Backup\Backup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\CollectMgt\Org\Org.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="GZKL.Client.UI.Views.CollectMgt.Backup.Backup"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             mc:Ignorable="d" 
+             DataContext="{Binding Source={StaticResource Locator},Path=Backup}"
+             d:DesignHeight="700" d:DesignWidth="850">
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <TextBox x:Name="txtSavePath" 
+                     Margin="40,50,0,0" 
+                     Width="500" 
+                     Height="20" 
+                     hc:InfoElement.TitlePlacement="Left" 
+                     hc:InfoElement.Placeholder="请选择保存路径" 
+                     hc:InfoElement.Title="保存路径" 
+                     Style="{StaticResource TextBoxExtend}"  
+                     hc:InfoElement.Symbol="*"
+                     hc:InfoElement.Necessary="True"
+                     Text="{Binding Model.SavePath,Mode=TwoWay}"/>
+
+            <Button x:Name="btnSelect" 
+                    Margin="10,50,0,0" 
+                    Visibility="Visible" 
+                    Content="选择..." 
+                    Width="60" 
+                    Command="{Binding SelectCommand}"
+                    hc:BorderElement.CornerRadius="5"/>
+            
+            <Button x:Name="btnBackup" 
+                    Content="备份" 
+                    Width="100" 
+                    Margin="10,50,0,0" 
+                    Command="{Binding BackupCommand}" 
+                    Background="{DynamicResource PrimaryBrush}" 
+                    Foreground="{DynamicResource TextIconBrush}" 
+                    hc:BorderElement.CornerRadius="5"/>
+
+        </StackPanel>
+    </Grid>
+</UserControl>

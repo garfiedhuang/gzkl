@@ -28,6 +28,7 @@ namespace GZKL.Client.UI.ViewsModels
             SimpleIoc.Default.Register<OrgViewModel>();
             SimpleIoc.Default.Register<RegisterViewModel>();
             SimpleIoc.Default.Register<ParameterViewModel>();
+            SimpleIoc.Default.Register<BackupViewModel>();
         }
 
         #region 实例化
