@@ -17,38 +17,62 @@
     </UserControl.Resources>
     <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="100"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <WrapPanel  VerticalAlignment="Bottom" Height="30" >
-            <hc:TextBox x:Name="textBox" 
-                    HorizontalAlignment="Left" 
-                    Height="23" Margin="15,0,0,0" 
-                    TextWrapping="Wrap" 
-                    Text="{Binding Search}" 
-                    FontWeight="Bold"
-                    Foreground="#5a5e66"
-                    hc:InfoElement.TitlePlacement="Left"
-                    hc:InfoElement.Title="分类|键|值"
-                    FontSize="13"
-                    VerticalAlignment="Center" 
-                    Width="193"/>
-            <Button Content="搜索" Width="70" Style="{wms:MultiStyle ButtonPrimary IconBtn}" bi:IconElement.Icon="&#xe696;"  VerticalAlignment="Center" Margin="10 0 0 0" Command="{Binding QueryCommand}"/>
-            <Button Content="重置" Style="{wms:MultiStyle ButtonInfo IconBtn}" bi:IconElement.Icon="&#xe692;"  VerticalAlignment="Center" Margin="10 0 0 0" Command="{Binding ResetCommand}"/>
-        </WrapPanel>
-        <WrapPanel Grid.Row="1" VerticalAlignment="Center" Height="30" Margin="0,15,0,5">
-            <Button Content="新增" 
-                    Style="{StaticResource AddBtnStyle}" 
-                    VerticalAlignment="Center" 
-                    Margin="15 0 0 0" Command="{Binding AddCommand}"/>
-            <Button Content="修改"  Style="{StaticResource EditBtnStyle}" 
-                    VerticalAlignment="Center" Margin="10 0 0 0" Command="{Binding EditCommand}"/>
-            <Button Content="删除"  VerticalAlignment="Center" Margin="10 0 0 0" Style="{StaticResource DelBtnStyle}" Command="{Binding DeleteCommand}" />
-        </WrapPanel>
+		<WrapPanel Grid.Row="0" VerticalAlignment="Bottom" Height="100" >
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="50"/>
+					<RowDefinition Height="50"/>
+				</Grid.RowDefinitions>
+				<WrapPanel Grid.Row="0" VerticalAlignment="Bottom" Height="30" >
+					<RadioButton x:Name="rbTestDate" Margin="15,0,0,0" HorizontalAlignment="Center" GroupName="rbGroupName" Content="试验日期" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
 
-        <DataGrid Margin="15" Grid.Row="2"
+					<hc:DatePicker Width="150" SelectedDate="2019-10-28" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
+					<TextBlock Margin="15,8,0,0" HorizontalAlignment="Center"  Text="到"/>
+					<hc:DatePicker Width="150" SelectedDate="2019-10-28" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
+				
+				</WrapPanel>
+			    <WrapPanel Grid.Row="1" VerticalAlignment="Center" Height="30" >
+					<RadioButton x:Name="rbTestNo" Margin="15,0,0,0" HorizontalAlignment="Center" GroupName="rbGroupName" Content="检测编号" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+
+					<hc:TextBox Width="150" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
+					<TextBlock Margin="15,8,0,0" HorizontalAlignment="Center" Text="到"/>
+				    <hc:TextBox Width="150" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>				
+
+					<Button Content="搜索" 
+							Width="70" 
+							Style="{wms:MultiStyle ButtonPrimary IconBtn}" 
+							bi:IconElement.Icon="&#xe696;"  
+							VerticalAlignment="Center" 
+							Margin="10 0 0 0" 
+							Command="{Binding QueryCommand}"/>
+					
+					<Button Content="重置" 
+							Style="{wms:MultiStyle ButtonInfo IconBtn}" 
+							bi:IconElement.Icon="&#xe692;"
+							VerticalAlignment="Center" 
+							Margin="10 0 0 0" 
+							Command="{Binding ResetCommand}"/>
+
+					<Button Content="导出"
+							Width="80"
+						    VerticalAlignment="Center"
+						    Margin="15 0 0 0"
+							Command="{Binding AddCommand}"/>
+					
+					<Button Content="全部导出" 
+							Width="80" 
+							VerticalAlignment="Center" 
+							Margin="10 0 0 0" 
+							Command="{Binding EditCommand}"/>
+				</WrapPanel>
+			</Grid>
+		</WrapPanel>
+
+        <DataGrid Margin="15" Grid.Row="1"
                   x:Name="dgData"
                   hc:DataGridAttach.CanUnselectAllWithBlankArea="True"
                   hc:Empty.ShowEmpty="True"
@@ -77,7 +101,7 @@
             </DataGrid.Columns>
         </DataGrid>
         <hc:Pagination x:Name="dgPagination"  Background="Red"
-                       Grid.Row="3" 
+                       Grid.Row="2" 
                        MaxPageCount="{Binding MaxPageCount}" 
                        PageIndex="{Binding PageIndex}" 
                        DataCountPerPage="{Binding DataCountPerPage}" 
