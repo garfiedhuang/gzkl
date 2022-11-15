@@ -44,7 +44,7 @@ namespace GZKL.Client.UI.Views.CollectMgt.Org
 
             if (OrgModel.Id != 0)
             {
-                this.txtValue.IsReadOnly = true;
+                this.txtOrgNo.IsReadOnly = true;
             }
         }
 
@@ -56,16 +56,16 @@ namespace GZKL.Client.UI.Views.CollectMgt.Org
             //    this.txtorg_no.ErrorStr = "不能为空";
             //    return;
             //}
-            if (string.IsNullOrEmpty(this.txtValue.Text))
+            if (string.IsNullOrEmpty(this.txtOrgNo.Text))
             {
-                this.txtValue.IsError = true;
-                this.txtValue.ErrorStr = "不能为空";
+                this.txtOrgNo.IsError = true;
+                this.txtOrgNo.ErrorStr = "不能为空";
                 return;
             }
-            if (string.IsNullOrEmpty(this.txtText.Text))
+            if (string.IsNullOrEmpty(this.txtOrgName.Text))
             {
-                this.txtText.IsError = true;
-                this.txtText.ErrorStr = "不能为空";
+                this.txtOrgName.IsError = true;
+                this.txtOrgName.ErrorStr = "不能为空";
                 return;
             }
             if (string.IsNullOrEmpty(this.cmbIsEnabled.Text))
@@ -82,18 +82,18 @@ namespace GZKL.Client.UI.Views.CollectMgt.Org
             if (_id == 0)
             {//新增
                 sql = "SELECT COUNT(1) FROM [dbo].[base_org] WHERE ([org_no]=@org_no OR [org_name]=@org_name) AND [is_deleted]=0";
-                parameters = new SqlParameter[] { new SqlParameter("@org_no", txtValue.Text), new SqlParameter("@org_name", txtText.Text) };
+                parameters = new SqlParameter[] { new SqlParameter("@org_no", txtOrgNo.Text), new SqlParameter("@org_name", txtOrgName.Text) };
             }
             else
             { //修改
                 sql = "SELECT COUNT(1) FROM [dbo].[base_org] WHERE ([org_no]=@org_no OR [org_name]=@org_name) AND [is_deleted]=0 AND [id]<>@id";
-                parameters = new SqlParameter[] { new SqlParameter("@org_no", txtValue.Text), new SqlParameter("@org_name", txtText.Text), new SqlParameter("@id", _id) };
+                parameters = new SqlParameter[] { new SqlParameter("@org_no", txtOrgNo.Text), new SqlParameter("@org_name", txtOrgName.Text), new SqlParameter("@id", _id) };
             }
             rowCount = Convert.ToInt32(SQLHelper.ExecuteScalar(sql, parameters) ?? "0");
 
             if (rowCount > 0)
             {
-                MessageBox.Show($"数据库中已存在【{txtValue.Text}|{txtText.Text}】记录", "提示信息");
+                MessageBox.Show($"数据库中已存在【{txtOrgNo.Text}|{txtOrgName.Text}】记录", "提示信息");
                 return;
             }
 

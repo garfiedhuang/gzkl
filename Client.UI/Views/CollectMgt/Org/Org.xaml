@@ -67,10 +67,10 @@
                 <DataGridCheckBoxColumn Binding="{Binding IsSelected}" Width="50" CanUserSort="False" CanUserResize="False" Header="选择"/>
                 <DataGridTextColumn Binding="{Binding RowNum}" Width="60" CanUserSort="False" CanUserResize="False" Header="序号"/>
                 <DataGridTextColumn IsReadOnly="True" Width="60" CanUserSort="False" CanUserResize="False" Binding="{Binding Id}" Header="主键ID" Visibility="Hidden"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="120" Binding="{Binding Category}" Header="分类" Visibility="Hidden"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="120" Binding="{Binding Value}" Header="单位编码"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="250" Binding="{Binding Text}" Header="单位名称"/>
-                <DataGridTextColumn IsReadOnly="True" Width="100" Binding="{Binding Remark}" Header="等级"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="150" Binding="{Binding OrgNo}" Header="单位编号"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="200" Binding="{Binding OrgName}" Header="单位名称"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="80" Binding="{Binding OrgLevel}" Header="等级"/>
+                <DataGridTextColumn IsReadOnly="True" Width="200" Binding="{Binding Remark}" Header="备注" Visibility="Hidden"/>
                 <DataGridTextColumn IsReadOnly="True" Width="60" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>
                 <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
                 <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>

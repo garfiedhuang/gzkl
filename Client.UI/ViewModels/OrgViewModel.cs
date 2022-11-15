@@ -189,7 +189,7 @@ namespace GZKL.Client.UI.ViewsModels
                                 Id = Convert.ToInt64(dataRow["id"]),
                                 RowNum = Convert.ToInt64(dataRow["row_num"]),
                                 OrgNo = dataRow["org_no"].ToString(),
-                                OrgName = dataRow["value"].ToString(),
+                                OrgName = dataRow["org_name"].ToString(),
                                 OrgLevel = dataRow["org_level"].ToString(),
                                 Remark = dataRow["remark"].ToString(),
                                 IsEnabled = Convert.ToInt32(dataRow["is_enabled"]),
@@ -326,7 +326,7 @@ namespace GZKL.Client.UI.ViewsModels
 
                 if (selected != null)
                 {
-                    var r = MessageBox.Show($"确定要删除【{string.Join(",", selected.Select(s => $"{s.OrgName}|{s.OrgLevel}"))}】吗？", "提示", MessageBoxButton.YesNo);
+                    var r = MessageBox.Show($"确定要删除【{string.Join(",", selected.Select(s => $"{s.OrgNo}|{s.OrgName}"))}】吗？", "提示", MessageBoxButton.YesNo);
                     if (r == MessageBoxResult.Yes)
                     {
                         foreach (var dr in selected)

@@ -27,22 +27,22 @@
                             Text="{Binding Model.Category,Mode=TwoWay}" 
                          hc:InfoElement.Necessary="True"/>-->
                 <hc:TextBox Margin="0,0,0,10" Width="250" 
-                            x:Name="txtValue" 
+                            x:Name="txtOrgNo" 
                             hc:InfoElement.Placeholder="请输入单位编码" 
                             hc:InfoElement.Title="单位编码" 
-                            Text="{Binding Model.Value,Mode=TwoWay}" 
+                            Text="{Binding Model.OrgNo,Mode=TwoWay}" 
                          hc:InfoElement.Necessary="True"/>
                 <hc:TextBox Margin="0,0,0,10" Width="250" 
-                            x:Name="txtText" 
+                            x:Name="txtOrgName" 
                             hc:InfoElement.Placeholder="请输入单位名称" 
                             hc:InfoElement.Title="单位名称" 
-                            Text="{Binding Model.Text,Mode=TwoWay}" 
+                            Text="{Binding Model.OrgName,Mode=TwoWay}" 
                          hc:InfoElement.Necessary="True"/>
                 <hc:TextBox Margin="0,0,0,10" Width="250"
-                            x:Name="txtRemark"
+                            x:Name="txtOrgLevel"
                             hc:InfoElement.Placeholder="请输入等级" 
                             hc:InfoElement.Title="等级" 
-                            Text="{Binding Model.Remark,Mode=TwoWay}"
+                            Text="{Binding Model.OrgLevel,Mode=TwoWay}"
                          hc:InfoElement.Necessary="False"/>
                 <hc:ComboBox Margin="0,0,0,10" Width="250" 
                              x:Name="cmbIsEnabled" 
