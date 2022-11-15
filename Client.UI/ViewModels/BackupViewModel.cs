@@ -122,17 +122,18 @@ namespace GZKL.Client.UI.ViewsModels
                 //记录备份日志
                 sql.Clear();
                 sql.Append(@"INSERT INTO [dbo].[sys_db_backup]
-                                       ([backup_no],[content],[remark],[is_enabled]
+                                       ([backup_no],[path],[file_name],[remark],[is_enabled]
                                        ,[is_deleted],[create_dt],[create_user_id],[update_dt],[update_user_id])
                                  VALUES
-                                       (@backupNo,@content,@remark,1
+                                       (@backupNo,@path,@fileName,@remark,1
                                        ,0,GETDATE(),@userId,GETDATE(),@userId)");
 
                 var backupNo = $"BK-{_computerInfo.HostName}-{DateTime.Now.ToString("yyyyMMddHHmmss")}".ToUpper();
 
                 sqlParameters = new SqlParameter[] {
                     new SqlParameter("@backupNo", backupNo),
-                    new SqlParameter("@content", savePath),
+                    new SqlParameter("@path", savePath),
+                    new SqlParameter("@fileName", backupName),
                     new SqlParameter("@remark", "数据库备份"),
                     new SqlParameter("@userId", userInfo.Id),
                     };
