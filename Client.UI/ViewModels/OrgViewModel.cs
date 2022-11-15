@@ -162,15 +162,15 @@ namespace GZKL.Client.UI.ViewsModels
             try
             {
                 var sql = new StringBuilder(@"SELECT row_number()over(order by update_dt desc )as row_num
-                ,[id],[category],[value],[text],[remark],[is_enabled],[is_deleted],[create_dt]
+                ,[id],[org_no],[org_name],[org_level],[remark],[is_enabled],[is_deleted],[create_dt]
                 ,[create_user_id],[update_dt],[update_user_id]
-                FROM [dbo].[sys_config] WHERE [category]='Org' AND [is_deleted]=0");
+                FROM [dbo].[base_org] WHERE [is_deleted]=0");
 
                 SqlParameter[] parameters = null;
 
                 if (!string.IsNullOrEmpty(Search.Trim()))
                 {
-                    sql.Append($" AND ([value] LIKE @search or [text] LIKE @search)");
+                    sql.Append($" AND ([org_no] LIKE @search or [org_name] LIKE @search)");
                     parameters = new SqlParameter[1] { new SqlParameter("@search", $"%{Search}%") };
                 }
 
@@ -188,9 +188,9 @@ namespace GZKL.Client.UI.ViewsModels
                             {
                                 Id = Convert.ToInt64(dataRow["id"]),
                                 RowNum = Convert.ToInt64(dataRow["row_num"]),
-                                Category = dataRow["category"].ToString(),
-                                Value = dataRow["value"].ToString(),
-                                Text = dataRow["text"].ToString(),
+                                OrgNo = dataRow["org_no"].ToString(),
+                                OrgName = dataRow["value"].ToString(),
+                                OrgLevel = dataRow["org_level"].ToString(),
                                 Remark = dataRow["remark"].ToString(),
                                 IsEnabled = Convert.ToInt32(dataRow["is_enabled"]),
                                 CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
@@ -244,9 +244,9 @@ namespace GZKL.Client.UI.ViewsModels
 
                 id = (int)selected.First().Id;
 
-                var sql = new StringBuilder(@"SELECT [id],[category],[value],[text],[remark],[is_enabled],[is_deleted],[create_dt]
-                ,[create_user_id],[update_dt],[update_user_id]
-                FROM [dbo].[sys_config] WHERE [category]='Org' AND [is_deleted]=0 AND [id]=@id");
+                var sql = new StringBuilder(@"SELECT [id],[org_no],[org_name],[org_level],[remark]
+                ,[is_enabled],[is_deleted],[create_dt],[create_user_id],[update_dt],[update_user_id]
+                FROM [dbo].[base_org] WHERE [is_deleted]=0 AND [id]=@id");
 
                 var parameters = new SqlParameter[1] { new SqlParameter("@id", id) };
                 using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
@@ -261,9 +261,9 @@ namespace GZKL.Client.UI.ViewsModels
                     var model = new OrgModel()
                     {
                         Id = Convert.ToInt64(dataRow["id"]),
-                        Category = dataRow["category"].ToString(),
-                        Value = dataRow["value"].ToString(),
-                        Text = dataRow["text"].ToString(),
+                        OrgNo = dataRow["org_no"].ToString(),
+                        OrgName = dataRow["org_name"].ToString(),
+                        OrgLevel = dataRow["org_level"].ToString(),
                         Remark = dataRow["remark"].ToString(),
                         IsEnabled = Convert.ToInt32(dataRow["is_enabled"]),
                         CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
@@ -277,17 +277,17 @@ namespace GZKL.Client.UI.ViewsModels
                         if (r.Value)
                         {
                             sql.Clear();
-                            sql.Append(@"UPDATE [dbo].[sys_config]
-   SET [value] = @value
-      ,[text] = @text
+                            sql.Append(@"UPDATE [dbo].[base_org]
+   SET [org_name] = @org_name
+      ,[org_level] = @org_level
       ,[remark] = @remark
       ,[is_enabled] = @is_enabled
       ,[update_dt] = @update_dt
       ,[update_user_id] = @user_id
- WHERE [category]='Org' AND [id]=@id");
+ WHERE [id]=@id");
                             parameters = new SqlParameter[] {
-                            new SqlParameter("@value", model.Value),
-                            new SqlParameter("@text", model.Text),
+                            new SqlParameter("@org_name", model.OrgName),
+                            new SqlParameter("@org_level", model.OrgLevel),
                             new SqlParameter("@remark", model.Remark),
                             new SqlParameter("@is_enabled", model.IsEnabled),
                             new SqlParameter("@update_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
@@ -326,13 +326,13 @@ namespace GZKL.Client.UI.ViewsModels
 
                 if (selected != null)
                 {
-                    var r = MessageBox.Show($"确定要删除【{string.Join(",", selected.Select(s => $"{s.Value}|{s.Text}"))}】吗？", "提示", MessageBoxButton.YesNo);
+                    var r = MessageBox.Show($"确定要删除【{string.Join(",", selected.Select(s => $"{s.OrgName}|{s.OrgLevel}"))}】吗？", "提示", MessageBoxButton.YesNo);
                     if (r == MessageBoxResult.Yes)
                     {
                         foreach (var dr in selected)
                         {
-                            //var sql = new StringBuilder(@"DELETE FROM [dbo].[sys_config] WHERE [id] IN(@id)");
-                            var sql = new StringBuilder(@"UPDATE [dbo].[sys_config] SET [is_deleted]=1 WHERE [category]='Org' AND [id]=@id");
+                            //var sql = new StringBuilder(@"DELETE FROM [dbo].[base_org] WHERE [id] IN(@id)");
+                            var sql = new StringBuilder(@"UPDATE [dbo].[base_org] SET [is_deleted]=1 WHERE [id]=@id");
 
                             var parameters = new SqlParameter[1] { new SqlParameter("@id", dr.Id) };
                             var result = SQLHelper.ExecuteNonQuery(sql.ToString(), parameters);
@@ -360,10 +360,10 @@ namespace GZKL.Client.UI.ViewsModels
                 var r = view.ShowDialog();
                 if (r.Value)
                 {
-                    var sql = @"INSERT INTO [dbo].[sys_config]
-           ([category]
-           ,[value]
-           ,[text]
+                    var sql = @"INSERT INTO [dbo].[base_org]
+           ([org_no]
+           ,[org_name]
+           ,[org_level]
            ,[remark]
            ,[is_enabled]
            ,[is_deleted]
@@ -372,9 +372,9 @@ namespace GZKL.Client.UI.ViewsModels
            ,[update_dt]
            ,[update_user_id])
      VALUES
-           (@category
-           ,@value
-           ,@text
+           (@org_no
+           ,@org_name
+           ,@org_level
            ,@remark
            ,@is_enabled
            ,0
@@ -384,9 +384,9 @@ namespace GZKL.Client.UI.ViewsModels
            ,@user_id)";
 
                     var parameters = new SqlParameter[] {
-                    new SqlParameter("@category", "Org"),
-                    new SqlParameter("@value", model.Value),
-                    new SqlParameter("@text", model.Text),
+                    new SqlParameter("@org_no", model.OrgNo),
+                    new SqlParameter("@org_name", model.OrgName),
+                    new SqlParameter("@org_level", model.OrgLevel),
                     new SqlParameter("@remark", model.Remark),
                     new SqlParameter("@is_enabled", model.IsEnabled),
                     new SqlParameter("@create_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),

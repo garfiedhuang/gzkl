@@ -50,10 +50,10 @@ namespace GZKL.Client.UI.Views.CollectMgt.Org
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            //if (string.IsNullOrEmpty(this.txtCategory.Text))
+            //if (string.IsNullOrEmpty(this.txtorg_no.Text))
             //{
-            //    this.txtCategory.IsError = true;
-            //    this.txtCategory.ErrorStr = "不能为空";
+            //    this.txtorg_no.IsError = true;
+            //    this.txtorg_no.ErrorStr = "不能为空";
             //    return;
             //}
             if (string.IsNullOrEmpty(this.txtValue.Text))
@@ -81,19 +81,19 @@ namespace GZKL.Client.UI.Views.CollectMgt.Org
 
             if (_id == 0)
             {//新增
-                sql = "SELECT COUNT(1) FROM [dbo].[sys_config] WHERE [category]=@category AND [value]=@value AND [is_deleted]=0";
-                parameters = new SqlParameter[] { new SqlParameter("@category", "Org"), new SqlParameter("@value", txtValue.Text) };
+                sql = "SELECT COUNT(1) FROM [dbo].[base_org] WHERE ([org_no]=@org_no OR [org_name]=@org_name) AND [is_deleted]=0";
+                parameters = new SqlParameter[] { new SqlParameter("@org_no", txtValue.Text), new SqlParameter("@org_name", txtText.Text) };
             }
             else
             { //修改
-                sql = "SELECT COUNT(1) FROM [dbo].[sys_config] WHERE [category]=@category AND [value]=@value AND [is_deleted]=0 AND [id]<>@id";
-                parameters = new SqlParameter[] { new SqlParameter("@category", "Org"), new SqlParameter("@value", txtValue.Text), new SqlParameter("@id", _id) };
+                sql = "SELECT COUNT(1) FROM [dbo].[base_org] WHERE ([org_no]=@org_no OR [org_name]=@org_name) AND [is_deleted]=0 AND [id]<>@id";
+                parameters = new SqlParameter[] { new SqlParameter("@org_no", txtValue.Text), new SqlParameter("@org_name", txtText.Text), new SqlParameter("@id", _id) };
             }
             rowCount = Convert.ToInt32(SQLHelper.ExecuteScalar(sql, parameters) ?? "0");
 
             if (rowCount > 0)
             {
-                MessageBox.Show($"数据库中已存在【{txtValue.Text}】记录", "提示信息");
+                MessageBox.Show($"数据库中已存在【{txtValue.Text}|{txtText.Text}】记录", "提示信息");
                 return;
             }
 

@@ -24,19 +24,19 @@ namespace GZKL.Client.UI.Models
         public long RowNum { get; set; }
 
         /// <summary>
-        /// 分类
+        /// 机构编号
         /// </summary>
-        public string Category { get; set; }
+        public string OrgNo { get; set; }
 
         /// <summary>
-        /// 健
+        /// 机构名称
         /// </summary>
-        public string Value { get; set; }
+        public string OrgName { get; set; }
 
         /// <summary>
-        /// 值
+        /// 等级
         /// </summary>
-        public string Text { get; set; }
+        public string OrgLevel { get; set; }
 
         /// <summary>
         /// 备注
