@@ -130,6 +130,7 @@
     </Compile>
     <Compile Include="Models\BackupModel.cs" />
     <Compile Include="Models\ExportModel.cs" />
+    <Compile Include="Models\InterfaceModel.cs" />
     <Compile Include="Models\ParameterModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\OrgModel.cs" />
@@ -148,6 +149,7 @@
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\BackupViewModel.cs" />
     <Compile Include="ViewModels\ExportViewModel.cs" />
+    <Compile Include="ViewModels\InterfaceViewModel.cs" />
     <Compile Include="ViewModels\ParameterViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\OrgViewModel.cs" />
@@ -167,6 +169,12 @@
     </Compile>
     <Compile Include="Views\CollectMgt\Export\ViewCurve.xaml.cs">
       <DependentUpon>ViewCurve.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CollectMgt\Interface\Edit.xaml.cs">
+      <DependentUpon>Edit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CollectMgt\Interface\Interface.xaml.cs">
+      <DependentUpon>Interface.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CollectMgt\Org\Org.xaml.cs">
       <DependentUpon>Org.xaml</DependentUpon>
@@ -235,6 +243,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\CollectMgt\Export\ViewCurve.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CollectMgt\Interface\Edit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CollectMgt\Interface\Interface.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
