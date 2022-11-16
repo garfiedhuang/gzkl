@@ -17,137 +17,56 @@ using System.Windows.Controls;
 using MessageBox = HandyControl.Controls.MessageBox;
 using GZKL.Client.UI.Views.CollectMgt.Export;
 using GalaSoft.MvvmLight.Messaging;
+using static Microsoft.WindowsAPICodePack.Shell.PropertySystem.SystemProperties.System;
 
 namespace GZKL.Client.UI.ViewsModels
 {
-    public class ExportViewModel : ViewModelBase
+    public class ExportViewModel : BaseSearchViewModel<ExportModel>
     {
         #region Construct and property
+
+        /// <summary>
+        /// 查询类型 TD-按检测日期查询，TN-按检测编号查询
+        /// </summary>
+        private string queryType="TD";
+        public string QueryType { get { return queryType; } set { queryType = value; RaisePropertyChanged(); } }
+
+        /// <summary>
+        /// 检测开始日期
+        /// </summary>
+        private string startTestDate = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
+        public string StartTestDate { get { return startTestDate; } set { startTestDate = value; RaisePropertyChanged(); } }
+
+        /// <summary>
+        /// 检测结束日期
+        /// </summary>
+        private string endTestDate = DateTime.Now.ToString("yyyy-MM-dd");
+        public string EndTestDate { get { return endTestDate; } set { endTestDate = value; RaisePropertyChanged(); } }
+
+        /// <summary>
+        /// 开始检测编号
+        /// </summary>
+        private string startTestNo;
+        public string StartTestNo { get { return startTestNo; } set { startTestNo = value; RaisePropertyChanged(); } }
+
+        /// <summary>
+        /// 结束检测编号
+        /// </summary>
+        private string endTestNo;
+        public string EndTestNo { get { return endTestNo; } set { endTestNo = value; RaisePropertyChanged(); } }
 
         /// <summary>
         /// 构造函数
         /// </summary>
         public ExportViewModel()
         {
-            QueryCommand = new RelayCommand(this.Query);
-            ResetCommand = new RelayCommand(this.Reset);
-            EditCommand = new RelayCommand<int>(this.Edit);
-            DeleteCommand = new RelayCommand<int>(this.Delete);
-            AddCommand = new RelayCommand(this.Add);
-            PageUpdatedCommand = new RelayCommand<FunctionEventArgs<int>>(PageUpdated);
 
-            ExportModels = new List<ExportModel>();
-            GridModelList = new ObservableCollection<ExportModel>();
-        }
-
-        /// <summary>
-        /// 查询之后的结果数据，用于分页显示
-        /// </summary>
-        private static List<ExportModel> ExportModels { get; set; }
-
-        /// <summary>
-        /// 网格数据集合
-        /// </summary>
-        private ObservableCollection<ExportModel> gridModelList;
-        public ObservableCollection<ExportModel> GridModelList
-        {
-            get { return gridModelList; }
-            set { gridModelList = value; RaisePropertyChanged(); }
-        }
-
-        /// <summary>
-        /// 查询条件
-        /// </summary>
-        private string search = string.Empty;
-
-        public string Search
-        {
-            get { return search; }
-            set
-            {
-                search = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// 最大页面数
-        /// </summary>
-        private int maxPageCount = 1;
-
-        public int MaxPageCount
-        {
-            get { return maxPageCount; }
-            set
-            {
-                maxPageCount = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// 当前页数
-        /// </summary>
-        private int pageIndex = 1;
-
-        public int PageIndex
-        {
-            get { return pageIndex; }
-            set
-            {
-                pageIndex = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// 分页大小
-        /// </summary>
-        private int dataCountPerPage = 20;
-
-        public int DataCountPerPage
-        {
-            get { return dataCountPerPage; }
-            set
-            {
-                dataCountPerPage = value;
-                RaisePropertyChanged();
-            }
         }
 
         #endregion
 
         #region Command
 
-        /// <summary>
-        /// 查询命令
-        /// </summary>
-        public RelayCommand QueryCommand { get; set; }
-
-        /// <summary>
-        /// 重置命令
-        /// </summary>
-        public RelayCommand ResetCommand { get; set; }
-
-        /// <summary>
-        /// 编辑
-        /// </summary>
-        public RelayCommand<int> EditCommand { get; set; }
-
-        /// <summary>
-        /// 删除
-        /// </summary>
-        public RelayCommand<int> DeleteCommand { get; set; }
-
-        /// <summary>
-        /// 新增
-        /// </summary>
-        public RelayCommand AddCommand { get; set; }
-
-        /// <summary>
-        /// 分页
-        /// </summary>
-        public RelayCommand<FunctionEventArgs<int>> PageUpdatedCommand { get; set; }
 
 
         #endregion
@@ -157,26 +76,30 @@ namespace GZKL.Client.UI.ViewsModels
         /// <summary>
         /// 查询
         /// </summary>
-        public void Query()
+        public override void Query()
         {
             try
             {
-                var sql = new StringBuilder(@"SELECT row_number()over(order by update_dt desc )as row_num
-                ,[id],[category],[value],[text],[remark],[is_enabled],[is_deleted],[create_dt]
-                ,[create_user_id],[update_dt],[update_user_id]
-                FROM [dbo].[sys_Export] WHERE [is_deleted]=0");
+                var sql = new StringBuilder(@"SELECT row_number()over(order by m.update_dt desc )as row_num,
+m.id,m.org_no,m.test_no,m.sample_no,m.test_type_no,m.test_item_no,m.deadline,
+d.* 
+FROM [dbo].[biz_execute_test] m INNER JOIN [dbo].biz_execute_test_detail d ON m.id=d.test_id
+WHERE m.is_deleted=0 AND d.is_deleted=0");
 
                 SqlParameter[] parameters = null;
 
-                if (!string.IsNullOrEmpty(Search.Trim()))
+                if (QueryType == "TD")
                 {
-                    sql.Append($" AND ([category] LIKE @search or [value] LIKE @search or [text] LIKE @search)");
-                    parameters = new SqlParameter[1] { new SqlParameter("@search", $"%{Search}%") };
+                    sql.Append($" AND m.create_dt BETWEEN @startTestDate AND @endTestDate");
+                    parameters = new SqlParameter[2] { new SqlParameter("@startTestDate", StartTestDate), new SqlParameter("@endTestDate", EndTestDate) };
+                }
+                else if (QueryType == "TN")
+                {
+                    sql.Append($" AND m.test_no >=@startTestNo AND m.test_no<=@endTestNo");
+                    parameters = new SqlParameter[2] { new SqlParameter("@startTestNo", StartTestDate), new SqlParameter("@endTestNo", EndTestDate) };
                 }
 
-                //sql.Append($" ORDER BY [category] DESC");
-
-                ExportModels.Clear();//清空前端分页数据
+                TModels.Clear();//清空前端分页数据
 
                 using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
                 {
@@ -184,14 +107,14 @@ namespace GZKL.Client.UI.ViewsModels
                     {
                         foreach (DataRow dataRow in data.Rows)
                         {
-                            ExportModels.Add(new ExportModel()
+                            TModels.Add(new ExportModel()
                             {
                                 Id = Convert.ToInt64(dataRow["id"]),
                                 RowNum = Convert.ToInt64(dataRow["row_num"]),
-                                Category = dataRow["category"].ToString(),
-                                Value = dataRow["value"].ToString(),
-                                Text = dataRow["text"].ToString(),
-                                Remark = dataRow["remark"].ToString(),
+                                OrgNo = dataRow["category"].ToString(),
+                                TestNo = dataRow["value"].ToString(),
+                                SampleNo = dataRow["text"].ToString(),
+                                TestItemNo = dataRow["remark"].ToString(),
                                 IsEnabled = Convert.ToInt32(dataRow["is_enabled"]),
                                 CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
                                 UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
@@ -200,15 +123,8 @@ namespace GZKL.Client.UI.ViewsModels
                     }
                 }
 
-                //当前页数
-                PageIndex = ExportModels.Count > 0 ? 1 : 0;
-                MaxPageCount = 0;
-
-                //最大页数
-                MaxPageCount = PageIndex > 0 ? (int)Math.Ceiling((decimal)ExportModels.Count / DataCountPerPage) : 0;
-
                 //数据分页
-                Paging(PageIndex);
+                Paging(-1);
 
             }
             catch (Exception ex)
@@ -220,9 +136,14 @@ namespace GZKL.Client.UI.ViewsModels
         /// <summary>
         /// 重置
         /// </summary>
-        public void Reset()
+        public override void Reset()
         {
-            this.Search = string.Empty;
+            this.QueryType = string.Empty;
+            this.StartTestDate= DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
+            this.EndTestDate = DateTime.Now.ToString("yyyy-MM-dd");
+            this.StartTestNo = string.Empty;
+            this.EndTestNo = string.Empty;
+
             this.Query();
         }
 
@@ -230,13 +151,13 @@ namespace GZKL.Client.UI.ViewsModels
         /// 编辑
         /// </summary>
         /// <param name="id"></param>
-        public void Edit(int id)
+        public override void Edit(int id)
         {
             try
             {
 
                 /*
-                var selected = GridModelList.Where(w => w.IsSelected == true).ToList();
+                var selected = GridData.Where(w => w.IsSelected == true).ToList();
 
                 if (selected.Count != 1)
                 {
@@ -317,11 +238,11 @@ namespace GZKL.Client.UI.ViewsModels
         /// 删除
         /// </summary>
         /// <param name="id"></param>
-        public void Delete(int id)
+        public override void Delete(int id)
         {
             try
             {
-                var selected = GridModelList.Where(w => w.IsSelected == true).ToList();
+                var selected = GridData.Where(w => w.IsSelected == true).ToList();
 
                 if (selected.Count == 0)
                 {
@@ -331,7 +252,7 @@ namespace GZKL.Client.UI.ViewsModels
 
                 if (selected != null)
                 {
-                    var r = MessageBox.Show($"确定要删除【{string.Join(",", selected.Select(s => $"{s.Category}|{s.Value}|{s.Text}"))}】吗？", "提示", MessageBoxButton.YesNo);
+                    var r = MessageBox.Show($"确定要删除【{string.Join(",", selected.Select(s => $"{s.OrgNo}|{s.TestNo}|{s.SampleNo}"))}】吗？", "提示", MessageBoxButton.YesNo);
                     if (r == MessageBoxResult.Yes)
                     {
                         foreach (var dr in selected)
@@ -353,96 +274,11 @@ namespace GZKL.Client.UI.ViewsModels
             }
         }
 
-        /// <summary>
-        /// 新增
-        /// </summary>
-        public void Add()
-        {
-            try
-            {
-                /*
-                ExportModel model = new ExportModel();
-                Edit view = new Edit(model);
-                var r = view.ShowDialog();
-                if (r.Value)
-                {
-                    var sql = @"INSERT INTO [dbo].[sys_Export]
-           ([category]
-           ,[value]
-           ,[text]
-           ,[remark]
-           ,[is_enabled]
-           ,[is_deleted]
-           ,[create_dt]
-           ,[create_user_id]
-           ,[update_dt]
-           ,[update_user_id])
-     VALUES
-           (@category
-           ,@value
-           ,@text
-           ,@remark
-           ,@is_enabled
-           ,0
-           ,@create_dt
-           ,@user_id
-           ,@create_dt
-           ,@user_id)";
-
-                    var parameters = new SqlParameter[] {
-                    new SqlParameter("@category", model.Category),
-                    new SqlParameter("@value", model.Value),
-                    new SqlParameter("@text", model.Text),
-                    new SqlParameter("@remark", model.Remark),
-                    new SqlParameter("@is_enabled", model.IsEnabled),
-                    new SqlParameter("@create_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
-                    new SqlParameter("@user_id", SessionInfo.Instance.Session.Id)
-                };
-
-                    var result = SQLHelper.ExecuteNonQuery(sql, parameters);
-
-                    this.Query();
-                }
-
-                */
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "提示信息");
-            }
-        }
-
-        /// <summary>
-        /// 页面更新事件
-        /// </summary>
-        public void PageUpdated(FunctionEventArgs<int> e)
-        {
-            Paging(e.Info);
-        }
-
         #endregion
 
         #region Privates
 
-        /// <summary>
-        /// 分页
-        /// </summary>
-        /// <param name="pageIndex"></param>
-        private void Paging(int pageIndex)
-        {
 
-            GridModelList.Clear();//清空依赖属性
-
-            var pagedData = ExportModels.Skip((pageIndex - 1) * DataCountPerPage).Take(DataCountPerPage).ToList();
-
-            if (pagedData.Count > 0)
-            {
-                pagedData.ForEach(item =>
-                {
-                    GridModelList.Add(item);
-                });
-            }
-        }
 
         #endregion
     }

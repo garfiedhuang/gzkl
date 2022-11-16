@@ -8,12 +8,14 @@
              xmlns:bi="clr-namespace:GZKL.Client.UI.CustomControls.Attach"
              xmlns:wms="clr-namespace:WpfMultiStyle;assembly=WpfMultiStyle"
              xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:cv="clr-namespace:GZKL.Client.UI.Converters"
              mc:Ignorable="d" 
              DataContext="{Binding Source={StaticResource Locator},Path=Export}"
              Loaded="ExportControl_Loaded"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <converter:EnumConverter x:Key="enumConverter"/>
+        <cv:CheckConverter x:Key="checkConverter"/>
     </UserControl.Resources>
     <Grid Background="White">
         <Grid.RowDefinitions>
@@ -28,15 +30,15 @@
 					<RowDefinition Height="50"/>
 				</Grid.RowDefinitions>
 				<WrapPanel Grid.Row="0" VerticalAlignment="Bottom" Height="30" >
-					<RadioButton x:Name="rbTestDate" Margin="15,0,0,0" HorizontalAlignment="Center" GroupName="rbGroupName" Content="试验日期" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                    <RadioButton x:Name="rbTestDate" IsChecked="{Binding QueryType,Mode=TwoWay,Converter={StaticResource checkConverter},ConverterParameter=TD}" Margin="15,0,0,0" HorizontalAlignment="Center" Content="试验日期" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
 
-					<hc:DatePicker Width="150" SelectedDate="2019-10-28" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
+                    <hc:DatePicker Width="150" SelectedDate="{Binding StartTestDate, StringFormat=\{0:yyyy-MM-dd\}, Mode=TwoWay}" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
 					<TextBlock Margin="15,8,0,0" HorizontalAlignment="Center"  Text="到"/>
-					<hc:DatePicker Width="150" SelectedDate="2019-10-28" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
+                    <hc:DatePicker Width="150" SelectedDate="{Binding EndTestDate, StringFormat=\{0:yyyy-MM-dd\}, Mode=TwoWay}" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
 				
 				</WrapPanel>
 			    <WrapPanel Grid.Row="1" VerticalAlignment="Center" Height="30" >
-					<RadioButton x:Name="rbTestNo" Margin="15,0,0,0" HorizontalAlignment="Center" GroupName="rbGroupName" Content="检测编号" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                    <RadioButton x:Name="rbTestNo" IsChecked="{Binding QueryType,Mode=TwoWay,Converter={StaticResource checkConverter},ConverterParameter=TN}" Margin="15,0,0,0" HorizontalAlignment="Center" Content="检测编号" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
 
 					<hc:TextBox Width="150" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
 					<TextBlock Margin="15,8,0,0" HorizontalAlignment="Center" Text="到"/>
@@ -95,7 +97,6 @@
                 <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
                 <DataGridTextColumn IsReadOnly="True"  Width="150" Binding="{Binding Text}" Header="值"/>
                 <DataGridTextColumn IsReadOnly="True" Width="250" Binding="{Binding Remark}" Header="备注"/>
-                <DataGridTextColumn IsReadOnly="True" Width="60" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>
                 <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
                 <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
             </DataGrid.Columns>

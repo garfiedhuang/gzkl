@@ -129,6 +129,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\BackupModel.cs" />
+    <Compile Include="ViewModels\BaseSearchViewModel.cs" />
     <Compile Include="Models\ExportModel.cs" />
     <Compile Include="Models\InterfaceModel.cs" />
     <Compile Include="Models\ParameterModel.cs" />

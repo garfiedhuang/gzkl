@@ -24,24 +24,110 @@ namespace GZKL.Client.UI.Models
         public long RowNum { get; set; }
 
         /// <summary>
-        /// 分类
+        /// 机构编号
         /// </summary>
-        public string Category { get; set; }
+        public string OrgNo { get; set; }
 
         /// <summary>
-        /// 健
+        /// 检测编号
         /// </summary>
-        public string Value { get; set; }
+        public string TestNo { get; set; }
 
         /// <summary>
-        /// 值
+        /// 样品编号
         /// </summary>
-        public string Text { get; set; }
+        public string SampleNo { get; set; }
+
+        /// <summary>
+        /// 检测类型编号
+        /// </summary>
+        public string TestTypeNo { set; get; }
+
+        /// <summary>
+        /// 检测项编号
+        /// </summary>
+        public string TestItemNo { set; get; }
+        /// <summary>
+        /// 龄期
+        /// </summary>
+        public string Deadline { set; get; }
+
+        /// <summary>
+        /// 试验次数
+        /// </summary>
+        public string ExperimentNo { set; get; }
+        /// <summary>
+        /// 记录时间
+        /// </summary>
+        public string PlayTime { set; get; }
 
         /// <summary>
         /// 备注
         /// </summary>
-        public string Remark { set; get; } = "";
+        public string TestPreceptName { set; get; }
+        /// <summary>
+        /// 备注
+        /// </summary>
+        public string FileName { set; get; }
+
+        /// <summary>
+        /// 备注
+        /// </summary>
+        public string SampleShape { set; get; }
+        /// <summary>
+        /// 备注
+        /// </summary>
+        public string Area { set; get; }
+
+        /// <summary>
+        /// 备注
+        /// </summary>
+        public string GaugeLength { set; get; }
+        /// <summary>
+        /// 备注
+        /// </summary>
+        public string UpYieldDot { set; get; }
+
+        /// <summary>
+        /// 备注
+        /// </summary>
+        public string DownYieldDot { set; get; }
+        /// <summary>
+        /// 备注
+        /// </summary>
+        public string MaxDot { set; get; }
+
+        /// <summary>
+        /// 备注
+        /// </summary>
+        public string SampleWidth { set; get; }
+        /// <summary>
+        /// 备注
+        /// </summary>
+        public string SampleThick { set; get; }
+
+        /// <summary>
+        /// 备注
+        /// </summary>
+        public string SampleDia { set; get; }
+        /// <summary>
+        /// 备注
+        /// </summary>
+        public string SampleMinDia { set; get; }
+
+        /// <summary>
+        /// 备注
+        /// </summary>
+        public string SampleOutDia { set; get; }
+        /// <summary>
+        /// 备注
+        /// </summary>
+        public string SampleInnerDia { set; get; }
+
+        /// <summary>
+        /// 备注
+        /// </summary>
+        public string DeformSensorName { set; get; }
 
         /// <summary>
         /// 是否启用 0-否 1-是
@@ -68,6 +154,11 @@ namespace GZKL.Client.UI.Models
             get { return isSelected; }
             set { isSelected = value; RaisePropertyChanged("IsSelected"); }
         }
+
+    }
+
+    public class SearchModel
+    {
 
     }
 }
