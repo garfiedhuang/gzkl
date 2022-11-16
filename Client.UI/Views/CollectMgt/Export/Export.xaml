@@ -40,9 +40,9 @@
 			    <WrapPanel Grid.Row="1" VerticalAlignment="Center" Height="30" >
                     <RadioButton x:Name="rbTestNo" IsChecked="{Binding QueryType,Mode=TwoWay,Converter={StaticResource checkConverter},ConverterParameter=TN}" Margin="15,0,0,0" HorizontalAlignment="Center" Content="检测编号" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
 
-					<hc:TextBox Width="150" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
+					<hc:TextBox Width="150" Text="{Binding StartTestNo}" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
 					<TextBlock Margin="15,8,0,0" HorizontalAlignment="Center" Text="到"/>
-				    <hc:TextBox Width="150" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>				
+				    <hc:TextBox Width="150" Text="{Binding EndTestNo}" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>				
 
 					<Button Content="搜索" 
 							Width="70" 
@@ -63,13 +63,13 @@
 							Width="80"
 						    VerticalAlignment="Center"
 						    Margin="15 0 0 0"
-							Command="{Binding AddCommand}"/>
+							Command="{Binding ExportCommand}" CommandParameter=""/>
 					
 					<Button Content="全部导出" 
 							Width="80" 
 							VerticalAlignment="Center" 
 							Margin="10 0 0 0" 
-							Command="{Binding EditCommand}"/>
+							Command="{Binding ExportCommand}" CommandParameter="All" />
 				</WrapPanel>
 			</Grid>
 		</WrapPanel>
@@ -80,7 +80,7 @@
                   hc:Empty.ShowEmpty="True"
                   HeadersVisibility="Column"
                   AutoGenerateColumns="False"
-                  ItemsSource="{Binding GridModelList}" 
+                  ItemsSource="{Binding GridData}" 
                   RowHeaderWidth="60" >
 
             <!--<DataGrid.RowHeaderTemplate>
@@ -93,7 +93,41 @@
                 <DataGridCheckBoxColumn Binding="{Binding IsSelected}" Width="50" CanUserSort="False" CanUserResize="False" Header="选择"/>
                 <DataGridTextColumn Binding="{Binding RowNum}" Width="60" CanUserSort="False" CanUserResize="False" Header="序号"/>
                 <DataGridTextColumn IsReadOnly="True" Width="60" CanUserSort="False" CanUserResize="False" Binding="{Binding Id}" Header="主键ID" Visibility="Hidden"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="120" Binding="{Binding Category}" Header="分类"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="120" Binding="{Binding OrgNo}" Header="机构编号"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding TestNo}" Header="检测编号"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding SampleNo}" Header="样品编号"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding TestTypeNo}" Header="检测类型编号"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding TestItemNo}" Header="检测项编号"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Deadline}" Header="龄期"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding ExperimentNo}" Header="试验次数"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding PlayTime}" Header="记录时间"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding TestPreceptName}" Header="键"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding SampleShape}" Header="键"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Area}" Header="键"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding GaugeLength}" Header="键"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding UpYieldDot}" Header="键"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding DownYieldDot}" Header="键"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding MaxDot}" Header="键"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding SampleWidth}" Header="键"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding SampleThick}" Header="键"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding SampleDia}" Header="键"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding SampleMinDia}" Header="键"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding SampleOutDia}" Header="键"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding SampleInnerDia}" Header="键"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
                 <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
                 <DataGridTextColumn IsReadOnly="True"  Width="150" Binding="{Binding Text}" Header="值"/>
                 <DataGridTextColumn IsReadOnly="True" Width="250" Binding="{Binding Remark}" Header="备注"/>
