@@ -130,11 +130,6 @@ namespace GZKL.Client.UI.Models
         public string DeformSensorName { set; get; }
 
         /// <summary>
-        /// 是否启用 0-否 1-是
-        /// </summary>
-        public int IsEnabled { get; set; } = 1;
-
-        /// <summary>
         /// 创建时间
         /// </summary>
         public DateTime? CreateDt { get; set; }

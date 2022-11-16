@@ -114,23 +114,7 @@
                 <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding SampleMinDia}" Header="键"/>
                 <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding SampleOutDia}" Header="键"/>
                 <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding SampleInnerDia}" Header="键"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Value}" Header="键"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="150" Binding="{Binding Text}" Header="值"/>
-                <DataGridTextColumn IsReadOnly="True" Width="250" Binding="{Binding Remark}" Header="备注"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding DeformSensorName}" Header="键"/>
                 <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
                 <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
             </DataGrid.Columns>
