@@ -93,6 +93,7 @@
                   HeadersVisibility="Column"
                   AutoGenerateColumns="False"
                   ItemsSource="{Binding GridData}" 
+                  MouseDoubleClick="dgData_MouseDoubleClick"
                   RowHeaderWidth="60" >
 
             <!--<DataGrid.RowHeaderTemplate>

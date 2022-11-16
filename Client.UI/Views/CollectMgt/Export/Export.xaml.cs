@@ -31,5 +31,10 @@ namespace GZKL.Client.UI.Views.CollectMgt.Export
         {
             (this.DataContext as ExportViewModel).Query();
         }
+
+        private void dgData_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }
