@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using GZKL.Client.UI.Models;
 using GZKL.Client.UI.ViewsModels;
 
 namespace GZKL.Client.UI.Views.CollectMgt.Export
@@ -34,7 +35,40 @@ namespace GZKL.Client.UI.Views.CollectMgt.Export
 
         private void dgData_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            var item = this.dgData.SelectedItem as ExportModel;
 
+            var imgPath = @"D:\work\source\gzkl\Client.UI\Assets\Images\Img.jpg";
+            new HandyControl.Controls.ImageBrowser(new Uri(imgPath)).Show();
+
+            /*
+             procedure TfrmDataEpt.dxDBGrid1DblClick(Sender: TObject);
+var openfile:string;
+begin
+ if not dxMemData1.Active then exit;
+ if dxMemData1.RecordCount=0 then exit;
+ openfile:=formatdatetime('yyyymmdd',dxMemData1.fieldbyname('PlayTime').AsDateTime)+'-'+dxMemData1.fieldbyname('testno').AsString
+            +'-'+dxMemData1.fieldbyname('No').AsString+'-'+dxMemData1.fieldbyname('ExperimentNo').AsString;
+ openfile:=saveDataDir+openfile+'.bmp';
+// openfile:='c:\aaa.JPG';
+ if not FileExists(openfile) then
+ begin
+   showmessage('曲线文件不存在！');
+ end
+ else
+ begin
+   frmImg:=TfrmImg.Create(self);
+   frmImg.Image1.Picture.LoadFromFile(openfile);
+   frmImg.Image1.Width:=frmImg.Image1.Picture.Width ;
+   frmImg.Image1.Height:=frmImg.Image1.Picture.Height ;
+  try
+    frmImg.ShowModal;
+  finally
+    frmImg.release;
+  end;
+ end;
+
+end;
+             */
         }
     }
 }
