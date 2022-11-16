@@ -34,14 +34,14 @@ namespace GZKL.Client.UI.ViewsModels
         /// <summary>
         /// 检测开始日期
         /// </summary>
-        private string startTestDate = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
-        public string StartTestDate { get { return startTestDate; } set { startTestDate = value; RaisePropertyChanged(); } }
+        private DateTime startTestDate = DateTime.Now.AddDays(-7);
+        public DateTime StartTestDate { get { return startTestDate; } set { startTestDate = value; RaisePropertyChanged(); } }
 
         /// <summary>
         /// 检测结束日期
         /// </summary>
-        private string endTestDate = DateTime.Now.ToString("yyyy-MM-dd");
-        public string EndTestDate { get { return endTestDate; } set { endTestDate = value; RaisePropertyChanged(); } }
+        private DateTime endTestDate = DateTime.Now;
+        public DateTime EndTestDate { get { return endTestDate; } set { endTestDate = value; RaisePropertyChanged(); } }
 
         /// <summary>
         /// 开始检测编号
@@ -60,14 +60,23 @@ namespace GZKL.Client.UI.ViewsModels
         /// </summary>
         public ExportViewModel()
         {
-
+            SelectCommand = new RelayCommand<string>(this.Select);
+            ExportCommand = new RelayCommand<string>(this.Export);
         }
 
         #endregion
 
         #region Command
 
+        /// <summary>
+        /// 选择
+        /// </summary>
+        public RelayCommand<string> SelectCommand { get; set; }
 
+        /// <summary>
+        /// 导出
+        /// </summary>
+        public RelayCommand<string> ExportCommand { get; set; }
 
         #endregion
 
@@ -91,12 +100,24 @@ WHERE m.is_deleted=0 AND d.is_deleted=0");
                 if (QueryType == "TD")
                 {
                     sql.Append($" AND m.create_dt BETWEEN @startTestDate AND @endTestDate");
-                    parameters = new SqlParameter[2] { new SqlParameter("@startTestDate", StartTestDate), new SqlParameter("@endTestDate", EndTestDate) };
+                    var parameters1 = new SqlParameter()
+                    {
+                        ParameterName = "@startTestDate",
+                        DbType = DbType.DateTime,
+                        Value = StartTestDate
+                    };
+                    var parameters2 = new SqlParameter()
+                    {
+                        ParameterName = "@endTestDate",
+                        DbType = DbType.DateTime,
+                        Value = EndTestDate
+                    };
+                    parameters = new SqlParameter[] { parameters1, parameters2 };
                 }
                 else if (QueryType == "TN")
                 {
                     sql.Append($" AND m.test_no >=@startTestNo AND m.test_no<=@endTestNo");
-                    parameters = new SqlParameter[2] { new SqlParameter("@startTestNo", StartTestDate), new SqlParameter("@endTestNo", EndTestDate) };
+                    parameters = new SqlParameter[] { new SqlParameter("@startTestNo", StartTestNo), new SqlParameter("@endTestNo", EndTestNo) };
                 }
 
                 TModels.Clear();//清空前端分页数据
@@ -118,7 +139,7 @@ WHERE m.is_deleted=0 AND d.is_deleted=0");
                                 TestItemNo = dataRow["test_item_no"].ToString(),
                                 Deadline = dataRow["deadline"].ToString(),
                                 ExperimentNo = dataRow["experiment_no"].ToString(),
-                                PlayTime = dataRow["paly_time"].ToString(),
+                                PlayTime = Convert.ToDateTime(dataRow["play_time"].ToString()),
                                 TestPreceptName = dataRow["test_precept_name"].ToString(),
                                 FileName = dataRow["file_name"].ToString(),
                                 SampleShape = dataRow["sample_shape"].ToString(),
@@ -156,13 +177,193 @@ WHERE m.is_deleted=0 AND d.is_deleted=0");
         /// </summary>
         public override void Reset()
         {
-            this.QueryType = string.Empty;
-            this.StartTestDate= DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
-            this.EndTestDate = DateTime.Now.ToString("yyyy-MM-dd");
+            this.QueryType = "TD";
+            this.StartTestDate= DateTime.Now.AddDays(-7);
+            this.EndTestDate = DateTime.Now;
             this.StartTestNo = string.Empty;
             this.EndTestNo = string.Empty;
 
             this.Query();
+        }
+
+        /// <summary>
+        /// 选择
+        /// </summary>
+        /// <param name="obj"></param>
+        public void Select(string obj)
+        {
+            if (obj== "CheckAll")
+            {//全选
+                foreach (var item in GridData)
+                {
+                    if (!item.IsSelected) item.IsSelected = true;
+                }
+            }
+            else
+            { //反选
+                foreach (var item in GridData)
+                {
+                    item.IsSelected = !item.IsSelected;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 导出/全部导出
+        /// </summary>
+        /// <param name="obj"></param>
+        public void Export(string obj)
+        {
+            MessageBox.Show("小伙钓鱼去了，暂时没有时间写代码！");
+
+            /* ==> 导出逻辑
+             procedure TfrmDataEpt.Button5Click(Sender: TObject);
+var
+  constr: string;
+  filename: string;
+  testMain_id: string;
+begin
+  if dxMemData1.RecordCount=0 then
+  begin
+    showmessage('没有要导出的数据！');
+    exit;
+  end;
+
+  if rd1.ItemIndex=0 then
+    filename := formatdatetime('yyyymmdd-hhnnss',now())+'.mdb'
+  else
+    filename := edtmin.Text+'~'+edtMax.Text+'.mdb';
+
+  if FileExists(CurrentDir+'Export\'+filename) then
+    deletefile(CurrentDir+'Export\'+filename);
+
+  frmMain.adoconn.Close;
+  CopyFile(Pchar(CurrentDir+'DB\Press1.mdb'),Pchar(CurrentDir+'Export\'+filename),false);
+
+  adoconn.Close;
+  CreateDSN(CurrentDir+'Export\'+filename, 'AutoAcsDBout', 'AutoAcs');
+  constr:='FILE NAME='+CurrentDir+'DBEPTLink.udl';
+
+  adoconn.Close;
+  adoconn.ConnectionString:=constr;
+
+  adoconn.Close;
+  adoconn.ConnectionString:=constr;
+  try
+    adoconn.Connected :=true;
+  except
+    showmessage('无法连接数据库，请检测数据库是否存在！');
+    EncrypMDB(CurrentDir+'Export\'+filename);
+    exit;
+  end;
+
+  testMain_id:='0,';
+  dxMemData1.DisableControls;
+  dxMemData1.first;
+  while not dxMemData1.Eof do
+  begin
+    if dxMemData1.FieldByName('flag').AsBoolean then
+    begin
+      if Pos(','+dxMemData1.fieldbyname('testMain_id').AsString+',', testMain_id)=0 then
+       testMain_id :=testMain_id+dxMemData1.fieldbyname('testMain_id').AsString+',';
+    end;
+    dxMemData1.Next;
+  end;
+  testMain_id:=testMain_id+'0';
+  dxMemData1.EnableControls;
+  //清除不需要的数据
+  acddel.CommandText:='delete from testno where testMain_id not in ('+testMain_id+')';
+  acddel.Execute;
+
+  acddel.CommandText:='delete from OriginalData where testMain_id not in ('+testMain_id+')';
+  acddel.Execute;
+
+  acddel.CommandText:='delete from testMain where id  not in ('+testMain_id+')';
+  acddel.Execute;
+
+  showmessage('数据已成功导出到'+CurrentDir+'Export\'+filename);
+  adoconn.Close;
+  dxMemData1.Close;
+
+  CompactDatabase(CurrentDir+'Export\'+filename,'AutoAcs');
+end;
+             
+             */
+
+
+
+            /* ==> 全部导出逻辑
+             procedure TfrmDataEpt.Button1Click(Sender: TObject);
+var
+  constr: string;
+  filename: string;
+begin
+  if dxMemData1.RecordCount=0 then
+  begin
+    showmessage('没有要导出的数据！');
+    exit;
+  end;
+
+  if rd1.ItemIndex=0 then
+    filename := formatdatetime('yyyymmdd-hhnnss',now())+'.mdb'
+  else
+    filename := edtmin.Text+'~'+edtMax.Text+'.mdb';
+
+  if FileExists(CurrentDir+'Export\'+filename) then
+    deletefile(CurrentDir+'Export\'+filename);
+
+  frmMain.adoconn.Close;
+  CopyFile(Pchar(CurrentDir+'DB\Press1.mdb'),Pchar(CurrentDir+'Export\'+filename),false);
+
+  adoconn.Close;
+  CreateDSN(CurrentDir+'Export\'+filename, 'AutoAcsDBout', 'AutoAcs');
+  constr:='FILE NAME='+CurrentDir+'DBEPTLink.udl';
+
+  adoconn.Close;
+  adoconn.ConnectionString:=constr;
+  try
+    adoconn.Connected :=true;
+  except
+    showmessage('无法连接数据库，请检测数据库是否存在！');
+    EncrypMDB(CurrentDir+'Export\'+filename);
+    exit;
+  end;
+  //清除不需要的数据
+
+  if rd1.ItemIndex=0 then
+  begin
+    acddel.CommandText:='delete from testno where testMain_id not in ( select id from testMain where dates>=#'+testdate.Text+'# and dates<=#'+testdate1.Text+'#)';
+    acddel.Execute;
+
+    acddel.CommandText:='delete from OriginalData where testMain_id not in ( select id from testMain where dates>=#'+testdate.Text+'# and dates<=#'+testdate1.Text+'#)';
+    acddel.Execute;
+
+    acddel.CommandText:='delete from testMain where dates<#'+testdate.Text+'#';
+    acddel.Execute;
+    acddel.CommandText:='delete from testMain where dates>#'+testdate1.Text+'#';
+    acddel.Execute;
+  end
+  else
+  begin
+    acddel.CommandText:='delete from testno where testMain_id not in ( select id from testMain where TestNo>='''+trim(edtmin.Text)+''' and TestNo<='''+Trim(edtmax.Text)+''')';
+    acddel.Execute;
+
+    acddel.CommandText:='delete from OriginalData where testMain_id not in ( select id from testMain where TestNo>='''+trim(edtmin.Text)+''' and TestNo<='''+Trim(edtmax.Text)+''')';
+    acddel.Execute;
+
+    acddel.CommandText:='delete from testMain where TestNo<'''+trim(edtmin.Text)+'''';
+    acddel.Execute;
+    acddel.CommandText:='delete from testMain where TestNo>'''+Trim(edtmax.Text)+'''';
+    acddel.Execute;
+  end;
+
+  showmessage('数据已成功导出到'+CurrentDir+'Export\'+filename);
+  adoconn.Close;
+  dxMemData1.Close;
+  
+  CompactDatabase(CurrentDir+'Export\'+filename,'AutoAcs');
+end;
+             */
         }
 
         /// <summary>

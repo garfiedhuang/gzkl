@@ -12,7 +12,7 @@
              mc:Ignorable="d" 
              DataContext="{Binding Source={StaticResource Locator},Path=Export}"
              Loaded="ExportControl_Loaded"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="1000">
     <UserControl.Resources>
         <converter:EnumConverter x:Key="enumConverter"/>
         <cv:CheckConverter x:Key="checkConverter"/>
@@ -59,14 +59,26 @@
 							Margin="10 0 0 0" 
 							Command="{Binding ResetCommand}"/>
 
-					<Button Content="导出"
-							Width="80"
+                    <Button Content="全选"
+							Width="65"
+						    VerticalAlignment="Center"
+						    Margin="15 0 0 0"
+							Command="{Binding SelectCommand}" CommandParameter="CheckAll"/>
+
+                    <Button Content="反选"
+							Width="65"
+						    VerticalAlignment="Center"
+						    Margin="15 0 0 0"
+							Command="{Binding SelectCommand}" CommandParameter="Inverse"/>
+
+                    <Button Content="导出"
+							Width="65"
 						    VerticalAlignment="Center"
 						    Margin="15 0 0 0"
 							Command="{Binding ExportCommand}" CommandParameter=""/>
 					
 					<Button Content="全部导出" 
-							Width="80" 
+							Width="70" 
 							VerticalAlignment="Center" 
 							Margin="10 0 0 0" 
 							Command="{Binding ExportCommand}" CommandParameter="All" />
@@ -90,7 +102,7 @@
             </DataGrid.RowHeaderTemplate>-->
 
             <DataGrid.Columns>
-                <DataGridCheckBoxColumn Binding="{Binding IsSelected}" Width="50" CanUserSort="False" CanUserResize="False" Header="选择"/>
+                <DataGridCheckBoxColumn Binding="{Binding IsSelected, Mode=TwoWay}" Width="50" CanUserSort="False" CanUserResize="False" Header="选择"/>
                 <DataGridTextColumn Binding="{Binding RowNum}" Width="60" CanUserSort="False" CanUserResize="False" Header="序号"/>
                 <DataGridTextColumn IsReadOnly="True" Width="60" CanUserSort="False" CanUserResize="False" Binding="{Binding Id}" Header="主键ID" Visibility="Hidden"/>
                 <DataGridTextColumn IsReadOnly="True"  Width="120" Binding="{Binding OrgNo}" Header="机构编号"/>
@@ -100,7 +112,7 @@
                 <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding TestItemNo}" Header="检测项编号"/>
                 <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Deadline}" Header="龄期"/>
                 <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding ExperimentNo}" Header="试验次数"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding PlayTime}" Header="记录时间"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="160" Binding="{Binding PlayTime, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}}" Header="记录时间"/>
                 <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding TestPreceptName}" Header="键"/>
                 <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding SampleShape}" Header="键"/>
                 <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Area}" Header="键"/>

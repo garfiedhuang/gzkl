@@ -59,7 +59,7 @@ namespace GZKL.Client.UI.Models
         /// <summary>
         /// 记录时间
         /// </summary>
-        public string PlayTime { set; get; }
+        public DateTime PlayTime { set; get; }
 
         /// <summary>
         /// 备注
