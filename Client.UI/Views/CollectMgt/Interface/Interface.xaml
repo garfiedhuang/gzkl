@@ -88,7 +88,7 @@
                         
                         <WrapPanel Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Button x:Name="btnSelectInterfaceDb" Visibility="Visible" Content="选择接口数据库" Width="110" Margin="2" Command="{Binding SelectInterfaceDbCommand}" hc:BorderElement.CornerRadius="5"/>
-                            <Button x:Name="btnSetInterfaceDb" Visibility="Visible" Content="设置当前接口为本机数据库" Width="170" Margin="2" Command="{Binding SetInterfaceDbCommand}" hc:BorderElement.CornerRadius="5"/>
+                            <Button x:Name="btnSetInterfaceDb" Visibility="Visible" Content="设置当前接口为本机接口" Width="160" Margin="2" Command="{Binding SetInterfaceDbCommand}" hc:BorderElement.CornerRadius="5"/>
                         </WrapPanel>
                         
                         <DataGrid Margin="0" 

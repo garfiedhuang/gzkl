@@ -43,7 +43,7 @@
 
     <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="120"/>
+            <RowDefinition Height="160"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -58,22 +58,133 @@
             </Grid.ColumnDefinitions>
             <GroupBox x:Name="gbOrgAndTestItemInfo" Margin="5" Grid.Row="0" Grid.Column="0" Header="检测机构与项目" Style="{StaticResource GroupBoxOriginal}" HorizontalContentAlignment="Left">
                 <Border BorderBrush="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" BorderThickness="1,1,1,1" CornerRadius="5">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <WrapPanel Orientation="Horizontal">
+                            <hc:ComboBox Margin="2" Width="250" 
+                             x:Name="cmbOrg" 
+                             IsEditable="False" 
+                             hc:TitleElement.TitlePlacement="Left"
+                             hc:InfoElement.Placeholder="请选择机构"
+                             DisplayMemberPath="Value" 
+                             SelectedValuePath="Key"
+                             ItemsSource="{Binding IsEnabledData}"
+                             SelectedValue="{Binding Model.IsEnabled}"
+                             hc:InfoElement.Title="机构：" 
+                             hc:InfoElement.Necessary="True">
+                            </hc:ComboBox>
 
+                            <hc:TextBox Margin="2" Width="120"
+                            x:Name="txtOrgNo"
+                            hc:InfoElement.Placeholder="机构编号" 
+                            Text="{Binding Model.OrgLevel,Mode=TwoWay}"
+                            hc:InfoElement.Necessary="False"/>
+                        </WrapPanel>
+                        <WrapPanel Orientation="Horizontal">
 
+                            <hc:ComboBox Margin="2" Width="250" 
+                             x:Name="cmbTestType"
+                             IsEditable="False" 
+                             hc:TitleElement.TitlePlacement="Left"
+                             hc:InfoElement.Placeholder="请选择类型"
+                             DisplayMemberPath="Value" 
+                             SelectedValuePath="Key"
+                             ItemsSource="{Binding IsEnabledData}"
+                             SelectedValue="{Binding Model.IsEnabled}"
+                             hc:InfoElement.Title="类型：" 
+                             hc:InfoElement.Necessary="True">
+                            </hc:ComboBox>
+
+                            <hc:TextBox Margin="2" Width="120"
+                            x:Name="txtTestTypeNo"
+                            hc:InfoElement.Placeholder="类型编号" 
+                            Text="{Binding Model.OrgLevel,Mode=TwoWay}"
+                            hc:InfoElement.Necessary="False"/>
+                        </WrapPanel>
+                        <WrapPanel Orientation="Horizontal">
+
+                            <hc:ComboBox Margin="2" Width="250" 
+                             x:Name="cmbTestItem" 
+                             IsEditable="False" 
+                             hc:TitleElement.TitlePlacement="Left"
+                             hc:InfoElement.Placeholder="请选择项目"
+                             DisplayMemberPath="Value" 
+                             SelectedValuePath="Key"
+                             ItemsSource="{Binding IsEnabledData}"
+                             SelectedValue="{Binding Model.IsEnabled}"
+                             hc:InfoElement.Title="项目：" 
+                             hc:InfoElement.Necessary="True">
+                            </hc:ComboBox>
+
+                            <hc:TextBox Margin="2" Width="120"
+                            x:Name="txtTestItemNo"
+                            hc:InfoElement.Placeholder="项目编号" 
+                            Text="{Binding Model.OrgLevel,Mode=TwoWay}"
+                            hc:InfoElement.Necessary="False"/>
+                        </WrapPanel>
+                    </StackPanel>
                 </Border>
             </GroupBox>
             <GroupBox x:Name="gbInterfaceInfo" Margin="5" Grid.Row="0" Grid.Column="1" Header="接口信息" Style="{StaticResource GroupBoxOriginal}" HorizontalContentAlignment="Left">
                 <Border BorderBrush="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" BorderThickness="1,1,1,1" CornerRadius="5">
 
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+
+                        <hc:TextBox Margin="2" Width="250"
+                            x:Name="txtInterfaceName"
+                            hc:TitleElement.TitlePlacement="Left"
+                            hc:InfoElement.Placeholder="" 
+                            hc:IsReadOnly="True"
+                            Text="{Binding Model.OrgLevel,Mode=TwoWay}"
+                            hc:InfoElement.Title="接口名称："
+                            hc:InfoElement.Necessary="True"/>
+                        
+                        <hc:ComboBox Margin="2" Width="250" 
+                             x:Name="cmbInterfaceItem"
+                             IsEditable="False" 
+                             hc:TitleElement.TitlePlacement="Left"
+                             hc:InfoElement.Placeholder="请选择接口项目"
+                             DisplayMemberPath="Value" 
+                             SelectedValuePath="Key"
+                             ItemsSource="{Binding IsEnabledData}"
+                             SelectedValue="{Binding Model.IsEnabled}"
+                             hc:InfoElement.Title="接口项目：" 
+                             hc:InfoElement.Necessary="True">
+                        </hc:ComboBox>
+
+                        
+                    </StackPanel>
 
                 </Border>
             </GroupBox>
-            <GroupBox x:Name="gbSampleInfo" Margin="5" Grid.Row="0" Grid.Column="2" Header="试样" Style="{StaticResource GroupBoxOriginal}" HorizontalContentAlignment="Left">
-                <Border BorderBrush="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" BorderThickness="1,1,1,1" CornerRadius="5">
 
+            <StackPanel Grid.Row="0" Grid.Column="2">
+                <GroupBox x:Name="gbSampleInfo" Margin="5" Height="115"  Header="试样" Style="{StaticResource GroupBoxOriginal}" HorizontalContentAlignment="Left">
+                    <Border BorderBrush="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" BorderThickness="1,1,1,1" CornerRadius="5">
+                        <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <hc:TextBox Margin="2" Width="250"
+                            x:Name="txtOrgLevel222"
+                            hc:TitleElement.TitlePlacement="Left"
+                            hc:InfoElement.Placeholder="请输入检测编号" 
+                            Text="{Binding Model.OrgLevel,Mode=TwoWay}"
+                            hc:InfoElement.Title="检测编号："
+                            hc:InfoElement.Necessary="False"/>
 
-                </Border>
-            </GroupBox>
+                            <hc:TextBox Margin="2" Width="250"
+                            x:Name="txtOrgLevel22d2"
+                            hc:TitleElement.TitlePlacement="Left"
+                            hc:InfoElement.Placeholder="请输入样品编号" 
+                            Text="{Binding Model.OrgLevel,Mode=TwoWay}"
+                            hc:InfoElement.Title="样品编号："
+                            hc:InfoElement.Necessary="False"/>
+                        </WrapPanel>
+
+                    </Border>
+                </GroupBox>
+                <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Button x:Name="btnAdd" Visibility="Visible" Content="数据查询" Width="100" Margin="0,0,10,0" Command="{Binding AddTestItemCommand}" hc:BorderElement.CornerRadius="5"/>
+                    <Button x:Name="btnDelete" Visibility="Visible" Content="数据入库" Width="100" Margin="10,0,0,0" Command="{Binding DeleteTestItemCommand}" hc:BorderElement.CornerRadius="5"/>
+                </WrapPanel>
+            </StackPanel>
         </Grid>
 
         <Border Margin="5,0,5,5" Grid.Row="1" BorderBrush="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" BorderThickness="1,1,1,1" CornerRadius="5">
