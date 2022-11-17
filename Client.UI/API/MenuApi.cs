@@ -79,7 +79,7 @@ namespace GZKL.Client.UI.API
                 {
                     Code = "\ue669",
                     Name = "自动采集",
-                    TypeName = "CollectMgt.AutoCollect.AutoCollect"
+                    TypeName = "CollectMgt.AutoCollect.Index"
                 });
                 list.Add(new ModuleModel
                 {

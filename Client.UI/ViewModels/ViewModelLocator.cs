@@ -31,6 +31,8 @@ namespace GZKL.Client.UI.ViewsModels
             SimpleIoc.Default.Register<BackupViewModel>();
             SimpleIoc.Default.Register<ExportViewModel>();
             SimpleIoc.Default.Register<InterfaceViewModel>();
+            SimpleIoc.Default.Register<ClearViewModel>();
+            SimpleIoc.Default.Register<AutoCollectViewModel>();
         }
 
         #region 实例化
@@ -58,6 +60,8 @@ namespace GZKL.Client.UI.ViewsModels
         public ExportViewModel Export => ServiceLocator.Current.GetInstance<ExportViewModel>();
 
         public InterfaceViewModel Interface => ServiceLocator.Current.GetInstance<InterfaceViewModel>();
+        public ClearViewModel Clear => ServiceLocator.Current.GetInstance<ClearViewModel>();
+        public AutoCollectViewModel AutoCollect => ServiceLocator.Current.GetInstance<AutoCollectViewModel>();
 
         #endregion
 
