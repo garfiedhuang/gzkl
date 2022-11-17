@@ -55,8 +55,6 @@
                   ItemsSource="{Binding GridModelList}" >
 
                     <DataGrid.Columns>
-                        <!--<DataGridCheckBoxColumn Binding="{Binding IsSelected}" Width="50" Header="选择"/>
-                        <DataGridTextColumn Binding="{Binding RowNum}" Width="60" Header="序号"/>-->
                         <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding Id}" Header="ID"/>
                         <DataGridTextColumn IsReadOnly="True"  MinWidth="120" Binding="{Binding InterfaceName}" Header="接口"/>
                         <DataGridTextColumn IsReadOnly="True"  MinWidth="200" Binding="{Binding AccessDbPath}" Header="数据库文件"/>
@@ -87,14 +85,20 @@
                             <RowDefinition Height="60"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <DataGrid Margin="0" Grid.Row="1" Background="White"
-                  x:Name="dgInterfaceSelectData1"
-                  hc:Empty.ShowEmpty="False"
-                  ItemsSource="{Binding GridModelList}" >
+                        
+                        <WrapPanel Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Button x:Name="btnSelectInterfaceDb" Visibility="Visible" Content="选择接口数据库" Width="110" Margin="2" Command="{Binding SelectInterfaceDbCommand}" hc:BorderElement.CornerRadius="5"/>
+                            <Button x:Name="btnSetInterfaceDb" Visibility="Visible" Content="设置当前接口为本机数据库" Width="170" Margin="2" Command="{Binding SetInterfaceDbCommand}" hc:BorderElement.CornerRadius="5"/>
+                        </WrapPanel>
+                        
+                        <DataGrid Margin="0" 
+                                  Grid.Row="1" 
+                                  Background="White"
+                                  x:Name="dgInterfaceSelectData1"
+                                  hc:Empty.ShowEmpty="False"
+                                  ItemsSource="{Binding GridModelList}" >
 
                             <DataGrid.Columns>
-                                <!--<DataGridCheckBoxColumn Binding="{Binding IsSelected}" Width="50" Header="选择"/>
-                        <DataGridTextColumn Binding="{Binding RowNum}" Width="60" Header="序号"/>-->
                                 <DataGridTextColumn IsReadOnly="True" Width="60" Binding="{Binding Id}" Header="主键ID"/>
                                 <DataGridTextColumn IsReadOnly="True"  Width="120" Binding="{Binding InterfaceName}" Header="接口名称"/>
                                 <DataGridTextColumn IsReadOnly="True"  Width="250" Binding="{Binding AccessDbPath}" Header="路径"/>
@@ -123,8 +127,6 @@
                   ItemsSource="{Binding GridModelList}" >
 
                             <DataGrid.Columns>
-                                <!--<DataGridCheckBoxColumn Binding="{Binding IsSelected}" Width="50" Header="选择"/>
-                        <DataGridTextColumn Binding="{Binding RowNum}" Width="60" Header="序号"/>-->
                                 <DataGridTextColumn IsReadOnly="True" Width="60" Binding="{Binding Id}" Header="主键ID"/>
                                 <DataGridTextColumn IsReadOnly="True"  Width="120" Binding="{Binding InterfaceName}" Header="接口名称"/>
                                 <DataGridTextColumn IsReadOnly="True"  Width="250" Binding="{Binding AccessDbPath}" Header="路径"/>
@@ -135,6 +137,12 @@
                                 <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
                             </DataGrid.Columns>
                         </DataGrid>
+
+                        <WrapPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Button x:Name="btnAdd" Visibility="Visible" Content="新增" Width="80" Margin="10" Command="{Binding AddTestItemCommand}" hc:BorderElement.CornerRadius="5"/>
+                            <Button x:Name="btnDelete" Visibility="Visible" Content="删除" Width="80" Margin="10" Command="{Binding DeleteTestItemCommand}" hc:BorderElement.CornerRadius="5"/>
+                        </WrapPanel>
+                        
                     </Grid>
                 </Border>
             </GroupBox>

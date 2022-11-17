@@ -30,17 +30,34 @@ namespace GZKL.Client.UI.ViewsModels
         /// </summary>
         public InterfaceViewModel()
         {
-            QueryCommand = new RelayCommand(this.Query);
-            ResetCommand = new RelayCommand(this.Reset);
-            EditCommand = new RelayCommand<int>(this.Edit);
-            DeleteCommand = new RelayCommand<int>(this.Delete);
-            AddCommand = new RelayCommand(this.Add);
-            PageUpdatedCommand = new RelayCommand<FunctionEventArgs<int>>(PageUpdated);
-            SelectCommand = new RelayCommand<InterfaceModel>(this.Select);
+            SelectInterfaceDbCommand = new RelayCommand(this.SelectInterfaceDb);
+            SetInterfaceDbCommand = new RelayCommand(this.SetInterfaceDb);
+            AddTestItemCommand = new RelayCommand(this.AddTestItem);
+            DeleteTestItemCommand = new RelayCommand(this.DeleteTestItem);
 
             InterfaceModels = new List<InterfaceModel>();
             GridModelList = new ObservableCollection<InterfaceModel>();
 
+        }
+
+        private void DeleteTestItem()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void AddTestItem()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void SetInterfaceDb()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void SelectInterfaceDb()
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -73,89 +90,29 @@ namespace GZKL.Client.UI.ViewsModels
             }
         }
 
-        /// <summary>
-        /// 最大页面数
-        /// </summary>
-        private int maxPageCount = 1;
-
-        public int MaxPageCount
-        {
-            get { return maxPageCount; }
-            set
-            {
-                maxPageCount = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// 当前页数
-        /// </summary>
-        private int pageIndex = 1;
-
-        public int PageIndex
-        {
-            get { return pageIndex; }
-            set
-            {
-                pageIndex = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// 分页大小
-        /// </summary>
-        private int dataCountPerPage = 20;
-
-        public int DataCountPerPage
-        {
-            get { return dataCountPerPage; }
-            set
-            {
-                dataCountPerPage = value;
-                RaisePropertyChanged();
-            }
-        }
-
         #endregion
 
         #region Command
 
         /// <summary>
-        /// 查询命令
+        /// 选择接口数据库
         /// </summary>
-        public RelayCommand QueryCommand { get; set; }
+        public RelayCommand SelectInterfaceDbCommand { get; set; }
 
         /// <summary>
-        /// 重置命令
+        /// 设置当前接口为本机数据库
         /// </summary>
-        public RelayCommand ResetCommand { get; set; }
+        public RelayCommand SetInterfaceDbCommand { get; set; }
 
         /// <summary>
-        /// 编辑
+        /// 新增测试项目
         /// </summary>
-        public RelayCommand<int> EditCommand { get; set; }
+        public RelayCommand AddTestItemCommand { get; set; }
 
         /// <summary>
-        /// 删除
+        /// 删除测试项目
         /// </summary>
-        public RelayCommand<int> DeleteCommand { get; set; }
-
-        /// <summary>
-        /// 新增
-        /// </summary>
-        public RelayCommand AddCommand { get; set; }
-
-        /// <summary>
-        /// 分页
-        /// </summary>
-        public RelayCommand<FunctionEventArgs<int>> PageUpdatedCommand { get; set; }
-
-        /// <summary>
-        /// 选择
-        /// </summary>
-        public RelayCommand<InterfaceModel> SelectCommand { get; set; }
+        public RelayCommand DeleteTestItemCommand { get; set; }
 
 
         #endregion
@@ -169,6 +126,7 @@ namespace GZKL.Client.UI.ViewsModels
         {
             try
             {
+                /*
                 var sql = new StringBuilder(@"SELECT row_number()over(order by update_dt desc )as row_num
                 ,[id],[interface_name],[access_db_path],[access_db_name],[remark],[is_enabled],[is_deleted],[create_dt]
                 ,[create_user_id],[update_dt],[update_user_id]
@@ -217,7 +175,7 @@ namespace GZKL.Client.UI.ViewsModels
 
                 //数据分页
                 Paging(PageIndex);
-
+                */
             }
             catch (Exception ex)
             {
@@ -242,6 +200,7 @@ namespace GZKL.Client.UI.ViewsModels
         {
             try
             {
+                /*
                 var selected = GridModelList.Where(w => w.IsSelected == true).ToList();
 
                 if (selected.Count != 1)
@@ -311,6 +270,7 @@ namespace GZKL.Client.UI.ViewsModels
                         }
                     }
                 }
+                */
             }
             catch (Exception ex)
             {
@@ -326,6 +286,7 @@ namespace GZKL.Client.UI.ViewsModels
         {
             try
             {
+                /*
                 var selected = GridModelList.Where(w => w.IsSelected == true).ToList();
 
                 if (selected.Count == 0)
@@ -351,6 +312,7 @@ namespace GZKL.Client.UI.ViewsModels
                         this.Query();
                     }
                 }
+                */
             }
             catch (Exception ex)
             {
@@ -365,6 +327,7 @@ namespace GZKL.Client.UI.ViewsModels
         {
             try
             {
+                /*
                 InterfaceModel model = new InterfaceModel();
                 Edit view = new Edit(model);
                 var r = view.ShowDialog();
@@ -407,6 +370,8 @@ namespace GZKL.Client.UI.ViewsModels
 
                     this.Query();
                 }
+
+                */
             }
             catch (Exception ex)
             {
@@ -454,17 +419,17 @@ namespace GZKL.Client.UI.ViewsModels
         private void Paging(int pageIndex)
         {
 
-            GridModelList.Clear();//清空依赖属性
+            //GridModelList.Clear();//清空依赖属性
 
-            var pagedData = InterfaceModels.Skip((pageIndex - 1) * DataCountPerPage).Take(DataCountPerPage).ToList();
+            //var pagedData = InterfaceModels.Skip((pageIndex - 1) * DataCountPerPage).Take(DataCountPerPage).ToList();
 
-            if (pagedData.Count > 0)
-            {
-                pagedData.ForEach(item =>
-                {
-                    GridModelList.Add(item);
-                });
-            }
+            //if (pagedData.Count > 0)
+            //{
+            //    pagedData.ForEach(item =>
+            //    {
+            //        GridModelList.Add(item);
+            //    });
+            //}
         }
 
         #endregion

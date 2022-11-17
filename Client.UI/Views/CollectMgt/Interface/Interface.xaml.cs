@@ -31,5 +31,10 @@ namespace GZKL.Client.UI.Views.CollectMgt.Interface
         {
             //(this.DataContext as InterfaceViewModel).Query();
         }
+
+        private void btnSelectInterfaceDb_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
