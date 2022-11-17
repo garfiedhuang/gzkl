@@ -26,7 +26,7 @@
             <Setter Property="IsReadOnly" Value="True"></Setter>
             <Setter Property="BorderThickness" Value="1"></Setter>
             <Setter Property="BorderBrush" Value="LightGray"></Setter>
-            <Setter Property="RowHeight" Value="30"></Setter>
+            <Setter Property="RowHeight" Value="25"></Setter>
             <Setter Property="VerticalScrollBarVisibility" Value="Auto"></Setter>
             <Setter Property="HorizontalScrollBarVisibility" Value="Auto"></Setter>
         </Style>
@@ -34,7 +34,7 @@
         <!--DataGrid表头样式-->
         <Style TargetType="DataGridColumnHeader">
             <Setter Property="FontSize" Value="12"></Setter>
-            <Setter Property="Height" Value="30"></Setter>
+            <Setter Property="Height" Value="25"></Setter>
             <Setter Property="BorderThickness" Value="0,0,1,1"></Setter>
             <Setter Property="BorderBrush" Value="LightGray"></Setter>
             <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>

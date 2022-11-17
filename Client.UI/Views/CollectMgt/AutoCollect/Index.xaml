@@ -26,7 +26,7 @@
             <Setter Property="IsReadOnly" Value="True"></Setter>
             <Setter Property="BorderThickness" Value="1"></Setter>
             <Setter Property="BorderBrush" Value="LightGray"></Setter>
-            <Setter Property="RowHeight" Value="30"></Setter>
+            <Setter Property="RowHeight" Value="25"></Setter>
             <Setter Property="VerticalScrollBarVisibility" Value="Auto"></Setter>
             <Setter Property="HorizontalScrollBarVisibility" Value="Auto"></Setter>
         </Style>
@@ -34,7 +34,7 @@
         <!--DataGrid表头样式-->
         <Style TargetType="DataGridColumnHeader">
             <Setter Property="FontSize" Value="12"></Setter>
-            <Setter Property="Height" Value="30"></Setter>
+            <Setter Property="Height" Value="25"></Setter>
             <Setter Property="BorderThickness" Value="0,0,1,1"></Setter>
             <Setter Property="BorderBrush" Value="LightGray"></Setter>
             <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
@@ -43,49 +43,183 @@
 
     <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="200"/>
+            <RowDefinition Height="120"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <GroupBox x:Name="gbAutoCollectSelect" Margin="5" Grid.Row="0" Header="接口选择" Style="{StaticResource GroupBoxOriginal}" HorizontalContentAlignment="Left">
-            <Border BorderBrush="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" BorderThickness="1,1,1,1" CornerRadius="5">
-                <!--<DataGrid Margin="5" Background="White"
-                  x:Name="dgAutoCollectSelectData"
-                  hc:Empty.ShowEmpty="False"
-                  ItemsSource="{Binding GridModelList}" >
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40*"/>
+                <ColumnDefinition Width="30*"/>
+                <ColumnDefinition Width="30*"/>
+            </Grid.ColumnDefinitions>
+            <GroupBox x:Name="gbOrgAndTestItemInfo" Margin="5" Grid.Row="0" Grid.Column="0" Header="检测机构与项目" Style="{StaticResource GroupBoxOriginal}" HorizontalContentAlignment="Left">
+                <Border BorderBrush="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" BorderThickness="1,1,1,1" CornerRadius="5">
 
-                    <DataGrid.Columns>
-                        <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding Id}" Header="ID"/>
-                        <DataGridTextColumn IsReadOnly="True"  MinWidth="120" Binding="{Binding AutoCollectName}" Header="接口"/>
-                        <DataGridTextColumn IsReadOnly="True"  MinWidth="200" Binding="{Binding AccessDbPath}" Header="数据库文件"/>
-                        <DataGridTextColumn IsReadOnly="True"  MinWidth="150" Binding="{Binding AccessDbName}" Header="数据库"/>
-                        <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>
-                        <DataGridTextColumn IsReadOnly="True" MinWidth="180" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
-                        <DataGridTextColumn IsReadOnly="True" MinWidth="180" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
-                    </DataGrid.Columns>
-                </DataGrid>-->
-            </Border>
-        </GroupBox>
 
-        <GroupBox x:Name="gbAutoCollectSelect1" Margin="5" Grid.Row="1" Header="接口选择" Style="{StaticResource GroupBoxOriginal}" HorizontalContentAlignment="Left">
-            <Border BorderBrush="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" BorderThickness="1,1,1,1" CornerRadius="5">
-                <!--<DataGrid Margin="5" Background="White"
-                  x:Name="dgAutoCollectSelectData"
-                  hc:Empty.ShowEmpty="False"
-                  ItemsSource="{Binding GridModelList}" >
+                </Border>
+            </GroupBox>
+            <GroupBox x:Name="gbInterfaceInfo" Margin="5" Grid.Row="0" Grid.Column="1" Header="接口信息" Style="{StaticResource GroupBoxOriginal}" HorizontalContentAlignment="Left">
+                <Border BorderBrush="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" BorderThickness="1,1,1,1" CornerRadius="5">
 
-                    <DataGrid.Columns>
-                        <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding Id}" Header="ID"/>
-                        <DataGridTextColumn IsReadOnly="True"  MinWidth="120" Binding="{Binding AutoCollectName}" Header="接口"/>
-                        <DataGridTextColumn IsReadOnly="True"  MinWidth="200" Binding="{Binding AccessDbPath}" Header="数据库文件"/>
-                        <DataGridTextColumn IsReadOnly="True"  MinWidth="150" Binding="{Binding AccessDbName}" Header="数据库"/>
-                        <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>
-                        <DataGridTextColumn IsReadOnly="True" MinWidth="180" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
-                        <DataGridTextColumn IsReadOnly="True" MinWidth="180" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
-                    </DataGrid.Columns>
-                </DataGrid>-->
-            </Border>
-        </GroupBox>
+
+                </Border>
+            </GroupBox>
+            <GroupBox x:Name="gbSampleInfo" Margin="5" Grid.Row="0" Grid.Column="2" Header="试样" Style="{StaticResource GroupBoxOriginal}" HorizontalContentAlignment="Left">
+                <Border BorderBrush="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" BorderThickness="1,1,1,1" CornerRadius="5">
+
+
+                </Border>
+            </GroupBox>
+        </Grid>
+
+        <Border Margin="5,0,5,5" Grid.Row="1" BorderBrush="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" BorderThickness="1,1,1,1" CornerRadius="5">
+            <TabControl Style="{StaticResource TabControlBaseStyle}" FlowDirection="LeftToRight">
+                <TabItem Header="已处理数据" IsSelected="True">
+                    <hc:SimplePanel>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="33*"/>
+                                <RowDefinition Height="33*"/>
+                                <RowDefinition Height="33*"/>
+                            </Grid.RowDefinitions>
+                            <GroupBox x:Name="gbTest" Grid.Row="0" Header="检测主记录" Style="{StaticResource GroupBoxOriginal}" HorizontalContentAlignment="Left">
+
+                                <DataGrid Margin="5" 
+                                          Background="White"
+                                          x:Name="dgTestData"
+                                          ItemsSource="{Binding GridModelList}" >
+
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding Id}" Header="ID"/>
+                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="120" Binding="{Binding AutoCollectName}" Header="接口"/>
+                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="200" Binding="{Binding AccessDbPath}" Header="数据库文件"/>
+                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="150" Binding="{Binding AccessDbName}" Header="数据库"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="180" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="180" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </GroupBox>
+
+                            <GroupBox x:Name="gbTestDetail" Grid.Row="1" Header="试件明细记录" Style="{StaticResource GroupBoxOriginal}" HorizontalContentAlignment="Left">
+
+                                <DataGrid Margin="5" 
+                                          Background="White"
+                                          x:Name="dgTestDetailData" 
+                                          ItemsSource="{Binding GridModelList}" >
+
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding Id}" Header="ID"/>
+                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="120" Binding="{Binding AutoCollectName}" Header="接口"/>
+                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="200" Binding="{Binding AccessDbPath}" Header="数据库文件"/>
+                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="150" Binding="{Binding AccessDbName}" Header="数据库"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="180" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="180" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </GroupBox>
+
+                            <GroupBox x:Name="gbOriginalData" Grid.Row="2" Header="采集过程详细记录" Style="{StaticResource GroupBoxOriginal}" HorizontalContentAlignment="Left">
+
+                                <DataGrid Margin="5" 
+                                          Background="White"
+                                          x:Name="dgOriginalData" 
+                                          ItemsSource="{Binding GridModelList}" >
+
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding Id}" Header="ID"/>
+                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="120" Binding="{Binding AutoCollectName}" Header="接口"/>
+                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="200" Binding="{Binding AccessDbPath}" Header="数据库文件"/>
+                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="150" Binding="{Binding AccessDbName}" Header="数据库"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="180" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="180" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+
+                            </GroupBox>
+                        </Grid>
+
+                    </hc:SimplePanel>
+                </TabItem>
+                <TabItem Header="待处理数据">
+                    <hc:SimplePanel>
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="33*"/>
+                                <RowDefinition Height="33*"/>
+                                <RowDefinition Height="33*"/>
+                            </Grid.RowDefinitions>
+                            <GroupBox x:Name="gbUnfinishTest" Grid.Row="0" Header="检测主记录" Style="{StaticResource GroupBoxOriginal}" HorizontalContentAlignment="Left">
+
+                                <DataGrid Margin="5" 
+                                          Background="White"
+                                          x:Name="dgUnfinishTestData"
+                                          ItemsSource="{Binding GridModelList}" >
+
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding Id}" Header="ID"/>
+                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="120" Binding="{Binding AutoCollectName}" Header="接口"/>
+                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="200" Binding="{Binding AccessDbPath}" Header="数据库文件"/>
+                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="150" Binding="{Binding AccessDbName}" Header="数据库"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="180" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="180" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </GroupBox>
+
+                            <GroupBox x:Name="gbUnfinishTestDetail" Grid.Row="1" Header="试件明细记录" Style="{StaticResource GroupBoxOriginal}" HorizontalContentAlignment="Left">
+
+                                <DataGrid Margin="5" 
+                                          Background="White"
+                                          x:Name="dgUnfinishTestDetailData" 
+                                          ItemsSource="{Binding GridModelList}" >
+
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding Id}" Header="ID"/>
+                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="120" Binding="{Binding AutoCollectName}" Header="接口"/>
+                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="200" Binding="{Binding AccessDbPath}" Header="数据库文件"/>
+                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="150" Binding="{Binding AccessDbName}" Header="数据库"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="180" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="180" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </GroupBox>
+
+                            <GroupBox x:Name="gbUnfinishOriginalData" Grid.Row="2" Header="采集过程详细记录" Style="{StaticResource GroupBoxOriginal}" HorizontalContentAlignment="Left">
+
+                                <DataGrid Margin="5" 
+                                          Background="White"
+                                          x:Name="dgUnfinishOriginalData" 
+                                          ItemsSource="{Binding GridModelList}" >
+
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding Id}" Header="ID"/>
+                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="120" Binding="{Binding AutoCollectName}" Header="接口"/>
+                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="200" Binding="{Binding AccessDbPath}" Header="数据库文件"/>
+                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="150" Binding="{Binding AccessDbName}" Header="数据库"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="180" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="180" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+
+                            </GroupBox>
+                        </Grid>
+
+                    </hc:SimplePanel>
+                </TabItem>
+            </TabControl>
+        </Border>
+
 
     </Grid>
 </UserControl>
