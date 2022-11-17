@@ -40,6 +40,7 @@ namespace GZKL.Client.UI.ViewsModels
 
             InterfaceModels = new List<InterfaceModel>();
             GridModelList = new ObservableCollection<InterfaceModel>();
+
         }
 
         /// <summary>

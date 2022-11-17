@@ -11,85 +11,134 @@
              mc:Ignorable="d" 
              DataContext="{Binding Source={StaticResource Locator},Path=Interface}"
              Loaded="InterfaceControl_Loaded"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="650" d:DesignWidth="800">
     <UserControl.Resources>
         <converter:EnumConverter x:Key="enumConverter"/>
+
+        <Style TargetType="DataGrid">
+            <Setter Property="RowHeaderWidth" Value="20"></Setter>
+            <Setter Property="AutoGenerateColumns" Value="False"></Setter>
+            <Setter Property="CanUserAddRows" Value="False"></Setter>
+            <Setter Property="CanUserResizeColumns" Value="False"></Setter>
+            <Setter Property="CanUserResizeRows" Value="False"></Setter>
+            <Setter Property="HorizontalGridLinesBrush" Value="LightGray"></Setter>
+            <Setter Property="VerticalGridLinesBrush" Value="LightGray"></Setter>
+            <Setter Property="IsReadOnly" Value="True"></Setter>
+            <Setter Property="BorderThickness" Value="1"></Setter>
+            <Setter Property="BorderBrush" Value="LightGray"></Setter>
+            <Setter Property="RowHeight" Value="30"></Setter>
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"></Setter>
+            <Setter Property="HorizontalScrollBarVisibility" Value="Auto"></Setter>
+        </Style>
+
+        <!--DataGrid表头样式-->
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="FontSize" Value="12"></Setter>
+            <Setter Property="Height" Value="30"></Setter>
+            <Setter Property="BorderThickness" Value="0,0,1,1"></Setter>
+            <Setter Property="BorderBrush" Value="LightGray"></Setter>
+            <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+        </Style>
     </UserControl.Resources>
+
     <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="200"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <WrapPanel  VerticalAlignment="Bottom" Height="30" >
-            <hc:TextBox x:Name="textBox" 
-                    HorizontalAlignment="Left" 
-                    Height="23" Margin="15,0,0,0" 
-                    TextWrapping="Wrap" 
-                    Text="{Binding Search}" 
-                    FontWeight="Bold"
-                    Foreground="#5a5e66"
-                    hc:InfoElement.TitlePlacement="Left"
-                    hc:InfoElement.Title="接口名称"
-                    FontSize="13"
-                    VerticalAlignment="Center" 
-                    Width="193"/>
-            <Button Content="搜索" Width="70" Style="{wms:MultiStyle ButtonPrimary IconBtn}" bi:IconElement.Icon="&#xe696;"  VerticalAlignment="Center" Margin="10 0 0 0" Command="{Binding QueryCommand}"/>
-            <Button Content="重置" Style="{wms:MultiStyle ButtonInfo IconBtn}" bi:IconElement.Icon="&#xe692;"  VerticalAlignment="Center" Margin="10 0 0 0" Command="{Binding ResetCommand}"/>
-        </WrapPanel>
-        <WrapPanel Grid.Row="1" VerticalAlignment="Center" Height="30" Margin="0,15,0,5">
-            <Button Content="新增" 
-                    Style="{StaticResource AddBtnStyle}" 
-                    VerticalAlignment="Center" 
-                    Margin="15 0 0 0" Command="{Binding AddCommand}"/>
-            <Button Content="修改"  Style="{StaticResource EditBtnStyle}" 
-                    VerticalAlignment="Center" Margin="10 0 0 0" Command="{Binding EditCommand}"/>
-            <Button Content="删除"  VerticalAlignment="Center" Margin="10 0 0 0" Style="{StaticResource DelBtnStyle}" Command="{Binding DeleteCommand}" />
-        </WrapPanel>
 
-        <DataGrid Margin="15" Grid.Row="2"
-                  x:Name="dgData"
-                  hc:DataGridAttach.CanUnselectAllWithBlankArea="True"
-                  hc:Empty.ShowEmpty="True"
-                  HeadersVisibility="Column"
-                  AutoGenerateColumns="False"
-                  ItemsSource="{Binding GridModelList}" 
-                  RowHeaderWidth="60" >
+        <GroupBox x:Name="gbInterfaceSelect" Margin="5" Grid.Row="0" Header="接口选择" Style="{StaticResource GroupBoxOriginal}" HorizontalContentAlignment="Left">
+            <Border BorderBrush="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" BorderThickness="1,1,1,1" CornerRadius="5">
+                <DataGrid Margin="5" Background="White"
+                  x:Name="dgInterfaceSelectData"
+                  hc:Empty.ShowEmpty="False"
+                  ItemsSource="{Binding GridModelList}" >
 
-            <!--<DataGrid.RowHeaderTemplate>
-                <DataTemplate>
-                    <CheckBox IsChecked="{Binding IsSelected ,RelativeSource={RelativeSource AncestorType=DataGridRow}}"/>
-                </DataTemplate>
-            </DataGrid.RowHeaderTemplate>-->
+                    <DataGrid.Columns>
+                        <!--<DataGridCheckBoxColumn Binding="{Binding IsSelected}" Width="50" Header="选择"/>
+                        <DataGridTextColumn Binding="{Binding RowNum}" Width="60" Header="序号"/>-->
+                        <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding Id}" Header="ID"/>
+                        <DataGridTextColumn IsReadOnly="True"  MinWidth="120" Binding="{Binding InterfaceName}" Header="接口"/>
+                        <DataGridTextColumn IsReadOnly="True"  MinWidth="200" Binding="{Binding AccessDbPath}" Header="数据库文件"/>
+                        <DataGridTextColumn IsReadOnly="True"  MinWidth="150" Binding="{Binding AccessDbName}" Header="数据库"/>
+                        <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>
+                        <DataGridTextColumn IsReadOnly="True" MinWidth="180" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
+                        <DataGridTextColumn IsReadOnly="True" MinWidth="180" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+        </GroupBox>
 
-            <DataGrid.Columns>
-                <DataGridCheckBoxColumn Binding="{Binding IsSelected}" Width="50" CanUserSort="False" CanUserResize="False" Header="选择"/>
-                <DataGridTextColumn Binding="{Binding RowNum}" Width="60" CanUserSort="False" CanUserResize="False" Header="序号"/>
-                <DataGridTextColumn IsReadOnly="True" Width="60" CanUserSort="False" CanUserResize="False" Binding="{Binding Id}" Header="主键ID" Visibility="Hidden"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="120" Binding="{Binding InterfaceName}" Header="接口名称" Visibility="Hidden"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="250" Binding="{Binding AccessDbPath}" Header="路径"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="150" Binding="{Binding AccessDbName}" Header="实例名"/>
-                <DataGridTextColumn IsReadOnly="True" Width="100" Binding="{Binding Remark}" Header="备注"/>
-                <DataGridTextColumn IsReadOnly="True" Width="60" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>
-                <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
-                <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
-            </DataGrid.Columns>
-        </DataGrid>
-        <hc:Pagination x:Name="dgPagination"  Background="Red"
-                       Grid.Row="3" 
-                       MaxPageCount="{Binding MaxPageCount}" 
-                       PageIndex="{Binding PageIndex}" 
-                       DataCountPerPage="{Binding DataCountPerPage}" 
-                       IsJumpEnabled="True" 
-                       HorizontalAlignment="Right" 
-                       Margin="20,0,20,5">
-            <hc:Interaction.Triggers>
-                <hc:EventTrigger EventName="PageUpdated">
-                    <hc:EventToCommand  PassEventArgsToCommand="True" Command="{Binding PageUpdatedCommand}" />
-                </hc:EventTrigger>
-            </hc:Interaction.Triggers>
-        </hc:Pagination>
+        <!--第二层网格布局-->
+        <Grid Grid.Row="1" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40*" />
+                <ColumnDefinition Width="60*" />
+            </Grid.ColumnDefinitions>
+
+            <!--第三层左边网格布局，两行一列-->
+            <GroupBox x:Name="gbTestItem" Grid.Row="0" Margin="0,0,5,0" Grid.Column="0" Header="接口对应检测项目" Style="{StaticResource GroupBoxOriginal}" HorizontalContentAlignment="Left">
+                <Border BorderBrush="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" BorderThickness="1,1,1,1" CornerRadius="5">
+                    <Grid Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <DataGrid Margin="0" Grid.Row="1" Background="White"
+                  x:Name="dgInterfaceSelectData1"
+                  hc:Empty.ShowEmpty="False"
+                  ItemsSource="{Binding GridModelList}" >
+
+                            <DataGrid.Columns>
+                                <!--<DataGridCheckBoxColumn Binding="{Binding IsSelected}" Width="50" Header="选择"/>
+                        <DataGridTextColumn Binding="{Binding RowNum}" Width="60" Header="序号"/>-->
+                                <DataGridTextColumn IsReadOnly="True" Width="60" Binding="{Binding Id}" Header="主键ID"/>
+                                <DataGridTextColumn IsReadOnly="True"  Width="120" Binding="{Binding InterfaceName}" Header="接口名称"/>
+                                <DataGridTextColumn IsReadOnly="True"  Width="250" Binding="{Binding AccessDbPath}" Header="路径"/>
+                                <DataGridTextColumn IsReadOnly="True"  Width="150" Binding="{Binding AccessDbName}" Header="实例名"/>
+                                <DataGridTextColumn IsReadOnly="True" Width="100" Binding="{Binding Remark}" Header="备注"/>
+                                <DataGridTextColumn IsReadOnly="True" Width="60" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>
+                                <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
+                                <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Border>
+            </GroupBox>
+
+            <!--第三层右边网格布局，两行一列-->
+            <GroupBox x:Name="gbSystemTestItem" Grid.Row="0" Margin="5,0,0,0" Grid.Column="1" Header="系统对应检测项目" Style="{StaticResource GroupBoxOriginal}" HorizontalContentAlignment="Left">
+                <Border BorderBrush="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" BorderThickness="1,1,1,1" CornerRadius="5">
+                    <Grid Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="60"/>
+                        </Grid.RowDefinitions>
+                        <DataGrid Margin="0" Grid.Row="0" Background="White"
+                  x:Name="dgInterfaceSelectData2"
+                  hc:Empty.ShowEmpty="False"
+                  ItemsSource="{Binding GridModelList}" >
+
+                            <DataGrid.Columns>
+                                <!--<DataGridCheckBoxColumn Binding="{Binding IsSelected}" Width="50" Header="选择"/>
+                        <DataGridTextColumn Binding="{Binding RowNum}" Width="60" Header="序号"/>-->
+                                <DataGridTextColumn IsReadOnly="True" Width="60" Binding="{Binding Id}" Header="主键ID"/>
+                                <DataGridTextColumn IsReadOnly="True"  Width="120" Binding="{Binding InterfaceName}" Header="接口名称"/>
+                                <DataGridTextColumn IsReadOnly="True"  Width="250" Binding="{Binding AccessDbPath}" Header="路径"/>
+                                <DataGridTextColumn IsReadOnly="True"  Width="150" Binding="{Binding AccessDbName}" Header="实例名"/>
+                                <DataGridTextColumn IsReadOnly="True" Width="100" Binding="{Binding Remark}" Header="备注"/>
+                                <DataGridTextColumn IsReadOnly="True" Width="60" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>
+                                <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
+                                <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Border>
+            </GroupBox>
+        </Grid>
 
     </Grid>
 </UserControl>

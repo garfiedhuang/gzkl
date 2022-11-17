@@ -84,6 +84,12 @@ namespace GZKL.Client.UI.API
                 list.Add(new ModuleModel
                 {
                     Code = "\ue669",
+                    Name = "接口设置",
+                    TypeName = "CollectMgt.Interface.Interface"
+                });
+                list.Add(new ModuleModel
+                {
+                    Code = "\ue669",
                     Name = "数据备份",
                     TypeName = "CollectMgt.Backup.Backup"
                 });

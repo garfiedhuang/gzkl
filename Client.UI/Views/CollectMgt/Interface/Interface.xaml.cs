@@ -29,7 +29,7 @@ namespace GZKL.Client.UI.Views.CollectMgt.Interface
 
         private void InterfaceControl_Loaded(object sender, RoutedEventArgs e)
         {
-            (this.DataContext as InterfaceViewModel).Query();
+            //(this.DataContext as InterfaceViewModel).Query();
         }
     }
 }
