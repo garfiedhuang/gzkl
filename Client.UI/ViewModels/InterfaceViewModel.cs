@@ -30,94 +30,212 @@ namespace GZKL.Client.UI.ViewsModels
         /// </summary>
         public InterfaceViewModel()
         {
-            SelectInterfaceDbCommand = new RelayCommand(this.SelectInterfaceDb);
-            SetInterfaceDbCommand = new RelayCommand(this.SetInterfaceDb);
-            AddTestItemCommand = new RelayCommand(this.AddTestItem);
-            DeleteTestItemCommand = new RelayCommand(this.DeleteTestItem);
+            //SelectInterfaceDbCommand = new RelayCommand(this.SelectInterfaceDb);
+            //SetInterfaceDbCommand = new RelayCommand(this.SetInterface);
+            //AddTestItemCommand = new RelayCommand(this.AddTestItem);
+            //DeleteTestItemCommand = new RelayCommand(this.DeleteTestItem);
 
-            InterfaceModels = new List<InterfaceModel>();
-            GridModelList = new ObservableCollection<InterfaceModel>();
-
+            InterfaceModel = new InterfaceModel()
+            {
+                InterfaceInfos = new List<InterfaceInfo>(),
+                SystemTestItemInfos = new List<SystemTestItemInfo>(),
+                InterfaceTestItemInfos = new List<InterfaceTestItemInfo>(),
+                InterfaceTestItemRelationInfos = new List<InterfaceTestItemRelationInfo>()
+            };
         }
-
-        private void DeleteTestItem()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void AddTestItem()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void SetInterfaceDb()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void SelectInterfaceDb()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// 查询之后的结果数据，用于分页显示
-        /// </summary>
-        private static List<InterfaceModel> InterfaceModels { get; set; }
 
         /// <summary>
         /// 网格数据集合
         /// </summary>
-        private ObservableCollection<InterfaceModel> gridModelList;
-        public ObservableCollection<InterfaceModel> GridModelList
+        private InterfaceModel interfaceModel;
+        public InterfaceModel InterfaceModel
         {
-            get { return gridModelList; }
-            set { gridModelList = value; RaisePropertyChanged(); }
-        }
-
-        /// <summary>
-        /// 查询条件
-        /// </summary>
-        private string search = string.Empty;
-
-        public string Search
-        {
-            get { return search; }
-            set
-            {
-                search = value;
-                RaisePropertyChanged();
-            }
+            get { return interfaceModel; }
+            set { interfaceModel = value; RaisePropertyChanged(); }
         }
 
         #endregion
 
         #region Command
 
-        /// <summary>
-        /// 选择接口数据库
-        /// </summary>
-        public RelayCommand SelectInterfaceDbCommand { get; set; }
+        ///// <summary>
+        ///// 选择接口数据库
+        ///// </summary>
+        //public RelayCommand SelectInterfaceDbCommand { get; set; }
 
-        /// <summary>
-        /// 设置当前接口为本机数据库
-        /// </summary>
-        public RelayCommand SetInterfaceDbCommand { get; set; }
+        ///// <summary>
+        ///// 设置当前接口为本机接口
+        ///// </summary>
+        //public RelayCommand SetInterfaceDbCommand { get; set; }
 
-        /// <summary>
-        /// 新增测试项目
-        /// </summary>
-        public RelayCommand AddTestItemCommand { get; set; }
+        ///// <summary>
+        ///// 新增测试项目
+        ///// </summary>
+        //public RelayCommand AddTestItemCommand { get; set; }
 
-        /// <summary>
-        /// 删除测试项目
-        /// </summary>
-        public RelayCommand DeleteTestItemCommand { get; set; }
+        ///// <summary>
+        ///// 删除测试项目
+        ///// </summary>
+        //public RelayCommand DeleteTestItemCommand { get; set; }
 
 
         #endregion
 
         #region Command implement
+
+        /// <summary>
+        /// 选择接口数据库
+        /// </summary>
+        /// <param name="model"></param>
+        private void SelectInterfaceDb(InterfaceInfo model)
+        {
+            try
+            {
+                var sql = @"BEGIN
+UPDATE [dbo].[base_interface] SET [is_enabled]=0 WHERE 1=1;
+UPDATE [dbo].[base_interface] SET [is_enabled]=1 WHERE [id]=@id;
+END";
+                var parameters = new SqlParameter[1] { new SqlParameter("@id", model.Id) };
+
+                var result = SQLHelper.ExecuteNonQuery(sql, parameters);
+
+                if (result > 0)
+                {
+                    MessageBox.Show("设置成功", "提示信息");
+                }
+                else
+                {
+                    MessageBox.Show("设置失败", "提示信息");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "提示信息");
+            }
+        }
+
+        /// <summary>
+        /// 设置当前接口为本机接口
+        /// </summary>
+        /// <param name="model"></param>
+        private void SetInterface(InterfaceInfo model)
+        {
+            try
+            {
+                var sql = @"BEGIN
+UPDATE [dbo].[base_interface] SET [is_enabled]=0 WHERE 1=1;
+UPDATE [dbo].[base_interface] SET [is_enabled]=1 WHERE [id]=@id;
+END";
+                var parameters = new SqlParameter[1] { new SqlParameter("@id", model.Id) };
+
+                var result = SQLHelper.ExecuteNonQuery(sql, parameters);
+
+                if (result > 0)
+                {
+                    MessageBox.Show("设置成功", "提示信息");
+                }
+                else
+                {
+                    MessageBox.Show("设置失败", "提示信息");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "提示信息");
+            }
+        }
+
+        /// <summary>
+        /// 新增测试项目
+        /// </summary>
+        /// <param name="model"></param>
+        private void AddTestItem(InterfaceTestItemRelationInfo model)
+        {
+            try
+            {
+                var sql = @"SELECT COUNT(1) FROM [dbo].[base_interface_relation] WHERE test_item_id=@testItemId AND test_item_no=@testItemNo";
+                var parameters = new SqlParameter[] { 
+                    new SqlParameter("@testItemId", model.InterfaceId),
+                    new SqlParameter("@testItemNo", model.SystemTestItemNo)};
+
+                var result =Convert.ToInt32(SQLHelper.ExecuteScalar(sql, parameters));
+
+                if (result > 0)
+                {
+                    MessageBox.Show($"记录{model.InterfaceId}|{model.SystemTestItemNo}已存在，请勿重复添加", "提示信息");
+                    return;
+                }
+
+                sql = @"INSERT INTO [dbo].[base_interface_relation]
+                                   ([interface_id]
+                                   ,[test_item_id]
+                                   ,[test_item_no]
+                                   ,[test_item_name]
+                                   ,[is_enabled]
+                                   ,[is_deleted]
+                                   ,[create_dt]
+                                   ,[create_user_id]
+                                   ,[update_dt]
+                                   ,[update_user_id])
+                             VALUES
+                                   (@interfaceId
+                                   ,@testItemId
+                                   ,@testItemNo
+                                   ,@testItemName
+                                   ,@is_enabled
+                                   ,0
+                                   ,@create_dt
+                                   ,@user_id
+                                   ,@create_dt
+                                   ,@user_id)";
+
+                parameters = new SqlParameter[] {
+                    new SqlParameter("@interfaceId", model.InterfaceId),
+                    new SqlParameter("@testItemId", model.InterfaceId),
+                    new SqlParameter("@testItemNo", model.SystemTestItemNo),
+                    new SqlParameter("@testItemName", model.SystemTestItemName),
+                    new SqlParameter("@is_enabled", 1),
+                    new SqlParameter("@create_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
+                    new SqlParameter("@user_id", SessionInfo.Instance.Session.Id)
+                };
+
+                result = SQLHelper.ExecuteNonQuery(sql, parameters);
+
+                this.Query();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "提示信息");
+            }
+        }
+
+        /// <summary>
+        /// 删除测试项目
+        /// </summary>
+        /// <param name="model"></param>
+        private void DeleteTestItem(InterfaceTestItemRelationInfo model)
+        {
+            try
+            {
+                var sql = @"DELETE FROM base_interface_relation WHERE id=@id";
+                var parameters = new SqlParameter[1] { new SqlParameter("@id", model.Id) };
+
+                var result = SQLHelper.ExecuteNonQuery(sql, parameters);
+
+                if (result > 0)
+                {
+                    MessageBox.Show("删除成功", "提示信息");
+                }
+                else
+                {
+                    MessageBox.Show("删除失败", "提示信息");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "提示信息");
+            }
+        }
 
         /// <summary>
         /// 查询
@@ -126,281 +244,110 @@ namespace GZKL.Client.UI.ViewsModels
         {
             try
             {
-                /*
-                var sql = new StringBuilder(@"SELECT row_number()over(order by update_dt desc )as row_num
-                ,[id],[interface_name],[access_db_path],[access_db_name],[remark],[is_enabled],[is_deleted],[create_dt]
-                ,[create_user_id],[update_dt],[update_user_id]
-                FROM [dbo].[base_Interface] WHERE [is_deleted]=0");
+                var sql1 = @"SELECT * FROM [dbo].[base_interface] WHERE [is_deleted]=0";
 
-                SqlParameter[] parameters = null;
+                var sql2 = @"SELECT * FROM [dbo].[base_interface_test_item] WHERE [is_deleted]=0";
 
-                if (!string.IsNullOrEmpty(Search.Trim()))
+                var sql3 = @"SELECT * FROM [dbo].[base_test_item] WHERE [is_deleted]=0";
+
+                var sql4 = @"SELECT * FROM [dbo].[base_interface_relation] WHERE [is_deleted]=0";
+
+                //接口信息
+                using (var data = SQLHelper.GetDataTable(sql1))
                 {
-                    sql.Append($" AND ([interface_name] LIKE @search or [access_db_name] LIKE @search)");
-                    parameters = new SqlParameter[1] { new SqlParameter("@search", $"%{Search}%") };
-                }
+                    if (interfaceModel.InterfaceInfos?.Count > 0)
+                    {
+                        interfaceModel.InterfaceInfos.Clear();
+                    }
 
-                sql.Append($" ORDER BY [update_dt] DESC");
-
-                InterfaceModels.Clear();//清空前端分页数据
-
-                using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
-                {
                     if (data != null && data.Rows.Count > 0)
                     {
                         foreach (DataRow dataRow in data.Rows)
                         {
-                            InterfaceModels.Add(new InterfaceModel()
+                            interfaceModel.InterfaceInfos.Add(new InterfaceInfo()
                             {
                                 Id = Convert.ToInt64(dataRow["id"]),
-                                RowNum = Convert.ToInt64(dataRow["row_num"]),
                                 InterfaceName = dataRow["interface_name"].ToString(),
                                 AccessDbPath = dataRow["access_db_path"].ToString(),
                                 AccessDbName = dataRow["access_db_name"].ToString(),
                                 Remark = dataRow["remark"].ToString(),
-                                IsEnabled = Convert.ToInt32(dataRow["is_enabled"]),
-                                CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
-                                UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
+                                IsEnabled = Convert.ToInt32(dataRow["is_enabled"])
                             });
                         }
                     }
                 }
 
-                //当前页数
-                PageIndex = InterfaceModels.Count > 0 ? 1 : 0;
-                MaxPageCount = 0;
-
-                //最大页数
-                MaxPageCount = PageIndex > 0 ? (int)Math.Ceiling((decimal)InterfaceModels.Count / DataCountPerPage) : 0;
-
-                //数据分页
-                Paging(PageIndex);
-                */
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "提示信息");
-            }
-        }
-
-        /// <summary>
-        /// 重置
-        /// </summary>
-        public void Reset()
-        {
-            this.Search = string.Empty;
-            this.Query();
-        }
-
-        /// <summary>
-        /// 编辑
-        /// </summary>
-        /// <param name="id"></param>
-        public void Edit(int id)
-        {
-            try
-            {
-                /*
-                var selected = GridModelList.Where(w => w.IsSelected == true).ToList();
-
-                if (selected.Count != 1)
+                //接口对应检测项目
+                using (var data = SQLHelper.GetDataTable(sql2))
                 {
-                    MessageBox.Show($"请选择一条记录进行编辑", "提示信息");
-                    return;
-                }
-
-                id = (int)selected.First().Id;
-
-                var sql = new StringBuilder(@"SELECT [id],[interface_name],[access_db_path],[access_db_name],[remark]
-                ,[is_enabled],[is_deleted],[create_dt],[create_user_id],[update_dt],[update_user_id]
-                FROM [dbo].[base_Interface] WHERE [is_deleted]=0 AND [id]=@id");
-
-                var parameters = new SqlParameter[1] { new SqlParameter("@id", id) };
-                using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
-                {
-                    if (data == null || data.Rows.Count == 0)
+                    if (interfaceModel.InterfaceTestItemInfos?.Count > 0)
                     {
-                        MessageBox.Show($"数据库不存在 主键ID={id} 的记录", "提示信息");
-                        return;
+                        interfaceModel.InterfaceTestItemInfos.Clear();
                     }
 
-                    var dataRow = data.Rows[0];
-                    var model = new InterfaceModel()
+                    if (data != null && data.Rows.Count > 0)
                     {
-                        Id = Convert.ToInt64(dataRow["id"]),
-                        InterfaceName = dataRow["interface_name"].ToString(),
-                        AccessDbPath = dataRow["access_db_path"].ToString(),
-                        AccessDbName = dataRow["access_db_name"].ToString(),
-                        Remark = dataRow["remark"].ToString(),
-                        IsEnabled = Convert.ToInt32(dataRow["is_enabled"]),
-                        CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
-                        UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
-                    };
-
-                    if (model != null)
-                    {
-                        Edit view = new Edit(model);
-                        var r = view.ShowDialog();
-                        if (r.Value)
+                        foreach (DataRow dataRow in data.Rows)
                         {
-                            sql.Clear();
-                            sql.Append(@"UPDATE [dbo].[base_Interface]
-   SET [interface_name] = @interfaceName
-      ,[access_db_path] = @access_db_path
-      ,[access_db_name] = @access_db_name
-      ,[remark] = @remark
-      ,[is_enabled] = @is_enabled
-      ,[update_dt] = @update_dt
-      ,[update_user_id] = @user_id
- WHERE [id]=@id");
-                            parameters = new SqlParameter[] {
-                            new SqlParameter("@interface_name", model.InterfaceName),
-                            new SqlParameter("@access_db_path", model.AccessDbPath),
-                            new SqlParameter("@access_db_name", model.AccessDbName),
-                            new SqlParameter("@remark", model.Remark),
-                            new SqlParameter("@is_enabled", model.IsEnabled),
-                            new SqlParameter("@update_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
-                            new SqlParameter("@user_id", SessionInfo.Instance.Session.Id),
-                            new SqlParameter("@id", id)
-                        };
-
-                            var result = SQLHelper.ExecuteNonQuery(sql.ToString(), parameters);
-
-                            this.Query();
+                            interfaceModel.InterfaceTestItemInfos.Add(new InterfaceTestItemInfo()
+                            {
+                                Id = Convert.ToInt64(dataRow["id"]),
+                                InterfaceId = Convert.ToInt64(dataRow["interface_id"]),
+                                TestItemName = dataRow["test_item_name"].ToString(),
+                                TableMaster = dataRow["table_master"].ToString(),
+                                TableDetail = dataRow["table_detail"].ToString(),
+                                TableDot = dataRow["table_dot"].ToString()
+                            });
                         }
                     }
                 }
-                */
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "提示信息");
-            }
-        }
 
-        /// <summary>
-        /// 删除
-        /// </summary>
-        /// <param name="id"></param>
-        public void Delete(int id)
-        {
-            try
-            {
-                /*
-                var selected = GridModelList.Where(w => w.IsSelected == true).ToList();
-
-                if (selected.Count == 0)
+                //系统对应检测项目
+                using (var data = SQLHelper.GetDataTable(sql3))
                 {
-                    MessageBox.Show($"请至少选择一条记录进行删除", "提示信息");
-                    return;
-                }
-
-                if (selected != null)
-                {
-                    var r = MessageBox.Show($"确定要删除【{string.Join(",", selected.Select(s => $"{s.InterfaceName}|{s.AccessDbName}"))}】吗？", "提示", MessageBoxButton.YesNo);
-                    if (r == MessageBoxResult.Yes)
+                    if (interfaceModel.SystemTestItemInfos?.Count > 0)
                     {
-                        foreach (var dr in selected)
+                        interfaceModel.SystemTestItemInfos.Clear();
+                    }
+
+                    if (data != null && data.Rows.Count > 0)
+                    {
+                        foreach (DataRow dataRow in data.Rows)
                         {
-                            //var sql = new StringBuilder(@"DELETE FROM [dbo].[base_Interface] WHERE [id] IN(@id)");
-                            var sql = new StringBuilder(@"UPDATE [dbo].[base_Interface] SET [is_deleted]=1 WHERE [id]=@id");
-
-                            var parameters = new SqlParameter[1] { new SqlParameter("@id", dr.Id) };
-                            var result = SQLHelper.ExecuteNonQuery(sql.ToString(), parameters);
+                            interfaceModel.SystemTestItemInfos.Add(new SystemTestItemInfo()
+                            {
+                                Id = Convert.ToInt64(dataRow["id"]),
+                                TestItemNo = dataRow["test_item_no"].ToString(),
+                                TestItemName = dataRow["test_item_name"].ToString()
+                            });
                         }
-
-                        this.Query();
                     }
                 }
-                */
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "提示信息");
-            }
-        }
 
-        /// <summary>
-        /// 新增
-        /// </summary>
-        public void Add()
-        {
-            try
-            {
-                /*
-                InterfaceModel model = new InterfaceModel();
-                Edit view = new Edit(model);
-                var r = view.ShowDialog();
-                if (r.Value)
+                //接口与检测项关系
+                using (var data = SQLHelper.GetDataTable(sql4))
                 {
-                    var sql = @"INSERT INTO [dbo].[base_Interface]
-           ([interface_name]
-           ,[access_db_path]
-           ,[access_db_name]
-           ,[remark]
-           ,[is_enabled]
-           ,[is_deleted]
-           ,[create_dt]
-           ,[create_user_id]
-           ,[update_dt]
-           ,[update_user_id])
-     VALUES
-           (@interface_name
-           ,@access_db_path
-           ,@access_db_name
-           ,@remark
-           ,@is_enabled
-           ,0
-           ,@create_dt
-           ,@user_id
-           ,@create_dt
-           ,@user_id)";
+                    if (interfaceModel.InterfaceTestItemRelationInfos?.Count > 0)
+                    {
+                        interfaceModel.InterfaceTestItemRelationInfos.Clear();
+                    }
 
-                    var parameters = new SqlParameter[] {
-                    new SqlParameter("@interface_name", model.InterfaceName),
-                    new SqlParameter("@access_db_path", model.AccessDbPath),
-                    new SqlParameter("@access_db_name", model.AccessDbName),
-                    new SqlParameter("@remark", model.Remark),
-                    new SqlParameter("@is_enabled", model.IsEnabled),
-                    new SqlParameter("@create_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
-                    new SqlParameter("@user_id", SessionInfo.Instance.Session.Id)
-                };
-
-                    var result = SQLHelper.ExecuteNonQuery(sql, parameters);
-
-                    this.Query();
+                    if (data != null && data.Rows.Count > 0)
+                    {
+                        foreach (DataRow dataRow in data.Rows)
+                        {
+                            interfaceModel.InterfaceTestItemRelationInfos.Add(new InterfaceTestItemRelationInfo()
+                            {
+                                Id = Convert.ToInt64(dataRow["id"]),
+                                InterfaceTestItemNo = dataRow["test_item_no"].ToString(),
+                                InterfaceTestItemName = dataRow["test_item_name"].ToString(),
+                                SystemTestItemNo = dataRow["test_item_no"].ToString(),
+                                SystemTestItemName = dataRow["test_item_name"].ToString()
+                            });
+                        }
+                    }
                 }
 
-                */
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "提示信息");
-            }
-        }
-
-        /// <summary>
-        /// 页面更新事件
-        /// </summary>
-        public void PageUpdated(FunctionEventArgs<int> e)
-        {
-            Paging(e.Info);
-        }
-
-        /// <summary>
-        /// 选择
-        /// </summary>
-        public void Select(InterfaceModel model)
-        {
-            try
-            {
-                CommonOpenFileDialog dialog = new CommonOpenFileDialog("请选择一个数据库文件");
-                dialog.IsFolderPicker = false; //选择文件还是文件夹（true:选择文件夹，false:选择文件）
-                if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
-                {
-                    model.AccessDbPath = dialog.FileName;
-                    model.AccessDbName = dialog.FileName;
-                }
             }
             catch (Exception ex)
             {
@@ -412,25 +359,6 @@ namespace GZKL.Client.UI.ViewsModels
 
         #region Privates
 
-        /// <summary>
-        /// 分页
-        /// </summary>
-        /// <param name="pageIndex"></param>
-        private void Paging(int pageIndex)
-        {
-
-            //GridModelList.Clear();//清空依赖属性
-
-            //var pagedData = InterfaceModels.Skip((pageIndex - 1) * DataCountPerPage).Take(DataCountPerPage).ToList();
-
-            //if (pagedData.Count > 0)
-            //{
-            //    pagedData.ForEach(item =>
-            //    {
-            //        GridModelList.Add(item);
-            //    });
-            //}
-        }
 
         #endregion
     }

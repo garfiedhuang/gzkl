@@ -11,17 +11,39 @@ namespace GZKL.Client.UI.Models
     /// <summary>
     /// 接口模型
     /// </summary>
-    public class InterfaceModel : ObservableObject
+    public class InterfaceModel
+    {
+        /// <summary>
+        /// 接口信息
+        /// </summary>
+        public List<InterfaceInfo> InterfaceInfos { get; set; }
+
+        /// <summary>
+        /// 接口对应检测项目
+        /// </summary>
+        public List<InterfaceTestItemInfo> InterfaceTestItemInfos { get; set; }
+
+        /// <summary>
+        /// 系统对应检测项目
+        /// </summary>
+        public List<SystemTestItemInfo> SystemTestItemInfos { get; set; }
+
+        /// <summary>
+        /// 接口与检测项关系
+        /// </summary>
+        public List<InterfaceTestItemRelationInfo> InterfaceTestItemRelationInfos { get; set; }
+
+    }
+
+    /// <summary>
+    /// 接口信息
+    /// </summary>
+    public class InterfaceInfo
     {
         /// <summary>
         /// 主键ID
         /// </summary>
         public long Id { get; set; }
-
-        /// <summary>
-        /// 行号
-        /// </summary>
-        public long RowNum { get; set; }
 
         /// <summary>
         /// 接口名称
@@ -48,26 +70,100 @@ namespace GZKL.Client.UI.Models
         /// </summary>
         public int IsEnabled { get; set; } = 1;
 
+    }
+
+    /// <summary>
+    /// 接口对应检测项目
+    /// </summary>
+    public class InterfaceTestItemInfo
+    {
         /// <summary>
-        /// 创建时间
+        /// 主键ID
         /// </summary>
-        public DateTime? CreateDt { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
-        /// 更新时间
+        /// 接口ID
         /// </summary>
-        public DateTime? UpdateDt { get; set; }
+        public long InterfaceId { get; set; }
 
         /// <summary>
-        /// 是否选中?
+        /// 检测项名称
         /// </summary>
-        private bool isSelected = false;
+        public string TestItemName { get; set; }
 
-        public bool IsSelected
-        {
-            get { return isSelected; }
-            set { isSelected = value; RaisePropertyChanged("IsSelected"); }
-        }
+        /// <summary>
+        /// 主表
+        /// </summary>
+        public string TableMaster { get; set; }
 
+        /// <summary>
+        /// 明细表
+        /// </summary>
+        public string TableDetail { get; set; }
+
+        /// <summary>
+        /// 点表
+        /// </summary>
+        public string TableDot { get; set; }
+
+    }
+
+    /// <summary>
+    /// 系统对应检测项目
+    /// </summary>
+    public class SystemTestItemInfo
+    {
+        /// <summary>
+        /// 主键ID
+        /// </summary>
+        public long Id { get; set; }
+
+        /// <summary>
+        /// 检测项编号
+        /// </summary>
+        public string TestItemNo { get; set; }
+
+        /// <summary>
+        /// 检测项名称
+        /// </summary>
+        public string TestItemName { get; set; }
+    }
+
+    /// <summary>
+    /// 接口与检测项关系
+    /// </summary>
+    public class InterfaceTestItemRelationInfo
+    {
+        /// <summary>
+        /// 主键ID
+        /// </summary>
+        public long Id { get; set; }
+
+        /// <summary>
+        /// 接口ID
+        /// </summary>
+        public long InterfaceId { get; set; }
+
+        /// <summary>
+        /// 接口检测项编号
+        /// </summary>
+        public string InterfaceTestItemNo { get; set; }
+
+        /// <summary>
+        /// 接口检测项名称
+        /// </summary>
+
+        public string InterfaceTestItemName { get; set; }
+
+        /// <summary>
+        /// 系统检测项编号
+        /// </summary>
+        public string SystemTestItemNo { get; set; }
+
+        /// <summary>
+        /// 系统检测项名称
+        /// </summary>
+        public string SystemTestItemName { get; set; }
     }
 }
