@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using GZKL.Client.UI.Models;
 using GZKL.Client.UI.ViewsModels;
 
 namespace GZKL.Client.UI.Views.CollectMgt.Interface
@@ -27,14 +28,12 @@ namespace GZKL.Client.UI.Views.CollectMgt.Interface
             InitializeComponent();
         }
 
-        private void InterfaceControl_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void btnSelectInterfaceDb_Click(object sender, RoutedEventArgs e)
         {
+            var viewModel =this.DataContext as InterfaceViewModel;
+            var selectedItem = this.dgInterfaceSelectData.SelectedItem as InterfaceInfo;
 
+            viewModel.SelectInterfaceDb(selectedItem);
         }
 
         private void btnSetInterface_Click(object sender, RoutedEventArgs e)

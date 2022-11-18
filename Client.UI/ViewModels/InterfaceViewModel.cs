@@ -210,7 +210,7 @@ namespace GZKL.Client.UI.ViewsModels
         /// 选择接口数据库
         /// </summary>
         /// <param name="model"></param>
-        private void SelectInterfaceDb(InterfaceInfo model)
+        public void SelectInterfaceDb(InterfaceInfo model)
         {
             var fileName = string.Empty;
 
@@ -274,7 +274,7 @@ END";
         /// 设置当前接口为本机接口
         /// </summary>
         /// <param name="model"></param>
-        private void SetInterface(InterfaceInfo model)
+        public void SetInterface(InterfaceInfo model)
         {
             try
             {
@@ -305,7 +305,7 @@ END";
         /// 新增测试项目
         /// </summary>
         /// <param name="model"></param>
-        private void AddTestItem(InterfaceTestItemRelationInfo model)
+        public void AddTestItem(InterfaceTestItemRelationInfo model)
         {
             try
             {
@@ -369,7 +369,7 @@ END";
         /// 删除测试项目
         /// </summary>
         /// <param name="model"></param>
-        private void DeleteTestItem(InterfaceTestItemRelationInfo model)
+        public void DeleteTestItem(InterfaceTestItemRelationInfo model)
         {
             try
             {
