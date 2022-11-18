@@ -29,10 +29,25 @@ namespace GZKL.Client.UI.Views.CollectMgt.Interface
 
         private void InterfaceControl_Loaded(object sender, RoutedEventArgs e)
         {
-            //(this.DataContext as InterfaceViewModel).Query();
+
         }
 
         private void btnSelectInterfaceDb_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnSetInterface_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
 
         }

@@ -35,23 +35,25 @@ namespace GZKL.Client.UI.ViewsModels
             //AddTestItemCommand = new RelayCommand(this.AddTestItem);
             //DeleteTestItemCommand = new RelayCommand(this.DeleteTestItem);
 
-            InterfaceModel = new InterfaceModel()
+            Model = new InterfaceModel()
             {
                 InterfaceInfos = new List<InterfaceInfo>(),
                 SystemTestItemInfos = new List<SystemTestItemInfo>(),
                 InterfaceTestItemInfos = new List<InterfaceTestItemInfo>(),
                 InterfaceTestItemRelationInfos = new List<InterfaceTestItemRelationInfo>()
             };
+
+            Query();
         }
 
         /// <summary>
         /// 网格数据集合
         /// </summary>
-        private InterfaceModel interfaceModel;
-        public InterfaceModel InterfaceModel
+        private InterfaceModel model;
+        public InterfaceModel Model
         {
-            get { return interfaceModel; }
-            set { interfaceModel = value; RaisePropertyChanged(); }
+            get { return model; }
+            set { model = value; RaisePropertyChanged(); }
         }
 
         #endregion
@@ -82,6 +84,127 @@ namespace GZKL.Client.UI.ViewsModels
         #endregion
 
         #region Command implement
+
+        /// <summary>
+        /// 查询
+        /// </summary>
+        public void Query()
+        {
+            try
+            {
+                var sql1 = @"SELECT * FROM [dbo].[base_interface] WHERE [is_deleted]=0";
+
+                var sql2 = @"SELECT * FROM [dbo].[base_interface_test_item] WHERE [is_deleted]=0";
+
+                var sql3 = @"SELECT * FROM [dbo].[base_test_item] WHERE [is_deleted]=0";
+
+                var sql4 = @"SELECT * FROM [dbo].[base_interface_relation] WHERE [is_deleted]=0";
+
+                //接口信息
+                using (var data = SQLHelper.GetDataTable(sql1))
+                {
+                    if (model.InterfaceInfos?.Count > 0)
+                    {
+                        model.InterfaceInfos.Clear();
+                    }
+
+                    if (data != null && data.Rows.Count > 0)
+                    {
+                        foreach (DataRow dataRow in data.Rows)
+                        {
+                            model.InterfaceInfos.Add(new InterfaceInfo()
+                            {
+                                Id = Convert.ToInt64(dataRow["id"]),
+                                InterfaceName = dataRow["interface_name"].ToString(),
+                                AccessDbPath = dataRow["access_db_path"].ToString(),
+                                AccessDbName = dataRow["access_db_name"].ToString(),
+                                Remark = dataRow["remark"].ToString(),
+                                IsEnabled = Convert.ToInt32(dataRow["is_enabled"]),
+                                CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
+                                UpdateDt = Convert.ToDateTime(dataRow["update_dt"])
+                            });
+                        }
+                    }
+                }
+
+                //接口对应检测项目
+                using (var data = SQLHelper.GetDataTable(sql2))
+                {
+                    if (model.InterfaceTestItemInfos?.Count > 0)
+                    {
+                        model.InterfaceTestItemInfos.Clear();
+                    }
+
+                    if (data != null && data.Rows.Count > 0)
+                    {
+                        foreach (DataRow dataRow in data.Rows)
+                        {
+                            model.InterfaceTestItemInfos.Add(new InterfaceTestItemInfo()
+                            {
+                                Id = Convert.ToInt64(dataRow["id"]),
+                                InterfaceId = Convert.ToInt64(dataRow["interface_id"]),
+                                TestItemName = dataRow["test_item_name"].ToString(),
+                                TableMaster = dataRow["table_master"].ToString(),
+                                TableDetail = dataRow["table_detail"].ToString(),
+                                TableDot = dataRow["table_dot"].ToString()
+                            });
+                        }
+                    }
+                }
+
+                //系统对应检测项目
+                using (var data = SQLHelper.GetDataTable(sql3))
+                {
+                    if (model.SystemTestItemInfos?.Count > 0)
+                    {
+                        model.SystemTestItemInfos.Clear();
+                    }
+
+                    if (data != null && data.Rows.Count > 0)
+                    {
+                        foreach (DataRow dataRow in data.Rows)
+                        {
+                            model.SystemTestItemInfos.Add(new SystemTestItemInfo()
+                            {
+                                Id = Convert.ToInt64(dataRow["id"]),
+                                TestItemNo = dataRow["test_item_no"].ToString(),
+                                TestItemName = dataRow["test_item_name"].ToString()
+                            });
+                        }
+                    }
+                }
+
+                //接口与检测项关系
+                using (var data = SQLHelper.GetDataTable(sql4))
+                {
+                    if (model.InterfaceTestItemRelationInfos?.Count > 0)
+                    {
+                        model.InterfaceTestItemRelationInfos.Clear();
+                    }
+
+                    if (data != null && data.Rows.Count > 0)
+                    {
+                        foreach (DataRow dataRow in data.Rows)
+                        {
+                            model.InterfaceTestItemRelationInfos.Add(new InterfaceTestItemRelationInfo()
+                            {
+                                Id = Convert.ToInt64(dataRow["id"]),
+                                InterfaceTestItemNo = dataRow["test_item_no"].ToString(),
+                                InterfaceTestItemName = dataRow["test_item_name"].ToString(),
+                                SystemTestItemNo = dataRow["test_item_no"].ToString(),
+                                SystemTestItemName = dataRow["test_item_name"].ToString()
+                            });
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "提示信息");
+            }
+        }
+
 
         /// <summary>
         /// 选择接口数据库
@@ -263,124 +386,6 @@ END";
                 {
                     MessageBox.Show("删除失败", "提示信息");
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "提示信息");
-            }
-        }
-
-        /// <summary>
-        /// 查询
-        /// </summary>
-        public void Query()
-        {
-            try
-            {
-                var sql1 = @"SELECT * FROM [dbo].[base_interface] WHERE [is_deleted]=0";
-
-                var sql2 = @"SELECT * FROM [dbo].[base_interface_test_item] WHERE [is_deleted]=0";
-
-                var sql3 = @"SELECT * FROM [dbo].[base_test_item] WHERE [is_deleted]=0";
-
-                var sql4 = @"SELECT * FROM [dbo].[base_interface_relation] WHERE [is_deleted]=0";
-
-                //接口信息
-                using (var data = SQLHelper.GetDataTable(sql1))
-                {
-                    if (interfaceModel.InterfaceInfos?.Count > 0)
-                    {
-                        interfaceModel.InterfaceInfos.Clear();
-                    }
-
-                    if (data != null && data.Rows.Count > 0)
-                    {
-                        foreach (DataRow dataRow in data.Rows)
-                        {
-                            interfaceModel.InterfaceInfos.Add(new InterfaceInfo()
-                            {
-                                Id = Convert.ToInt64(dataRow["id"]),
-                                InterfaceName = dataRow["interface_name"].ToString(),
-                                AccessDbPath = dataRow["access_db_path"].ToString(),
-                                AccessDbName = dataRow["access_db_name"].ToString(),
-                                Remark = dataRow["remark"].ToString(),
-                                IsEnabled = Convert.ToInt32(dataRow["is_enabled"])
-                            });
-                        }
-                    }
-                }
-
-                //接口对应检测项目
-                using (var data = SQLHelper.GetDataTable(sql2))
-                {
-                    if (interfaceModel.InterfaceTestItemInfos?.Count > 0)
-                    {
-                        interfaceModel.InterfaceTestItemInfos.Clear();
-                    }
-
-                    if (data != null && data.Rows.Count > 0)
-                    {
-                        foreach (DataRow dataRow in data.Rows)
-                        {
-                            interfaceModel.InterfaceTestItemInfos.Add(new InterfaceTestItemInfo()
-                            {
-                                Id = Convert.ToInt64(dataRow["id"]),
-                                InterfaceId = Convert.ToInt64(dataRow["interface_id"]),
-                                TestItemName = dataRow["test_item_name"].ToString(),
-                                TableMaster = dataRow["table_master"].ToString(),
-                                TableDetail = dataRow["table_detail"].ToString(),
-                                TableDot = dataRow["table_dot"].ToString()
-                            });
-                        }
-                    }
-                }
-
-                //系统对应检测项目
-                using (var data = SQLHelper.GetDataTable(sql3))
-                {
-                    if (interfaceModel.SystemTestItemInfos?.Count > 0)
-                    {
-                        interfaceModel.SystemTestItemInfos.Clear();
-                    }
-
-                    if (data != null && data.Rows.Count > 0)
-                    {
-                        foreach (DataRow dataRow in data.Rows)
-                        {
-                            interfaceModel.SystemTestItemInfos.Add(new SystemTestItemInfo()
-                            {
-                                Id = Convert.ToInt64(dataRow["id"]),
-                                TestItemNo = dataRow["test_item_no"].ToString(),
-                                TestItemName = dataRow["test_item_name"].ToString()
-                            });
-                        }
-                    }
-                }
-
-                //接口与检测项关系
-                using (var data = SQLHelper.GetDataTable(sql4))
-                {
-                    if (interfaceModel.InterfaceTestItemRelationInfos?.Count > 0)
-                    {
-                        interfaceModel.InterfaceTestItemRelationInfos.Clear();
-                    }
-
-                    if (data != null && data.Rows.Count > 0)
-                    {
-                        foreach (DataRow dataRow in data.Rows)
-                        {
-                            interfaceModel.InterfaceTestItemRelationInfos.Add(new InterfaceTestItemRelationInfo()
-                            {
-                                Id = Convert.ToInt64(dataRow["id"]),
-                                InterfaceTestItemNo = dataRow["test_item_no"].ToString(),
-                                InterfaceTestItemName = dataRow["test_item_name"].ToString(),
-                                SystemTestItemNo = dataRow["test_item_no"].ToString(),
-                                SystemTestItemName = dataRow["test_item_name"].ToString()
-                            });
-                        }
-                    }
-                }
-
             }
             catch (Exception ex)
             {

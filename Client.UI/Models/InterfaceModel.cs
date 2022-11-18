@@ -70,6 +70,15 @@ namespace GZKL.Client.UI.Models
         /// </summary>
         public int IsEnabled { get; set; } = 1;
 
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        public DateTime? CreateDt { get; set; }
+
+        /// <summary>
+        /// 更新时间
+        /// </summary>
+        public DateTime? UpdateDt { get; set; }
     }
 
     /// <summary>
