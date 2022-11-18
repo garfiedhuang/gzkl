@@ -89,8 +89,41 @@ namespace GZKL.Client.UI.ViewsModels
         /// <param name="model"></param>
         private void SelectInterfaceDb(InterfaceInfo model)
         {
+            var fileName = string.Empty;
+
             try
             {
+                if (model==null)
+                {
+                    MessageBox.Show("请选择接口记录", "提示信息");
+                    return;
+                }
+
+                CommonOpenFileDialog dialog = new CommonOpenFileDialog("请选择一个文件");
+                dialog.Filters.Add(new CommonFileDialogFilter("Access Files","*.mdb"));
+                dialog.IsFolderPicker = false;
+                if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+                {
+                    fileName = dialog.FileName;
+                }
+
+                if (string.IsNullOrEmpty(fileName))
+                {
+                    MessageBox.Show("请选择数据库文件", "提示信息");
+                    return;
+                }
+
+                if (model.Id != 4 && !fileName.Contains(model.AccessDbName))
+                {
+                    MessageBox.Show("选择的数据库文件不正确，请重新选择", "提示信息");
+                    return;
+                }
+                else if (model.Id == 4 && !fileName.Contains("Tests"))
+                {
+                    MessageBox.Show("选择的数据库文件不正确，请重新选择", "提示信息");
+                    return;
+                }
+
                 var sql = @"BEGIN
 UPDATE [dbo].[base_interface] SET [is_enabled]=0 WHERE 1=1;
 UPDATE [dbo].[base_interface] SET [is_enabled]=1 WHERE [id]=@id;
