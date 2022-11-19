@@ -16,7 +16,7 @@
         <converter:EnumConverter x:Key="enumConverter"/>
 
         <Style TargetType="DataGrid">
-            <Setter Property="RowHeaderWidth" Value="20"></Setter>
+            <Setter Property="RowHeaderWidth" Value="25"></Setter>
             <Setter Property="AutoGenerateColumns" Value="False"></Setter>
             <Setter Property="CanUserAddRows" Value="False"></Setter>
             <Setter Property="CanUserResizeColumns" Value="False"></Setter>
@@ -34,10 +34,22 @@
         <!--DataGrid表头样式-->
         <Style TargetType="DataGridColumnHeader">
             <Setter Property="FontSize" Value="12"></Setter>
-            <Setter Property="Height" Value="25"></Setter>
+            <Setter Property="Height" Value="28"></Setter>
             <Setter Property="BorderThickness" Value="0,0,1,1"></Setter>
             <Setter Property="BorderBrush" Value="LightGray"></Setter>
             <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+        </Style>
+
+        <!--DataGrid行头样式-->
+        <Style TargetType="DataGridRowHeader">
+            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        </Style>
+
+        <!-- DataGridTextColumn 文字居中 -->
+        <Style x:Key="CenterAlignmentStyle" TargetType="TextBlock">
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
     </UserControl.Resources>
 

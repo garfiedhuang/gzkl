@@ -15,7 +15,7 @@
         <converter:EnumConverter x:Key="enumConverter"/>
 
         <Style TargetType="DataGrid">
-            <Setter Property="RowHeaderWidth" Value="20"></Setter>
+            <Setter Property="RowHeaderWidth" Value="25"></Setter>
             <Setter Property="AutoGenerateColumns" Value="False"></Setter>
             <Setter Property="CanUserAddRows" Value="False"></Setter>
             <Setter Property="CanUserResizeColumns" Value="False"></Setter>
@@ -37,6 +37,12 @@
             <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
         </Style>
 
+        <!--DataGrid行头样式-->
+        <Style TargetType="DataGridRowHeader">
+            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        </Style>
+
         <!-- DataGridTextColumn 文字居中 -->
         <Style x:Key="CenterAlignmentStyle" TargetType="TextBlock">
             <Setter Property="TextAlignment" Value="Center"/>
@@ -46,7 +52,7 @@
 
     <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="160"/>
+            <RowDefinition Height="180"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -56,7 +62,13 @@
                           Background="White"
                           x:Name="dgInterfaceSelectData"
                           ItemsSource="{Binding Model.InterfaceInfos}">
-                    
+
+                    <DataGrid.RowHeaderTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding IsSelected ,RelativeSource={RelativeSource AncestorType=DataGridRow}}"/>
+                        </DataTemplate>
+                    </DataGrid.RowHeaderTemplate>
+
                     <DataGrid.Columns>
                         <DataGridTextColumn IsReadOnly="True" Width="60" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Id}" Header="ID"/>
                         <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding InterfaceName}" Header="接口"/>
@@ -76,8 +88,8 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="40*" />
-                <ColumnDefinition Width="60*" />
+                <ColumnDefinition Width="35*" />
+                <ColumnDefinition Width="65*" />
             </Grid.ColumnDefinitions>
 
             <!--第三层左边网格布局，两行一列-->
@@ -96,8 +108,14 @@
                 <GroupBox Grid.Row="1" x:Name="gbTestItem" Header="接口对应检测项目" Style="{StaticResource GroupBoxOriginal}" HorizontalContentAlignment="Left">
                     <Border BorderBrush="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" BorderThickness="1,1,1,1" CornerRadius="5">
                         <DataGrid Background="White"
-                                  x:Name="dgInterfaceSelectData1"
+                                  x:Name="dgInterfaceTestItemData"
                                   ItemsSource="{Binding Model.InterfaceTestItemInfos}" >
+
+                            <DataGrid.RowHeaderTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding IsSelected ,RelativeSource={RelativeSource AncestorType=DataGridRow}}"/>
+                                </DataTemplate>
+                            </DataGrid.RowHeaderTemplate>
 
                             <DataGrid.Columns>
                                 <DataGridTextColumn IsReadOnly="True" Width="60" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Id}" Header="ID"/>
@@ -112,9 +130,15 @@
                         <DataGrid 
                             Grid.Row="0" 
                             Background="White"
-                            x:Name="dgInterfaceSelectData2"
+                            x:Name="dgSystemTestItemData"
                             ItemsSource="{Binding Model.SystemTestItemInfos}" >
 
+                            <DataGrid.RowHeaderTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding IsSelected ,RelativeSource={RelativeSource AncestorType=DataGridRow}}"/>
+                                </DataTemplate>
+                            </DataGrid.RowHeaderTemplate>
+                            
                             <DataGrid.Columns>
                                 <DataGridTextColumn IsReadOnly="True" Width="60" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Id}" Header="ID"/>
                                 <DataGridTextColumn IsReadOnly="True"  Width="100" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding TestItemNo}" Header="系统项目编号"/>
@@ -126,7 +150,7 @@
             </Grid>
 
             <!--第三层右边网格布局，两行一列-->
-            <GroupBox x:Name="gbSystemTestItem2" Grid.Row="0" Margin="5,0,0,0" Grid.Column="1" Header="系统对应检测项目" Style="{StaticResource GroupBoxOriginal}" HorizontalContentAlignment="Left">
+            <GroupBox x:Name="gbInterfaceTestItemRelation" Grid.Row="0" Margin="5,0,0,0" Grid.Column="1" Header="接口与检测项目关系" Style="{StaticResource GroupBoxOriginal}" HorizontalContentAlignment="Left">
                 <Border BorderBrush="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" BorderThickness="1,1,1,1" CornerRadius="5">
                     <Grid Margin="5">
                         <Grid.RowDefinitions>
@@ -136,20 +160,28 @@
                         <DataGrid 
                             Grid.Row="0" 
                             Background="White"
-                            x:Name="dgInterfaceSelectData22"
+                            x:Name="dgInterfaceTestItemRelationData"
                             ItemsSource="{Binding Model.InterfaceTestItemRelationInfos}" >
 
+                            <DataGrid.RowHeaderTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding IsSelected ,RelativeSource={RelativeSource AncestorType=DataGridRow}}"/>
+                                </DataTemplate>
+                            </DataGrid.RowHeaderTemplate>
+
                             <DataGrid.Columns>
-                                <DataGridTextColumn IsReadOnly="True" Width="60" Binding="{Binding Id}" Header="ID"/>
+                                <DataGridTextColumn IsReadOnly="True" Width="60" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Id}" Header="ID"/>
+                                <DataGridTextColumn IsReadOnly="True"  Width="100*" Binding="{Binding InterfaceName}" Header="接口名称"/>
+                                <DataGridTextColumn IsReadOnly="True"  Width="80" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding InterfaceTestItemId}" Header="接口项目ID"/>
                                 <DataGridTextColumn IsReadOnly="True"  Width="100*" Binding="{Binding InterfaceTestItemName}" Header="接口项目名称"/>
-                                <DataGridTextColumn IsReadOnly="True"  Width="100*" Binding="{Binding SystemTestItemNo}" Header="系统项目编号"/>
+                                <DataGridTextColumn IsReadOnly="True"  Width="100*" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding SystemTestItemNo}" Header="系统项目编号"/>
                                 <DataGridTextColumn IsReadOnly="True"  Width="100*" Binding="{Binding SystemTestItemName}" Header="系统项目名称"/>
                             </DataGrid.Columns>
                         </DataGrid>
 
                         <WrapPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <Button x:Name="btnAdd2" Content="新增" Width="80" Margin="10" Click="btnAdd_Click" hc:BorderElement.CornerRadius="5"/>
-                            <Button x:Name="btnDelete2" Content="删除" Width="80" Margin="10" Click="btnDelete_Click" hc:BorderElement.CornerRadius="5"/>
+                            <Button x:Name="btnAdd" Content="新增" Width="80" Margin="10" Click="btnAdd_Click" hc:BorderElement.CornerRadius="5"/>
+                            <Button x:Name="btnDelete" Content="删除" Width="80" Margin="10" Click="btnDelete_Click" hc:BorderElement.CornerRadius="5"/>
                         </WrapPanel>
                         
                     </Grid>

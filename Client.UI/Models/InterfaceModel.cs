@@ -176,9 +176,15 @@ namespace GZKL.Client.UI.Models
         public long InterfaceId { get; set; }
 
         /// <summary>
-        /// 接口检测项编号
+        /// 接口名称
         /// </summary>
-        public string InterfaceTestItemNo { get; set; }
+        public string InterfaceName { get; set; }
+
+        /// <summary>
+        /// 接口检测项ID
+        /// </summary>
+
+        public long InterfaceTestItemId { get; set; }
 
         /// <summary>
         /// 接口检测项名称

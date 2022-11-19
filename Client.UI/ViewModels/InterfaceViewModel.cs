@@ -98,7 +98,12 @@ namespace GZKL.Client.UI.ViewsModels
 
                 var sql3 = @"SELECT * FROM [dbo].[base_test_item] WHERE [is_deleted]=0";
 
-                var sql4 = @"SELECT * FROM [dbo].[base_interface_relation] WHERE [is_deleted]=0";
+                var sql4 = @"SELECT bir.id,bir.interface_id,bi.interface_name,bir.test_item_id AS interface_test_item_id,
+biti.test_item_name AS interface_test_item_name,bir.test_item_no AS system_test_item_no,bir.test_item_name AS system_test_item_name 
+FROM [dbo].[base_interface_relation] bir INNER JOIN [dbo].[base_interface] bi ON bir.interface_id=bi.id
+INNER JOIN [dbo].[base_interface_test_item] biti ON bir.test_item_id=biti.id
+INNER JOIN [dbo].[base_test_item] bti ON bir.test_item_no=bti.test_item_no WHERE bir.[is_deleted]=0
+AND bi.[is_deleted]=0 AND biti.[is_deleted]=0 AND bti.[is_deleted]=0";
 
                 //接口信息
                 using (var data = SQLHelper.GetDataTable(sql1))
@@ -189,10 +194,12 @@ namespace GZKL.Client.UI.ViewsModels
                             model.InterfaceTestItemRelationInfos.Add(new InterfaceTestItemRelationInfo()
                             {
                                 Id = Convert.ToInt64(dataRow["id"]),
-                                InterfaceTestItemNo = dataRow["test_item_no"].ToString(),
-                                InterfaceTestItemName = dataRow["test_item_name"].ToString(),
-                                SystemTestItemNo = dataRow["test_item_no"].ToString(),
-                                SystemTestItemName = dataRow["test_item_name"].ToString()
+                                InterfaceId =Convert.ToInt64(dataRow["interface_id"]),
+                                InterfaceName= dataRow["interface_name"].ToString(),
+                                InterfaceTestItemId = Convert.ToInt64(dataRow["interface_test_item_id"]),
+                                InterfaceTestItemName = dataRow["interface_test_item_name"].ToString(),
+                                SystemTestItemNo = dataRow["system_test_item_no"].ToString(),
+                                SystemTestItemName = dataRow["system_test_item_name"].ToString()
                             });
                         }
                     }
@@ -216,12 +223,6 @@ namespace GZKL.Client.UI.ViewsModels
 
             try
             {
-                if (model==null)
-                {
-                    MessageBox.Show("请选择接口记录", "提示信息");
-                    return;
-                }
-
                 CommonOpenFileDialog dialog = new CommonOpenFileDialog("请选择一个文件");
                 dialog.Filters.Add(new CommonFileDialogFilter("Access Files","*.mdb"));
                 dialog.IsFolderPicker = false;
@@ -325,20 +326,20 @@ END";
         /// 新增测试项目
         /// </summary>
         /// <param name="model"></param>
-        public void AddTestItem(InterfaceTestItemRelationInfo model)
+        public void AddTestItem(InterfaceInfo interfaceInfo, InterfaceTestItemInfo interfaceTestItemInfo, SystemTestItemInfo systemTestItemInfo)
         {
             try
             {
-                var sql = @"SELECT COUNT(1) FROM [dbo].[base_interface_relation] WHERE test_item_id=@testItemId AND test_item_no=@testItemNo";
+                var sql = @"SELECT COUNT(1) FROM [dbo].[base_interface_relation] WHERE test_item_id=@interfaceTestItemId AND test_item_no=@systemTestItemNo";
                 var parameters = new SqlParameter[] { 
-                    new SqlParameter("@testItemId", model.InterfaceId),
-                    new SqlParameter("@testItemNo", model.SystemTestItemNo)};
+                    new SqlParameter("@interfaceTestItemId", interfaceTestItemInfo.Id),
+                    new SqlParameter("@systemTestItemNo", systemTestItemInfo.TestItemNo)};
 
                 var result =Convert.ToInt32(SQLHelper.ExecuteScalar(sql, parameters));
 
                 if (result > 0)
                 {
-                    MessageBox.Show($"记录{model.InterfaceId}|{model.SystemTestItemNo}已存在，请勿重复添加", "提示信息");
+                    MessageBox.Show($"记录{interfaceTestItemInfo.InterfaceId}|{systemTestItemInfo.TestItemNo}已存在，请勿重复添加", "提示信息");
                     return;
                 }
 
@@ -366,10 +367,10 @@ END";
                                    ,@user_id)";
 
                 parameters = new SqlParameter[] {
-                    new SqlParameter("@interfaceId", model.InterfaceId),
-                    new SqlParameter("@testItemId", model.InterfaceId),
-                    new SqlParameter("@testItemNo", model.SystemTestItemNo),
-                    new SqlParameter("@testItemName", model.SystemTestItemName),
+                    new SqlParameter("@interfaceId", interfaceInfo.Id),
+                    new SqlParameter("@testItemId", interfaceTestItemInfo.Id),
+                    new SqlParameter("@testItemNo", systemTestItemInfo.TestItemNo),
+                    new SqlParameter("@testItemName", systemTestItemInfo.TestItemName),
                     new SqlParameter("@is_enabled", 1),
                     new SqlParameter("@create_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
                     new SqlParameter("@user_id", SessionInfo.Instance.Session.Id)
@@ -400,6 +401,7 @@ END";
 
                 if (result > 0)
                 {
+                    this.Query();
                     MessageBox.Show("删除成功", "提示信息");
                 }
                 else
