@@ -106,28 +106,28 @@
                 <DataGridCheckBoxColumn Binding="{Binding IsSelected, Mode=TwoWay}" Width="50" CanUserSort="False" CanUserResize="False" Header="选择"/>
                 <DataGridTextColumn Binding="{Binding RowNum}" Width="60" CanUserSort="False" CanUserResize="False" Header="序号"/>
                 <DataGridTextColumn IsReadOnly="True" Width="60" CanUserSort="False" CanUserResize="False" Binding="{Binding Id}" Header="主键ID" Visibility="Hidden"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="120" Binding="{Binding OrgNo}" Header="机构编号"/>
                 <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding TestNo}" Header="检测编号"/>
                 <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding SampleNo}" Header="样品编号"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding TestTypeNo}" Header="检测类型编号"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding TestItemNo}" Header="检测项编号"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding ExperimentNo}" Header="试块序号"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding TestTypeNo}" Header="类型编号"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding TestItemNo}" Header="项目编号"/>
                 <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Deadline}" Header="龄期"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding ExperimentNo}" Header="试验次数"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="160" Binding="{Binding PlayTime, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}}" Header="记录时间"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding TestPreceptName}" Header="键"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding SampleShape}" Header="键"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Area}" Header="键"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding GaugeLength}" Header="键"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding UpYieldDot}" Header="键"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding DownYieldDot}" Header="键"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding MaxDot}" Header="键"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding SampleWidth}" Header="键"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding SampleThick}" Header="键"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding SampleDia}" Header="键"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding SampleMinDia}" Header="键"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding SampleOutDia}" Header="键"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding SampleInnerDia}" Header="键"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding DeformSensorName}" Header="键"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="160" Binding="{Binding PlayTime, StringFormat=\{0:yyyy-MM-dd\}}" Header="试验日期"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="160" Binding="{Binding CreateDt, StringFormat=\{0:HH:mm:ss\}}" Header="试验时间"/>
+                <!--<DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding TestPreceptName}" Header="XXX"/>-->
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding SampleShape}" Header="试样的形状"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Area}" Header="试样的面积"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding GaugeLength}" Header="标距"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding UpYieldDot}" Header="上屈服点力值"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding DownYieldDot}" Header="下屈服点力值"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding MaxDot}" Header="最大值(力值)"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding SampleWidth}" Header="宽度"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding SampleThick}" Header="厚度"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding SampleDia}" Header="直径"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding SampleMinDia}" Header="最小直径"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding SampleOutDia}" Header="外径"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding SampleInnerDia}" Header="内径"/>
+                <!--<DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding DeformSensorName}" Header="键"/>-->
                 <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
                 <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
             </DataGrid.Columns>
