@@ -148,7 +148,7 @@
                             Text="{Binding Model.InterfaceName,Mode=TwoWay}"
                             hc:InfoElement.Title="接口名称："
                             hc:InfoElement.Necessary="True"/>
-                        
+
                         <hc:ComboBox Margin="2" Width="250" 
                              x:Name="cmbInterfaceTestItem"
                              IsEditable="False" 
@@ -162,7 +162,7 @@
                              hc:InfoElement.Necessary="True">
                         </hc:ComboBox>
 
-                        
+
                     </StackPanel>
 
                 </Border>
@@ -217,12 +217,13 @@
 
                                     <DataGrid.Columns>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding Id}" Header="ID"/>
-                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="120" Binding="{Binding AutoCollectName}" Header="接口"/>
-                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="200" Binding="{Binding AccessDbPath}" Header="数据库文件"/>
-                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="150" Binding="{Binding AccessDbName}" Header="数据库"/>
-                                        <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>
-                                        <DataGridTextColumn IsReadOnly="True" MinWidth="180" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
-                                        <DataGridTextColumn IsReadOnly="True" MinWidth="180" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding OrgNo}" Header="机构编号"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding TestNo}" Header="检测编号"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding SampleNo}" Header="样品编号"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding TestTypeNo}" Header="类型编号"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding TestItemNo}" Header="项目编号"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding Deadline}" Header="龄期"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="试验日期"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </GroupBox>
@@ -236,12 +237,12 @@
 
                                     <DataGrid.Columns>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding Id}" Header="ID"/>
-                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="120" Binding="{Binding AutoCollectName}" Header="接口"/>
-                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="200" Binding="{Binding AccessDbPath}" Header="数据库文件"/>
-                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="150" Binding="{Binding AccessDbName}" Header="数据库"/>
-                                        <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>
-                                        <DataGridTextColumn IsReadOnly="True" MinWidth="180" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
-                                        <DataGridTextColumn IsReadOnly="True" MinWidth="180" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding ExperimentNo}" Header="试件序号"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}" Header="试验时间"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding Area}" Header="试样的面积"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding UpYieldDot}" Header="上屈服点力值"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding DownYieldDot}" Header="下屈服点力值"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding MaxDot}" Header="最大值(力值)"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </GroupBox>
@@ -255,12 +256,21 @@
 
                                     <DataGrid.Columns>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding Id}" Header="ID"/>
-                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="120" Binding="{Binding AutoCollectName}" Header="接口"/>
-                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="200" Binding="{Binding AccessDbPath}" Header="数据库文件"/>
-                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="150" Binding="{Binding AccessDbName}" Header="数据库"/>
-                                        <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>
-                                        <DataGridTextColumn IsReadOnly="True" MinWidth="180" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
-                                        <DataGridTextColumn IsReadOnly="True" MinWidth="180" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding PlayTime}" Header="时间值"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding LoadValue}" Header="力值"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding PositionValue}" Header="位移的值"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding ExtendValue}" Header="引伸记的值"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding BigDeformValue}" Header="大变形的值"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding DeformSwitch}" Header="变现切换"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding CtrlStep}" Header="控制步骤"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding ExtendDevice1}" Header="扩展设备1"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding ExtendDevice2}" Header="扩展设备2"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding ExtendDevice3}" Header="扩展设备3"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding ExtendDevice4}" Header="扩展设备4"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding ExtendDevice5}" Header="扩展设备5"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding ExtendDevice6}" Header="扩展设备6"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding PosiSpeed}" Header="位移速率"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding StressSpeed}" Header="应力速率"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
 
@@ -287,12 +297,13 @@
 
                                     <DataGrid.Columns>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding Id}" Header="ID"/>
-                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="120" Binding="{Binding AutoCollectName}" Header="接口"/>
-                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="200" Binding="{Binding AccessDbPath}" Header="数据库文件"/>
-                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="150" Binding="{Binding AccessDbName}" Header="数据库"/>
-                                        <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>
-                                        <DataGridTextColumn IsReadOnly="True" MinWidth="180" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
-                                        <DataGridTextColumn IsReadOnly="True" MinWidth="180" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding OrgNo}" Header="机构编号"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding TestNo}" Header="检测编号"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding SampleNo}" Header="样品编号"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding TestTypeNo}" Header="类型编号"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding TestItemNo}" Header="项目编号"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding Deadline}" Header="龄期"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="试验日期"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </GroupBox>
@@ -306,12 +317,12 @@
 
                                     <DataGrid.Columns>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding Id}" Header="ID"/>
-                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="120" Binding="{Binding AutoCollectName}" Header="接口"/>
-                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="200" Binding="{Binding AccessDbPath}" Header="数据库文件"/>
-                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="150" Binding="{Binding AccessDbName}" Header="数据库"/>
-                                        <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>
-                                        <DataGridTextColumn IsReadOnly="True" MinWidth="180" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
-                                        <DataGridTextColumn IsReadOnly="True" MinWidth="180" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding ExperimentNo}" Header="试件序号"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}" Header="试验时间"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding Area}" Header="试样的面积"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding UpYieldDot}" Header="上屈服点力值"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding DownYieldDot}" Header="下屈服点力值"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding MaxDot}" Header="最大值(力值)"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </GroupBox>
@@ -325,12 +336,21 @@
 
                                     <DataGrid.Columns>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding Id}" Header="ID"/>
-                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="120" Binding="{Binding AutoCollectName}" Header="接口"/>
-                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="200" Binding="{Binding AccessDbPath}" Header="数据库文件"/>
-                                        <DataGridTextColumn IsReadOnly="True"  MinWidth="150" Binding="{Binding AccessDbName}" Header="数据库"/>
-                                        <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>
-                                        <DataGridTextColumn IsReadOnly="True" MinWidth="180" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
-                                        <DataGridTextColumn IsReadOnly="True" MinWidth="180" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding PlayTime}" Header="时间值"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding LoadValue}" Header="力值"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding PositionValue}" Header="位移的值"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding ExtendValue}" Header="引伸记的值"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding BigDeformValue}" Header="大变形的值"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding DeformSwitch}" Header="变现切换"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding CtrlStep}" Header="控制步骤"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding ExtendDevice1}" Header="扩展设备1"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding ExtendDevice2}" Header="扩展设备2"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding ExtendDevice3}" Header="扩展设备3"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding ExtendDevice4}" Header="扩展设备4"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding ExtendDevice5}" Header="扩展设备5"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding ExtendDevice6}" Header="扩展设备6"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding PosiSpeed}" Header="位移速率"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding StressSpeed}" Header="应力速率"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
 
