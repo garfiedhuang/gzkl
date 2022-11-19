@@ -32,5 +32,14 @@ namespace GZKL.Client.UI.Views.CollectMgt.AutoCollect
             //(this.DataContext as InterfaceViewModel).Query();
         }
 
+        private void btnQuery_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

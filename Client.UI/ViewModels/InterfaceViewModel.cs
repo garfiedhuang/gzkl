@@ -30,11 +30,6 @@ namespace GZKL.Client.UI.ViewsModels
         /// </summary>
         public InterfaceViewModel()
         {
-            //SelectInterfaceDbCommand = new RelayCommand(this.SelectInterfaceDb);
-            //SetInterfaceDbCommand = new RelayCommand(this.SetInterface);
-            //AddTestItemCommand = new RelayCommand(this.AddTestItem);
-            //DeleteTestItemCommand = new RelayCommand(this.DeleteTestItem);
-
             Model = new InterfaceModel()
             {
                 InterfaceInfos = new ObservableCollection<InterfaceInfo>(),
@@ -59,26 +54,6 @@ namespace GZKL.Client.UI.ViewsModels
         #endregion
 
         #region Command
-
-        ///// <summary>
-        ///// 选择接口数据库
-        ///// </summary>
-        //public RelayCommand SelectInterfaceDbCommand { get; set; }
-
-        ///// <summary>
-        ///// 设置当前接口为本机接口
-        ///// </summary>
-        //public RelayCommand SetInterfaceDbCommand { get; set; }
-
-        ///// <summary>
-        ///// 新增测试项目
-        ///// </summary>
-        //public RelayCommand AddTestItemCommand { get; set; }
-
-        ///// <summary>
-        ///// 删除测试项目
-        ///// </summary>
-        //public RelayCommand DeleteTestItemCommand { get; set; }
 
 
         #endregion

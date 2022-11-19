@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace GZKL.Client.UI.Models
 {
     /// <summary>
-    /// 用户模型
+    /// 机构模型
     /// </summary>
     public class OrgModel : ObservableObject
     {

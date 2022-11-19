@@ -30,89 +30,56 @@ namespace GZKL.Client.UI.ViewsModels
         /// </summary>
         public AutoCollectViewModel()
         {
-            SelectAutoCollectDbCommand = new RelayCommand(this.SelectAutoCollectDb);
-            SetAutoCollectDbCommand = new RelayCommand(this.SetAutoCollectDb);
-            AddTestItemCommand = new RelayCommand(this.AddTestItem);
-            DeleteTestItemCommand = new RelayCommand(this.DeleteTestItem);
+            OrgData = new List<OrgInfo>();
+            InterfaceData = new List<InterfaceInfo>();
+            TestTypeData = new List<TestTypeInfo>();
+            SystemTestItemData = new List<SystemTestItemInfo>();
+            InterfaceTestItemData = new List<InterfaceTestItemInfo>();
 
-            AutoCollectModels = new List<AutoCollectModel>();
-            GridModelList = new ObservableCollection<AutoCollectModel>();
+            Model = new AutoCollectModel();
 
-        }
+            this.InitData();
 
-        private void DeleteTestItem()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void AddTestItem()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void SetAutoCollectDb()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void SelectAutoCollectDb()
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>
-        /// 查询之后的结果数据，用于分页显示
+        /// 机构下拉数据源
         /// </summary>
-        private static List<AutoCollectModel> AutoCollectModels { get; set; }
+        public List<OrgInfo> OrgData { get; set; }
+
+        /// <summary>
+        /// 接口下拉数据源
+        /// </summary>
+        public List<InterfaceInfo> InterfaceData { get; set; }
+
+        /// <summary>
+        /// 检测类型下拉数据源
+        /// </summary>
+        public List<TestTypeInfo> TestTypeData { get; set; }
+
+        /// <summary>
+        /// 系统检测项下拉数据源
+        /// </summary>
+        public List<SystemTestItemInfo> SystemTestItemData { get; set; }
+
+        /// <summary>
+        /// 接口检测项下拉数据源
+        /// </summary>
+        public List<InterfaceTestItemInfo> InterfaceTestItemData { get; set; }
 
         /// <summary>
         /// 网格数据集合
         /// </summary>
-        private ObservableCollection<AutoCollectModel> gridModelList;
-        public ObservableCollection<AutoCollectModel> GridModelList
+        private AutoCollectModel model;
+        public AutoCollectModel Model
         {
-            get { return gridModelList; }
-            set { gridModelList = value; RaisePropertyChanged(); }
-        }
-
-        /// <summary>
-        /// 查询条件
-        /// </summary>
-        private string search = string.Empty;
-
-        public string Search
-        {
-            get { return search; }
-            set
-            {
-                search = value;
-                RaisePropertyChanged();
-            }
+            get { return model; }
+            set { model = value; RaisePropertyChanged(); }
         }
 
         #endregion
 
         #region Command
-
-        /// <summary>
-        /// 选择接口数据库
-        /// </summary>
-        public RelayCommand SelectAutoCollectDbCommand { get; set; }
-
-        /// <summary>
-        /// 设置当前接口为本机数据库
-        /// </summary>
-        public RelayCommand SetAutoCollectDbCommand { get; set; }
-
-        /// <summary>
-        /// 新增测试项目
-        /// </summary>
-        public RelayCommand AddTestItemCommand { get; set; }
-
-        /// <summary>
-        /// 删除测试项目
-        /// </summary>
-        public RelayCommand DeleteTestItemCommand { get; set; }
 
 
         #endregion
@@ -126,193 +93,151 @@ namespace GZKL.Client.UI.ViewsModels
         {
             try
             {
-                /*
-                var sql = new StringBuilder(@"SELECT row_number()over(order by update_dt desc )as row_num
-                ,[id],[AutoCollect_name],[access_db_path],[access_db_name],[remark],[is_enabled],[is_deleted],[create_dt]
-                ,[create_user_id],[update_dt],[update_user_id]
-                FROM [dbo].[base_AutoCollect] WHERE [is_deleted]=0");
 
-                SqlParameter[] parameters = null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "提示信息");
+            }
+        }
 
-                if (!string.IsNullOrEmpty(Search.Trim()))
+        /// <summary>
+        /// 初始化数据
+        /// </summary>
+        public void InitData()
+        {
+            try
+            {
+                var sql0 = @"SELECT * FROM [dbo].[base_org] WHERE [is_deleted]=0";
+
+                var sql1 = @"SELECT * FROM [dbo].[base_interface] WHERE [is_deleted]=0";
+
+                var sql2 = @"SELECT * FROM [dbo].[base_interface_test_item] WHERE [is_deleted]=0";
+
+                var sql3 = @"SELECT * FROM [dbo].[base_test_item] WHERE [is_deleted]=0";
+
+                var sql4 = @"SELECT * FROM [dbo].[base_test_type] WHERE [is_deleted]=0";
+
+                //机构信息
+                using (var data = SQLHelper.GetDataTable(sql0))
                 {
-                    sql.Append($" AND ([AutoCollect_name] LIKE @search or [access_db_name] LIKE @search)");
-                    parameters = new SqlParameter[1] { new SqlParameter("@search", $"%{Search}%") };
-                }
+                    if (OrgData?.Count > 0)
+                    {
+                        OrgData.Clear();
+                    }
 
-                sql.Append($" ORDER BY [update_dt] DESC");
-
-                AutoCollectModels.Clear();//清空前端分页数据
-
-                using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
-                {
                     if (data != null && data.Rows.Count > 0)
                     {
                         foreach (DataRow dataRow in data.Rows)
                         {
-                            AutoCollectModels.Add(new AutoCollectModel()
+                            OrgData.Add(new OrgInfo()
                             {
                                 Id = Convert.ToInt64(dataRow["id"]),
-                                RowNum = Convert.ToInt64(dataRow["row_num"]),
-                                AutoCollectName = dataRow["AutoCollect_name"].ToString(),
-                                AccessDbPath = dataRow["access_db_path"].ToString(),
-                                AccessDbName = dataRow["access_db_name"].ToString(),
-                                Remark = dataRow["remark"].ToString(),
-                                IsEnabled = Convert.ToInt32(dataRow["is_enabled"]),
-                                CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
-                                UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
+                                OrgNo = dataRow["org_no"].ToString(),
+                                OrgName = dataRow["org_name"].ToString(),
+                                OrgLevel = dataRow["org_level"].ToString(),
+                                Remark = dataRow["remark"].ToString()
                             });
                         }
                     }
                 }
 
-                //当前页数
-                PageIndex = AutoCollectModels.Count > 0 ? 1 : 0;
-                MaxPageCount = 0;
-
-                //最大页数
-                MaxPageCount = PageIndex > 0 ? (int)Math.Ceiling((decimal)AutoCollectModels.Count / DataCountPerPage) : 0;
-
-                //数据分页
-                Paging(PageIndex);
-                */
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "提示信息");
-            }
-        }
-
-        /// <summary>
-        /// 重置
-        /// </summary>
-        public void Reset()
-        {
-            this.Search = string.Empty;
-            this.Query();
-        }
-
-        /// <summary>
-        /// 编辑
-        /// </summary>
-        /// <param name="id"></param>
-        public void Edit(int id)
-        {
-            try
-            {
-                /*
-                var selected = GridModelList.Where(w => w.IsSelected == true).ToList();
-
-                if (selected.Count != 1)
+                //接口信息
+                using (var data = SQLHelper.GetDataTable(sql1))
                 {
-                    MessageBox.Show($"请选择一条记录进行编辑", "提示信息");
-                    return;
-                }
-
-                id = (int)selected.First().Id;
-
-                var sql = new StringBuilder(@"SELECT [id],[AutoCollect_name],[access_db_path],[access_db_name],[remark]
-                ,[is_enabled],[is_deleted],[create_dt],[create_user_id],[update_dt],[update_user_id]
-                FROM [dbo].[base_AutoCollect] WHERE [is_deleted]=0 AND [id]=@id");
-
-                var parameters = new SqlParameter[1] { new SqlParameter("@id", id) };
-                using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
-                {
-                    if (data == null || data.Rows.Count == 0)
+                    if (InterfaceData?.Count > 0)
                     {
-                        MessageBox.Show($"数据库不存在 主键ID={id} 的记录", "提示信息");
-                        return;
+                        InterfaceData.Clear();
                     }
 
-                    var dataRow = data.Rows[0];
-                    var model = new AutoCollectModel()
+                    if (data != null && data.Rows.Count > 0)
                     {
-                        Id = Convert.ToInt64(dataRow["id"]),
-                        AutoCollectName = dataRow["AutoCollect_name"].ToString(),
-                        AccessDbPath = dataRow["access_db_path"].ToString(),
-                        AccessDbName = dataRow["access_db_name"].ToString(),
-                        Remark = dataRow["remark"].ToString(),
-                        IsEnabled = Convert.ToInt32(dataRow["is_enabled"]),
-                        CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
-                        UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
-                    };
-
-                    if (model != null)
-                    {
-                        Edit view = new Edit(model);
-                        var r = view.ShowDialog();
-                        if (r.Value)
+                        foreach (DataRow dataRow in data.Rows)
                         {
-                            sql.Clear();
-                            sql.Append(@"UPDATE [dbo].[base_AutoCollect]
-   SET [AutoCollect_name] = @AutoCollectName
-      ,[access_db_path] = @access_db_path
-      ,[access_db_name] = @access_db_name
-      ,[remark] = @remark
-      ,[is_enabled] = @is_enabled
-      ,[update_dt] = @update_dt
-      ,[update_user_id] = @user_id
- WHERE [id]=@id");
-                            parameters = new SqlParameter[] {
-                            new SqlParameter("@AutoCollect_name", model.AutoCollectName),
-                            new SqlParameter("@access_db_path", model.AccessDbPath),
-                            new SqlParameter("@access_db_name", model.AccessDbName),
-                            new SqlParameter("@remark", model.Remark),
-                            new SqlParameter("@is_enabled", model.IsEnabled),
-                            new SqlParameter("@update_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
-                            new SqlParameter("@user_id", SessionInfo.Instance.Session.Id),
-                            new SqlParameter("@id", id)
-                        };
-
-                            var result = SQLHelper.ExecuteNonQuery(sql.ToString(), parameters);
-
-                            this.Query();
+                            InterfaceData.Add(new InterfaceInfo()
+                            {
+                                Id = Convert.ToInt64(dataRow["id"]),
+                                InterfaceName = dataRow["interface_name"].ToString(),
+                                AccessDbPath = dataRow["access_db_path"].ToString(),
+                                AccessDbName = dataRow["access_db_name"].ToString(),
+                                Remark = dataRow["remark"].ToString(),
+                                IsEnabled = Convert.ToInt32(dataRow["is_enabled"]),
+                                CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
+                                UpdateDt = Convert.ToDateTime(dataRow["update_dt"])
+                            });
                         }
                     }
                 }
-                */
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "提示信息");
-            }
-        }
 
-        /// <summary>
-        /// 删除
-        /// </summary>
-        /// <param name="id"></param>
-        public void Delete(int id)
-        {
-            try
-            {
-                /*
-                var selected = GridModelList.Where(w => w.IsSelected == true).ToList();
-
-                if (selected.Count == 0)
+                //接口对应检测项目
+                using (var data = SQLHelper.GetDataTable(sql2))
                 {
-                    MessageBox.Show($"请至少选择一条记录进行删除", "提示信息");
-                    return;
-                }
-
-                if (selected != null)
-                {
-                    var r = MessageBox.Show($"确定要删除【{string.Join(",", selected.Select(s => $"{s.AutoCollectName}|{s.AccessDbName}"))}】吗？", "提示", MessageBoxButton.YesNo);
-                    if (r == MessageBoxResult.Yes)
+                    if (InterfaceTestItemData?.Count > 0)
                     {
-                        foreach (var dr in selected)
+                        InterfaceTestItemData.Clear();
+                    }
+
+                    if (data != null && data.Rows.Count > 0)
+                    {
+                        foreach (DataRow dataRow in data.Rows)
                         {
-                            //var sql = new StringBuilder(@"DELETE FROM [dbo].[base_AutoCollect] WHERE [id] IN(@id)");
-                            var sql = new StringBuilder(@"UPDATE [dbo].[base_AutoCollect] SET [is_deleted]=1 WHERE [id]=@id");
-
-                            var parameters = new SqlParameter[1] { new SqlParameter("@id", dr.Id) };
-                            var result = SQLHelper.ExecuteNonQuery(sql.ToString(), parameters);
+                            InterfaceTestItemData.Add(new InterfaceTestItemInfo()
+                            {
+                                Id = Convert.ToInt64(dataRow["id"]),
+                                InterfaceId = Convert.ToInt64(dataRow["interface_id"]),
+                                TestItemName = dataRow["test_item_name"].ToString(),
+                                TableMaster = dataRow["table_master"].ToString(),
+                                TableDetail = dataRow["table_detail"].ToString(),
+                                TableDot = dataRow["table_dot"].ToString()
+                            });
                         }
-
-                        this.Query();
                     }
                 }
-                */
+
+                //系统对应检测项目
+                using (var data = SQLHelper.GetDataTable(sql3))
+                {
+                    if (SystemTestItemData?.Count > 0)
+                    {
+                        SystemTestItemData.Clear();
+                    }
+
+                    if (data != null && data.Rows.Count > 0)
+                    {
+                        foreach (DataRow dataRow in data.Rows)
+                        {
+                            SystemTestItemData.Add(new SystemTestItemInfo()
+                            {
+                                Id = Convert.ToInt64(dataRow["id"]),
+                                TestItemNo = dataRow["test_item_no"].ToString(),
+                                TestItemName = dataRow["test_item_name"].ToString()
+                            });
+                        }
+                    }
+                }
+
+                //检测类型
+                using (var data = SQLHelper.GetDataTable(sql4))
+                {
+                    if (TestTypeData?.Count > 0)
+                    {
+                        TestTypeData.Clear();
+                    }
+
+                    if (data != null && data.Rows.Count > 0)
+                    {
+                        foreach (DataRow dataRow in data.Rows)
+                        {
+                            TestTypeData.Add(new TestTypeInfo()
+                            {
+                                Id = Convert.ToInt64(dataRow["id"]),
+                                Category = dataRow["category"].ToString(),
+                                TestTypeNo = dataRow["test_type_no"].ToString(),
+                                TestTypeName = dataRow["test_type_name"].ToString()
+                            });
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -323,7 +248,7 @@ namespace GZKL.Client.UI.ViewsModels
         /// <summary>
         /// 新增
         /// </summary>
-        public void Add()
+        public void Save()
         {
             try
             {
@@ -379,58 +304,10 @@ namespace GZKL.Client.UI.ViewsModels
             }
         }
 
-        /// <summary>
-        /// 页面更新事件
-        /// </summary>
-        public void PageUpdated(FunctionEventArgs<int> e)
-        {
-            Paging(e.Info);
-        }
-
-        /// <summary>
-        /// 选择
-        /// </summary>
-        public void Select(AutoCollectModel model)
-        {
-            try
-            {
-                CommonOpenFileDialog dialog = new CommonOpenFileDialog("请选择一个数据库文件");
-                dialog.IsFolderPicker = false; //选择文件还是文件夹（true:选择文件夹，false:选择文件）
-                if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
-                {
-                    model.AccessDbPath = dialog.FileName;
-                    model.AccessDbName = dialog.FileName;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "提示信息");
-            }
-        }
-
         #endregion
 
         #region Privates
 
-        /// <summary>
-        /// 分页
-        /// </summary>
-        /// <param name="pageIndex"></param>
-        private void Paging(int pageIndex)
-        {
-
-            //GridModelList.Clear();//清空依赖属性
-
-            //var pagedData = AutoCollectModels.Skip((pageIndex - 1) * DataCountPerPage).Take(DataCountPerPage).ToList();
-
-            //if (pagedData.Count > 0)
-            //{
-            //    pagedData.ForEach(item =>
-            //    {
-            //        GridModelList.Add(item);
-            //    });
-            //}
-        }
 
         #endregion
     }
