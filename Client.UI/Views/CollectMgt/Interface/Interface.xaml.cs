@@ -38,7 +38,10 @@ namespace GZKL.Client.UI.Views.CollectMgt.Interface
 
         private void btnSetInterface_Click(object sender, RoutedEventArgs e)
         {
+            var viewModel = this.DataContext as InterfaceViewModel;
+            var selectedItem = this.dgInterfaceSelectData.SelectedItem as InterfaceInfo;
 
+            viewModel.SetInterface(selectedItem);
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)

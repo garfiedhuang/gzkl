@@ -37,10 +37,10 @@ namespace GZKL.Client.UI.ViewsModels
 
             Model = new InterfaceModel()
             {
-                InterfaceInfos = new List<InterfaceInfo>(),
-                SystemTestItemInfos = new List<SystemTestItemInfo>(),
-                InterfaceTestItemInfos = new List<InterfaceTestItemInfo>(),
-                InterfaceTestItemRelationInfos = new List<InterfaceTestItemRelationInfo>()
+                InterfaceInfos = new ObservableCollection<InterfaceInfo>(),
+                SystemTestItemInfos = new ObservableCollection<SystemTestItemInfo>(),
+                InterfaceTestItemInfos = new ObservableCollection<InterfaceTestItemInfo>(),
+                InterfaceTestItemRelationInfos = new ObservableCollection<InterfaceTestItemRelationInfo>()
             };
 
             Query();
@@ -229,6 +229,10 @@ namespace GZKL.Client.UI.ViewsModels
                 {
                     fileName = dialog.FileName;
                 }
+                else
+                {
+                    return;
+                }
 
                 if (string.IsNullOrEmpty(fileName))
                 {
@@ -247,21 +251,33 @@ namespace GZKL.Client.UI.ViewsModels
                     return;
                 }
 
-                var sql = @"BEGIN
-UPDATE [dbo].[base_interface] SET [is_enabled]=0 WHERE 1=1;
-UPDATE [dbo].[base_interface] SET [is_enabled]=1 WHERE [id]=@id;
-END";
-                var parameters = new SqlParameter[1] { new SqlParameter("@id", model.Id) };
+                if (model.Id == 4)
+                {
+                    //adsBase_Interface.FieldByName('FilePath').AsString:=copy(RzOpenDialog1.FileName,1, Pos('\Tests\',RzOpenDialog1.FileName)+6)
+                    model.AccessDbPath = fileName.Substring(0,fileName.IndexOf("\\Tests\\")+7);
+                }
+                else
+                {
+                    model.AccessDbPath = fileName;
+                }
+
+                var sql = @"UPDATE [dbo].[base_interface] SET [access_db_path]=@dbPath,[update_dt] = @update_dt,[update_user_id] = @user_id WHERE [id]=@id";
+                var parameters = new SqlParameter[4] { 
+                    new SqlParameter("@dbPath", model.AccessDbPath),
+                    new SqlParameter("@update_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
+                    new SqlParameter("@user_id", SessionInfo.Instance.Session.Id),
+                    new SqlParameter("@id", model.Id) };
 
                 var result = SQLHelper.ExecuteNonQuery(sql, parameters);
 
                 if (result > 0)
                 {
-                    MessageBox.Show("设置成功", "提示信息");
+                    this.Query();
+                    MessageBox.Show("接口数据库设置成功", "提示信息");
                 }
                 else
                 {
-                    MessageBox.Show("设置失败", "提示信息");
+                    MessageBox.Show("接口数据库设置失败", "提示信息");
                 }
             }
             catch (Exception ex)
@@ -280,19 +296,23 @@ END";
             {
                 var sql = @"BEGIN
 UPDATE [dbo].[base_interface] SET [is_enabled]=0 WHERE 1=1;
-UPDATE [dbo].[base_interface] SET [is_enabled]=1 WHERE [id]=@id;
+UPDATE [dbo].[base_interface] SET [is_enabled]=1,[update_dt] = @update_dt,[update_user_id] = @user_id WHERE [id]=@id;
 END";
-                var parameters = new SqlParameter[1] { new SqlParameter("@id", model.Id) };
+                var parameters = new SqlParameter[3] {
+                    new SqlParameter("@update_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
+                    new SqlParameter("@user_id", SessionInfo.Instance.Session.Id),
+                    new SqlParameter("@id", model.Id) };
 
                 var result = SQLHelper.ExecuteNonQuery(sql, parameters);
 
                 if (result > 0)
                 {
-                    MessageBox.Show("设置成功", "提示信息");
+                    this.Query();
+                    MessageBox.Show("本机接口设置成功", "提示信息");
                 }
                 else
                 {
-                    MessageBox.Show("设置失败", "提示信息");
+                    MessageBox.Show("本机接口设置失败", "提示信息");
                 }
             }
             catch (Exception ex)

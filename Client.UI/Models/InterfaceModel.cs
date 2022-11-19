@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -11,27 +12,47 @@ namespace GZKL.Client.UI.Models
     /// <summary>
     /// 接口模型
     /// </summary>
-    public class InterfaceModel
+    public class InterfaceModel:ObservableObject
     {
+        private ObservableCollection<InterfaceInfo> interfaceInfos;
         /// <summary>
         /// 接口信息
         /// </summary>
-        public List<InterfaceInfo> InterfaceInfos { get; set; }
+        public ObservableCollection<InterfaceInfo> InterfaceInfos
+        {
+            get { return interfaceInfos; }
+            set { interfaceInfos = value;RaisePropertyChanged(); }
+        }
 
+        private ObservableCollection<InterfaceTestItemInfo> interfaceTestItemInfos;
         /// <summary>
         /// 接口对应检测项目
         /// </summary>
-        public List<InterfaceTestItemInfo> InterfaceTestItemInfos { get; set; }
+        public ObservableCollection<InterfaceTestItemInfo> InterfaceTestItemInfos
+        {
+            get { return interfaceTestItemInfos; }
+            set { interfaceTestItemInfos = value; RaisePropertyChanged(); }
+        }
 
+        private ObservableCollection<SystemTestItemInfo> systemTestItemInfos;
         /// <summary>
         /// 系统对应检测项目
         /// </summary>
-        public List<SystemTestItemInfo> SystemTestItemInfos { get; set; }
+        public ObservableCollection<SystemTestItemInfo> SystemTestItemInfos
+        {
+            get { return systemTestItemInfos; }
+            set { systemTestItemInfos = value; RaisePropertyChanged(); }
+        }
 
+        private ObservableCollection<InterfaceTestItemRelationInfo> interfaceTestItemRelationInfos;
         /// <summary>
         /// 接口与检测项关系
         /// </summary>
-        public List<InterfaceTestItemRelationInfo> InterfaceTestItemRelationInfos { get; set; }
+        public ObservableCollection<InterfaceTestItemRelationInfo> InterfaceTestItemRelationInfos
+        {
+            get { return interfaceTestItemRelationInfos; }
+            set { interfaceTestItemRelationInfos = value; RaisePropertyChanged(); }
+        }
 
     }
 

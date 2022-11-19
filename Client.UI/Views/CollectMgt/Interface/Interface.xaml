@@ -46,7 +46,7 @@
 
     <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="200"/>
+            <RowDefinition Height="160"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -55,14 +55,13 @@
                 <DataGrid Margin="5"
                           Background="White"
                           x:Name="dgInterfaceSelectData"
-                          hc:Empty.ShowEmpty="False"
                           ItemsSource="{Binding Model.InterfaceInfos}">
                     
                     <DataGrid.Columns>
-                        <DataGridTextColumn IsReadOnly="True" Width="80" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Id}" Header="ID"/>
-                        <DataGridTextColumn IsReadOnly="True" Width="120" Binding="{Binding InterfaceName}" Header="接口"/>
-                        <DataGridTextColumn IsReadOnly="True" Width="250*" Binding="{Binding AccessDbPath}" Header="数据库文件"/>
-                        <DataGridTextColumn IsReadOnly="True" Width="150" Binding="{Binding AccessDbName}" Header="数据库"/>
+                        <DataGridTextColumn IsReadOnly="True" Width="60" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Id}" Header="ID"/>
+                        <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding InterfaceName}" Header="接口"/>
+                        <DataGridTextColumn IsReadOnly="True" MinWidth="300" Binding="{Binding AccessDbPath}" Header="数据库文件"/>
+                        <DataGridTextColumn IsReadOnly="True" Width="150*" Binding="{Binding AccessDbName}" Header="数据库"/>
                         <DataGridTextColumn IsReadOnly="True" Width="80" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>
                         <DataGridTextColumn IsReadOnly="True" Width="180" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
                         <DataGridTextColumn IsReadOnly="True" Width="180" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
@@ -98,11 +97,10 @@
                     <Border BorderBrush="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" BorderThickness="1,1,1,1" CornerRadius="5">
                         <DataGrid Background="White"
                                   x:Name="dgInterfaceSelectData1"
-                                  hc:Empty.ShowEmpty="False"
                                   ItemsSource="{Binding Model.InterfaceTestItemInfos}" >
 
                             <DataGrid.Columns>
-                                <DataGridTextColumn IsReadOnly="True" Width="80" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Id}" Header="ID"/>
+                                <DataGridTextColumn IsReadOnly="True" Width="60" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Id}" Header="ID"/>
                                 <DataGridTextColumn IsReadOnly="True"  Width="250*" Binding="{Binding TestItemName}" Header="检测项目"/>
                             </DataGrid.Columns>
                         </DataGrid>
@@ -115,11 +113,10 @@
                             Grid.Row="0" 
                             Background="White"
                             x:Name="dgInterfaceSelectData2"
-                            hc:Empty.ShowEmpty="False"
                             ItemsSource="{Binding Model.SystemTestItemInfos}" >
 
                             <DataGrid.Columns>
-                                <DataGridTextColumn IsReadOnly="True" Width="80" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Id}" Header="ID"/>
+                                <DataGridTextColumn IsReadOnly="True" Width="60" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Id}" Header="ID"/>
                                 <DataGridTextColumn IsReadOnly="True"  Width="100" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding TestItemNo}" Header="系统项目编号"/>
                                 <DataGridTextColumn IsReadOnly="True"  Width="100*" Binding="{Binding TestItemName}" Header="系统项目名称"/>
                             </DataGrid.Columns>
@@ -140,11 +137,10 @@
                             Grid.Row="0" 
                             Background="White"
                             x:Name="dgInterfaceSelectData22"
-                            hc:Empty.ShowEmpty="False"
                             ItemsSource="{Binding Model.InterfaceTestItemRelationInfos}" >
 
                             <DataGrid.Columns>
-                                <DataGridTextColumn IsReadOnly="True" Width="80" Binding="{Binding Id}" Header="ID"/>
+                                <DataGridTextColumn IsReadOnly="True" Width="60" Binding="{Binding Id}" Header="ID"/>
                                 <DataGridTextColumn IsReadOnly="True"  Width="100*" Binding="{Binding InterfaceTestItemName}" Header="接口项目名称"/>
                                 <DataGridTextColumn IsReadOnly="True"  Width="100*" Binding="{Binding SystemTestItemNo}" Header="系统项目编号"/>
                                 <DataGridTextColumn IsReadOnly="True"  Width="100*" Binding="{Binding SystemTestItemName}" Header="系统项目名称"/>
