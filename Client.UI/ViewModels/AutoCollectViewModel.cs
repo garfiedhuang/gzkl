@@ -326,6 +326,48 @@ namespace GZKL.Client.UI.ViewsModels
         /// <returns></returns>
         private int CheckValue()
         {
+            var registerInfo = SessionInfo.Instance.RegisterInfo;
+
+            if (string.IsNullOrEmpty(registerInfo?.RegCode))
+            {
+                MessageBox.Show("软件未注册，请与开发商联系！", "操作提示");
+                return -1;
+            }
+            else if (registerInfo.RegTime.AddYears(2) <= DateTime.Now)
+            {
+                MessageBox.Show("注册码已过期，请与开发商联系，重新注册！", "操作提示");
+                return -1;
+            }
+
+            if (string.IsNullOrEmpty(Model.OrgNo))
+            {
+                MessageBox.Show("请选择检测机构！", "操作提示");
+                return -1;
+            }
+
+            if (string.IsNullOrEmpty(Model.SystemTestItemNo))
+            {
+                MessageBox.Show("请选择检测项目！", "操作提示");
+                return -1;
+            }
+
+            if (string.IsNullOrEmpty(Model.TestTypeNo))
+            {
+                MessageBox.Show("请选择检测类型！", "操作提示");
+                return -1;
+            }
+
+            if (string.IsNullOrEmpty(Model.QueryTestItemNo))
+            {
+                MessageBox.Show("请输入检测编号！", "操作提示");
+                return -1;
+            }
+
+            if (string.IsNullOrEmpty(Model.QuerySampleNo))
+            {
+                MessageBox.Show("请输入样品编号！", "操作提示");
+                return -1;
+            }
 
             return 0;
         }
@@ -336,17 +378,119 @@ namespace GZKL.Client.UI.ViewsModels
         /// <param name="orgNo">机构代码</param>
         /// <param name="testItemNo">检测项编号</param>
         /// <param name="testNo">检测编号</param>
-        private void QueryData(string orgNo,string testItemNo,string testNo)
+        private void QueryData(string orgNo, string testItemNo, string testNo)
         {
             var sql = @"SELECT * FROM [dbo].[biz_execute_test] WHERE [is_deleted]=0 AND [org_no]=@orgNo AND [test_item_no]=@testItemNo AND [test_no]=@testNo";
-            var parameters =new SqlParameter[3] {
+            var parameters = new SqlParameter[3] {
                     new SqlParameter("@orgNo", orgNo),
                     new SqlParameter("@testItemNo", testItemNo),
                     new SqlParameter("@testNo", testNo)
             };
 
-            
-        
+            //检测主表信息
+            using (var data = SQLHelper.GetDataTable(sql))
+            {
+                if (Model.TestData?.Count > 0)
+                {
+                    Model.TestData.Clear();
+                }
+
+                if (data != null && data.Rows.Count > 0)
+                {
+                    foreach (DataRow dataRow in data.Rows)
+                    {
+                        Model.TestData.Add(new ExecuteTestInfo()
+                        {
+                            Id = Convert.ToInt64(dataRow["id"]),
+                            OrgNo = dataRow["org_no"].ToString(),
+                            TestNo = dataRow["test_no"].ToString(),
+                            SampleNo = dataRow["sample_no"].ToString(),
+                            TestTypeNo = dataRow["test_type_no"].ToString(),
+                            TestItemNo = dataRow["test_item_no"].ToString(),
+                            Deadline = dataRow["deadline"].ToString()
+                        });
+                    }
+                }
+            }
+
+            var sql2 = @"SELECT * FROM [dbo].[biz_execute_test_detail] WHERE [is_deleted]=0 AND [test_id]=@testId";
+            var sql3 = @"SELECT * FROM [dbo].[biz_execute_original_data] WHERE [is_deleted]=0 AND [test_id]=@testId";
+
+            var testId = 0L;
+
+            if (Model.TestData?.Count > 0)
+            {
+                testId = Model.TestData.FirstOrDefault().Id;
+            }
+            else
+            {
+                testId = -1;
+            }
+            parameters = new SqlParameter[1] { new SqlParameter("@testId", testId) };
+
+            //检测明细表信息
+            using (var data = SQLHelper.GetDataTable(sql2, parameters))
+            {
+                if (Model.TestDetailData?.Count > 0)
+                {
+                    Model.TestDetailData.Clear();
+                }
+
+                if (data != null && data.Rows.Count > 0)
+                {
+                    foreach (DataRow dataRow in data.Rows)
+                    {
+                        Model.TestDetailData.Add(new ExecuteTestDetailInfo()
+                        {
+                            Id = Convert.ToInt64(dataRow["id"]),
+                            TestId = Convert.ToInt64(dataRow["test_id"]),
+                            ExperimentNo = Convert.ToInt32(dataRow["experiment_no"]),
+                            PlayTime = Convert.ToDateTime(dataRow["play_time"]),
+                            Area = dataRow["area"].ToString(),
+                            UpYieldDot = dataRow["up_yield_dot"].ToString(),
+                            DownYieldDot = dataRow["down_yield_dot"].ToString(),
+                            MaxDot = dataRow["max_dot"].ToString()
+                        });
+                    }
+                }
+            }
+
+            //原始数据信息
+            using (var data = SQLHelper.GetDataTable(sql3, parameters))
+            {
+                if (Model.OriginalData?.Count > 0)
+                {
+                    Model.OriginalData.Clear();
+                }
+
+                if (data != null && data.Rows.Count > 0)
+                {
+                    foreach (DataRow dataRow in data.Rows)
+                    {
+                        Model.OriginalData.Add(new ExecuteOriginalDataInfo()
+                        {
+                            Id = Convert.ToInt64(dataRow["id"]),
+                            TestId = Convert.ToInt64(dataRow["test_id"]),
+                            ExperimentNo = Convert.ToInt32(dataRow["experiment_no"]),
+                            PlayTime = Convert.ToDateTime(dataRow["play_time"]),
+                            LoadValue = dataRow["load_value"].ToString(),
+                            PositionValue = dataRow["position_value"].ToString(),
+                            ExtendValue = dataRow["extend_value"].ToString(),
+                            BigDeformValue = dataRow["big_deform_value"].ToString(),
+                            DeformSwitch = dataRow["deform_switch"].ToString(),
+                            CtrlStep = dataRow["ctrl_step"].ToString(),
+                            ExtendDevice1 = dataRow["extend_device1"].ToString(),
+                            ExtendDevice2 = dataRow["extend_device2"].ToString(),
+                            ExtendDevice3 = dataRow["extend_device3"].ToString(),
+                            ExtendDevice4 = dataRow["extend_device4"].ToString(),
+                            ExtendDevice5 = dataRow["extend_device5"].ToString(),
+                            ExtendDevice6 = dataRow["extend_device6"].ToString(),
+                            PosiSpeed = dataRow["posi_speed"].ToString(),
+                            StressSpeed = dataRow["stree_speed"].ToString()
+                        });
+                    }
+                }
+            }
         }
 
         #endregion

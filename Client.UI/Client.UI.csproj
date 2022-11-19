@@ -112,6 +112,7 @@
     </ApplicationDefinition>
     <Compile Include="API\MenuApi.cs" />
     <Compile Include="Common\AnimationHelper.cs" />
+    <Compile Include="Common\RegisterInfo.cs" />
     <Compile Include="Common\SecurityHelper.cs" />
     <Compile Include="Common\ComputerInfo.cs" />
     <Compile Include="Common\DatatableHelper.cs" />

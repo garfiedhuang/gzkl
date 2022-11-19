@@ -39,5 +39,10 @@ namespace GZKL.Client.UI.Common
         /// 电脑信息
         /// </summary>
         internal ComputerInfo ComputerInfo { get; set; }
+
+        /// <summary>
+        /// 注册信息
+        /// </summary>
+        internal RegisterInfo RegisterInfo { get; set; }
     }
 }

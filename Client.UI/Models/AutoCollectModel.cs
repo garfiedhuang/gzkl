@@ -185,14 +185,14 @@ namespace GZKL.Client.UI.Models
         /// <summary>
         /// 原始数据
         /// </summary>
-        private List<ExecuteOriginalDataInfo> originalDataData;
+        private List<ExecuteOriginalDataInfo> originalData;
 
-        public List<ExecuteOriginalDataInfo> OriginalDataData
+        public List<ExecuteOriginalDataInfo> OriginalData
         {
-            get { return originalDataData; }
+            get { return originalData; }
             set
             {
-                originalDataData = value;
+                originalData = value;
                 RaisePropertyChanged();
             }
         }
@@ -342,22 +342,22 @@ namespace GZKL.Client.UI.Models
         /// <summary>
         /// 试样的面积
         /// </summary>
-        public float Area { set; get; }
+        public string Area { set; get; }
 
         /// <summary>
         /// 上屈服点力值
         /// </summary>
-        public float UpYieldDot { set; get; }
+        public string UpYieldDot { set; get; }
 
         /// <summary>
         /// 下屈服点力值
         /// </summary>
-        public float DownYieldDot { set; get; }
+        public string DownYieldDot { set; get; }
 
         /// <summary>
         /// 最大值(力值)
         /// </summary>
-        public float MaxDot { set; get; }
+        public string MaxDot { set; get; }
     }
 
     /// <summary>
@@ -371,9 +371,19 @@ namespace GZKL.Client.UI.Models
         public long Id { get; set; }
 
         /// <summary>
+        /// 主表ID
+        /// </summary>
+        public long TestId { set; get; }
+
+        /// <summary>
         /// 试验时间（时间值）
         /// </summary>
         public DateTime PlayTime { set; get; }
+
+        /// <summary>
+        /// 试件序号
+        /// </summary>
+        public int ExperimentNo { set; get; }
 
         /// <summary>
         /// 力值

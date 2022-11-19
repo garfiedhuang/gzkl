@@ -151,6 +151,9 @@ namespace GZKL.Client.UI.ViewsModels
             {
                 SessionInfo.Instance.ComputerInfo = ComputerInfo.GetInstance().ReadComputerInfo();
 
+                var fullName = $"{SessionInfo.Instance.ComputerInfo.HostName}-{SessionInfo.Instance.ComputerInfo.CPU}";
+
+                SessionInfo.Instance.RegisterInfo = RegisterInfo.GetInstance().GetRegisterInfo(fullName);
             }));
         }
     }
