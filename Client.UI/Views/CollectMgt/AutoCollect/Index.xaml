@@ -86,6 +86,7 @@
 
                             <hc:TextBox Margin="2" Width="120"
                             x:Name="txtOrgNo"
+                            IsReadOnly="True"
                             hc:InfoElement.Placeholder="机构编号" 
                             Text="{Binding Model.OrgNo,Mode=TwoWay}"
                             hc:InfoElement.Necessary="False"/>
@@ -107,6 +108,7 @@
 
                             <hc:TextBox Margin="2" Width="120"
                             x:Name="txtTestTypeNo"
+                            IsReadOnly="True"
                             hc:InfoElement.Placeholder="类型编号" 
                             Text="{Binding Model.TestTypeNo,Mode=TwoWay}"
                             hc:InfoElement.Necessary="False"/>
@@ -128,6 +130,7 @@
 
                             <hc:TextBox Margin="2" Width="120"
                             x:Name="txtTestItemNo"
+                            IsReadOnly="True"
                             hc:InfoElement.Placeholder="项目编号" 
                             Text="{Binding Model.SystemTestItemNo,Mode=TwoWay}"
                             hc:InfoElement.Necessary="False"/>

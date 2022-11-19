@@ -40,6 +40,7 @@ namespace GZKL.Client.UI.ViewsModels
 
             this.InitData();
 
+            this.SetInterface();
         }
 
         /// <summary>
@@ -102,9 +103,72 @@ namespace GZKL.Client.UI.ViewsModels
         }
 
         /// <summary>
+        /// 新增
+        /// </summary>
+        public void Save()
+        {
+            try
+            {
+                /*
+                AutoCollectModel model = new AutoCollectModel();
+                Edit view = new Edit(model);
+                var r = view.ShowDialog();
+                if (r.Value)
+                {
+                    var sql = @"INSERT INTO [dbo].[base_AutoCollect]
+           ([AutoCollect_name]
+           ,[access_db_path]
+           ,[access_db_name]
+           ,[remark]
+           ,[is_enabled]
+           ,[is_deleted]
+           ,[create_dt]
+           ,[create_user_id]
+           ,[update_dt]
+           ,[update_user_id])
+     VALUES
+           (@AutoCollect_name
+           ,@access_db_path
+           ,@access_db_name
+           ,@remark
+           ,@is_enabled
+           ,0
+           ,@create_dt
+           ,@user_id
+           ,@create_dt
+           ,@user_id)";
+
+                    var parameters = new SqlParameter[] {
+                    new SqlParameter("@AutoCollect_name", model.AutoCollectName),
+                    new SqlParameter("@access_db_path", model.AccessDbPath),
+                    new SqlParameter("@access_db_name", model.AccessDbName),
+                    new SqlParameter("@remark", model.Remark),
+                    new SqlParameter("@is_enabled", model.IsEnabled),
+                    new SqlParameter("@create_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
+                    new SqlParameter("@user_id", SessionInfo.Instance.Session.Id)
+                };
+
+                    var result = SQLHelper.ExecuteNonQuery(sql, parameters);
+
+                    this.Query();
+                }
+
+                */
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "提示信息");
+            }
+        }
+
+        #endregion
+
+        #region Privates
+
+        /// <summary>
         /// 初始化数据
         /// </summary>
-        public void InitData()
+        private void InitData()
         {
             try
             {
@@ -246,68 +310,44 @@ namespace GZKL.Client.UI.ViewsModels
         }
 
         /// <summary>
-        /// 新增
+        /// 设置接口
         /// </summary>
-        public void Save()
+        private void SetInterface()
         {
-            try
+            if (InterfaceData?.Count > 0)
             {
-                /*
-                AutoCollectModel model = new AutoCollectModel();
-                Edit view = new Edit(model);
-                var r = view.ShowDialog();
-                if (r.Value)
-                {
-                    var sql = @"INSERT INTO [dbo].[base_AutoCollect]
-           ([AutoCollect_name]
-           ,[access_db_path]
-           ,[access_db_name]
-           ,[remark]
-           ,[is_enabled]
-           ,[is_deleted]
-           ,[create_dt]
-           ,[create_user_id]
-           ,[update_dt]
-           ,[update_user_id])
-     VALUES
-           (@AutoCollect_name
-           ,@access_db_path
-           ,@access_db_name
-           ,@remark
-           ,@is_enabled
-           ,0
-           ,@create_dt
-           ,@user_id
-           ,@create_dt
-           ,@user_id)";
-
-                    var parameters = new SqlParameter[] {
-                    new SqlParameter("@AutoCollect_name", model.AutoCollectName),
-                    new SqlParameter("@access_db_path", model.AccessDbPath),
-                    new SqlParameter("@access_db_name", model.AccessDbName),
-                    new SqlParameter("@remark", model.Remark),
-                    new SqlParameter("@is_enabled", model.IsEnabled),
-                    new SqlParameter("@create_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
-                    new SqlParameter("@user_id", SessionInfo.Instance.Session.Id)
-                };
-
-                    var result = SQLHelper.ExecuteNonQuery(sql, parameters);
-
-                    this.Query();
-                }
-
-                */
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "提示信息");
+                Model.InterfaceName = InterfaceData.FirstOrDefault(w => w.IsEnabled == 1)?.InterfaceName;
             }
         }
 
-        #endregion
+        /// <summary>
+        /// 参数校验
+        /// </summary>
+        /// <returns></returns>
+        private int CheckValue()
+        {
 
-        #region Privates
+            return 0;
+        }
 
+        /// <summary>
+        /// 查询数据
+        /// </summary>
+        /// <param name="orgNo">机构代码</param>
+        /// <param name="testItemNo">检测项编号</param>
+        /// <param name="testNo">检测编号</param>
+        private void QueryData(string orgNo,string testItemNo,string testNo)
+        {
+            var sql = @"SELECT * FROM [dbo].[biz_execute_test] WHERE [is_deleted]=0 AND [org_no]=@orgNo AND [test_item_no]=@testItemNo AND [test_no]=@testNo";
+            var parameters =new SqlParameter[3] {
+                    new SqlParameter("@orgNo", orgNo),
+                    new SqlParameter("@testItemNo", testItemNo),
+                    new SqlParameter("@testNo", testNo)
+            };
+
+            
+        
+        }
 
         #endregion
     }
