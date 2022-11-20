@@ -100,5 +100,15 @@ namespace GZKL.Client.UI.Views.CollectMgt.AutoCollect
         {
             this.DialogResult = false;
         }
+
+        private void btnQuery_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnReset_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

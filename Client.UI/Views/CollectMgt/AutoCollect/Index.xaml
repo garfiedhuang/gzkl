@@ -10,6 +10,7 @@
              xmlns:hc="https://handyorg.github.io/handycontrol"
              mc:Ignorable="d" 
              DataContext="{Binding Source={StaticResource Locator},Path=AutoCollect}"
+             Loaded="AutoCollectControl_Loaded"
              d:DesignHeight="800" d:DesignWidth="1000">
     <UserControl.Resources>
         <converter:EnumConverter x:Key="enumConverter"/>

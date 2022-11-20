@@ -38,9 +38,8 @@ namespace GZKL.Client.UI.ViewsModels
 
             Model = new AutoCollectModel();
 
-            this.InitData();
-
-            this.SetInterface();
+            //this.InitData();
+            //this.SetInterface();
         }
 
         /// <summary>
@@ -168,7 +167,7 @@ namespace GZKL.Client.UI.ViewsModels
         /// <summary>
         /// 初始化数据
         /// </summary>
-        private void InitData()
+        public void InitData()
         {
             try
             {
@@ -312,7 +311,7 @@ namespace GZKL.Client.UI.ViewsModels
         /// <summary>
         /// 设置接口
         /// </summary>
-        private void SetInterface()
+        public void SetInterface()
         {
             if (InterfaceData?.Count > 0)
             {

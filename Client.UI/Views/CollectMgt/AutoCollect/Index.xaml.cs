@@ -30,7 +30,10 @@ namespace GZKL.Client.UI.Views.CollectMgt.AutoCollect
 
         private void AutoCollectControl_Loaded(object sender, RoutedEventArgs e)
         {
-            //(this.DataContext as InterfaceViewModel).Query();
+            var model = this.DataContext as AutoCollectViewModel;
+
+            model.InitData();
+            model.SetInterface();
         }
 
         /// <summary>

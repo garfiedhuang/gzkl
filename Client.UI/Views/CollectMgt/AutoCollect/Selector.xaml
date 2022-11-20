@@ -36,7 +36,6 @@
         <Style TargetType="DataGridColumnHeader">
             <Setter Property="FontSize" Value="12"></Setter>
             <Setter Property="Height" Value="28"></Setter>
-            <Setter Property="MinWidth" Value="100"></Setter>
             <Setter Property="BorderThickness" Value="0,0,1,1"></Setter>
             <Setter Property="BorderBrush" Value="LightGray"></Setter>
             <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
@@ -65,16 +64,15 @@
             <hc:TextBox x:Name="textBox" 
                     HorizontalAlignment="Left" 
                     Height="23" Margin="15,0,0,0" 
-                    TextWrapping="Wrap" 
-                    Text="{Binding Search}" 
+                    TextWrapping="Wrap"
                     FontWeight="Bold"
                     Foreground="#5a5e66"
                     hc:InfoElement.TitlePlacement="Left"
                     hc:InfoElement.Title="关键字"
                     VerticalAlignment="Center" 
                     Width="250"/>
-            <Button Content="搜索" Width="70" Style="{wms:MultiStyle ButtonPrimary IconBtn}" bi:IconElement.Icon="&#xe696;"  VerticalAlignment="Center" Margin="10 0 0 0" Command="{Binding QueryCommand}"/>
-            <Button Content="重置" Style="{wms:MultiStyle ButtonInfo IconBtn}" bi:IconElement.Icon="&#xe692;"  VerticalAlignment="Center" Margin="10 0 0 0" Command="{Binding ResetCommand}"/>
+            <Button Content="搜索" x:Name="btnQuery" Click="btnQuery_Click" Width="70" Style="{wms:MultiStyle ButtonPrimary IconBtn}" bi:IconElement.Icon="&#xe696;"  VerticalAlignment="Center" Margin="10 0 0 0"/>
+            <Button Content="重置" x:Name="btnReset" Click="btnReset_Click" Style="{wms:MultiStyle ButtonInfo IconBtn}" bi:IconElement.Icon="&#xe692;"  VerticalAlignment="Center" Margin="10 0 0 0"/>
         </WrapPanel>
 
         <WrapPanel Grid.Row="1" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Top">
@@ -90,8 +88,8 @@
                 
                 <DataGrid.Columns>
                     <DataGridTextColumn IsReadOnly="True" Width="60" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Id}" Header="ID"/>
-                    <DataGridTextColumn IsReadOnly="True" Width="120" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding OrgNo}" Header="编号"/>
-                    <DataGridTextColumn IsReadOnly="True" MinWidth="150" Binding="{Binding TestNo}" Header="名称"/>
+                    <DataGridTextColumn IsReadOnly="True" Width="120" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Id}" Header="编号"/>
+                    <DataGridTextColumn IsReadOnly="True" MinWidth="150" Binding="{Binding Id}" Header="名称"/>
                     <DataGridTextColumn IsReadOnly="True" Width="120" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
                     <DataGridTextColumn IsReadOnly="True" Width="120" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="更新时间"/>
 
