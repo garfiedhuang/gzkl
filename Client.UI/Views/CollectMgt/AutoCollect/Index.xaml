@@ -95,6 +95,7 @@
 
                             <hc:ComboBox Margin="2" Width="250" 
                              x:Name="cmbTestType"
+                             IsReadOnly="True"
                              hc:TitleElement.TitlePlacement="Left"
                              hc:InfoElement.Placeholder="请选择类型"
                              DisplayMemberPath="TestTypeName" 
@@ -102,7 +103,7 @@
                              ItemsSource="{Binding TestTypeData}"
                              SelectedValue="{Binding Model.TestTypeNo}"
                              hc:InfoElement.Title="类型：" 
-                             hc:InfoElement.Necessary="True">
+                             hc:InfoElement.Necessary="True" PreviewMouseDown="cmbTestType_PreviewMouseDown">
                             </hc:ComboBox>
 
                             <hc:TextBox Margin="2" Width="120"
@@ -116,7 +117,7 @@
 
                             <hc:ComboBox Margin="2" Width="250" 
                              x:Name="cmbTestItem" 
-                             IsEditable="False" 
+                             IsReadOnly="True" 
                              hc:TitleElement.TitlePlacement="Left"
                              hc:InfoElement.Placeholder="请选择项目"
                              DisplayMemberPath="TestItemName" 
@@ -124,7 +125,7 @@
                              ItemsSource="{Binding SystemTestItemData}"
                              SelectedValue="{Binding Model.SystemTestItemNo}"
                              hc:InfoElement.Title="项目：" 
-                             hc:InfoElement.Necessary="True">
+                             hc:InfoElement.Necessary="True" PreviewMouseDown="cmbTestItem_PreviewMouseDown">
                             </hc:ComboBox>
 
                             <hc:TextBox Margin="2" Width="120"
@@ -153,7 +154,7 @@
 
                         <hc:ComboBox Margin="2" Width="250" 
                              x:Name="cmbInterfaceTestItem"
-                             IsEditable="False" 
+                             IsReadOnly="True"
                              hc:TitleElement.TitlePlacement="Left"
                              hc:InfoElement.Placeholder="请选择接口项目"
                              DisplayMemberPath="TestItemName" 
@@ -161,7 +162,7 @@
                              ItemsSource="{Binding InterfaceTestItemData}"
                              SelectedValue="{Binding Model.InterfaceTestItemNo}"
                              hc:InfoElement.Title="接口项目：" 
-                             hc:InfoElement.Necessary="True">
+                             hc:InfoElement.Necessary="True" PreviewMouseDown="cmbInterfaceTestItem_PreviewMouseDown">
                         </hc:ComboBox>
 
 
@@ -178,7 +179,7 @@
                             x:Name="txtQueryTestItemNo"
                             hc:TitleElement.TitlePlacement="Left"
                             hc:InfoElement.Placeholder="请输入检测编号" 
-                            Text="{Binding QueryTestItemNo,Mode=TwoWay}"
+                            Text="{Binding Model.QueryTestItemNo,Mode=TwoWay}"
                             hc:InfoElement.Title="检测编号："
                             hc:InfoElement.Necessary="False"/>
 
@@ -186,7 +187,7 @@
                             x:Name="txtQuerySampleNo"
                             hc:TitleElement.TitlePlacement="Left"
                             hc:InfoElement.Placeholder="请输入样品编号" 
-                            Text="{Binding QuerySampleNo,Mode=TwoWay}"
+                            Text="{Binding Model.QuerySampleNo,Mode=TwoWay}"
                             hc:InfoElement.Title="样品编号："
                             hc:InfoElement.Necessary="False"/>
                         </WrapPanel>
@@ -215,7 +216,7 @@
                                 <DataGrid Margin="5" 
                                           Background="White"
                                           x:Name="dgTestData"
-                                          ItemsSource="{Binding TestData}" >
+                                          ItemsSource="{Binding Model.TestData}" >
 
                                     <DataGrid.Columns>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding Id}" Header="ID"/>
@@ -235,7 +236,7 @@
                                 <DataGrid Margin="5" 
                                           Background="White"
                                           x:Name="dgTestDetailData" 
-                                          ItemsSource="{Binding TestDetailData}" >
+                                          ItemsSource="{Binding Model.TestDetailData}" >
 
                                     <DataGrid.Columns>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding Id}" Header="ID"/>
@@ -254,7 +255,7 @@
                                 <DataGrid Margin="5" 
                                           Background="White"
                                           x:Name="dgOriginalData" 
-                                          ItemsSource="{Binding OriginalData}" >
+                                          ItemsSource="{Binding Model.OriginalData}" >
 
                                     <DataGrid.Columns>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding Id}" Header="ID"/>
@@ -295,7 +296,7 @@
                                 <DataGrid Margin="5" 
                                           Background="White"
                                           x:Name="dgUnfinishTestData"
-                                          ItemsSource="{Binding UnfinishTestData}" >
+                                          ItemsSource="{Binding Model.UnfinishTestData}" >
 
                                     <DataGrid.Columns>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding Id}" Header="ID"/>
@@ -315,7 +316,7 @@
                                 <DataGrid Margin="5" 
                                           Background="White"
                                           x:Name="dgUnfinishTestDetailData" 
-                                          ItemsSource="{Binding UnfinishTestDetailData}" >
+                                          ItemsSource="{Binding Model.UnfinishTestDetailData}" >
 
                                     <DataGrid.Columns>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding Id}" Header="ID"/>
@@ -334,7 +335,7 @@
                                 <DataGrid Margin="5" 
                                           Background="White"
                                           x:Name="dgUnfinishOriginalData" 
-                                          ItemsSource="{Binding UnfinishOriginalData}" >
+                                          ItemsSource="{Binding Model.UnfinishOriginalData}" >
 
                                     <DataGrid.Columns>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding Id}" Header="ID"/>

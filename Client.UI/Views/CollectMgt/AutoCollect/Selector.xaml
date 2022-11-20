@@ -4,98 +4,103 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GZKL.Client.UI.Views.CollectMgt.AutoCollect"
+             xmlns:bi="clr-namespace:GZKL.Client.UI.CustomControls.Attach"
+             xmlns:wms="clr-namespace:WpfMultiStyle;assembly=WpfMultiStyle"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              WindowStartupLocation="CenterScreen"
              mc:Ignorable="d" 
+             DataContext="{Binding Source={StaticResource Locator},Path=AutoCollect}"
              Title="数据选择器"
-             Height="500" 
+             Height="450" 
              Width="650" 
              ResizeMode="NoResize">
+    <Window.Resources>
+        <Style TargetType="DataGrid">
+            <Setter Property="RowHeaderWidth" Value="25"></Setter>
+            <Setter Property="AutoGenerateColumns" Value="False"></Setter>
+            <Setter Property="CanUserAddRows" Value="False"></Setter>
+            <Setter Property="CanUserResizeColumns" Value="False"></Setter>
+            <Setter Property="CanUserResizeRows" Value="False"></Setter>
+            <Setter Property="HorizontalGridLinesBrush" Value="LightGray"></Setter>
+            <Setter Property="VerticalGridLinesBrush" Value="LightGray"></Setter>
+            <Setter Property="IsReadOnly" Value="True"></Setter>
+            <Setter Property="BorderThickness" Value="1"></Setter>
+            <Setter Property="BorderBrush" Value="LightGray"></Setter>
+            <Setter Property="RowHeight" Value="25"></Setter>
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"></Setter>
+            <Setter Property="HorizontalScrollBarVisibility" Value="Auto"></Setter>
+        </Style>
+
+        <!--DataGrid表头样式-->
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="FontSize" Value="12"></Setter>
+            <Setter Property="Height" Value="28"></Setter>
+            <Setter Property="MinWidth" Value="100"></Setter>
+            <Setter Property="BorderThickness" Value="0,0,1,1"></Setter>
+            <Setter Property="BorderBrush" Value="LightGray"></Setter>
+            <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+        </Style>
+
+        <!--DataGrid行头样式-->
+        <Style TargetType="DataGridRowHeader">
+            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        </Style>
+
+        <!-- DataGridTextColumn 文字居中 -->
+        <Style x:Key="CenterAlignmentStyle" TargetType="TextBlock">
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
     <!--<hc:TransitioningContentControl>-->
     <Grid Background="White">
         <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="90"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Vertical">
-            <StackPanel Margin="32">
-                <WrapPanel>
-                    <hc:TextBox Margin="0,0,0,10" 
-                                Width="350" 
-                                HorizontalAlignment="Left"
-                                x:Name="txtAutoCollectName"
-                                hc:InfoElement.Placeholder="请输入接口名称" 
-                                hc:InfoElement.Title="接口名称" 
-                                Text="{Binding Model.AutoCollectName,Mode=TwoWay}" 
-                                hc:InfoElement.Necessary="True"/>
-                </WrapPanel>
+        <WrapPanel Grid.Row="0" Margin="5" VerticalAlignment="Bottom" Height="30">
+            <hc:TextBox x:Name="textBox" 
+                    HorizontalAlignment="Left" 
+                    Height="23" Margin="15,0,0,0" 
+                    TextWrapping="Wrap" 
+                    Text="{Binding Search}" 
+                    FontWeight="Bold"
+                    Foreground="#5a5e66"
+                    hc:InfoElement.TitlePlacement="Left"
+                    hc:InfoElement.Title="关键字"
+                    VerticalAlignment="Center" 
+                    Width="250"/>
+            <Button Content="搜索" Width="70" Style="{wms:MultiStyle ButtonPrimary IconBtn}" bi:IconElement.Icon="&#xe696;"  VerticalAlignment="Center" Margin="10 0 0 0" Command="{Binding QueryCommand}"/>
+            <Button Content="重置" Style="{wms:MultiStyle ButtonInfo IconBtn}" bi:IconElement.Icon="&#xe692;"  VerticalAlignment="Center" Margin="10 0 0 0" Command="{Binding ResetCommand}"/>
+        </WrapPanel>
 
-                <WrapPanel>
-                    <hc:TextBox x:Name="txtAccessDbPath" 
-                             Margin="0,0,0,10" 
-                             Width="350" 
-                             HorizontalAlignment="Left"
-                             hc:InfoElement.Placeholder="请选择保存路径" 
-                             hc:InfoElement.Title="保存路径" 
-                             Style="{StaticResource TextBoxExtend}" 
-                             hc:InfoElement.Necessary="True"
-                             Text="{Binding Model.AccessDbPath,Mode=TwoWay}"/>
+        <WrapPanel Grid.Row="1" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <DataGrid
+                  x:Name="dgData"
+                  ItemsSource="{Binding TestTypeData}">
 
-                    <Button x:Name="btnSelect" 
-                            Margin="10,18,0,0" 
-                            Visibility="Visible" 
-                            Content="选择..." 
-                            Width="60" 
-                            Command="{Binding SelectCommand}"
-                             CommandParameter="{Binding Model}"
-                            hc:BorderElement.CornerRadius="5"/>
-                </WrapPanel>
+                <DataGrid.RowHeaderTemplate>
+                    <DataTemplate>
+                        <CheckBox IsChecked="{Binding IsSelected ,RelativeSource={RelativeSource AncestorType=DataGridRow}}"/>
+                    </DataTemplate>
+                </DataGrid.RowHeaderTemplate>
+                
+                <DataGrid.Columns>
+                    <DataGridTextColumn IsReadOnly="True" Width="60" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Id}" Header="ID"/>
+                    <DataGridTextColumn IsReadOnly="True" Width="120" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding OrgNo}" Header="编号"/>
+                    <DataGridTextColumn IsReadOnly="True" MinWidth="150" Binding="{Binding TestNo}" Header="名称"/>
+                    <DataGridTextColumn IsReadOnly="True" Width="120" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
+                    <DataGridTextColumn IsReadOnly="True" Width="120" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="更新时间"/>
 
-                <WrapPanel>
-                    <hc:TextBox Margin="0,0,0,10" 
-                                Width="350"  
-                                HorizontalAlignment="Left"
-                                x:Name="txtAccessDbName" 
-                                hc:InfoElement.Placeholder="请输入实例名称" 
-                                hc:InfoElement.Title="实例名称" 
-                                Text="{Binding Model.AccessDbName,Mode=TwoWay}" 
-                                hc:InfoElement.Necessary="True"/>
-                </WrapPanel>
+                </DataGrid.Columns>
+            </DataGrid>
+        </WrapPanel>
 
-                <WrapPanel>
-                    <hc:ComboBox Margin="0,0,0,10" 
-                                 Width="250"  
-                                 HorizontalAlignment="Left"
-                                 x:Name="cmbIsEnabled"
-                                 ShowClearButton="True" 
-                                 hc:InfoElement.Placeholder="请选择是否启用"
-                                 DisplayMemberPath="Value" 
-                                 SelectedValuePath="Key"
-                                 ItemsSource="{Binding IsEnabledData}"
-                                 SelectedValue="{Binding Model.IsEnabled}"
-                                 hc:InfoElement.Title="是否启用" 
-                                 hc:InfoElement.Necessary="True">
-                    </hc:ComboBox>
-                </WrapPanel>
-
-                <WrapPanel>
-                    <hc:TextBox Margin="0,0,0,10" 
-                                Width="550" 
-                                HorizontalAlignment="Left"
-                                x:Name="txtRemark"
-                                TextWrapping="WrapWithOverflow"
-                                hc:InfoElement.ContentHeight="60"
-                                hc:InfoElement.Placeholder="请输入备注" 
-                                hc:InfoElement.Title="备注" 
-                                Text="{Binding Model.Remark,Mode=TwoWay}"
-                                hc:InfoElement.Necessary="False"/>
-
-                </WrapPanel>
-            </StackPanel>
-        </StackPanel>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Content="保存" Width="100" Margin="10" Click="btnSave_Click" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource TextIconBrush}" hc:BorderElement.CornerRadius="5"/>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="确定" Width="100" Margin="10" Click="btnSave_Click" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource TextIconBrush}" hc:BorderElement.CornerRadius="5"/>
             <Button Content="取消" Width="100" Margin="10" Click="btnCancel_Click" hc:BorderElement.CornerRadius="5"/>
         </StackPanel>
     </Grid>

@@ -215,14 +215,14 @@ namespace GZKL.Client.UI.Models
         /// <summary>
         /// 原始数据（待处理）
         /// </summary>
-        private List<ExecuteOriginalDataInfo> unfinishOriginalDataData;
+        private List<ExecuteOriginalDataInfo> unfinishOriginalData;
 
-        public List<ExecuteOriginalDataInfo> UnfinishOriginalDataData
+        public List<ExecuteOriginalDataInfo> UnfinishOriginalData
         {
-            get { return unfinishOriginalDataData; }
+            get { return unfinishOriginalData; }
             set
             {
-                unfinishOriginalDataData = value;
+                unfinishOriginalData = value;
                 RaisePropertyChanged();
             }
         }

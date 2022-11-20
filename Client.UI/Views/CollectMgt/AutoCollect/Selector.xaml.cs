@@ -1,5 +1,6 @@
 ﻿using GZKL.Client.UI.Common;
 using GZKL.Client.UI.Models;
+using GZKL.Client.UI.ViewsModels;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -32,7 +33,7 @@ namespace GZKL.Client.UI.Views.CollectMgt.AutoCollect
 
         public Selector(AutoCollectModel model)
         {
-            //InitializeComponent();
+            InitializeComponent();
 
             //_id = SelectorModel.Id;
 
