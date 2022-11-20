@@ -60,6 +60,21 @@ namespace GZKL.Client.UI.Models
         }
 
         /// <summary>
+        /// 接口ID
+        /// </summary>
+        private long interfaceId = 0L;
+
+        public long InterfaceId
+        {
+            get { return interfaceId; }
+            set
+            {
+                interfaceId = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        /// <summary>
         /// 接口名称
         /// </summary>
         private string interfaceName = string.Empty;
@@ -271,6 +286,7 @@ namespace GZKL.Client.UI.Models
         /// 名称
         /// </summary>
         public string TestTypeName { set; get; }
+
     }
 
     /// <summary>

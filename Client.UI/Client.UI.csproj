@@ -167,6 +167,9 @@
     <Compile Include="ViewModels\PermissionViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
+    <Compile Include="Views\CollectMgt\AutoCollect\Selector.xaml.cs">
+      <DependentUpon>Selector.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CollectMgt\AutoCollect\Index.xaml.cs">
       <DependentUpon>Index.xaml</DependentUpon>
     </Compile>
@@ -245,6 +248,10 @@
     <Page Include="CustomControls\Views\MeterPlate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CollectMgt\AutoCollect\Selector.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\CollectMgt\AutoCollect\Index.xaml">
       <Generator>MSBuild:Compile</Generator>

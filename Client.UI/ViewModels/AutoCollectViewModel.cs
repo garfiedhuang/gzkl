@@ -316,7 +316,8 @@ namespace GZKL.Client.UI.ViewsModels
         {
             if (InterfaceData?.Count > 0)
             {
-                Model.InterfaceName = InterfaceData.FirstOrDefault(w => w.IsEnabled == 1)?.InterfaceName;
+                Model.InterfaceId = InterfaceData.FirstOrDefault(w => w.IsEnabled == 1).Id;
+                Model.InterfaceName = InterfaceData.FirstOrDefault(w => w.IsEnabled == 1).InterfaceName;
             }
         }
 

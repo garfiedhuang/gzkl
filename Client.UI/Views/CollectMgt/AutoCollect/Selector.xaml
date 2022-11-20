@@ -1,0 +1,103 @@
+﻿<Window x:Class="GZKL.Client.UI.Views.CollectMgt.AutoCollect.Selector"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GZKL.Client.UI.Views.CollectMgt.AutoCollect"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             WindowStartupLocation="CenterScreen"
+             mc:Ignorable="d" 
+             Title="数据选择器"
+             Height="500" 
+             Width="650" 
+             ResizeMode="NoResize">
+    <!--<hc:TransitioningContentControl>-->
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="90"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Vertical">
+            <StackPanel Margin="32">
+                <WrapPanel>
+                    <hc:TextBox Margin="0,0,0,10" 
+                                Width="350" 
+                                HorizontalAlignment="Left"
+                                x:Name="txtAutoCollectName"
+                                hc:InfoElement.Placeholder="请输入接口名称" 
+                                hc:InfoElement.Title="接口名称" 
+                                Text="{Binding Model.AutoCollectName,Mode=TwoWay}" 
+                                hc:InfoElement.Necessary="True"/>
+                </WrapPanel>
+
+                <WrapPanel>
+                    <hc:TextBox x:Name="txtAccessDbPath" 
+                             Margin="0,0,0,10" 
+                             Width="350" 
+                             HorizontalAlignment="Left"
+                             hc:InfoElement.Placeholder="请选择保存路径" 
+                             hc:InfoElement.Title="保存路径" 
+                             Style="{StaticResource TextBoxExtend}" 
+                             hc:InfoElement.Necessary="True"
+                             Text="{Binding Model.AccessDbPath,Mode=TwoWay}"/>
+
+                    <Button x:Name="btnSelect" 
+                            Margin="10,18,0,0" 
+                            Visibility="Visible" 
+                            Content="选择..." 
+                            Width="60" 
+                            Command="{Binding SelectCommand}"
+                             CommandParameter="{Binding Model}"
+                            hc:BorderElement.CornerRadius="5"/>
+                </WrapPanel>
+
+                <WrapPanel>
+                    <hc:TextBox Margin="0,0,0,10" 
+                                Width="350"  
+                                HorizontalAlignment="Left"
+                                x:Name="txtAccessDbName" 
+                                hc:InfoElement.Placeholder="请输入实例名称" 
+                                hc:InfoElement.Title="实例名称" 
+                                Text="{Binding Model.AccessDbName,Mode=TwoWay}" 
+                                hc:InfoElement.Necessary="True"/>
+                </WrapPanel>
+
+                <WrapPanel>
+                    <hc:ComboBox Margin="0,0,0,10" 
+                                 Width="250"  
+                                 HorizontalAlignment="Left"
+                                 x:Name="cmbIsEnabled"
+                                 ShowClearButton="True" 
+                                 hc:InfoElement.Placeholder="请选择是否启用"
+                                 DisplayMemberPath="Value" 
+                                 SelectedValuePath="Key"
+                                 ItemsSource="{Binding IsEnabledData}"
+                                 SelectedValue="{Binding Model.IsEnabled}"
+                                 hc:InfoElement.Title="是否启用" 
+                                 hc:InfoElement.Necessary="True">
+                    </hc:ComboBox>
+                </WrapPanel>
+
+                <WrapPanel>
+                    <hc:TextBox Margin="0,0,0,10" 
+                                Width="550" 
+                                HorizontalAlignment="Left"
+                                x:Name="txtRemark"
+                                TextWrapping="WrapWithOverflow"
+                                hc:InfoElement.ContentHeight="60"
+                                hc:InfoElement.Placeholder="请输入备注" 
+                                hc:InfoElement.Title="备注" 
+                                Text="{Binding Model.Remark,Mode=TwoWay}"
+                                hc:InfoElement.Necessary="False"/>
+
+                </WrapPanel>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="保存" Width="100" Margin="10" Click="btnSave_Click" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource TextIconBrush}" hc:BorderElement.CornerRadius="5"/>
+            <Button Content="取消" Width="100" Margin="10" Click="btnCancel_Click" hc:BorderElement.CornerRadius="5"/>
+        </StackPanel>
+    </Grid>
+    <!--</hc:TransitioningContentControl>-->
+</Window>

@@ -95,7 +95,6 @@
 
                             <hc:ComboBox Margin="2" Width="250" 
                              x:Name="cmbTestType"
-                             IsEditable="False" 
                              hc:TitleElement.TitlePlacement="Left"
                              hc:InfoElement.Placeholder="请选择类型"
                              DisplayMemberPath="TestTypeName" 
