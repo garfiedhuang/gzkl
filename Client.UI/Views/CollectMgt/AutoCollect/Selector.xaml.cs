@@ -26,72 +26,40 @@ namespace GZKL.Client.UI.Views.CollectMgt.AutoCollect
     /// </summary>
     public partial class Selector : Window
     {
-        /// <summary>
-        /// 主键ID
-        /// </summary>
-        private readonly long _id;
+        public string DataType { get; set; }
 
-        public Selector(AutoCollectModel model)
+        /// <summary>
+        /// 选择器数据源
+        /// </summary>
+        public List<SelectorModel> CloneSelectorData { get; set; }
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="dataType"></param>
+        public Selector(string dataType)
         {
             InitializeComponent();
+     
+            DataType = dataType;
 
-            //_id = SelectorModel.Id;
+            var viewModel = this.DataContext as AutoCollectViewModel;
 
-            //var isEnabledData = new List<KeyValuePair<int, string>>();
-            //isEnabledData.Add(new KeyValuePair<int, string>(0, "0-否"));
-            //isEnabledData.Add(new KeyValuePair<int, string>(1, "1-是"));
-
-            //this.DataContext = new { Model = SelectorModel, IsEnabledData = isEnabledData };
+            CloneSelectorData = CollectionHelper.Clone(viewModel.SelectorData);
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            //if (string.IsNullOrEmpty(this.txtSelectorName.Text))
-            //{
-            //    this.txtSelectorName.IsError = true;
-            //    this.txtSelectorName.ErrorStr = "不能为空";
-            //    return;
-            //}
-            //if (string.IsNullOrEmpty(this.txtAccessDbPath.Text))
-            //{
-            //    this.txtAccessDbPath.IsError = true;
-            //    this.txtAccessDbPath.ErrorStr = "不能为空";
-            //    return;
-            //}
-            //if (string.IsNullOrEmpty(this.txtAccessDbName.Text))
-            //{
-            //    this.txtAccessDbName.IsError = true;
-            //    this.txtAccessDbName.ErrorStr = "不能为空";
-            //    return;
-            //}
-            //if (string.IsNullOrEmpty(this.cmbIsEnabled.Text))
-            //{
-            //    this.cmbIsEnabled.IsError = true;
-            //    this.cmbIsEnabled.ErrorStr = "不能为空";
-            //    return;
-            //}
+            var viewModel = this.DataContext as AutoCollectViewModel;
+            var selectedItem = this.dgData.SelectedItem as SelectorModel;
 
-            string sql = "";
-            SqlParameter[] parameters = null;
-            int rowCount = 0;
+            if (selectedItem == null)
+            {
+                MessageBox.Show("请选择检测类型记录", "提示信息");
+                return;
+            }
 
-            //if (_id == 0)
-            //{//新增
-            //    sql = "SELECT COUNT(1) FROM [dbo].[base_Selector] WHERE ([Selector_name]=@Selector_name OR [access_db_path]=@accessDbPath OR [access_db_name]=@accessDbName) AND [is_deleted]=0";
-            //    parameters = new SqlParameter[] { new SqlParameter("@Selector_name", txtSelectorName.Text), new SqlParameter("@accessDbPath", txtAccessDbPath.Text), new SqlParameter("@accessDbName", txtAccessDbName.Text) };
-            //}
-            //else
-            //{ //修改
-            //    sql = "SELECT COUNT(1) FROM [dbo].[base_Selector] WHERE ([Selector_name]=@Selector_name OR [access_db_path]=@accessDbPath OR [access_db_name]=@accessDbName) AND [is_deleted]=0 AND [id]<>@id";
-            //    parameters = new SqlParameter[] { new SqlParameter("@Selector_name", txtSelectorName.Text), new SqlParameter("@accessDbPath", txtAccessDbPath.Text), new SqlParameter("@accessDbName", txtAccessDbName.Text), new SqlParameter("@id", _id) };
-            //}
-            //rowCount = Convert.ToInt32(SQLHelper.ExecuteScalar(sql, parameters) ?? "0");
-
-            //if (rowCount > 0)
-            //{
-            //    MessageBox.Show($"数据库中已存在【{txtSelectorName.Text}|{txtAccessDbName.Text}】记录", "提示信息");
-            //    return;
-            //}
+            viewModel.Model.TestTypeNo = selectedItem.ItemNo;
 
             this.DialogResult = true;
         }
@@ -103,12 +71,24 @@ namespace GZKL.Client.UI.Views.CollectMgt.AutoCollect
 
         private void btnQuery_Click(object sender, RoutedEventArgs e)
         {
+            var keyword = this.txtQuery.Text.Trim();
 
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                var viewModel = this.DataContext as AutoCollectViewModel;
+
+                var filterData = this.CloneSelectorData.Where(w => w.ItemNo.Contains(keyword) || w.ItemName.Contains(keyword))?.ToList();
+
+                viewModel.SelectorData = CollectionHelper.Clone(filterData);
+            }
         }
 
         private void btnReset_Click(object sender, RoutedEventArgs e)
         {
+            this.txtQuery.Text = string.Empty;
 
+            var viewModel = this.DataContext as AutoCollectViewModel;
+            viewModel.SelectorData = CollectionHelper.Clone(this.CloneSelectorData);
         }
     }
 }

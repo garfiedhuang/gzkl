@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using GZKL.Client.UI.Common;
 using GZKL.Client.UI.Models;
 using GZKL.Client.UI.ViewsModels;
 
@@ -28,14 +29,6 @@ namespace GZKL.Client.UI.Views.CollectMgt.AutoCollect
             InitializeComponent();
         }
 
-        private void AutoCollectControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            var model = this.DataContext as AutoCollectViewModel;
-
-            model.InitData();
-            model.SetInterface();
-        }
-
         /// <summary>
         /// 数据查询
         /// </summary>
@@ -43,9 +36,7 @@ namespace GZKL.Client.UI.Views.CollectMgt.AutoCollect
         /// <param name="e"></param>
         private void btnQuery_Click(object sender, RoutedEventArgs e)
         {
-            AutoCollectModel model = new AutoCollectModel();
-            Selector view = new Selector(model);
-            var r = view.ShowDialog();
+
         }
 
         /// <summary>
@@ -68,16 +59,28 @@ namespace GZKL.Client.UI.Views.CollectMgt.AutoCollect
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 var viewModel = this.DataContext as AutoCollectViewModel;
-                //model.Model.TestTypeNo = "TT02";
 
-                AutoCollectModel model = new AutoCollectModel();
-                Selector view = new Selector(model);
+                viewModel.SelectorData?.Clear();
+
+                viewModel.TestTypeData?.ForEach(item =>
+                {
+                    viewModel.SelectorData.Add(new SelectorModel()
+                    {
+                        Id = item.Id,
+                        ItemNo = item.TestTypeNo,
+                        ItemName = item.TestTypeName,
+                        CreateDt = item.CreateDt,
+                        UpdateDt = item.UpdateDt,
+                    });
+                });
+
+                Selector view = new Selector("TestType");
                 var r = view.ShowDialog();
                 if (r.Value)
                 {
 
                 }
-                    e.Handled = true;//阻止冒泡
+                e.Handled = true;//阻止冒泡
             }
         }
 
@@ -103,6 +106,14 @@ namespace GZKL.Client.UI.Views.CollectMgt.AutoCollect
 
                 e.Handled = true;//阻止冒泡
             }
+        }
+
+        private void btnRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            var model = this.DataContext as AutoCollectViewModel;
+
+            model.InitData();
+            model.SetInterface();
         }
     }
 }

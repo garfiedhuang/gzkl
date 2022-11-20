@@ -13,7 +13,7 @@
              DataContext="{Binding Source={StaticResource Locator},Path=AutoCollect}"
              Title="数据选择器"
              Height="450" 
-             Width="650" 
+             Width="680" 
              ResizeMode="NoResize">
     <Window.Resources>
         <Style TargetType="DataGrid">
@@ -47,9 +47,13 @@
             <Setter Property="VerticalAlignment" Value="Center"></Setter>
         </Style>
 
-        <!-- DataGridTextColumn 文字居中 -->
+        <!-- DataGridTextColumn 文字水平和垂直都居中 -->
         <Style x:Key="CenterAlignmentStyle" TargetType="TextBlock">
             <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <!-- DataGridTextColumn 文字垂直都居中 -->
+        <Style x:Key="VerticalCenterAlignmentStyle" TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
     </Window.Resources>
@@ -61,7 +65,7 @@
             <RowDefinition Height="90"/>
         </Grid.RowDefinitions>
         <WrapPanel Grid.Row="0" Margin="5" VerticalAlignment="Bottom" Height="30">
-            <hc:TextBox x:Name="textBox" 
+            <hc:TextBox x:Name="txtQuery" 
                     HorizontalAlignment="Left" 
                     Height="23" Margin="15,0,0,0" 
                     TextWrapping="Wrap"
@@ -78,7 +82,7 @@
         <WrapPanel Grid.Row="1" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Top">
             <DataGrid
                   x:Name="dgData"
-                  ItemsSource="{Binding TestTypeData}">
+                  ItemsSource="{Binding SelectorData, Mode=TwoWay}">
 
                 <DataGrid.RowHeaderTemplate>
                     <DataTemplate>
@@ -87,12 +91,11 @@
                 </DataGrid.RowHeaderTemplate>
                 
                 <DataGrid.Columns>
-                    <DataGridTextColumn IsReadOnly="True" Width="60" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Id}" Header="ID"/>
-                    <DataGridTextColumn IsReadOnly="True" Width="120" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Id}" Header="编号"/>
-                    <DataGridTextColumn IsReadOnly="True" MinWidth="150" Binding="{Binding Id}" Header="名称"/>
-                    <DataGridTextColumn IsReadOnly="True" Width="120" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
-                    <DataGridTextColumn IsReadOnly="True" Width="120" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="更新时间"/>
-
+                    <DataGridTextColumn IsReadOnly="True" Width="40" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Id}" Header="ID"/>
+                    <DataGridTextColumn IsReadOnly="True" Width="100" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding ItemNo}" Header="编号"/>
+                    <DataGridTextColumn IsReadOnly="True" MinWidth="180" ElementStyle="{StaticResource VerticalCenterAlignmentStyle}"  Binding="{Binding ItemName}" Header="名称"/>
+                    <DataGridTextColumn IsReadOnly="True" Width="150" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
+                    <DataGridTextColumn IsReadOnly="True" Width="150" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
                 </DataGrid.Columns>
             </DataGrid>
         </WrapPanel>

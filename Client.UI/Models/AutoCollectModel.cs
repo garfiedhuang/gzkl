@@ -231,6 +231,38 @@ namespace GZKL.Client.UI.Models
     }
 
     /// <summary>
+    /// 选择器模型
+    /// </summary>
+    [Serializable]
+    public class SelectorModel
+    {
+        /// <summary>
+        /// 主键ID
+        /// </summary>
+        public long Id { get; set; }
+
+        /// <summary>
+        /// 编号
+        /// </summary>
+        public string ItemNo { get; set; }
+
+        /// <summary>
+        /// 名称
+        /// </summary>
+        public string ItemName { get; set; }
+
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        public DateTime CreateDt { get; set; }
+
+        /// <summary>
+        /// 更新时间
+        /// </summary>
+        public DateTime UpdateDt { get; set; }
+    }
+
+    /// <summary>
     /// 机构信息
     /// </summary>
     public class OrgInfo
@@ -260,6 +292,16 @@ namespace GZKL.Client.UI.Models
         /// </summary>
         public string Remark { set; get; } = "";
 
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        public DateTime CreateDt { get; set; }
+
+        /// <summary>
+        /// 更新时间
+        /// </summary>
+        public DateTime UpdateDt { get; set; }
+
     }
 
     /// <summary>
@@ -286,6 +328,16 @@ namespace GZKL.Client.UI.Models
         /// 名称
         /// </summary>
         public string TestTypeName { set; get; }
+
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        public DateTime CreateDt { get; set; }
+
+        /// <summary>
+        /// 更新时间
+        /// </summary>
+        public DateTime UpdateDt { get; set; }
 
     }
 

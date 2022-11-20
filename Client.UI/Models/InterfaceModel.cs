@@ -137,6 +137,15 @@ namespace GZKL.Client.UI.Models
         /// </summary>
         public string TableDot { get; set; }
 
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        public DateTime? CreateDt { get; set; }
+
+        /// <summary>
+        /// 更新时间
+        /// </summary>
+        public DateTime? UpdateDt { get; set; }
     }
 
     /// <summary>
@@ -158,6 +167,16 @@ namespace GZKL.Client.UI.Models
         /// 检测项名称
         /// </summary>
         public string TestItemName { get; set; }
+
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        public DateTime? CreateDt { get; set; }
+
+        /// <summary>
+        /// 更新时间
+        /// </summary>
+        public DateTime? UpdateDt { get; set; }
     }
 
     /// <summary>

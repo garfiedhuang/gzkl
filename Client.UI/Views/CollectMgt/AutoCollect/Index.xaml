@@ -10,7 +10,6 @@
              xmlns:hc="https://handyorg.github.io/handycontrol"
              mc:Ignorable="d" 
              DataContext="{Binding Source={StaticResource Locator},Path=AutoCollect}"
-             Loaded="AutoCollectControl_Loaded"
              d:DesignHeight="800" d:DesignWidth="1000">
     <UserControl.Resources>
         <converter:EnumConverter x:Key="enumConverter"/>
@@ -80,7 +79,7 @@
                              DisplayMemberPath="OrgName" 
                              SelectedValuePath="OrgNo"
                              ItemsSource="{Binding OrgData}"
-                             SelectedValue="{Binding Model.OrgNo}"
+                             SelectedValue="{Binding Model.OrgNo,Mode=TwoWay}"
                              hc:InfoElement.Title="机构：" 
                              hc:InfoElement.Necessary="True">
                             </hc:ComboBox>
@@ -102,7 +101,7 @@
                              DisplayMemberPath="TestTypeName" 
                              SelectedValuePath="TestTypeNo"
                              ItemsSource="{Binding TestTypeData}"
-                             SelectedValue="{Binding Model.TestTypeNo}"
+                             SelectedValue="{Binding Model.TestTypeNo,Mode=TwoWay}"
                              hc:InfoElement.Title="类型：" 
                              hc:InfoElement.Necessary="True" PreviewMouseDown="cmbTestType_PreviewMouseDown">
                             </hc:ComboBox>
@@ -124,7 +123,7 @@
                              DisplayMemberPath="TestItemName" 
                              SelectedValuePath="TestItemNo"
                              ItemsSource="{Binding SystemTestItemData}"
-                             SelectedValue="{Binding Model.SystemTestItemNo}"
+                             SelectedValue="{Binding Model.SystemTestItemNo,Mode=TwoWay}"
                              hc:InfoElement.Title="项目：" 
                              hc:InfoElement.Necessary="True" PreviewMouseDown="cmbTestItem_PreviewMouseDown">
                             </hc:ComboBox>
@@ -161,7 +160,7 @@
                              DisplayMemberPath="TestItemName" 
                              SelectedValuePath="TestItemName"
                              ItemsSource="{Binding InterfaceTestItemData}"
-                             SelectedValue="{Binding Model.InterfaceTestItemNo}"
+                             SelectedValue="{Binding Model.InterfaceTestItemNo,Mode=TwoWay}"
                              hc:InfoElement.Title="接口项目：" 
                              hc:InfoElement.Necessary="True" PreviewMouseDown="cmbInterfaceTestItem_PreviewMouseDown">
                         </hc:ComboBox>
@@ -198,6 +197,8 @@
                 <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Button x:Name="btnQuery" Click="btnQuery_Click" Content="数据查询" Width="100" Margin="0,0,10,0" hc:BorderElement.CornerRadius="5"/>
                     <Button x:Name="btnSave" Click="btnSave_Click" Content="数据入库" Width="100" Margin="10,0,0,0" hc:BorderElement.CornerRadius="5"/>
+                    <Button x:Name="btnRefresh" Click="btnRefresh_Click" Content="刷新配置" Width="100" Margin="10,0,0,0" hc:BorderElement.CornerRadius="5"/>
+
                 </WrapPanel>
             </StackPanel>
         </Grid>

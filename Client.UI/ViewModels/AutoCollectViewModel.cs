@@ -30,6 +30,8 @@ namespace GZKL.Client.UI.ViewsModels
         /// </summary>
         public AutoCollectViewModel()
         {
+            SelectorData = new List<SelectorModel>();
+
             OrgData = new List<OrgInfo>();
             InterfaceData = new List<InterfaceInfo>();
             TestTypeData = new List<TestTypeInfo>();
@@ -38,8 +40,18 @@ namespace GZKL.Client.UI.ViewsModels
 
             Model = new AutoCollectModel();
 
-            //this.InitData();
-            //this.SetInterface();
+            this.InitData();
+            this.SetInterface();
+        }
+
+        private List<SelectorModel> selectorData;
+        /// <summary>
+        /// 选择器数据源
+        /// </summary>
+        public List<SelectorModel> SelectorData
+        {
+            get { return selectorData; }
+            set { selectorData= value; RaisePropertyChanged(); }
         }
 
         /// <summary>
@@ -251,7 +263,9 @@ namespace GZKL.Client.UI.ViewsModels
                                 TestItemName = dataRow["test_item_name"].ToString(),
                                 TableMaster = dataRow["table_master"].ToString(),
                                 TableDetail = dataRow["table_detail"].ToString(),
-                                TableDot = dataRow["table_dot"].ToString()
+                                TableDot = dataRow["table_dot"].ToString(),
+                                CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
+                                UpdateDt = Convert.ToDateTime(dataRow["update_dt"])
                             });
                         }
                     }
@@ -273,7 +287,9 @@ namespace GZKL.Client.UI.ViewsModels
                             {
                                 Id = Convert.ToInt64(dataRow["id"]),
                                 TestItemNo = dataRow["test_item_no"].ToString(),
-                                TestItemName = dataRow["test_item_name"].ToString()
+                                TestItemName = dataRow["test_item_name"].ToString(),
+                                CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
+                                UpdateDt = Convert.ToDateTime(dataRow["update_dt"])
                             });
                         }
                     }
@@ -296,7 +312,9 @@ namespace GZKL.Client.UI.ViewsModels
                                 Id = Convert.ToInt64(dataRow["id"]),
                                 Category = dataRow["category"].ToString(),
                                 TestTypeNo = dataRow["test_type_no"].ToString(),
-                                TestTypeName = dataRow["test_type_name"].ToString()
+                                TestTypeName = dataRow["test_type_name"].ToString(),
+                                CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
+                                UpdateDt = Convert.ToDateTime(dataRow["update_dt"])
                             });
                         }
                     }
