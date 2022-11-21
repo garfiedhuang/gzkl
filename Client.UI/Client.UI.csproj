@@ -127,6 +127,10 @@
     <Compile Include="Common\Win32Helper.cs" />
     <Compile Include="Converters\CheckConverter.cs" />
     <Compile Include="Converters\EnumConverter.cs" />
+    <Compile Include="Factories\Collect\Device2CollectEngine.cs" />
+    <Compile Include="Factories\Collect\Device1CollectEngine.cs" />
+    <Compile Include="Factories\CreateCollectEngine.cs" />
+    <Compile Include="Factories\ICollectFactory.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
