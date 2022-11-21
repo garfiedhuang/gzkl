@@ -28,6 +28,8 @@ namespace GZKL.Client.UI.Views.CollectMgt.AutoCollect
     {
         public string DataType { get; set; }
 
+        public string CustomTitle { get; set; }
+
         /// <summary>
         /// 选择器数据源
         /// </summary>
@@ -40,12 +42,34 @@ namespace GZKL.Client.UI.Views.CollectMgt.AutoCollect
         public Selector(string dataType)
         {
             InitializeComponent();
-     
+
             DataType = dataType;
+
+            this.SetTitle();
 
             var viewModel = this.DataContext as AutoCollectViewModel;
 
             CloneSelectorData = CollectionHelper.Clone(viewModel.SelectorData);
+
+
+        }
+
+        private void SetTitle()
+        {
+            switch (DataType)
+            {
+                case "TestType":
+                    this.CustomTitle = $"[检测类型]";
+                    break;
+                case "SystemTestItem":
+                    this.CustomTitle = $"[系统检测项]";
+                    break;
+                case "InterfaceTestItem":
+                    this.CustomTitle = $"[接口检测项]";
+                    break;
+            }
+
+            this.Title = $"{CustomTitle}数据选择器";
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
@@ -55,11 +79,22 @@ namespace GZKL.Client.UI.Views.CollectMgt.AutoCollect
 
             if (selectedItem == null)
             {
-                MessageBox.Show("请选择检测类型记录", "提示信息");
+                MessageBox.Show($"请选择{this.CustomTitle}记录", "提示信息");
                 return;
             }
 
-            viewModel.Model.TestTypeNo = selectedItem.ItemNo;
+            switch (DataType)
+            {
+                case "TestType":
+                    viewModel.Model.TestTypeNo = selectedItem.ItemNo;
+                    break;
+                case "SystemTestItem":
+                    viewModel.Model.SystemTestItemNo = selectedItem.ItemNo;
+                    break;
+                case "InterfaceTestItem":
+                    viewModel.Model.InterfaceTestItemNo = selectedItem.ItemNo;
+                    break;
+            }
 
             this.DialogResult = true;
         }

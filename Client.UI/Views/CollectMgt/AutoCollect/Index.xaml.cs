@@ -84,26 +84,92 @@ namespace GZKL.Client.UI.Views.CollectMgt.AutoCollect
             }
         }
 
+        /// <summary>
+        /// 系统检测项，单击
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cmbTestItem_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                var model = this.DataContext as AutoCollectViewModel;
-                model.Model.SystemTestItemNo = "TT02";
+                var viewModel = this.DataContext as AutoCollectViewModel;
 
+                viewModel.SelectorData?.Clear();
 
+                if (string.IsNullOrEmpty(viewModel.Model.QueryTestTypeNo))
+                {
+                    viewModel.GetSystemTestItemData(false);
+                }
+                else
+                {
+                    viewModel.GetSystemTestItemData();
+                }
+
+                viewModel.SystemTestItemData?.ForEach(item =>
+                {
+                    viewModel.SelectorData.Add(new SelectorModel()
+                    {
+                        Id = item.Id,
+                        ItemNo = item.TestItemNo,
+                        ItemName = item.TestItemName,
+                        CreateDt = item.CreateDt,
+                        UpdateDt = item.UpdateDt,
+                    });
+                });
+
+                Selector view = new Selector("SystemTestItem");
+                var r = view.ShowDialog();
+                if (r.Value)
+                {
+
+                }
                 e.Handled = true;//阻止冒泡
             }
         }
 
+        /// <summary>
+        /// 接口检测项，单击
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cmbInterfaceTestItem_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                var model = this.DataContext as AutoCollectViewModel;
-                model.Model.InterfaceTestItemNo = "TT02";
+                var viewModel = this.DataContext as AutoCollectViewModel;
 
+                viewModel.SelectorData?.Clear();
 
+                if (string.IsNullOrEmpty(viewModel.Model.SystemTestItemNo))
+                {
+                    //未选择系统检测项
+                    viewModel.GetInterfaceTestItemData(false);
+                }
+                else
+                {
+                    //已选择系统检测项
+                    viewModel.GetInterfaceTestItemData();
+                }
+
+                viewModel.InterfaceTestItemData?.ForEach(item =>
+                {
+                    viewModel.SelectorData.Add(new SelectorModel()
+                    {
+                        Id = item.Id,
+                        ItemNo = item.Id.ToString(),
+                        ItemName = item.TestItemName,
+                        CreateDt = item.CreateDt,
+                        UpdateDt = item.UpdateDt,
+                    });
+                });
+
+                Selector view = new Selector("InterfaceTestItem");
+                var r = view.ShowDialog();
+                if (r.Value)
+                {
+
+                }
                 e.Handled = true;//阻止冒泡
             }
         }

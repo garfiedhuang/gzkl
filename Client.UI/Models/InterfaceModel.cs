@@ -140,12 +140,12 @@ namespace GZKL.Client.UI.Models
         /// <summary>
         /// 创建时间
         /// </summary>
-        public DateTime? CreateDt { get; set; }
+        public DateTime CreateDt { get; set; }
 
         /// <summary>
         /// 更新时间
         /// </summary>
-        public DateTime? UpdateDt { get; set; }
+        public DateTime UpdateDt { get; set; }
     }
 
     /// <summary>
@@ -171,12 +171,12 @@ namespace GZKL.Client.UI.Models
         /// <summary>
         /// 创建时间
         /// </summary>
-        public DateTime? CreateDt { get; set; }
+        public DateTime CreateDt { get; set; }
 
         /// <summary>
         /// 更新时间
         /// </summary>
-        public DateTime? UpdateDt { get; set; }
+        public DateTime UpdateDt { get; set; }
     }
 
     /// <summary>

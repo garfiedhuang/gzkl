@@ -107,14 +107,14 @@ namespace GZKL.Client.UI.Models
         /// <summary>
         /// 查询条件-检测编号
         /// </summary>
-        private string queryTestItemNo = string.Empty;
+        private string queryTestTypeNo = string.Empty;
 
-        public string QueryTestItemNo
+        public string QueryTestTypeNo
         {
-            get { return queryTestItemNo; }
+            get { return queryTestTypeNo; }
             set
             {
-                queryTestItemNo = value;
+                queryTestTypeNo = value;
                 RaisePropertyChanged();
             }
         }

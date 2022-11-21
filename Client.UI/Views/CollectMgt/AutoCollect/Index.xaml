@@ -176,10 +176,10 @@
                     <Border BorderBrush="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" BorderThickness="1,1,1,1" CornerRadius="5">
                         <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                             <hc:TextBox Margin="2" Width="250"
-                            x:Name="txtQueryTestItemNo"
+                            x:Name="txtQueryTestTypeNo"
                             hc:TitleElement.TitlePlacement="Left"
                             hc:InfoElement.Placeholder="请输入检测编号" 
-                            Text="{Binding Model.QueryTestItemNo,Mode=TwoWay}"
+                            Text="{Binding Model.QueryTestTypeNo,Mode=TwoWay}"
                             hc:InfoElement.Title="检测编号："
                             hc:InfoElement.Necessary="False"/>
 

@@ -18,6 +18,8 @@ using MessageBox = HandyControl.Controls.MessageBox;
 using GZKL.Client.UI.Views.CollectMgt.AutoCollect;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using GZKL.Client.UI.Views.CollectMgt.Org;
+using System.Diagnostics;
 
 namespace GZKL.Client.UI.ViewsModels
 {
@@ -339,6 +341,122 @@ namespace GZKL.Client.UI.ViewsModels
         }
 
         /// <summary>
+        /// 获取系统检测项数据
+        /// </summary>
+        public void GetSystemTestItemData(bool filter=true)
+        {
+            try
+            {
+                var sql = string.Empty;
+                var parameters = new SqlParameter[] { };
+
+                if (filter)
+                {
+                    sql = @"SELECT bti.* FROM [dbo].[base_test_item] bti INNER JOIN [dbo].[base_test_type_item] btti ON bti.test_item_no=btti.test_item_no 
+	  WHERE bti.is_deleted=0 AND btti.is_deleted=0 AND btti.test_type_no=@testTypeNo";
+
+                    parameters = new SqlParameter[1] { new SqlParameter("@testTypeNo", Model.QueryTestTypeNo) };
+                }
+                else
+                {
+                    sql = @"SELECT * FROM [dbo].[base_test_item] WHERE [is_deleted]=0";
+                    parameters = null;
+                }
+                
+
+                //系统对应检测项目
+                using (var data = SQLHelper.GetDataTable(sql, parameters))
+                {
+                    if (SystemTestItemData?.Count > 0)
+                    {
+                        SystemTestItemData.Clear();
+                    }
+
+                    if (data != null && data.Rows.Count > 0)
+                    {
+                        foreach (DataRow dataRow in data.Rows)
+                        {
+                            SystemTestItemData.Add(new SystemTestItemInfo()
+                            {
+                                Id = Convert.ToInt64(dataRow["id"]),
+                                TestItemNo = dataRow["test_item_no"].ToString(),
+                                TestItemName = dataRow["test_item_name"].ToString(),
+                                CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
+                                UpdateDt = Convert.ToDateTime(dataRow["update_dt"])
+                            });
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "提示信息");
+            }
+        }
+
+        /// <summary>
+        /// 获取接口检测项数据
+        /// </summary>
+        public void GetInterfaceTestItemData(bool filter = true)
+        {
+            try
+            {
+                var sql = string.Empty;
+                var parameters = new SqlParameter[] { };
+
+                if (filter)
+                {
+                    sql = @"SELECT biti.* FROM [dbo].[base_interface_test_item] biti INNER JOIN [dbo].[base_interface_relation] bir ON biti.id=bir.test_item_id
+	  WHERE biti.is_deleted=0 AND bir.is_deleted=0 AND bir.interface_id=@interfaceId AND bir.test_item_no =@testItemNo";
+
+                    parameters = new SqlParameter[2] { new SqlParameter("@interfaceId", Model.InterfaceId), new SqlParameter("@testItemNo", Model.SystemTestItemNo) };
+                }
+                else
+                {
+                    sql = @"SELECT * FROM [dbo].[base_interface_test_item] WHERE [is_deleted]=0 AND [interface_id]=@interfaceId";
+                    parameters = new SqlParameter[1] { new SqlParameter("@interfaceId", Model.InterfaceId) };
+                }
+
+
+                //系统对应检测项目
+                using (var data = SQLHelper.GetDataTable(sql, parameters))
+                {
+                    if (InterfaceTestItemData?.Count > 0)
+                    {
+                        InterfaceTestItemData.Clear();
+                    }
+
+                    if (data != null && data.Rows.Count > 0)
+                    {
+                        foreach (DataRow dataRow in data.Rows)
+                        {
+                            InterfaceTestItemData.Add(new InterfaceTestItemInfo()
+                            {
+                                Id = Convert.ToInt64(dataRow["id"]),
+                                //TestItemNo = dataRow["test_item_no"].ToString(),
+                                TestItemName = dataRow["test_item_name"].ToString(),
+                                CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
+                                UpdateDt = Convert.ToDateTime(dataRow["update_dt"])
+                            });
+                        }
+                    }
+                }
+
+                //如果过滤查询不到数据，仍需要返回基础表数据
+                if (filter&& InterfaceTestItemData?.Count==0)
+                {
+                    GetInterfaceTestItemData(false);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "提示信息");
+            }
+        }
+
+        /// <summary>
         /// 参数校验
         /// </summary>
         /// <returns></returns>
@@ -375,7 +493,7 @@ namespace GZKL.Client.UI.ViewsModels
                 return -1;
             }
 
-            if (string.IsNullOrEmpty(Model.QueryTestItemNo))
+            if (string.IsNullOrEmpty(Model.QueryTestTypeNo))
             {
                 MessageBox.Show("请输入检测编号！", "操作提示");
                 return -1;
