@@ -111,6 +111,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="API\MenuApi.cs" />
+    <Compile Include="Common\AccessDBHelper.cs" />
     <Compile Include="Common\AnimationHelper.cs" />
     <Compile Include="Common\CollectionHelper.cs" />
     <Compile Include="Common\RegisterInfo.cs" />
