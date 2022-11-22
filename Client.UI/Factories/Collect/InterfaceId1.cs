@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GZKL.Client.UI.Factories.Collect
 {
-    public class Device1CollectEngine : ICollectFactory
+    public class InterfaceId1 : ICollectFactory
     {
         public CollectDataEnum DataEnum => throw new NotImplementedException();
 

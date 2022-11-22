@@ -17,28 +17,28 @@ namespace GZKL.Client.UI.Factories
 
             switch (collectDataEnum)
             {
-                case CollectDataEnum.Device1:
-                    factory=new Device1CollectEngine();
+                case CollectDataEnum.Interface1:
+                    factory = new InterfaceId1();
 
                     break;
-                case CollectDataEnum.Device2:
-                    factory = new Device2CollectEngine();
+                case CollectDataEnum.Interface2:
+                    factory = new InterfaceId2();
 
                     break;
-                case CollectDataEnum.Device3:
-
-
-                    break;
-                case CollectDataEnum.Device4:
-
+                case CollectDataEnum.Interface3:
+                    factory = new InterfaceId3();
 
                     break;
-                case CollectDataEnum.Device5:
-
+                case CollectDataEnum.Interface4:
+                    factory = new InterfaceId4();
 
                     break;
-                case CollectDataEnum.Device6:
+                case CollectDataEnum.Interface5:
+                    factory = new InterfaceId5();
 
+                    break;
+                case CollectDataEnum.Interface6:
+                    factory = new InterfaceId6();
 
                     break;
                 default:
@@ -47,7 +47,7 @@ namespace GZKL.Client.UI.Factories
 
             if (factory == null)
             {
-                throw new Exception($"未找到{nameof(collectDataEnum)}数据采集引擎");
+                throw new Exception($"未找到{nameof(collectDataEnum)}接口数据采集引擎");
             }
 
             return factory;

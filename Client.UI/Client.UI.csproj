@@ -127,8 +127,12 @@
     <Compile Include="Common\Win32Helper.cs" />
     <Compile Include="Converters\CheckConverter.cs" />
     <Compile Include="Converters\EnumConverter.cs" />
-    <Compile Include="Factories\Collect\Device2CollectEngine.cs" />
-    <Compile Include="Factories\Collect\Device1CollectEngine.cs" />
+    <Compile Include="Factories\Collect\InterfaceId6.cs" />
+    <Compile Include="Factories\Collect\InterfaceId5.cs" />
+    <Compile Include="Factories\Collect\InterfaceId4.cs" />
+    <Compile Include="Factories\Collect\InterfaceId3.cs" />
+    <Compile Include="Factories\Collect\InterfaceId2.cs" />
+    <Compile Include="Factories\Collect\InterfaceId1.cs" />
     <Compile Include="Factories\CreateCollectEngine.cs" />
     <Compile Include="Factories\ICollectFactory.cs" />
     <Compile Include="MainWindow.xaml.cs">

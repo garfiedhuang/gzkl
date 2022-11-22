@@ -16,7 +16,7 @@ namespace GZKL.Client.UI.Common
         Femal = 1,
 
         [Description("女")]
-        Meal =2
+        Meal = 2
     }
 
     public enum BoolEnum
@@ -33,42 +33,61 @@ namespace GZKL.Client.UI.Common
     /// </summary>
     public enum CollectDataEnum
     {
+
+        /*
+序号  接口  DBneme
+1	SuperTest6  MeasDB.mdb
+2	TestSoft    TestSoft.mdb
+3	SuperTest5  MeasDB.mdb
+4	TestMaster  Test.mdb
+5	SmartTest   SmartTest.mdb
+6	PowerTest   SansMachine-CN.mdb
+7	PowerTest V3.0C SansMachine.mdb
+8	SmartTest-Y SmartTest-Y.mdb
+9	tye tye.mdb
+10	SmartTest-2	SmartTest.mdb
+11	SmartTest   test.mdb
+12	testMachine testMachine.mdb
+13	MaxTest MaxTest.mdb
+        */
+
+
         /// <summary>
         /// 杭州鑫高=>压力机
         /// </summary>
         [Description("杭州鑫高=>压力机")]
-        Device1 = 1,
+        Interface1 = 1,
 
         /// <summary>
-        /// 杭州鑫高=>万能机
+        /// 杭州鑫高=>万能机 l.lss
         /// 由于数据都存在同一个表，因此对数据要进行过滤
         /// </summary>
-        [Description("杭州鑫高=>万能机")]
-        Device2 = 2,
+        [Description("杭州鑫高=>万能机 l.lss")]
+        Interface2 = 2,
 
         /// <summary>
-        /// 杭州鑫高=>万能机
+        /// 杭州鑫高
         /// 由于数据都存在同一个表，因此对数据要进行过滤
         /// </summary>
-        [Description("杭州鑫高=>万能机")]
-        Device3 = 3,
+        [Description("杭州鑫高")]
+        Interface3 = 3,
 
         /// <summary>
         /// 杭州鑫高(testMast)
         /// </summary>
-        [Description("杭州鑫高(testMast)")]
-        Device4 = 4,
+        [Description("杭州鑫高(TestMaster)")]
+        Interface4 = 4,
 
         /// <summary>
         /// 济南试金(smartTest)
         /// </summary>
         [Description("济南试金(smartTest)")]
-        Device5 = 5,
+        Interface5 = 5,
 
         /// <summary>
-        /// 济南试金(smartTest)
+        /// 新三思(smartTest)
         /// </summary>
-        [Description("济南试金(smartTest)")]
-        Device6 = 6,
+        [Description("新三思(smartTest)")]
+        Interface6 = 6
     }
 }
