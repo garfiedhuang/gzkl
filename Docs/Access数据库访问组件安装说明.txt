@@ -1,0 +1,57 @@
+https://www.microsoft.com/zh-CN/download/details.aspx?id=13255
+
+#版本：SP2
+
+File Name:                                  出版日期：                   File Size:
+AccessDatabaseEngine.exe         2019/12/20                    25.9 MB
+AccessDatabaseEngine_X64.exe                                       27.9 MB
+
+
+此下载将安装一系列组件，帮助在现有的 Microsoft Office 文件（例如 Microsoft Office Access 2010（*.mdb 和 *.accdb）文件和 Microsoft Office Excel 2010（*.xls、*.xlsx 和 *.xlsb）文件）与其他数据源（例如 Microsoft SQL Server）之间传输数据。还支持与现有文本文件建立连接。 此外，还会安装 ODBC 和 OLEDB 驱动程序，供应用程序开发人员在开发与 Office 文件格式连接的应用程序时使用。
+
+Access 2010 数据库引擎可再发行程序包不用于以下用途：
+
+作为 Jet 的一般替代品（如果您需要 Jet 的一般替代品，应该使用 SQL Server Express Edition）。
+作为服务器端应用程序的 Jet OLEDB 提供程序的替代品。
+作为一般的文字处理、电子表格或数据库管理系统 -用于创建文件。（您可以使用 Microsoft Office 或 Office 自动化来创建 Microsoft Office 支持的文件。）
+由系统服务或代码将在系统帐户下运行的服务器端程序使用，或将同时处理多个用户标识，或可高度重入并且期望无状态行为。例如，当没有任何用户登录时从任务计划程序运行的程序；或者，从像 ASP.NET 这样的服务器端 Web 应用程序调用的程序；或者，在 COM+ 服务下运行的分布式组件。
+
+
+#系统要求
+支持的操作系统
+Windows 10, Windows 7, Windows 8, Windows Server 2003, Windows Server 2003 Service Pack 1, Windows Server 2003 Service Pack 2, Windows Server 2008 R2, Windows Server 2008 Service Pack 2, Windows Server 2012 R2, Windows Vista Service Pack 1, Windows XP Service Pack 2
+
+只有 32 位 Access 数据库引擎可在 Windows XP Service Pack 3 上使用
+
+
+#安装说明
+注意：在安装此下载之前，必须先通过使用“控制面板”中的“添加/删除程序”，从你的计算机中卸载任何以前版本的 Access 数据库引擎。
+
+若要安装此下载，请执行以下操作：
+通过单击“下载”按钮并将文件保存到硬盘上来下载文件。
+双击硬盘上的“AccessDatabaseEngine.exe”程序文件启动安装程序。
+按照屏幕上的说明完成安装。
+若要使用此下载，请执行以下操作：
+如果您是应用程序用户，请查阅您的应用程序文档，了解有关如何使用相应驱动程序的详细信息。
+如果您是使用 OLEDB 的应用程序开发人员，请将 ConnectionString 属性的 Provider 参数设置为“Microsoft.ACE.OLEDB.12.0”。
+
+如果要连接到 Microsoft Office Excel 数据，请根据 Excel 文件类型添加相应的 OLEDB 连接字符串扩展属性：
+
+文件类型（扩展名）                                             扩展属性
+---------------------------------------------------------------------------------------------
+Excel 97-2003 工作簿 (.xls)                                  “Excel 8.0”
+Excel 2007-2010 工作簿 (.xlsx)                             “Excel 12.0 Xml”
+启用宏的 Excel 2007-2010 工作簿 (.xlsm)     “Excel 12.0 宏”
+Excel 2007-2010 非 XML 二进制工作簿 (.xlsb)     “Excel 12.0”
+
+如果您是使用 ODBC 连接到 Microsoft Office Access 数据的应用程序开发人员，请将连接字符串设置为“Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=path to mdb/accdb file”
+如果您是使用 ODBC 连接到 Microsoft Office Excel 数据的应用程序开发人员，请将连接字符串设置为“Driver={Microsoft Excel Driver (*.xls, *.xlsx, *.xlsm, *.xlsb)};DBQ=path to xls/xlsx/xlsm/xlsb file”
+若要删除此下载，请执行以下操作：
+若要删除下载文件本身，请删除文件 AccessDatabaseEngine.exe
+在“开始”菜单上，指向“设置”，然后单击“控制面板”。
+双击 “添加/删除程序”。
+在当前安装的应用程序列表中，选择“Microsoft Access 2010 数据库引擎”，然后单击“删除”或“添加/删除”。如果出现对话框，请按照说明删除该程序。
+单击“是”或“确定”，以确认要删除该程序。
+
+
+
