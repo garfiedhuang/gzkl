@@ -25,16 +25,10 @@ namespace GZKL.Client.UI.Views.CollectMgt.Interface
     /// </summary>
     public partial class Edit : Window
     {
-        /// <summary>
-        /// 主键ID
-        /// </summary>
-        private readonly long _id;
 
         public Edit(InterfaceModel interfaceModel)
         {
-            //InitializeComponent();
-
-            //_id = interfaceModel.Id;
+            InitializeComponent();
 
             //var isEnabledData = new List<KeyValuePair<int, string>>();
             //isEnabledData.Add(new KeyValuePair<int, string>(0, "0-否"));
@@ -70,9 +64,9 @@ namespace GZKL.Client.UI.Views.CollectMgt.Interface
             //    return;
             //}
 
-            string sql = "";
-            SqlParameter[] parameters = null;
-            int rowCount = 0;
+            //string sql = "";
+            //SqlParameter[] parameters = null;
+            //int rowCount = 0;
 
             //if (_id == 0)
             //{//新增

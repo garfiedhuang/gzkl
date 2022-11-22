@@ -297,10 +297,11 @@
 
                                 <DataGrid Margin="5" 
                                           Background="White"
+                                          AutoGenerateColumns="True"
                                           x:Name="dgUnfinishTestData"
                                           ItemsSource="{Binding Model.UnfinishTestData}" >
 
-                                    <DataGrid.Columns>
+                                    <!--<DataGrid.Columns>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding Id}" Header="ID"/>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding OrgNo}" Header="机构编号"/>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding TestNo}" Header="检测编号"/>
@@ -309,7 +310,7 @@
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding TestItemNo}" Header="项目编号"/>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding Deadline}" Header="龄期"/>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="试验日期"/>
-                                    </DataGrid.Columns>
+                                    </DataGrid.Columns>-->
                                 </DataGrid>
                             </GroupBox>
 
@@ -317,10 +318,11 @@
 
                                 <DataGrid Margin="5" 
                                           Background="White"
+                                          AutoGenerateColumns="True"
                                           x:Name="dgUnfinishTestDetailData" 
                                           ItemsSource="{Binding Model.UnfinishTestDetailData}" >
 
-                                    <DataGrid.Columns>
+                                    <!--<DataGrid.Columns>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding Id}" Header="ID"/>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding ExperimentNo}" Header="试件序号"/>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}" Header="试验时间"/>
@@ -328,7 +330,7 @@
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding UpYieldDot}" Header="上屈服点力值"/>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding DownYieldDot}" Header="下屈服点力值"/>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="120" Binding="{Binding MaxDot}" Header="最大值(力值)"/>
-                                    </DataGrid.Columns>
+                                    </DataGrid.Columns>-->
                                 </DataGrid>
                             </GroupBox>
 
@@ -336,10 +338,11 @@
 
                                 <DataGrid Margin="5" 
                                           Background="White"
+                                          AutoGenerateColumns="True"
                                           x:Name="dgUnfinishOriginalData" 
                                           ItemsSource="{Binding Model.UnfinishOriginalData}" >
 
-                                    <DataGrid.Columns>
+                                    <!--<DataGrid.Columns>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding Id}" Header="ID"/>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding PlayTime}" Header="时间值"/>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding LoadValue}" Header="力值"/>
@@ -356,7 +359,7 @@
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding ExtendDevice6}" Header="扩展设备6"/>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding PosiSpeed}" Header="位移速率"/>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding StressSpeed}" Header="应力速率"/>
-                                    </DataGrid.Columns>
+                                    </DataGrid.Columns>-->
                                 </DataGrid>
 
                             </GroupBox>

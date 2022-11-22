@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -90,16 +91,16 @@ namespace GZKL.Client.UI.Models
         }
 
         /// <summary>
-        /// 接口检测项目
+        /// 接口检测项目ID
         /// </summary>
-        private string interfaceTestItemNo = string.Empty;
+        private long interfaceTestItemId = 0L;
 
-        public string InterfaceTestItemNo
+        public long InterfaceTestItemId
         {
-            get { return interfaceTestItemNo; }
+            get { return interfaceTestItemId; }
             set
             {
-                interfaceTestItemNo = value;
+                interfaceTestItemId = value;
                 RaisePropertyChanged();
             }
         }
@@ -154,9 +155,9 @@ namespace GZKL.Client.UI.Models
         /// <summary>
         /// 检测主表数据（待处理）
         /// </summary>
-        private List<ExecuteTestInfo> unfinishTestData;
+        private DataTable unfinishTestData;
 
-        public List<ExecuteTestInfo> UnfinishTestData
+        public DataTable UnfinishTestData
         {
             get { return unfinishTestData; }
             set
@@ -185,9 +186,9 @@ namespace GZKL.Client.UI.Models
         /// <summary>
         /// 检测明细表数据（待处理）
         /// </summary>
-        private List<ExecuteTestDetailInfo> unfinishTestDetailData;
+        private DataTable unfinishTestDetailData;
 
-        public List<ExecuteTestDetailInfo> UnfinishTestDetailData
+        public DataTable UnfinishTestDetailData
         {
             get { return unfinishTestDetailData; }
             set
@@ -215,9 +216,9 @@ namespace GZKL.Client.UI.Models
         /// <summary>
         /// 原始数据（待处理）
         /// </summary>
-        private List<ExecuteOriginalDataInfo> unfinishOriginalData;
+        private DataTable unfinishOriginalData;
 
-        public List<ExecuteOriginalDataInfo> UnfinishOriginalData
+        public DataTable UnfinishOriginalData
         {
             get { return unfinishOriginalData; }
             set

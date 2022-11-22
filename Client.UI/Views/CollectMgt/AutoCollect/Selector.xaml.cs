@@ -92,7 +92,7 @@ namespace GZKL.Client.UI.Views.CollectMgt.AutoCollect
                     viewModel.Model.SystemTestItemNo = selectedItem.ItemNo;
                     break;
                 case "InterfaceTestItem":
-                    viewModel.Model.InterfaceTestItemNo = selectedItem.ItemNo;
+                    viewModel.Model.InterfaceTestItemId = selectedItem.Id;
                     break;
             }
 
