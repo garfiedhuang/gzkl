@@ -24,7 +24,8 @@ namespace GZKL.Client.UI.Common
         {
             if (conn.State == ConnectionState.Closed)
             {
-                conn.ConnectionString = $"Provider=Microsoft.Jet.OleDb.4.0;Data Source='{path}'";//web.config文件里设定。
+                //conn.ConnectionString = $"Provider=Microsoft.Jet.OleDb.4.0;Data Source='{path}'";//web.config文件里设定。
+                conn.ConnectionString = "Driver={Microsoft Access Driver (*.mdb)};DBQ=F:\\gzkl\\gzkl-source\\db\\Press1.mdb;Uid=;Pwd=;";
                 comm.Connection = conn;
                 try
                 {
