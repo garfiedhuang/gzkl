@@ -381,6 +381,11 @@ namespace GZKL.Client.UI.Models
         /// 龄期
         /// </summary>
         public string Deadline { set; get; }
+
+        /// <summary>
+        /// 检测时间
+        /// </summary>
+        public DateTime TestTime { set; get; }
     }
 
     /// <summary>
@@ -427,6 +432,20 @@ namespace GZKL.Client.UI.Models
         /// 最大值(力值)
         /// </summary>
         public string MaxDot { set; get; }
+
+
+        public string TestPreceptName { set; get; } = "";
+        public string FileName { set; get; } = "";
+        public string SampleShape { set; get; } = "";
+        public string GaugeLength { set; get; } = "";
+        public string SampleWidth { set; get; } = "";
+        public string SampleThick { set; get; } = "";
+        public string SampleDia { set; get; } = "";
+        public string SampleMinDia { set; get; } = "";
+        public string SampleOutDia { set; get; } = "";
+        public string SampleInnerDia { set; get; } = "";
+        public string DeformSensorName { set; get; } = "";
+
     }
 
     /// <summary>
@@ -524,5 +543,46 @@ namespace GZKL.Client.UI.Models
         /// </summary>
         public string StressSpeed { set; get; }
 
+    }
+
+    /// <summary>
+    /// 接口导入明细信息
+    /// </summary>
+    public class InterfaceImportDetailInfo
+    {
+        /// <summary>
+        /// 主键ID
+        /// </summary>
+        public long Id { get; set; }
+
+        /// <summary>
+        /// 接口ID
+        /// </summary>
+        public long InterfaceId { set; get; }
+
+        /// <summary>
+        /// 接口检测项ID
+        /// </summary>
+        public long InterfaceTestItemId { set; get; }
+
+        /// <summary>
+        /// 系统检测项编号
+        /// </summary>
+        public string SystemTestItemNo { set; get; }
+
+        /// <summary>
+        /// 检测编号
+        /// </summary>
+        public string TestNo { set; get; }
+
+        /// <summary>
+        /// 样品编号
+        /// </summary>
+        public string SampleNo { set; get; }
+
+        /// <summary>
+        /// 备注
+        /// </summary>
+        public string Remark { set; get; }
     }
 }

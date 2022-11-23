@@ -13,7 +13,7 @@ namespace GZKL.Client.UI.Factories.Collect
     {
         public CollectDataEnum DataEnum => throw new NotImplementedException();
 
-        public override void ImportData()
+        public override void ImportData(AutoCollectViewModel viewModel)
         {
             throw new NotImplementedException();
         }

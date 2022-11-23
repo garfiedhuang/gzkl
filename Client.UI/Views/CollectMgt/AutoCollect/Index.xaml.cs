@@ -77,7 +77,7 @@ namespace GZKL.Client.UI.Views.CollectMgt.AutoCollect
                 var collectEngine = CreateCollectEngine.Create(collectDataEnum);
 
                 //写入数据库
-                collectEngine.ImportData();
+                collectEngine.ImportData(viewModel);
             }
             catch (Exception ex)
             {
