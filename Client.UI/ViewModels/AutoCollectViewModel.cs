@@ -32,6 +32,12 @@ namespace GZKL.Client.UI.ViewsModels
         /// </summary>
         public AutoCollectViewModel()
         {
+
+#if DEBUG
+           var dt = AccessDBHelper.DataTable("select * from base_compa", "");
+
+#endif
+
             SelectorData = new List<SelectorModel>();
 
             OrgData = new List<OrgInfo>();
