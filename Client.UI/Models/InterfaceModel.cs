@@ -82,6 +82,16 @@ namespace GZKL.Client.UI.Models
         public string AccessDbName { get; set; }
 
         /// <summary>
+        /// 数据库用户名
+        /// </summary>
+        public string Uid { get; set; }
+
+        /// <summary>
+        /// 数据库密码
+        /// </summary>
+        public string Pwd { get; set; }
+
+        /// <summary>
         /// 备注
         /// </summary>
         public string Remark { set; get; } = "";

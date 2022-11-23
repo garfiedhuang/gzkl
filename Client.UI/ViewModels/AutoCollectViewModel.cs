@@ -34,8 +34,11 @@ namespace GZKL.Client.UI.ViewsModels
         {
 
 #if DEBUG
-           var dt = AccessDBHelper.DataTable("select * from base_compa", "");
-
+/*
+            DsnHelper.CreateDSN("AutoAcsDB", "AutoAcs", "F:\\gzkl\\gzkl-source\\db\\Press2.mdb");
+            var dt = OdbcDBHelper.DataTable("select * from base_compa", "");
+            //var dt = AccessDBHelper.DataTable("select * from base_compa", "");
+*/
 #endif
 
             SelectorData = new List<SelectorModel>();
@@ -243,6 +246,8 @@ namespace GZKL.Client.UI.ViewsModels
                                 InterfaceName = dataRow["interface_name"].ToString(),
                                 AccessDbPath = dataRow["access_db_path"].ToString(),
                                 AccessDbName = dataRow["access_db_name"].ToString(),
+                                Uid = dataRow["uid"].ToString(),
+                                Pwd = dataRow["pwd"].ToString(),
                                 Remark = dataRow["remark"].ToString(),
                                 IsEnabled = Convert.ToInt32(dataRow["is_enabled"]),
                                 CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
@@ -361,7 +366,7 @@ namespace GZKL.Client.UI.ViewsModels
                     sql = @"SELECT bti.* FROM [dbo].[base_test_item] bti INNER JOIN [dbo].[base_test_type_item] btti ON bti.test_item_no=btti.test_item_no 
 	  WHERE bti.is_deleted=0 AND btti.is_deleted=0 AND btti.test_type_no=@testTypeNo";
 
-                    parameters = new SqlParameter[1] { new SqlParameter("@testTypeNo", Model.QueryTestTypeNo) };
+                    parameters = new SqlParameter[1] { new SqlParameter("@testTypeNo", Model.QueryTestNo) };
                 }
                 else
                 {
@@ -466,7 +471,7 @@ namespace GZKL.Client.UI.ViewsModels
         /// 参数校验
         /// </summary>
         /// <returns></returns>
-        private int CheckValue()
+        public int CheckValue()
         {
             var registerInfo = SessionInfo.Instance.RegisterInfo;
 
@@ -499,7 +504,7 @@ namespace GZKL.Client.UI.ViewsModels
                 return -1;
             }
 
-            if (string.IsNullOrEmpty(Model.QueryTestTypeNo))
+            if (string.IsNullOrEmpty(Model.QueryTestNo))
             {
                 MessageBox.Show("请输入检测编号！", "操作提示");
                 return -1;
@@ -517,11 +522,16 @@ namespace GZKL.Client.UI.ViewsModels
         /// <summary>
         /// 查询数据
         /// </summary>
-        /// <param name="orgNo">机构代码</param>
-        /// <param name="testItemNo">检测项编号</param>
-        /// <param name="testNo">检测编号</param>
-        private void QueryData(string orgNo, string testItemNo, string testNo)
+        /// <param name="orgNo"></param>
+        /// <param name="testItemNo"></param>
+        /// <param name="testNo"></param>
+        public void QueryData()
         {
+
+            var orgNo = model.OrgNo;//机构代码
+            var testItemNo = model.SystemTestItemNo;//检测项编号
+            var testNo = model.QueryTestNo;//检测编号
+
             var sql = @"SELECT * FROM [dbo].[biz_execute_test] WHERE [is_deleted]=0 AND [org_no]=@orgNo AND [test_item_no]=@testItemNo AND [test_no]=@testNo";
             var parameters = new SqlParameter[3] {
                     new SqlParameter("@orgNo", orgNo),
@@ -600,16 +610,16 @@ namespace GZKL.Client.UI.ViewsModels
             //原始数据信息
             using (var data = SQLHelper.GetDataTable(sql3, parameters))
             {
-                if (Model.OriginalData?.Count > 0)
+                if (Model.DotData?.Count > 0)
                 {
-                    Model.OriginalData.Clear();
+                    Model.DotData.Clear();
                 }
 
                 if (data != null && data.Rows.Count > 0)
                 {
                     foreach (DataRow dataRow in data.Rows)
                     {
-                        Model.OriginalData.Add(new ExecuteOriginalDataInfo()
+                        Model.DotData.Add(new ExecuteOriginalDataInfo()
                         {
                             Id = Convert.ToInt64(dataRow["id"]),
                             TestId = Convert.ToInt64(dataRow["test_id"]),

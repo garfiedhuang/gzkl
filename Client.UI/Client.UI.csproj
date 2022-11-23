@@ -114,7 +114,7 @@
     <Compile Include="Common\AccessDBHelper.cs" />
     <Compile Include="Common\AnimationHelper.cs" />
     <Compile Include="Common\CollectionHelper.cs" />
-    <Compile Include="Common\ODBCHelper.cs" />
+    <Compile Include="Common\DsnHelper.cs" />
     <Compile Include="Common\RegisterInfo.cs" />
     <Compile Include="Common\SecurityHelper.cs" />
     <Compile Include="Common\ComputerInfo.cs" />
@@ -129,6 +129,7 @@
     <Compile Include="Common\Win32Helper.cs" />
     <Compile Include="Converters\CheckConverter.cs" />
     <Compile Include="Converters\EnumConverter.cs" />
+    <Compile Include="Factories\Collect\InterfaceId7.cs" />
     <Compile Include="Factories\Collect\InterfaceId6.cs" />
     <Compile Include="Factories\Collect\InterfaceId5.cs" />
     <Compile Include="Factories\Collect\InterfaceId4.cs" />
@@ -143,6 +144,11 @@
     <Compile Include="Models\BackupModel.cs" />
     <Compile Include="Models\AutoCollectModel.cs" />
     <Compile Include="Models\ClearModel.cs" />
+    <Compile Include="TranParaDBDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TranParaDBDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\BaseSearchViewModel.cs" />
     <Compile Include="Models\ExportModel.cs" />
     <Compile Include="Models\InterfaceModel.cs" />
@@ -367,6 +373,17 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="TranParaDBDataSet.xsc">
+      <DependentUpon>TranParaDBDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="TranParaDBDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>TranParaDBDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="TranParaDBDataSet.xss">
+      <DependentUpon>TranParaDBDataSet.xsd</DependentUpon>
+    </None>
     <Resource Include="Fonts\Small\iconfont.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

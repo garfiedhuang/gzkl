@@ -14,8 +14,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using GZKL.Client.UI.Common;
+using GZKL.Client.UI.Factories;
 using GZKL.Client.UI.Models;
 using GZKL.Client.UI.ViewsModels;
+using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace GZKL.Client.UI.Views.CollectMgt.AutoCollect
 {
@@ -36,7 +38,27 @@ namespace GZKL.Client.UI.Views.CollectMgt.AutoCollect
         /// <param name="e"></param>
         private void btnQuery_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                var viewModel = this.DataContext as AutoCollectViewModel;
+                var collectDataEnum = (CollectDataEnum)viewModel.Model.InterfaceId;
 
+                //采集引擎工厂
+                var collectEngine = CreateCollectEngine.Create(collectDataEnum);
+
+                //查询本地数据库
+                viewModel.QueryData();
+
+                //查询设备数据库
+                collectEngine.QueryDeviceData(viewModel);
+
+                //启用【数据入库】按钮
+                this.btnSave.IsEnabled = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message,"操作提示");
+            }
         }
 
         /// <summary>
@@ -46,7 +68,21 @@ namespace GZKL.Client.UI.Views.CollectMgt.AutoCollect
         /// <param name="e"></param>
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                var viewModel = this.DataContext as AutoCollectViewModel;
+                var collectDataEnum = (CollectDataEnum)viewModel.Model.InterfaceId;
 
+                //采集引擎工厂
+                var collectEngine = CreateCollectEngine.Create(collectDataEnum);
+
+                //写入数据库
+                collectEngine.ImportData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "操作提示");
+            }
         }
 
         /// <summary>
@@ -97,7 +133,7 @@ namespace GZKL.Client.UI.Views.CollectMgt.AutoCollect
 
                 viewModel.SelectorData?.Clear();
 
-                if (string.IsNullOrEmpty(viewModel.Model.QueryTestTypeNo))
+                if (string.IsNullOrEmpty(viewModel.Model.QueryTestNo))
                 {
                     viewModel.GetSystemTestItemData(false);
                 }

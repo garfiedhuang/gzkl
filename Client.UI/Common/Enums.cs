@@ -88,6 +88,12 @@ namespace GZKL.Client.UI.Common
         /// 新三思(smartTest)
         /// </summary>
         [Description("新三思(smartTest)")]
-        Interface6 = 6
+        Interface6 = 6,
+
+        /// <summary>
+        /// 新三思(smartTest)
+        /// </summary>
+        [Description("新三思(smartTest)")]
+        Interface7 = 7
     }
 }

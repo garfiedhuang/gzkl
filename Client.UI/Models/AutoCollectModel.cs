@@ -108,14 +108,14 @@ namespace GZKL.Client.UI.Models
         /// <summary>
         /// 查询条件-检测编号
         /// </summary>
-        private string queryTestTypeNo = string.Empty;
+        private string queryTestNo = string.Empty;
 
-        public string QueryTestTypeNo
+        public string QueryTestNo
         {
-            get { return queryTestTypeNo; }
+            get { return queryTestNo; }
             set
             {
-                queryTestTypeNo = value;
+                queryTestNo = value;
                 RaisePropertyChanged();
             }
         }
@@ -201,14 +201,14 @@ namespace GZKL.Client.UI.Models
         /// <summary>
         /// 原始数据
         /// </summary>
-        private List<ExecuteOriginalDataInfo> originalData;
+        private List<ExecuteOriginalDataInfo> dotData;
 
-        public List<ExecuteOriginalDataInfo> OriginalData
+        public List<ExecuteOriginalDataInfo> DotData
         {
-            get { return originalData; }
+            get { return dotData; }
             set
             {
-                originalData = value;
+                dotData = value;
                 RaisePropertyChanged();
             }
         }

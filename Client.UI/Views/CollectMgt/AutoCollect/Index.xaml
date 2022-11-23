@@ -176,10 +176,10 @@
                     <Border BorderBrush="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" BorderThickness="1,1,1,1" CornerRadius="5">
                         <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                             <hc:TextBox Margin="2" Width="250"
-                            x:Name="txtQueryTestTypeNo"
+                            x:Name="txtQueryTestNo"
                             hc:TitleElement.TitlePlacement="Left"
                             hc:InfoElement.Placeholder="请输入检测编号" 
-                            Text="{Binding Model.QueryTestTypeNo,Mode=TwoWay}"
+                            Text="{Binding Model.QueryTestNo,Mode=TwoWay}"
                             hc:InfoElement.Title="检测编号："
                             hc:InfoElement.Necessary="False"/>
 
@@ -196,7 +196,7 @@
                 </GroupBox>
                 <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Button x:Name="btnQuery" Click="btnQuery_Click" Content="数据查询" Width="100" Margin="0,0,10,0" hc:BorderElement.CornerRadius="5"/>
-                    <Button x:Name="btnSave" Click="btnSave_Click" Content="数据入库" Width="100" Margin="10,0,0,0" hc:BorderElement.CornerRadius="5"/>
+                    <Button x:Name="btnSave" IsEnabled="False" Click="btnSave_Click" Content="数据入库" Width="100" Margin="10,0,0,0" hc:BorderElement.CornerRadius="5"/>
                     <Button x:Name="btnRefresh" Click="btnRefresh_Click" Content="刷新配置" Width="100" Margin="10,0,0,0" hc:BorderElement.CornerRadius="5"/>
 
                 </WrapPanel>

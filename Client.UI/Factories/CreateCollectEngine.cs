@@ -41,6 +41,10 @@ namespace GZKL.Client.UI.Factories
                     factory = new InterfaceId6();
 
                     break;
+                case CollectDataEnum.Interface7:
+                    factory = new InterfaceId7();
+
+                    break;
                 default:
                     break;
             }
