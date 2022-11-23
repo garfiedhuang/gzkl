@@ -49,8 +49,8 @@ namespace GZKL.Client.UI.Factories.Collect
 
             DsnHelper.CreateDSN(dsnName, pwd, database);//创建DSN
 
-            viewModel.Model.UnfinishTestData = OdbcDBHelper.DataTable(tableMasterSql, path);
-            viewModel.Model.UnfinishTestDetailData = OdbcDBHelper.DataTable(tableDetailSql, path);
+            viewModel.Model.UnfinishTestData = OdbcHelper.DataTable(tableMasterSql, path);
+            viewModel.Model.UnfinishTestDetailData = OdbcHelper.DataTable(tableDetailSql, path);
         }
     }
 }

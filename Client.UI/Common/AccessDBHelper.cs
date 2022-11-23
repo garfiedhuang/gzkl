@@ -9,11 +9,11 @@ using System.Data.Odbc;
 
 namespace GZKL.Client.UI.Common
 {
-    public class AccessDBHelper
+    public class OleDbHelper
     {
         protected static OleDbConnection conn = new OleDbConnection();
         protected static OleDbCommand comm = new OleDbCommand();
-        public AccessDBHelper()
+        public OleDbHelper()
         {
             //init
         }
@@ -268,11 +268,11 @@ namespace GZKL.Client.UI.Common
         }
     }
 
-    public class OdbcDBHelper
+    public class OdbcHelper
     {
         protected static OdbcConnection conn = new OdbcConnection();
         protected static OdbcCommand comm = new OdbcCommand();
-        public OdbcDBHelper()
+        public OdbcHelper()
         {
             //init
         }

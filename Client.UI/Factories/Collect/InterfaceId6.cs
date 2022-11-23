@@ -47,8 +47,8 @@ namespace GZKL.Client.UI.Factories.Collect
                 throw new Exception($"数据库文件不存在，请检查！{path}");
             }
 
-            viewModel.Model.UnfinishTestData = OdbcDBHelper.DataTable(tableMasterSql, path);
-            viewModel.Model.UnfinishTestDetailData = OdbcDBHelper.DataTable(tableDetailSql, path);
+            viewModel.Model.UnfinishTestData = OdbcHelper.DataTable(tableMasterSql, path);
+            viewModel.Model.UnfinishTestDetailData = OdbcHelper.DataTable(tableDetailSql, path);
 
         }
     }

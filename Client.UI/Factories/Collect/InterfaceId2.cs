@@ -46,7 +46,7 @@ namespace GZKL.Client.UI.Factories.Collect
             }
 
             //主表数据
-            viewModel.Model.UnfinishTestData = AccessDBHelper.DataTable(tableMasterSql, path);
+            viewModel.Model.UnfinishTestData = OleDbHelper.DataTable(tableMasterSql, path);
 
             if (viewModel.Model.UnfinishTestData?.Rows?.Count > 0)
             {
@@ -69,7 +69,7 @@ namespace GZKL.Client.UI.Factories.Collect
                 var tableDetailSql = $"TRANSFORM Last(Params.ParamValue) AS ParamValue SELECT Params.InTestID, Last(Params.ParamValue) AS [总计] FROM Params WHERE IntestID<>0 and ParamType='结果参数' GROUP BY Params.InTestID PIVOT Params.ParamName";//表交叉查询
 
                 //明细表数据
-                viewModel.Model.UnfinishTestDetailData = AccessDBHelper.DataTable(tableDetailSql, tempTestDetailDbPath);
+                viewModel.Model.UnfinishTestDetailData = OleDbHelper.DataTable(tableDetailSql, tempTestDetailDbPath);
 
                 //dot数据
                 if (string.IsNullOrEmpty(baseInterfaceTestItem.TableDot))
@@ -78,7 +78,7 @@ namespace GZKL.Client.UI.Factories.Collect
                 }
                 var tableDotSql = $"SELECT * FROM {baseInterfaceTestItem.TableDot} WHERE IntestID<>0 ORDER BY IntestID,id";
 
-                viewModel.Model.UnfinishOriginalData = AccessDBHelper.DataTable(tableDotSql, tempTestDetailDbPath);
+                viewModel.Model.UnfinishOriginalData = OleDbHelper.DataTable(tableDotSql, tempTestDetailDbPath);
 
             }
 

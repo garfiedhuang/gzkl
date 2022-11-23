@@ -47,7 +47,7 @@ namespace GZKL.Client.UI.Factories.Collect
             }
 
             //主表数据
-            viewModel.Model.UnfinishTestData = AccessDBHelper.DataTable(tableMasterSql, path);
+            viewModel.Model.UnfinishTestData = OleDbHelper.DataTable(tableMasterSql, path);
 
             if (viewModel.Model.UnfinishTestData?.Rows?.Count > 0)
             {
@@ -67,7 +67,7 @@ namespace GZKL.Client.UI.Factories.Collect
                     throw new Exception($"数据库接口[{baseInterfaceTestItem.TestItemName}]配置错误，栏位[table_detail]值不能为空，请检查！");
                 }
                 var tableDetailSql = $"SELECT * FROM {baseInterfaceTestItem.TableDetail} ORDER BY testCode";
-                viewModel.Model.UnfinishTestDetailData = AccessDBHelper.DataTable(tableDetailSql, tempTestDetailDbPath);
+                viewModel.Model.UnfinishTestDetailData = OleDbHelper.DataTable(tableDetailSql, tempTestDetailDbPath);
 
                 //dot数据
                 if (string.IsNullOrEmpty(baseInterfaceTestItem.TableDot))
@@ -77,7 +77,7 @@ namespace GZKL.Client.UI.Factories.Collect
 
                 var tableDotSql = $"SELECT * FROM {baseInterfaceTestItem.TableDot} WHERE 1=1 ORDER BY testid,dataIndex";
 
-                viewModel.Model.UnfinishOriginalData = AccessDBHelper.DataTable(tableDotSql, tempTestDetailDbPath);
+                viewModel.Model.UnfinishOriginalData = OleDbHelper.DataTable(tableDotSql, tempTestDetailDbPath);
 
             }
 

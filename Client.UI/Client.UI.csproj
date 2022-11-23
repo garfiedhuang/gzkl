@@ -111,7 +111,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="API\MenuApi.cs" />
-    <Compile Include="Common\AccessDBHelper.cs" />
+    <Compile Include="Common\AccessDbHelper.cs" />
     <Compile Include="Common\AnimationHelper.cs" />
     <Compile Include="Common\CollectionHelper.cs" />
     <Compile Include="Common\DsnHelper.cs" />
@@ -144,11 +144,6 @@
     <Compile Include="Models\BackupModel.cs" />
     <Compile Include="Models\AutoCollectModel.cs" />
     <Compile Include="Models\ClearModel.cs" />
-    <Compile Include="TranParaDBDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>TranParaDBDataSet.xsd</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\BaseSearchViewModel.cs" />
     <Compile Include="Models\ExportModel.cs" />
     <Compile Include="Models\InterfaceModel.cs" />
@@ -373,17 +368,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="TranParaDBDataSet.xsc">
-      <DependentUpon>TranParaDBDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="TranParaDBDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>TranParaDBDataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="TranParaDBDataSet.xss">
-      <DependentUpon>TranParaDBDataSet.xsd</DependentUpon>
-    </None>
     <Resource Include="Fonts\Small\iconfont.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
