@@ -70,14 +70,37 @@ namespace GZKL.Client.UI.Views.CollectMgt.AutoCollect
         {
             try
             {
+                this.btnQuery.IsEnabled = false;
+
                 var viewModel = this.DataContext as AutoCollectViewModel;
-                var collectDataEnum = (CollectDataEnum)viewModel.Model.InterfaceId;
+
+                var result = viewModel.CheckValue();
+
+                if (result == -1)
+                {
+                    return;
+                }
 
                 //采集引擎工厂
+                var collectDataEnum = (CollectDataEnum)viewModel.Model.InterfaceId;
                 var collectEngine = CreateCollectEngine.Create(collectDataEnum);
+
+                var interfaceImportDetailInfo = new InterfaceImportDetailInfo()
+                {
+                    InterfaceId = viewModel.Model.InterfaceId,
+                    InterfaceTestItemId = viewModel.Model.InterfaceTestItemId,
+                    SystemTestItemNo = viewModel.Model.SystemTestItemNo,
+                    SampleNo = viewModel.Model.QuerySampleNo,
+                    TestNo = viewModel.Model.QueryTestNo,
+                    Remark = viewModel.Model.InterfaceName
+                };
+
+                collectEngine.AddImportDetail(interfaceImportDetailInfo);
 
                 //写入数据库
                 collectEngine.ImportData(viewModel);
+
+                this.tiProcessed.IsSelected = true;
             }
             catch (Exception ex)
             {

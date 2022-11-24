@@ -205,7 +205,7 @@
 
         <Border Margin="5,0,5,5" Grid.Row="1" BorderBrush="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" BorderThickness="1,1,1,1" CornerRadius="5">
             <TabControl Style="{StaticResource TabControlBaseStyle}" FlowDirection="LeftToRight">
-                <TabItem Header="已处理数据" IsSelected="True">
+                <TabItem Header="已处理数据"  x:Name="tiProcessed" IsSelected="True">
                     <hc:SimplePanel>
                         <Grid>
                             <Grid.RowDefinitions>
@@ -284,7 +284,7 @@
 
                     </hc:SimplePanel>
                 </TabItem>
-                <TabItem Header="待处理数据">
+                <TabItem Header="待处理数据" x:Name="tiWaitingProcess">
                     <hc:SimplePanel>
 
                         <Grid>
