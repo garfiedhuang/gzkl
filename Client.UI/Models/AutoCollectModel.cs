@@ -201,14 +201,14 @@ namespace GZKL.Client.UI.Models
         /// <summary>
         /// 原始数据
         /// </summary>
-        private List<ExecuteOriginalDataInfo> dotData;
+        private List<ExecuteOriginalDataInfo> originalData;
 
-        public List<ExecuteOriginalDataInfo> DotData
+        public List<ExecuteOriginalDataInfo> OriginalData
         {
-            get { return dotData; }
+            get { return originalData; }
             set
             {
-                dotData = value;
+                originalData = value;
                 RaisePropertyChanged();
             }
         }
@@ -416,36 +416,37 @@ namespace GZKL.Client.UI.Models
         /// <summary>
         /// 试样的面积
         /// </summary>
-        public string Area { set; get; }
+        public string Area { set; get; } = "0";
 
         /// <summary>
         /// 上屈服点力值
         /// </summary>
-        public string UpYieldDot { set; get; }
+        public string UpYieldDot { set; get; } = "0";
 
         /// <summary>
         /// 下屈服点力值
         /// </summary>
-        public string DownYieldDot { set; get; }
+        public string DownYieldDot { set; get; } = "0";
 
         /// <summary>
         /// 最大值(力值)
         /// </summary>
-        public string MaxDot { set; get; }
+        public string MaxDot { set; get; } = "0";
 
 
-        public string TestPreceptName { set; get; } = "";
         public string FileName { set; get; } = "";
         public string SampleShape { set; get; } = "";
-        public string GaugeLength { set; get; } = "";
-        public string SampleWidth { set; get; } = "";
-        public string SampleThick { set; get; } = "";
-        public string SampleDia { set; get; } = "";
-        public string SampleMinDia { set; get; } = "";
-        public string SampleOutDia { set; get; } = "";
-        public string SampleInnerDia { set; get; } = "";
-        public string DeformSensorName { set; get; } = "";
+        public string GaugeLength { set; get; } = "0";
+        public string SampleWidth { set; get; } = "0";
+        public string SampleThick { set; get; } = "0";
+        public string SampleDia { set; get; } = "0";
+        public string SampleMinDia { set; get; } = "0";
+        public string SampleOutDia { set; get; } = "0";
+        public string SampleInnerDia { set; get; } = "0";
+        public string LoadUnitName { set; get; } = "kN";
+        public string PressUnitName { set; get; } = "MPa";
 
+        public string Encryption { set; get; } = "";
     }
 
     /// <summary>
@@ -491,57 +492,57 @@ namespace GZKL.Client.UI.Models
         /// <summary>
         /// 大变形的值
         /// </summary>
-        public string BigDeformValue { set; get; }
+        public string BigDeformValue { set; get; } = "0";
 
         /// <summary>
         /// 变现切换
         /// </summary>
-        public string DeformSwitch { set; get; }
+        public string DeformSwitch { set; get; } = "0";
 
         /// <summary>
         /// 控制步骤
         /// </summary>
-        public string CtrlStep { set; get; }
+        public string CtrlStep { set; get; } = "0";
 
         /// <summary>
         /// 扩展设备1
         /// </summary>
-        public string ExtendDevice1 { set; get; }
+        public string ExtendDevice1 { set; get; } = "0";
 
         /// <summary>
         /// 扩展设备2
         /// </summary>
-        public string ExtendDevice2 { set; get; }
+        public string ExtendDevice2 { set; get; } = "0";
 
         /// <summary>
         /// 扩展设备3
         /// </summary>
-        public string ExtendDevice3 { set; get; }
+        public string ExtendDevice3 { set; get; } = "0";
 
         /// <summary>
         /// 扩展设备4
         /// </summary>
-        public string ExtendDevice4 { set; get; }
+        public string ExtendDevice4 { set; get; } = "0";
 
         /// <summary>
         /// 扩展设备5
         /// </summary>
-        public string ExtendDevice5 { set; get; }
+        public string ExtendDevice5 { set; get; } = "0";
 
         /// <summary>
         /// 扩展设备6
         /// </summary>
-        public string ExtendDevice6 { set; get; }
+        public string ExtendDevice6 { set; get; } = "0";
 
         /// <summary>
         /// 位移速率
         /// </summary>
-        public string PosiSpeed { set; get; }
+        public string PosiSpeed { set; get; } = "0";
 
         /// <summary>
         /// 应力速率
         /// </summary>
-        public string StressSpeed { set; get; }
+        public string StressSpeed { set; get; } = "0";
 
     }
 

@@ -101,5 +101,24 @@ namespace GZKL.Client.UI.Common
             cs.Dispose();
             return Encoding.Default.GetString(ms.ToArray());
         }
+
+        /// <summary>
+        /// SHA 512加密
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static string SHA512Encrypt(string source)
+        {
+            string result = "";
+            byte[] buffer = Encoding.UTF8.GetBytes(source);//UTF-8 编码
+
+            //64字节,512位
+            SHA512CryptoServiceProvider SHA512 = new SHA512CryptoServiceProvider();
+            byte[] h5 = SHA512.ComputeHash(buffer);
+
+            result = BitConverter.ToString(h5).Replace("-", string.Empty);
+
+            return result.ToLower();
+        }
     }
 }

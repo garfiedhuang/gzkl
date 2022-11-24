@@ -1,4 +1,5 @@
 ﻿using GZKL.Client.UI.Common;
+using GZKL.Client.UI.Models;
 using GZKL.Client.UI.ViewsModels;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,151 @@ namespace GZKL.Client.UI.Factories.Collect
 
         public override void ImportData(AutoCollectViewModel viewModel)
         {
-            throw new NotImplementedException();
+            var testDataRow = viewModel.Model.UnfinishTestData?.Rows[0];
+
+            if (testDataRow == null)
+            {
+                throw new Exception("不存在检测主数据");
+            }
+
+            //检测主数据
+            var test = new ExecuteTestInfo();
+
+            test.Deadline = (testDataRow["Age_Int"] ?? "0").ToString();
+            test.TestTime = Convert.ToDateTime(testDataRow["testdate"] ?? DateTime.MinValue);
+
+            test.OrgNo = viewModel.Model.OrgNo;
+            test.TestItemNo = viewModel.Model.SystemTestItemNo;
+            test.TestNo = viewModel.Model.QueryTestNo;
+            test.SampleNo = viewModel.Model.QuerySampleNo;
+
+            //判断当前主表是否存在检测记录
+            var rowCount = viewModel.Model.TestData?.Count(w => w.OrgNo == test.OrgNo &&
+                                                             w.TestItemNo == test.TestItemNo &&
+                                                             w.TestNo == test.TestNo &&
+                                                             w.SampleNo == test.SampleNo &&
+                                                             w.Deadline == test.Deadline) ?? 0;
+            if (rowCount == 0)
+            {
+                var testId = base.AddTest(test);
+                if (testId > 0 && viewModel.Model.UnfinishTestDetailData?.Rows?.Count > 0)
+                {
+                    //检测明细数据
+                    var testDetail = new ExecuteTestDetailInfo();
+                    var dr = viewModel.Model.UnfinishTestDetailData.Rows[0];
+
+                    testDetail.TestId = testId;
+                    testDetail.ExperimentNo = Convert.ToInt32(dr["IntestID"]);
+                    testDetail.PlayTime = Convert.ToDateTime(dr["testdate"] ?? DateTime.MinValue);
+
+                    if (!dr.IsNull("最大力(Fm)"))
+                    {
+                        testDetail.MaxDot = (dr["最大力(Fm)"] ?? "0").ToString();
+                    }
+                    else if (!dr.IsNull("最大力"))
+                    {
+                        testDetail.MaxDot = (dr["最大力"] ?? "0").ToString();
+                    }
+                    else if (!dr.IsNull("试件破坏载荷(F)"))
+                    {
+                        testDetail.MaxDot = (dr["试件破坏载荷(F)"] ?? "0").ToString();
+                    }
+                    else if (!dr.IsNull("立方体破坏压力(Nu)"))
+                    {
+                        testDetail.MaxDot = (dr["立方体破坏压力(Nu)"] ?? "0").ToString();
+                    }
+                    else if (!dr.IsNull("最大弯曲力(Fbb)"))
+                    {
+                        testDetail.MaxDot = (dr["最大弯曲力(Fbb)"] ?? "0").ToString();
+                    }
+                    else if (!dr.IsNull("最大实际压缩力(Fmc)"))
+                    {
+                        testDetail.MaxDot = (dr["最大实际压缩力(Fmc)"] ?? "0").ToString();
+                    }
+                    else if (!dr.IsNull("破坏时的最大载荷(Fc)"))
+                    {
+                        testDetail.MaxDot = (dr["破坏时的最大载荷(Fc)"] ?? "0").ToString();
+                    }
+
+
+                    if (!dr.IsNull("断后标距(Lu)"))
+                    {
+                        testDetail.GaugeLength = (dr["断后标距(Lu)"] ?? "0").ToString();
+                    }
+
+
+                    if (!dr.IsNull("上屈服力"))
+                    {
+                        var tempUpYieldDot = dr["上屈服力"].ToString().Trim();
+
+                        if (!string.IsNullOrEmpty(tempUpYieldDot))
+                        {
+                            testDetail.UpYieldDot = tempUpYieldDot;
+                        }
+                    }
+                    else if (!dr.IsNull("上屈服压缩力(FeHc)"))
+                    {
+                        var tempUpYieldDot = dr["上屈服压缩力(FeHc)"].ToString().Trim();
+
+                        if (!string.IsNullOrEmpty(tempUpYieldDot))
+                        {
+                            testDetail.UpYieldDot = tempUpYieldDot;
+                        }
+                    }
+
+
+                    if (!dr.IsNull("下屈服力"))
+                    {
+                        var tempDownYieldDot = dr["下屈服力"].ToString().Trim();
+
+                        if (!string.IsNullOrEmpty(tempDownYieldDot))
+                        {
+                            testDetail.DownYieldDot = tempDownYieldDot;
+                        }
+                    }
+                    else if (!dr.IsNull("下屈服压缩力(FeLc)"))
+                    {
+                        var tempDownYieldDot = dr["下屈服压缩力(FeLc)"].ToString().Trim();
+
+                        if (!string.IsNullOrEmpty(tempDownYieldDot))
+                        {
+                            testDetail.DownYieldDot = tempDownYieldDot;
+                        }
+                    }
+
+                    //判断当前明细表是否存在检测记录
+                    rowCount = viewModel.Model.TestDetailData?.Count(w => w.TestId == testId &&
+                                                                          w.ExperimentNo == testDetail.ExperimentNo) ?? 0;
+                    if (rowCount == 0)
+                    {
+                        base.AddTestDetail(test.SampleNo, testDetail);
+                    }
+
+                    //检测点表数据
+                    if (viewModel.Model.UnfinishOriginalData?.Rows?.Count > 0)
+                    {
+                        var originalData = new ExecuteOriginalDataInfo();
+
+                        var originDataRow = viewModel.Model.UnfinishOriginalData.Rows[0];
+
+                        originalData.ExperimentNo = Convert.ToInt32(originDataRow["IntestID"] ?? "0");
+                        originalData.PlayTime = Convert.ToDateTime(originDataRow["TimeValue"] ?? DateTime.MinValue);
+                        originalData.LoadValue = (originDataRow["LoadValue"] ?? "0").ToString();
+                        originalData.PositionValue = (originDataRow["PosiValue"] ?? "0").ToString();
+                        originalData.ExtendValue = (originDataRow["ExtnValue"] ?? "0").ToString();
+                        originalData.BigDeformValue = (originDataRow["LoadValue"] ?? "0").ToString();
+
+                        rowCount = viewModel.Model.OriginalData?.Count(w => w.TestId == testId &&
+                                                                          w.ExperimentNo == originalData.ExperimentNo &&
+                                                                          w.PlayTime == originalData.PlayTime) ?? 0;
+
+                        if (rowCount == 0)
+                        {
+                            base.AddOriginalData(test.SampleNo, originalData);
+                        }
+                    }
+                }
+            }
         }
 
         public override void QueryDeviceData(AutoCollectViewModel viewModel)

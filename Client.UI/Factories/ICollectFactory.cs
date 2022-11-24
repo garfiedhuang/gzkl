@@ -99,72 +99,6 @@ namespace GZKL.Client.UI.Factories
             {
                 throw new Exception($"本样品[{data.SampleNo}]数据，写入[biz_interface_import_detail]表失败！");
             }
-
-
-            /*  old logic
-            var sql = @"SELECT [test_no] FROM [dbo].[biz_interface_import_detail] WHERE [interface_id]=@interfaceId AND [test_item_id]=@testItemId AND [test_item_no]=@testItemNo AND [sample_no]=@sampleNo";
-
-            var parameters = new SqlParameter[4] {
-                new SqlParameter("@interfaceId", viewModel.Model.InterfaceId),
-                new SqlParameter("@testItemId", viewModel.Model.InterfaceTestItemId),//接口检测项ID
-                new SqlParameter("@testItemNo", viewModel.Model.SystemTestItemNo),//系统检测项编号
-                new SqlParameter("@sampleNo", viewModel.Model.QuerySampleNo)
-            };
-
-            var dbTestNo = SQLHelper.ExecuteScalar(sql, parameters).ToString();
-
-            if (!string.IsNullOrEmpty(dbTestNo) && dbTestNo != viewModel.Model.QueryTestNo)
-            {
-                throw new Exception($"本样品[{viewModel.Model.QuerySampleNo}]数据已导入，且与上次的检测编号不一致，不能再次导入！");
-            }
-
-            //写入数据库
-            sql = @"INSERT INTO [dbo].[biz_interface_import_detail]
-           ([interface_id]
-           ,[test_item_no]
-           ,[test_item_id]
-           ,[test_no]
-           ,[sample_no]
-           ,[remark]
-           ,[is_enabled]
-           ,[is_deleted]
-           ,[create_dt]
-           ,[create_user_id]
-           ,[update_dt]
-           ,[update_user_id])
-     VALUES
-           (@interfaceId
-           ,@testItemNo
-           ,@testItemId
-           ,@testNo
-           ,@sampleNo
-           ,@remark,
-           ,1
-           ,0
-           ,@createDt
-           ,@userId
-           ,@createDt
-           ,@userId)";
-
-            parameters = new SqlParameter[8] {
-                new SqlParameter("@interfaceId", viewModel.Model.InterfaceId),
-                new SqlParameter("@testItemId", viewModel.Model.InterfaceTestItemId),//接口检测项ID
-                new SqlParameter("@testItemNo", viewModel.Model.SystemTestItemNo),//系统检测项编号
-                new SqlParameter("@testNo", viewModel.Model.QueryTestNo),
-                new SqlParameter("@sampleNo", viewModel.Model.QuerySampleNo),
-                new SqlParameter("@remark", viewModel.Model.InterfaceName),
-                new SqlParameter("@createDt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
-                new SqlParameter("@userId", SessionInfo.Instance.Session.Id)
-            };
-
-            var result = SQLHelper.ExecuteNonQuery(sql, parameters);
-
-            if (result == 0)
-            {
-                throw new Exception($"本样品[{viewModel.Model.QuerySampleNo}]数据，写入[biz_interface_import_detail]表失败！");
-            }
-
-            */
         }
 
         /// <summary>
@@ -172,7 +106,7 @@ namespace GZKL.Client.UI.Factories
         /// </summary>
         /// <param name="data"></param>
         /// <exception cref="Exception"></exception>
-        internal virtual void AddTest(ExecuteTestInfo data)
+        internal virtual long AddTest(ExecuteTestInfo data)
         {
             //写入数据库
             var sql = @"INSERT INTO [dbo].[biz_execute_test]
@@ -187,7 +121,7 @@ namespace GZKL.Client.UI.Factories
            ,[create_dt]
            ,[create_user_id]
            ,[update_dt]
-           ,[update_user_id])
+           ,[update_user_id]) OUTPUT [biz_execute_test].[id]
      VALUES
            (@orgNo
            ,@testNo
@@ -214,71 +148,14 @@ namespace GZKL.Client.UI.Factories
                 new SqlParameter("@userId", SessionInfo.Instance.Session.Id)
             };
 
-            var result = SQLHelper.ExecuteNonQuery(sql, parameters);
+            var result = Convert.ToInt64(SQLHelper.ExecuteScalar(sql, parameters)); //result为新增后的主键ID
 
             if (result < 1)
             {
                 throw new Exception($"本样品[{data.SampleNo}]数据，写入[biz_execute_test]表失败！");
             }
 
-            /* old logic
-             * 
-            var result = 0;
-
-            foreach (DataRow dr in viewModel.Model.UnfinishTestData?.Rows)
-            {
-                //写入数据库
-                var sql = @"INSERT INTO [dbo].[biz_execute_test]
-           ([org_no]
-           ,[test_no]
-           ,[sample_no]
-           ,[test_type_no]
-           ,[test_item_no]
-           ,[deadline]
-           ,[test_time]
-           ,[is_deleted]
-           ,[create_dt]
-           ,[create_user_id]
-           ,[update_dt]
-           ,[update_user_id])
-     VALUES
-           (@orgNo
-           ,@testNo
-           ,@sampleNo
-           ,@testTypeNo
-           ,@testItemNo
-           ,@testTime
-           ,@deadline
-           ,0
-           ,@createDt
-           ,@userId
-           ,@createDt
-           ,@userId)";
-
-                var deadline = dr["Age_Int"].ToString();
-                var testTime = dr["Dates"].ToString();
-
-                var parameters = new SqlParameter[9] {
-                                    new SqlParameter("@orgNo", viewModel.Model.OrgNo),
-                                    new SqlParameter("@testNo", viewModel.Model.QueryTestNo),
-                                    new SqlParameter("@sampleNo", viewModel.Model.QuerySampleNo),
-                                    new SqlParameter("@testTypeNo", viewModel.Model.TestTypeNo),//接口检测类型编号
-                                    new SqlParameter("@testItemNo", viewModel.Model.SystemTestItemNo),//系统检测项编号
-                                    new SqlParameter("@testTime", testTime),
-                                    new SqlParameter("@deadline", deadline),
-                                    new SqlParameter("@createDt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
-                                    new SqlParameter("@userId", SessionInfo.Instance.Session.Id)
-                };
-
-                result += SQLHelper.ExecuteNonQuery(sql, parameters);
-            }
-
-            if (result != viewModel.Model.UnfinishTestData?.Rows.Count)
-            {
-                throw new Exception($"本样品[{viewModel.Model.QuerySampleNo}]数据，写入[biz_execute_test]表失败！");
-            }
-
-            */
+            return result;
         }
 
         /// <summary>
@@ -294,7 +171,7 @@ namespace GZKL.Client.UI.Factories
            ([test_id]
            ,[experiment_no]
            ,[play_time]
-           ,[test_precept_name]
+           ,[press_unit_name]
            ,[file_name]
            ,[sample_shape]
            ,[area]
@@ -308,17 +185,18 @@ namespace GZKL.Client.UI.Factories
            ,[sample_min_dia]
            ,[sample_out_dia]
            ,[sample_inner_dia]
-           ,[deform_sensor_name]
+           ,[load_unit_name]
+           ,[encription]
            ,[is_deleted]
            ,[create_dt]
            ,[create_user_id]
            ,[update_dt]
-           ,[update_user_id])
+           ,[update_user_id]) OUTPUT [biz_execute_test_detail].[id]
      VALUES
            (@testId
            ,@experimentNo
            ,@playTime
-           ,@testPreceptName
+           ,@pressUnitName
            ,@fileName
            ,@sampleShape
            ,@area
@@ -332,18 +210,19 @@ namespace GZKL.Client.UI.Factories
            ,@sampleMinDia
            ,@sampleOutDia
            ,@sampleInnerDia
-           ,@deformSensorName
+           ,@loadUnitName
+           ,@encription
            ,0
            ,@createDt
            ,@userId
            ,@createDt,
            ,@userId)";
 
-            var parameters = new SqlParameter[20] {
+            var parameters = new SqlParameter[21] {
                         new SqlParameter("@testId", data.TestId),
                         new SqlParameter("@experimentNo", data.ExperimentNo),
                         new SqlParameter("@playTime", data.PlayTime),
-                        new SqlParameter("@testPreceptName", data.TestPreceptName),
+                        new SqlParameter("@pressUnitName", data.PressUnitName),
                         new SqlParameter("@fileName", data.FileName),//系统检测项编号
                         new SqlParameter("@sampleShape", data.SampleShape),
                         new SqlParameter("@area", data.Area),
@@ -357,123 +236,32 @@ namespace GZKL.Client.UI.Factories
                         new SqlParameter("@sampleMinDia", data.SampleMinDia),
                         new SqlParameter("@sampleOutDia", data.SampleOutDia),
                         new SqlParameter("@sampleInnerDia", data.SampleInnerDia),
-                        new SqlParameter("@deformSensorName", data.DeformSensorName),
+                        new SqlParameter("@loadUnitName", data.LoadUnitName),
+                        new SqlParameter("@encription", data.Encryption),
                         new SqlParameter("@createDt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
                         new SqlParameter("@userId", SessionInfo.Instance.Session.Id)
                 };
 
-            var result = SQLHelper.ExecuteNonQuery(sql, parameters);
+            var result = Convert.ToInt64(SQLHelper.ExecuteScalar(sql, parameters)); //result为新增后的主键ID
 
             if (result < 1)
             {
                 throw new Exception($"本样品[{sampleNo}]数据，写入[biz_execute_test_detail]表失败！");
             }
 
-            /* old logic
-             * 
-            var result = 0;
-
-            foreach (DataRow dr in viewModel.Model.UnfinishTestDetailData?.Rows)
+            //更新加密字段encription
+            sql = @"UPDATE [dbo].[biz_execute_test_detail] SET [encription]=@encription WHERE [id]=@id";
+            parameters = new SqlParameter[2] {
+                        new SqlParameter("@id", result),
+                        new SqlParameter("@encription",EncryptMaxDot(result,data.MaxDot))
+            };
+            
+            result = SQLHelper.ExecuteNonQuery(sql, parameters);
+            if (result < 1)
             {
-                //写入数据库
-                var sql = @"INSERT INTO [dbo].[biz_execute_test_detail]
-           ([test_id]
-           ,[experiment_no]
-           ,[play_time]
-           ,[test_precept_name]
-           ,[file_name]
-           ,[sample_shape]
-           ,[area]
-           ,[gauge_length]
-           ,[up_yield_dot]
-           ,[down_yield_dot]
-           ,[max_dot]
-           ,[sample_width]
-           ,[sample_thick]
-           ,[sample_dia]
-           ,[sample_min_dia]
-           ,[sample_out_dia]
-           ,[sample_inner_dia]
-           ,[deform_sensor_name]
-           ,[is_deleted]
-           ,[create_dt]
-           ,[create_user_id]
-           ,[update_dt]
-           ,[update_user_id])
-     VALUES
-           (@testId
-           ,@experimentNo
-           ,@playTime
-           ,@testPreceptName
-           ,@fileName
-           ,@sampleShape
-           ,@area
-           ,@gaugeLength
-           ,@upYieldDot
-           ,@downYieldDot
-           ,@maxDot
-           ,@sampleWidth
-           ,@sampleThick
-           ,@sampleDia
-           ,@sampleMinDia
-           ,@sampleOutDia
-           ,@sampleInnerDia
-           ,@deformSensorName
-           ,0
-           ,@createDt
-           ,@userId
-           ,@createDt,
-           ,@userId)";
-
-                var experimentNo = viewModel.Model.UnfinishTestData.Rows[0]["experiment_no"].ToString();
-                var playTime = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-                var deformSensorName = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-                var testPreceptName = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-                var fileName = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-                var sampleShape = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-                var area = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-                var gaugeLength = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-                var upYieldDot = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-                var downYieldDot = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-                var maxDot = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-                var sampleWidth = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-                var sampleThick = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-                var sampleDia = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-                var sampleMinDia = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-                var sampleOutDia = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-                var sampleInnerDia = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-
-                var parameters = new SqlParameter[20] {
-                                    new SqlParameter("@testId", testId),
-                                    new SqlParameter("@experimentNo", experimentNo),
-                                    new SqlParameter("@playTime", playTime),
-                                    new SqlParameter("@testPreceptName", testPreceptName),//接口检测类型编号
-                                    new SqlParameter("@fileName", fileName),//系统检测项编号
-                                    new SqlParameter("@sampleShape", sampleShape),
-                                    new SqlParameter("@area", area),
-                                    new SqlParameter("@gaugeLength", gaugeLength),
-                                    new SqlParameter("@upYieldDot", upYieldDot),
-                                    new SqlParameter("@downYieldDot", downYieldDot),
-                                    new SqlParameter("@maxDot", maxDot),
-                                    new SqlParameter("@sampleWidth", sampleWidth),
-                                    new SqlParameter("@sampleThick", sampleThick),
-                                    new SqlParameter("@sampleDia", sampleDia),
-                                    new SqlParameter("@sampleMinDia", sampleMinDia),
-                                    new SqlParameter("@sampleOutDia", sampleOutDia),
-                                    new SqlParameter("@sampleInnerDia", sampleInnerDia),
-                                    new SqlParameter("@deformSensorName", deformSensorName),
-                                    new SqlParameter("@createDt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
-                                    new SqlParameter("@userId", SessionInfo.Instance.Session.Id)
-                };
-
-                result += SQLHelper.ExecuteNonQuery(sql, parameters);
+                throw new Exception($"本样品[{sampleNo}]数据，更新[biz_execute_test_detail]表加密字段失败！");
             }
 
-            if (result != viewModel.Model.UnfinishTestDetailData?.Rows.Count)
-            {
-                throw new Exception($"本样品[{viewModel.Model.QuerySampleNo}]数据，写入[biz_execute_test_detail]表失败！");
-            }
-            */
         }
 
         /// <summary>
@@ -663,6 +451,46 @@ namespace GZKL.Client.UI.Factories
             }
 
             */
+        }
+
+        /// <summary>
+        /// 格式转换
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        internal virtual string DataAmpt(double value)
+        {
+            var result = "0";
+            var tempValue = Math.Abs(value);
+            if (tempValue >= 100)
+            {
+                result = Math.Round(value, 1).ToString();
+            }
+            else if (tempValue >= 10 && tempValue < 100)
+            {
+                result = Math.Round(value, 2).ToString();
+            }
+            else if (tempValue < 10)
+            {
+                result = Math.Round(value, 3).ToString();
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 加密MaxDox
+        /// 加密字符格式：ontall_id_max_dot
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="maxDot"></param>
+        /// <returns></returns>
+        internal string EncryptMaxDot(long id,string maxDot)
+        {
+            var plaintext = $"ontall_{id}_{maxDot}";
+            var ciphertext = SecurityHelper.SHA512Encrypt(plaintext);
+
+            return ciphertext;
         }
 
     }

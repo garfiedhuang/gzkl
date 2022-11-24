@@ -610,16 +610,16 @@ namespace GZKL.Client.UI.ViewsModels
             //原始数据信息
             using (var data = SQLHelper.GetDataTable(sql3, parameters))
             {
-                if (Model.DotData?.Count > 0)
+                if (Model.OriginalData?.Count > 0)
                 {
-                    Model.DotData.Clear();
+                    Model.OriginalData.Clear();
                 }
 
                 if (data != null && data.Rows.Count > 0)
                 {
                     foreach (DataRow dataRow in data.Rows)
                     {
-                        Model.DotData.Add(new ExecuteOriginalDataInfo()
+                        Model.OriginalData.Add(new ExecuteOriginalDataInfo()
                         {
                             Id = Convert.ToInt64(dataRow["id"]),
                             TestId = Convert.ToInt64(dataRow["test_id"]),
