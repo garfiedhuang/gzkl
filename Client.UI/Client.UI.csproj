@@ -143,6 +143,7 @@
     <Compile Include="Models\BackupModel.cs" />
     <Compile Include="Models\AutoCollectModel.cs" />
     <Compile Include="Models\ClearModel.cs" />
+    <Compile Include="Models\MenuModel.cs" />
     <Compile Include="ViewModels\BaseSearchViewModel.cs" />
     <Compile Include="Models\ExportModel.cs" />
     <Compile Include="Models\InterfaceModel.cs" />
@@ -163,6 +164,7 @@
     <Compile Include="CustomControls\Template\MenuTemplateSelector.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\BackupViewModel.cs" />
+    <Compile Include="ViewModels\MenuViewModel.cs" />
     <Compile Include="ViewModels\ExportViewModel.cs" />
     <Compile Include="ViewModels\AutoCollectViewModel.cs" />
     <Compile Include="ViewModels\InterfaceViewModel.cs" />
@@ -229,6 +231,12 @@
     </Compile>
     <Compile Include="Views\SystemMgt\Config\Config.xaml.cs">
       <DependentUpon>Config.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SystemMgt\Menu\Edit.xaml.cs">
+      <DependentUpon>Edit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SystemMgt\Menu\Menu.xaml.cs">
+      <DependentUpon>Menu.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SystemMgt\Permission\Edit.xaml.cs">
       <DependentUpon>Edit.xaml</DependentUpon>
@@ -321,6 +329,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\SystemMgt\Config\Config.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SystemMgt\Menu\Edit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SystemMgt\Menu\Menu.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

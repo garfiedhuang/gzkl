@@ -34,6 +34,7 @@ namespace GZKL.Client.UI.ViewsModels
             EditCommand = new RelayCommand<int>(this.Edit);
             DeleteCommand = new RelayCommand<int>(this.Delete);
             AddCommand = new RelayCommand(this.Add);
+            BindPermissionCommand = new RelayCommand(this.BindPermission);
             PageUpdatedCommand = new RelayCommand<FunctionEventArgs<int>>(PageUpdated);
 
             RoleModels = new List<RoleModel>();
@@ -148,6 +149,11 @@ namespace GZKL.Client.UI.ViewsModels
         /// 分页
         /// </summary>
         public RelayCommand<FunctionEventArgs<int>> PageUpdatedCommand { get; set; }
+
+        /// <summary>
+        /// 绑定权限
+        /// </summary>
+        public RelayCommand BindPermissionCommand { get; set; }
 
 
         #endregion
@@ -383,6 +389,15 @@ namespace GZKL.Client.UI.ViewsModels
             {
                 MessageBox.Show(ex.Message, "提示信息");
             }
+        }
+
+
+        /// <summary>
+        /// 绑定权限
+        /// </summary>
+        public void BindPermission()
+        { 
+        
         }
 
         /// <summary>

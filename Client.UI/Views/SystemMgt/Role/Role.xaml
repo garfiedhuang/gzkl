@@ -42,6 +42,8 @@
             <Button Content="修改"  Style="{StaticResource EditBtnStyle}" 
                     VerticalAlignment="Center" Margin="10 0 0 0" Command="{Binding EditCommand}"/>
             <Button Content="删除"  VerticalAlignment="Center" Margin="10 0 0 0" Style="{StaticResource DelBtnStyle}" Command="{Binding DeleteCommand}" />
+
+            <Button Content="菜单权限"  VerticalAlignment="Center" Margin="10 0 0 0" Style="{StaticResource ButtonSuccess}" Command="{Binding BindPermissionCommand}" />
         </WrapPanel>
 
         <DataGrid Margin="15" Grid.Row="2"

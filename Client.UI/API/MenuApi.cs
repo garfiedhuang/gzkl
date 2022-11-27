@@ -57,6 +57,12 @@ namespace GZKL.Client.UI.API
                 list.Add(new ModuleModel
                 {
                     Code = "\ue663",
+                    Name = "菜单管理",
+                    TypeName = "SystemMgt.Menu.Menu"
+                });
+                list.Add(new ModuleModel
+                {
+                    Code = "\ue663",
                     Name = "角色管理",
                     TypeName = "SystemMgt.Role.Role"
                 });

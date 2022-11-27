@@ -163,12 +163,16 @@
                         <RowDefinition Height="135"></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="GZKL" FontWeight="Bold" 
-                       FontSize="33" Foreground="#3DD0FB" 
+                    <TextBlock Text="GZKL" 
+                               FontWeight="Bold" 
+                               FontSize="30" 
+                               Foreground="#3DD0FB" 
                                TextAlignment="Center"
                                VerticalAlignment="Top"
-                                Margin="0 13 0 0"
-                       HorizontalAlignment="Center" Height="48"  Width="136"/>
+                               Margin="0 13 0 0"
+                               HorizontalAlignment="Center" 
+                               TextWrapping="Wrap"
+                               />
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Height="40">
                         <Image Source="Assets/Images/img.jpg" Width="40" Height="40" Stretch="Fill">
                             <Image.Clip>
