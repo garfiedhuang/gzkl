@@ -8,8 +8,8 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              WindowStartupLocation="CenterScreen"
              mc:Ignorable="d" 
-             Title="新增/编辑接口信息"
-             Height="500" 
+             Title="新增/编辑菜单信息"
+             Height="550" 
              Width="650" 
              ResizeMode="NoResize">
     <!--<hc:TransitioningContentControl>-->
@@ -25,42 +25,80 @@
                                 Width="350" 
                                 HorizontalAlignment="Left"
                                 x:Name="txtMenuName"
-                                hc:InfoElement.Placeholder="请输入接口名称" 
-                                hc:InfoElement.Title="接口名称" 
-                                Text="{Binding Model.MenuName,Mode=TwoWay}" 
+                                hc:InfoElement.Placeholder="请输入菜单名称" 
+                                hc:InfoElement.Title="菜单名称" 
+                                Text="{Binding Model.Name,Mode=TwoWay}" 
                                 hc:InfoElement.Necessary="True"/>
                 </WrapPanel>
 
                 <WrapPanel>
-                    <hc:TextBox x:Name="txtAccessDbPath" 
+                    <hc:TextBox x:Name="txtUrl" 
                              Margin="0,0,0,10" 
                              Width="350" 
                              HorizontalAlignment="Left"
-                             hc:InfoElement.Placeholder="请选择保存路径" 
-                             hc:InfoElement.Title="保存路径" 
+                             hc:InfoElement.Placeholder="请输入菜单路径" 
+                             hc:InfoElement.Title="菜单路径" 
                              Style="{StaticResource TextBoxExtend}" 
-                             hc:InfoElement.Necessary="True"
-                             Text="{Binding Model.AccessDbPath,Mode=TwoWay}"/>
+                             hc:InfoElement.Necessary="False"
+                             Text="{Binding Model.Url,Mode=TwoWay}"/>
+                </WrapPanel>
 
-                    <Button x:Name="btnSelect" 
-                            Margin="10,18,0,0" 
-                            Visibility="Visible" 
-                            Content="选择..." 
-                            Width="60" 
-                            Command="{Binding SelectCommand}"
-                             CommandParameter="{Binding Model}"
-                            hc:BorderElement.CornerRadius="5"/>
+                <WrapPanel>
+                    <hc:ComboBox Margin="0,0,0,10" 
+                                 Width="250"  
+                                 HorizontalAlignment="Left"
+                                 x:Name="cmbMenuType"
+                                 IsReadOnly="True"
+                                 IsEnabled="False"
+                                 ShowClearButton="True" 
+                                 IsEditable="False" 
+                                 hc:InfoElement.Placeholder="请选择类型"
+                                 DisplayMemberPath="Value" 
+                                 SelectedValuePath="Key"
+                                 ItemsSource="{Binding MenuTypeData}"
+                                 SelectedValue="{Binding Model.Type}"
+                                 hc:InfoElement.Title="类型" 
+                                 hc:InfoElement.Necessary="True">
+                    </hc:ComboBox>
+                </WrapPanel>
+
+                <!--<WrapPanel>
+                    <hc:ComboBox Margin="0,0,0,10" 
+                                 Width="250"  
+                                 HorizontalAlignment="Left"
+                                 x:Name="cmbParentMenuId"
+                                 ShowClearButton="True" 
+                                 IsEditable="False" 
+                                 hc:InfoElement.Placeholder="请选择父菜单"
+                                 DisplayMemberPath="Value" 
+                                 SelectedValuePath="Key"
+                                 ItemsSource="{Binding ParentMenuData}"
+                                 SelectedValue="{Binding Model.ParentId}"
+                                 hc:InfoElement.Title="父菜单" 
+                                 hc:InfoElement.Necessary="False">
+                    </hc:ComboBox>
+                </WrapPanel>-->
+
+                <WrapPanel>
+                    <hc:TextBox Margin="0,0,0,10" 
+                                Width="350"  
+                                HorizontalAlignment="Left"
+                                x:Name="txtSort" 
+                                hc:InfoElement.Placeholder="请输入排序" 
+                                hc:InfoElement.Title="排序" 
+                                Text="{Binding Model.Sort,Mode=TwoWay}" 
+                                hc:InfoElement.Necessary="False"/>
                 </WrapPanel>
 
                 <WrapPanel>
                     <hc:TextBox Margin="0,0,0,10" 
                                 Width="350"  
                                 HorizontalAlignment="Left"
-                                x:Name="txtAccessDbName" 
-                                hc:InfoElement.Placeholder="请输入实例名称" 
-                                hc:InfoElement.Title="实例名称" 
-                                Text="{Binding Model.AccessDbName,Mode=TwoWay}" 
-                                hc:InfoElement.Necessary="True"/>
+                                x:Name="txtIcon" 
+                                hc:InfoElement.Placeholder="请输入图标" 
+                                hc:InfoElement.Title="图标" 
+                                Text="{Binding Model.Icon,Mode=TwoWay}" 
+                                hc:InfoElement.Necessary="False"/>
                 </WrapPanel>
 
                 <WrapPanel>
@@ -78,20 +116,6 @@
                                  hc:InfoElement.Title="是否启用" 
                                  hc:InfoElement.Necessary="True">
                     </hc:ComboBox>
-                </WrapPanel>
-
-                <WrapPanel>
-                    <hc:TextBox Margin="0,0,0,10" 
-                                Width="550" 
-                                HorizontalAlignment="Left"
-                                x:Name="txtRemark"
-                                TextWrapping="WrapWithOverflow"
-                                hc:InfoElement.ContentHeight="60"
-                                hc:InfoElement.Placeholder="请输入备注" 
-                                hc:InfoElement.Title="备注" 
-                                Text="{Binding Model.Remark,Mode=TwoWay}"
-                                hc:InfoElement.Necessary="False"/>
-
                 </WrapPanel>
             </StackPanel>
         </StackPanel>

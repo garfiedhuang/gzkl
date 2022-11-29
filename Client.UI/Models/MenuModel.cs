@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using GZKL.Client.UI.Common;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -42,7 +43,7 @@ namespace GZKL.Client.UI.Models
         /// <summary>
         /// 类型
         /// </summary>
-        public string Type { set; get; }
+        public int Type { set; get; }
 
         /// <summary>
         /// 排序
@@ -75,29 +76,6 @@ namespace GZKL.Client.UI.Models
             set { isSelected = value; RaisePropertyChanged("IsSelected"); }
         }
 
-    }
-
-    public enum MenuType
-    {
-        /// <summary>
-        /// 根菜单
-        /// </summary>
-        Root = 1,
-
-        /// <summary>
-        /// 一级菜单
-        /// </summary>
-        PrimaryMenu,
-
-        /// <summary>
-        /// 二级菜单
-        /// </summary>
-        SecondaryMenu,
-
-        /// <summary>
-        /// 三级菜单
-        /// </summary>
-        ThirdMenu
     }
 
     public class MenuDataModel : ObservableObject

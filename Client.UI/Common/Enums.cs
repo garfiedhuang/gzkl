@@ -28,6 +28,33 @@ namespace GZKL.Client.UI.Common
         Enabled = 1
     }
 
+    public enum MenuType
+    {
+        /// <summary>
+        /// 根菜单
+        /// </summary>
+        [Description("根菜单")]
+        Root = 1,
+
+        /// <summary>
+        /// 一级菜单
+        /// </summary>
+        [Description("一级菜单")]
+        Primary,
+
+        /// <summary>
+        /// 二级菜单
+        /// </summary>
+        [Description("二级菜单")]
+        Secondary,
+
+        /// <summary>
+        /// 三级菜单
+        /// </summary>
+        [Description("三级菜单")]
+        Third
+    }
+
     /// <summary>
     /// 采集数据枚举
     /// </summary>

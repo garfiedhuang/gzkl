@@ -17,6 +17,7 @@ using System.Windows.Controls;
 using MessageBox = HandyControl.Controls.MessageBox;
 using GZKL.Client.UI.Views.SystemMgt.Menu;
 using GalaSoft.MvvmLight.Messaging;
+using System.Windows.Markup;
 
 namespace GZKL.Client.UI.ViewsModels
 {
@@ -30,14 +31,13 @@ namespace GZKL.Client.UI.ViewsModels
         /// </summary>
         public MenuViewModel()
         {
-            QueryCommand = new RelayCommand(this.Query);
-            EditCommand = new RelayCommand<int>(this.Edit);
-            DeleteCommand = new RelayCommand<int>(this.Delete);
-            AddCommand = new RelayCommand(this.Add);
+
+            SelectItemChangedCommand = new RelayCommand<MenuDataModel>(this.SelectItemChanged);
 
             this.GridModelList = new ObservableCollection<MenuModel>();
+            this.TreeViewList = new ObservableCollection<MenuDataModel>();
 
-            this.TreeViewList = GetDataList();
+            this.Query();
         }
 
         /// <summary>
@@ -60,30 +60,33 @@ namespace GZKL.Client.UI.ViewsModels
             set { gridModelList = value; RaisePropertyChanged(); }
         }
 
+        /// <summary>
+        /// 已选中的节点
+        /// </summary>
+        private long selectedMenuId;
+        public long SelectedMenuId
+        {
+            get { return selectedMenuId; }
+            set { selectedMenuId = value; RaisePropertyChanged(); }
+        }
+
+        /// <summary>
+        /// 已选中的节点类型
+        /// </summary>
+        private int selectedMenuType;
+        public int SelectedMenuType
+        {
+            get { return selectedMenuType; }
+            set { selectedMenuType = value; RaisePropertyChanged(); }
+        }
+
+        private static List<MenuModel> MenuModels { get; set; }
+
         #endregion
 
         #region Command
 
-        /// <summary>
-        /// 查询命令
-        /// </summary>
-        public RelayCommand QueryCommand { get; set; }
-
-        /// <summary>
-        /// 编辑
-        /// </summary>
-        public RelayCommand<int> EditCommand { get; set; }
-
-        /// <summary>
-        /// 删除
-        /// </summary>
-        public RelayCommand<int> DeleteCommand { get; set; }
-
-        /// <summary>
-        /// 新增
-        /// </summary>
-        public RelayCommand AddCommand { get; set; }
-
+        public RelayCommand<MenuDataModel> SelectItemChangedCommand { get; set; }
 
         #endregion
 
@@ -96,55 +99,68 @@ namespace GZKL.Client.UI.ViewsModels
         {
             try
             {
-                //var sql = new StringBuilder(@"SELECT row_number()over(order by update_dt desc )as row_num
-                //,[id],[category],[value],[text],[remark],[is_enabled],[is_deleted],[create_dt]
-                //,[create_user_id],[update_dt],[update_user_id]
-                //FROM [dbo].[sys_Menu] WHERE [is_deleted]=0");
+                var sql = new StringBuilder(@"SELECT row_number()over(order by update_dt desc )as row_num
+                ,[id],[parent_id],[name],[url],[icon],[type],[sort],[is_enabled],[is_deleted],[create_dt]
+                ,[create_user_id],[update_dt],[update_user_id]
+                FROM [dbo].[sys_menu] WHERE [is_deleted]=0 ORDER BY [type] ASC,[sort] ASC");
 
-                //SqlParameter[] parameters = null;
+                SqlParameter[] parameters = null;
 
-                //if (!string.IsNullOrEmpty(Search.Trim()))
-                //{
-                //    sql.Append($" AND ([category] LIKE @search or [value] LIKE @search or [text] LIKE @search)");
-                //    parameters = new SqlParameter[1] { new SqlParameter("@search", $"%{Search}%") };
-                //}
+                if (MenuModels == null)
+                {
+                    MenuModels = new List<MenuModel>();
+                }
+                else
+                {
+                    MenuModels.Clear();
+                }
 
-                ////sql.Append($" ORDER BY [category] DESC");
+                using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
+                {
+                    if (data != null && data.Rows.Count > 0)
+                    {
+                        foreach (DataRow dataRow in data.Rows)
+                        {
+                            MenuModels.Add(new MenuModel()
+                            {
+                                Id = Convert.ToInt64(dataRow["id"]),
+                                ParentId = Convert.ToInt64(dataRow["parent_id"]),
+                                Name = dataRow["name"].ToString(),
+                                Url = dataRow["url"].ToString(),
+                                Icon = dataRow["icon"].ToString(),
+                                Type = Convert.ToInt32(dataRow["type"]),
+                                Sort = Convert.ToInt32(dataRow["sort"]),
+                                IsEnabled = Convert.ToInt32(dataRow["is_enabled"]),
+                                CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
+                                UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
+                            });
+                        }
+                    }
+                }
 
-                //MenuModels.Clear();//清空前端分页数据
+                this.TreeViewList?.Clear();
 
-                //using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
-                //{
-                //    if (data != null && data.Rows.Count > 0)
-                //    {
-                //        foreach (DataRow dataRow in data.Rows)
-                //        {
-                //            MenuModels.Add(new MenuModel()
-                //            {
-                //                Id = Convert.ToInt64(dataRow["id"]),
-                //                //RowNum = Convert.ToInt64(dataRow["row_num"]),
-                //                //Category = dataRow["category"].ToString(),
-                //                //Value = dataRow["value"].ToString(),
-                //                //Text = dataRow["text"].ToString(),
-                //                //Remark = dataRow["remark"].ToString(),
-                //                IsEnabled = Convert.ToInt32(dataRow["is_enabled"]),
-                //                CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
-                //                UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
-                //            });
-                //        }
-                //    }
-                //}
+                //封装菜单树
+                var roots = MenuModels.Where(w => w.Type == 1)?.ToList();
+                roots?.ForEach(data =>
+                {
+                    if (SelectedMenuId == 0)
+                    {
+                        SelectedMenuId = data.Id;
+                        SelectedMenuType= data.Type;
+                    }
+                    TreeViewList.Add(new MenuDataModel()
+                    {
+                        Index = Convert.ToInt32(data.Id),
+                        Name = data.Name,
+                        Type = (MenuType)data.Type,
+                        DataList = GetTreeViewList(MenuModels.Where(w => w.ParentId == data.Id)?.ToList(), MenuModels),
+                        IsSelected = SelectedMenuId == data.Id,
+                    });
+                });
 
-                ////当前页数
-                //PageIndex = MenuModels.Count > 0 ? 1 : 0;
-                //MaxPageCount = 0;
-
-                ////最大页数
-                //MaxPageCount = PageIndex > 0 ? (int)Math.Ceiling((decimal)MenuModels.Count / DataCountPerPage) : 0;
-
-                ////数据分页
-                //Paging(PageIndex);
-
+                //查询一级菜单明细
+                GetMenuDetail();
             }
             catch (Exception ex)
             {
@@ -156,23 +172,13 @@ namespace GZKL.Client.UI.ViewsModels
         /// 编辑
         /// </summary>
         /// <param name="id"></param>
-        public void Edit(int id)
+        public void Edit(long id)
         {
             try
             {
-                var selected = GridModelList.Where(w => w.IsSelected == true).ToList();
+                var selected = GridModelList.FirstOrDefault(w => w.Id == id);
 
-                if (selected.Count != 1)
-                {
-                    MessageBox.Show($"请选择一条记录进行编辑", "提示信息");
-                    return;
-                }
-
-                id = (int)selected.First().Id;
-
-                var sql = new StringBuilder(@"SELECT [id],[category],[value],[text],[remark],[is_enabled],[is_deleted],[create_dt]
-                ,[create_user_id],[update_dt],[update_user_id]
-                FROM [dbo].[sys_Menu] WHERE [is_deleted]=0 AND [id]=@id");
+                var sql = new StringBuilder(@"SELECT * FROM [dbo].[sys_menu] WHERE [is_deleted]=0 AND [id]=@id");
 
                 var parameters = new SqlParameter[1] { new SqlParameter("@id", id) };
                 using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
@@ -187,10 +193,12 @@ namespace GZKL.Client.UI.ViewsModels
                     var model = new MenuModel()
                     {
                         Id = Convert.ToInt64(dataRow["id"]),
-                        //Category = dataRow["category"].ToString(),
-                        //Value = dataRow["value"].ToString(),
-                        //Text = dataRow["text"].ToString(),
-                        //Remark = dataRow["remark"].ToString(),
+                        ParentId = Convert.ToInt64(dataRow["parent_id"]),
+                        Name = dataRow["name"].ToString(),
+                        Url = dataRow["url"].ToString(),
+                        Icon = dataRow["icon"].ToString(),
+                        Type = Convert.ToInt32(dataRow["type"]),
+                        Sort = Convert.ToInt32(dataRow["sort"]),
                         IsEnabled = Convert.ToInt32(dataRow["is_enabled"]),
                         CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
                         UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
@@ -203,20 +211,24 @@ namespace GZKL.Client.UI.ViewsModels
                         if (r.Value)
                         {
                             sql.Clear();
-                            sql.Append(@"UPDATE [dbo].[sys_Menu]
-   SET [category] = @category
-      ,[value] = @value
-      ,[text] = @text
-      ,[remark] = @remark
+                            sql.Append(@"UPDATE [dbo].[sys_menu]
+   SET [parent_id] = @parentId
+      ,[name] = @name
+      ,[url] = @url
+      ,[icon] = @icon
+      ,[type] = @type
+      ,[sort] = @sort
       ,[is_enabled] = @is_enabled
       ,[update_dt] = @update_dt
       ,[update_user_id] = @user_id
  WHERE [id]=@id");
                             parameters = new SqlParameter[] {
-                            //new SqlParameter("@category", model.Category),
-                            //new SqlParameter("@value", model.Value),
-                            //new SqlParameter("@text", model.Text),
-                            //new SqlParameter("@remark", model.Remark),
+                            new SqlParameter("@parentId", model.ParentId),
+                            new SqlParameter("@name", model.Name),
+                            new SqlParameter("@url", model.Url),
+                            new SqlParameter("@icon", model.Icon),
+                            new SqlParameter("@type", model.Type),
+                            new SqlParameter("@sort", model.Sort),
                             new SqlParameter("@is_enabled", model.IsEnabled),
                             new SqlParameter("@update_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
                             new SqlParameter("@user_id", SessionInfo.Instance.Session.Id),
@@ -240,35 +252,29 @@ namespace GZKL.Client.UI.ViewsModels
         /// 删除
         /// </summary>
         /// <param name="id"></param>
-        public void Delete(int id)
+        public void Delete(long id)
         {
             try
             {
-                var selected = GridModelList.Where(w => w.IsSelected == true).ToList();
-
-                if (selected.Count == 0)
+                var selected = MenuModels.FirstOrDefault(x => x.Id == id);
+                var r = MessageBox.Show($"确定要删除【{string.Join(",", $"{selected.Id}|{selected.Name}")}】吗？", "提示", MessageBoxButton.YesNo);
+                if (r == MessageBoxResult.Yes)
                 {
-                    MessageBox.Show($"请至少选择一条记录进行删除", "提示信息");
-                    return;
+
+                    //判断下级是否还有菜单，如果有不能删除
+                    var includeSubmenu = MenuModels.Count(c => c.ParentId == selected.Id);
+                    if (includeSubmenu > 0)
+                    {
+                        throw new Exception("当前菜单包含子菜单，不能删除！");
+                    }
+
+                    var sql = new StringBuilder(@"UPDATE [dbo].[sys_Menu] SET [is_deleted]=1 WHERE [id]=@id");
+                    var parameters = new SqlParameter[1] { new SqlParameter("@id", id) };
+                    var result = SQLHelper.ExecuteNonQuery(sql.ToString(), parameters);
+
+                    this.Query();
                 }
 
-                if (selected != null)
-                {
-                    //var r = MessageBox.Show($"确定要删除【{string.Join(",", selected.Select(s => $"{s.Category}|{s.Value}|{s.Text}"))}】吗？", "提示", MessageBoxButton.YesNo);
-                    //if (r == MessageBoxResult.Yes)
-                    //{
-                    //    foreach (var dr in selected)
-                    //    {
-                    //        //var sql = new StringBuilder(@"DELETE FROM [dbo].[sys_Menu] WHERE [id] IN(@id)");
-                    //        var sql = new StringBuilder(@"UPDATE [dbo].[sys_Menu] SET [is_deleted]=1 WHERE [id]=@id");
-
-                    //        var parameters = new SqlParameter[1] { new SqlParameter("@id", dr.Id) };
-                    //        var result = SQLHelper.ExecuteNonQuery(sql.ToString(), parameters);
-                    //    }
-
-                    //    this.Query();
-                    //}
-                }
             }
             catch (Exception ex)
             {
@@ -284,15 +290,26 @@ namespace GZKL.Client.UI.ViewsModels
             try
             {
                 MenuModel model = new MenuModel();
+
+                model.ParentId = SelectedMenuId;
+                model.Type = SelectedMenuType+1;
+
+                if (model.Type == 5)
+                {
+                    throw new Exception("最多只能新增三级菜单！");
+                }
+                
                 Edit view = new Edit(model);
                 var r = view.ShowDialog();
                 if (r.Value)
                 {
-                    var sql = @"INSERT INTO [dbo].[sys_Menu]
-           ([category]
-           ,[value]
-           ,[text]
-           ,[remark]
+                    var sql = @"INSERT INTO [dbo].[sys_menu]
+           ([parent_id]
+           ,[name]
+           ,[url]
+           ,[icon]
+           ,[type]
+           ,[sort]
            ,[is_enabled]
            ,[is_deleted]
            ,[create_dt]
@@ -300,10 +317,12 @@ namespace GZKL.Client.UI.ViewsModels
            ,[update_dt]
            ,[update_user_id])
      VALUES
-           (@category
-           ,@value
-           ,@text
-           ,@remark
+           (@parentId
+           ,@name
+           ,@url
+           ,@icon
+           ,@type
+           ,@sort
            ,@is_enabled
            ,0
            ,@create_dt
@@ -312,10 +331,12 @@ namespace GZKL.Client.UI.ViewsModels
            ,@user_id)";
 
                     var parameters = new SqlParameter[] {
-                    //new SqlParameter("@category", model.Category),
-                    //new SqlParameter("@value", model.Value),
-                    //new SqlParameter("@text", model.Text),
-                    //new SqlParameter("@remark", model.Remark),
+                    new SqlParameter("@parentId", SelectedMenuId),
+                    new SqlParameter("@name", model.Name),
+                    new SqlParameter("@url", model.Url),
+                    new SqlParameter("@icon", model.Icon),
+                    new SqlParameter("@type", model.Type),
+                    new SqlParameter("@sort", model.Sort),
                     new SqlParameter("@is_enabled", model.IsEnabled),
                     new SqlParameter("@create_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
                     new SqlParameter("@user_id", SessionInfo.Instance.Session.Id)
@@ -332,20 +353,66 @@ namespace GZKL.Client.UI.ViewsModels
             }
         }
 
+        /// <summary>
+        /// 菜单选中改变事件
+        /// </summary>
+        /// <param name="menuDataModel"></param>
+        private void SelectItemChanged(MenuDataModel menuDataModel)
+        {
+            if (menuDataModel == null)
+            {
+                return;
+            }
+
+            SelectedMenuId = menuDataModel.Index;
+            selectedMenuType = (int)menuDataModel.Type;
+
+            GetMenuDetail();
+        }
         #endregion
 
         #region Privates
 
-        private ObservableCollection<MenuDataModel> GetDataList()
+        private ObservableCollection<MenuDataModel> GetTreeViewList(List<MenuModel> currentData, List<MenuModel> allData)
         {
-            return new ObservableCollection<MenuDataModel>
+            var result = new ObservableCollection<MenuDataModel>();
+            currentData?.ForEach(item =>
             {
-                new MenuDataModel{ Name = "Name1", DataList = new ObservableCollection<MenuDataModel>{ new MenuDataModel { Name = "Name1-1", DataList = null},
-                                                                                                       new MenuDataModel { Name = "Name1-2", DataList = null},} },
-                new MenuDataModel{ Name = "Name2",IsSelected=true,  DataList = new ObservableCollection<MenuDataModel>{ new MenuDataModel { Name = "Name2-1", DataList = null},
-                                                                                                       new MenuDataModel { Name = "Name2-2", DataList = null},} },
-                new MenuDataModel{ Name = "Name3", DataList = null},
-            };
+                result.Add(new MenuDataModel()
+                {
+                    Index = Convert.ToInt32(item.Id),
+                    Name = item.Name,
+                    Type = (MenuType)item.Type,
+                    DataList = GetTreeViewList(allData.Where(w => w.ParentId == item.Id)?.ToList(), allData),
+                    IsSelected = SelectedMenuId == item.Id
+                });
+            });
+
+            return result;
+        }
+
+        private void GetMenuDetail()
+        {
+            this.GridModelList?.Clear();
+
+            var pramaryNodes = MenuModels?.Where(w => w.ParentId == SelectedMenuId)?.ToList();
+
+            pramaryNodes?.ForEach(data =>
+            {
+                GridModelList.Add(new MenuModel()
+                {
+                    Id = Convert.ToInt64(data.Id),
+                    ParentId = data.ParentId,
+                    Name = data.Name,
+                    Url = data.Url,
+                    Icon = data.Icon,
+                    Type = data.Type,
+                    Sort = data.Sort,
+                    IsEnabled = data.IsEnabled,
+                    CreateDt = data.CreateDt,
+                    UpdateDt = data.UpdateDt
+                });
+            });
         }
 
         #endregion

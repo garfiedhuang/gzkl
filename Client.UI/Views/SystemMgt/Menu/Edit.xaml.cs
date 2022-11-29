@@ -30,11 +30,17 @@ namespace GZKL.Client.UI.Views.SystemMgt.Menu
         {
             InitializeComponent();
 
-            //var isEnabledData = new List<KeyValuePair<int, string>>();
-            //isEnabledData.Add(new KeyValuePair<int, string>(0, "0-否"));
-            //isEnabledData.Add(new KeyValuePair<int, string>(1, "1-是"));
+            var isEnabledData = new List<KeyValuePair<int, string>>();
+            isEnabledData.Add(new KeyValuePair<int, string>(0, "0.否"));
+            isEnabledData.Add(new KeyValuePair<int, string>(1, "1.是"));
 
-            //this.DataContext = new { Model = MenuModel, IsEnabledData = isEnabledData };
+            var menuTypeData = new List<KeyValuePair<int, string>>();
+            menuTypeData.Add(new KeyValuePair<int, string>(1, "1.根菜单"));
+            menuTypeData.Add(new KeyValuePair<int, string>(2, "2.一级菜单"));
+            menuTypeData.Add(new KeyValuePair<int, string>(3, "3.二级菜单"));
+            menuTypeData.Add(new KeyValuePair<int, string>(4, "4.三级菜单"));
+
+            this.DataContext = new { Model = MenuModel, IsEnabledData = isEnabledData,MenuTypeData=menuTypeData };
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)

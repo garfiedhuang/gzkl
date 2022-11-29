@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GZKL.Client.UI.Views"
+             xmlns:mylocal="clr-namespace:GZKL.Client.UI.Models"
              xmlns:converter="clr-namespace:GZKL.Client.UI.Converters"
              xmlns:bi="clr-namespace:GZKL.Client.UI.CustomControls.Attach"
              xmlns:wms="clr-namespace:WpfMultiStyle;assembly=WpfMultiStyle"
@@ -59,24 +60,33 @@
             <ColumnDefinition Width="80*" />
         </Grid.ColumnDefinitions>
 
-        <!--第三层左边网格布局，两行一列-->
-
         <GroupBox x:Name="gbTestItem" Grid.Row="0" Grid.Column="0" Header="菜单树" Style="{StaticResource GroupBoxOriginal}" HorizontalContentAlignment="Left">
             <Border BorderBrush="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" BorderThickness="1,1,1,1" CornerRadius="5">
 
-                <TreeView Margin="5" ItemsSource="{Binding TreeViewList}">
+                <TreeView x:Name="tvMenu" Margin="5" ItemsSource="{Binding TreeViewList}">
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="TreeViewItem" BasedOn="{StaticResource TreeViewItemBaseStyle}">
+                            <Setter Property="IsExpanded" Value="True" />
+                            <Setter Property="IsSelected" Value="{Binding IsSelected,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+                        </Style>
+                    </TreeView.ItemContainerStyle>
                     <TreeView.ItemTemplate>
-                        <HierarchicalDataTemplate ItemsSource="{Binding DataList}">
+                        <HierarchicalDataTemplate DataType="{x:Type mylocal:MenuDataModel}" ItemsSource="{Binding DataList}">
                             <TextBlock Text="{Binding Name}"/>
                         </HierarchicalDataTemplate>
                     </TreeView.ItemTemplate>
+                    <hc:Interaction.Triggers>
+                        <hc:EventTrigger EventName="SelectedItemChanged">
+                            <hc:InvokeCommandAction Command="{Binding SelectItemChangedCommand}" CommandParameter="{Binding ElementName=tvMenu,Path=SelectedItem}"/>
+                        </hc:EventTrigger>
+                    </hc:Interaction.Triggers>
                 </TreeView>
 
             </Border>
         </GroupBox>
 
         <!--第三层右边网格布局，两行一列-->
-        <GroupBox x:Name="gbMenuTestItemRelation" Grid.Row="0" Grid.Column="1" Margin="5,0,0,0" Header="菜单明细" Style="{StaticResource GroupBoxOriginal}" HorizontalContentAlignment="Left">
+        <GroupBox x:Name="gbMenu" Grid.Row="0" Grid.Column="1" Margin="5,0,0,0" Header="菜单明细" Style="{StaticResource GroupBoxOriginal}" HorizontalContentAlignment="Left">
             <Border BorderBrush="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" BorderThickness="1,1,1,1" CornerRadius="5">
                 <Grid Margin="5">
                     <Grid.RowDefinitions>
@@ -86,7 +96,7 @@
                     <DataGrid 
                             Grid.Row="0" 
                             Background="White"
-                            x:Name="dgMenuTestItemRelationData"
+                            x:Name="dgMenuData"
                             ItemsSource="{Binding GridModelList}" >
 
                         <DataGrid.RowHeaderTemplate>
@@ -97,17 +107,18 @@
 
                         <DataGrid.Columns>
                             <DataGridTextColumn IsReadOnly="True" Width="60" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Id}" Header="ID"/>
-                            <DataGridTextColumn IsReadOnly="True"  Width="100*" Binding="{Binding MenuName}" Header="菜单名称"/>
-                            <DataGridTextColumn IsReadOnly="True"  Width="200*" Binding="{Binding MenuTestItemName}" Header="菜单路径"/>
-                            <DataGridTextColumn IsReadOnly="True"  Width="80" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding MenuTestItemId}" Header="类型"/>
-                            <DataGridTextColumn IsReadOnly="True"  Width="80" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding MenuTestItemId}" Header="排序"/>
-                            <DataGridTextColumn IsReadOnly="True"  Width="80" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding MenuTestItemId}" Header="菜单图标"/>
-                            <DataGridTextColumn IsReadOnly="True"  Width="80" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding SystemTestItemNo}" Header="是否启用"/>
+                            <DataGridTextColumn IsReadOnly="True"  Width="80*" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Name}" Header="菜单名称"/>
+                            <DataGridTextColumn IsReadOnly="True"  Width="80*" Binding="{Binding Url}" Header="菜单路径"/>
+                            <DataGridTextColumn IsReadOnly="True"  Width="80*" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Type,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=menuType}" Header="类型"/>
+                            <DataGridTextColumn IsReadOnly="True"  Width="80*" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Sort}" Header="排序"/>
+                            <DataGridTextColumn IsReadOnly="True"  Width="80*" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Icon}" Header="菜单图标"/>
+                            <DataGridTextColumn IsReadOnly="True" Width="60" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>
                         </DataGrid.Columns>
                     </DataGrid>
 
                     <WrapPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Button x:Name="btnAdd" Content="新增" Width="80" Margin="10" Click="btnAdd_Click" hc:BorderElement.CornerRadius="5"/>
+                        <Button x:Name="btnEdit" Content="修改" Width="80" Margin="10" Click="btnEdit_Click" hc:BorderElement.CornerRadius="5"/>
                         <Button x:Name="btnDelete" Content="删除" Width="80" Margin="10" Click="btnDelete_Click" hc:BorderElement.CornerRadius="5"/>
                     </WrapPanel>
 

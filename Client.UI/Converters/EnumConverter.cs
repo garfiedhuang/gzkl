@@ -41,6 +41,8 @@ namespace GZKL.Client.UI.Converters
                     myEnum = (SexEnum)value; break;
                 case "isEnabled":
                     myEnum = (BoolEnum)value; break;
+                case "menuType":
+                    myEnum = (MenuType)value; break;
                 default:
                     break;
             }
