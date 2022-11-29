@@ -396,8 +396,167 @@ namespace GZKL.Client.UI.ViewsModels
         /// 绑定权限
         /// </summary>
         public void BindPermission()
-        { 
-        
+        {
+            try
+            {
+
+                var selected = GridModelList.Where(w => w.IsSelected == true).ToList();
+
+                if (selected.Count != 1)
+                {
+                    MessageBox.Show($"请选择一条记录进行编辑", "提示信息");
+                    return;
+                }
+
+                var selectedRow = selected.FirstOrDefault();
+                var sql = new StringBuilder(@"SELECT rm.menu_id,rm.role_id,m.*
+  FROM [dbo].[sys_menu] m LEFT JOIN [dbo].[sys_role_menu] rm ON m.id=rm.menu_id AND rm.is_deleted=0 AND rm.[role_id]=@id
+  WHERE m.is_deleted=0
+  ORDER BY m.[type] ASC,m.sort ASC");
+                var parameters = new SqlParameter[1] { new SqlParameter("@id", selectedRow.Id) };
+
+                using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
+                {
+                    if (data == null || data.Rows.Count == 0)
+                    {
+                        MessageBox.Show($"数据库不存在 主键ID={selectedRow.Id} 的记录", "提示信息");
+                        return;
+                    }
+
+                    var menus = new List<MenuModel>();
+                    foreach (DataRow dataRow in data.Rows)
+                    {
+                        var model = new MenuModel()
+                        {
+                            Id = Convert.ToInt64(dataRow["id"]),
+                            ParentId = Convert.ToInt64(dataRow["parent_id"]),
+                            Name = dataRow["name"].ToString(),
+                            Url = dataRow["url"].ToString(),
+                            Icon = dataRow["icon"].ToString(),
+                            Type = Convert.ToInt32(dataRow["type"]),
+                            Sort = Convert.ToInt32(dataRow["sort"]),
+                            IsSelected = Convert.IsDBNull(dataRow["menu_id"]) ? false : true,
+                            IsEnabled = Convert.ToInt32(dataRow["is_enabled"]),
+                            CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
+                            UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
+                        };
+
+                        menus.Add(model);
+                    }
+                    if (menus != null && menus.Count > 0)
+                    {
+                        var menuTrees = new List<MenuDataModel>();
+
+                        GetMenuTrees(menus, menuTrees);
+
+                        Bind view = new Bind(selectedRow,menus, menuTrees);
+                        var r = view.ShowDialog();
+                        if (r.Value)
+                        {
+                            sql.Clear();
+
+                            sql.Append(@"DELETE FROM [dbo].[sys_role_menu] WHERE [role_id]=@roleId");
+                            parameters = new SqlParameter[1] { new SqlParameter("@roleId", selectedRow.Id) };
+
+                            var result = SQLHelper.ExecuteNonQuery(sql.ToString(), parameters);
+
+                            var assignedMenus = GetSelectedMenus(menuTrees);
+
+
+                            foreach (var item in assignedMenus)
+                            {
+                                sql.Clear();
+                                sql.Append(@"INSERT INTO [dbo].[sys_role_menu]
+           ([role_id]
+           ,[menu_id]
+           ,[is_deleted]
+           ,[create_dt]
+           ,[create_user_id]
+           ,[update_dt]
+           ,[update_user_id])
+     VALUES
+           (@roleId
+           ,@menuId
+           ,0
+           ,@create_dt
+           ,@user_id
+           ,@create_dt
+           ,@user_id)");
+                                parameters = new SqlParameter[] {
+                                               new SqlParameter("@roleId", selectedRow.Id),
+                                               new SqlParameter("@menuId", item.Index),
+                                               new SqlParameter("@create_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
+                                               new SqlParameter("@user_id", SessionInfo.Instance.Session.Id)
+                                           };
+
+                                result = SQLHelper.ExecuteNonQuery(sql.ToString(), parameters);
+                            }
+
+                            this.Query();
+
+                            MessageBox.Show("分配权限成功", "提示信息");
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "提示信息");
+            }
+        }
+
+        private List<MenuDataModel> GetSelectedMenus(List<MenuDataModel> menus)
+        {
+            var result = new List<MenuDataModel>();
+
+            foreach (var item in menus)
+            {
+                if (item.IsSelected)
+                {
+                    result.Add(item);
+                }
+                if (item.DataList.Count > 0)
+                {
+                    result.AddRange(GetSelectedMenus(item.DataList.ToList()));
+                }
+            }
+
+            return result;
+        }
+        private void GetMenuTrees(List<MenuModel> menus, List<MenuDataModel> menuDataModels)
+        {
+            //封装菜单树
+            var roots = menus.Where(w => w.Type == 1)?.ToList();
+            roots?.ForEach(data =>
+            {
+                menuDataModels.Add(new MenuDataModel()
+                {
+                    Index = Convert.ToInt32(data.Id),
+                    Name = data.Name,
+                    Type = (MenuType)data.Type,
+                    DataList = GetTreeViewList(menus.Where(w => w.ParentId == data.Id)?.ToList(), menus),
+                    IsSelected = data.IsSelected
+                });
+            });
+        }
+
+        private ObservableCollection<MenuDataModel> GetTreeViewList(List<MenuModel> currentData, List<MenuModel> allData)
+        {
+            var result = new ObservableCollection<MenuDataModel>();
+            currentData?.ForEach(item =>
+            {
+                result.Add(new MenuDataModel()
+                {
+                    Index = Convert.ToInt32(item.Id),
+                    Name = item.Name,
+                    Type = (MenuType)item.Type,
+                    DataList = GetTreeViewList(allData.Where(w => w.ParentId == item.Id)?.ToList(), allData),
+                    IsSelected = item.IsSelected
+                });
+            });
+
+            return result;
         }
 
         /// <summary>

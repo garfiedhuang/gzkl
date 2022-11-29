@@ -43,26 +43,26 @@
                     VerticalAlignment="Center" Margin="10 0 0 0" Command="{Binding EditCommand}"/>
             <Button Content="删除"  VerticalAlignment="Center" Margin="10 0 0 0" Style="{StaticResource DelBtnStyle}" Command="{Binding DeleteCommand}" />
 
-            <Button Content="菜单权限"  VerticalAlignment="Center" Margin="10 0 0 0" Style="{StaticResource ButtonSuccess}" Command="{Binding BindPermissionCommand}" />
+            <Button Content="分配权限"  VerticalAlignment="Center" Margin="10 0 0 0" Style="{StaticResource ButtonSuccess}" Command="{Binding BindPermissionCommand}" />
         </WrapPanel>
 
         <DataGrid Margin="15" Grid.Row="2"
                   x:Name="dgData"
                   hc:DataGridAttach.CanUnselectAllWithBlankArea="True"
                   hc:Empty.ShowEmpty="True"
-                  HeadersVisibility="Column"
+                  HeadersVisibility="All"
                   AutoGenerateColumns="False"
                   ItemsSource="{Binding GridModelList}" 
                   RowHeaderWidth="60" >
 
-            <!--<DataGrid.RowHeaderTemplate>
+            <DataGrid.RowHeaderTemplate>
                 <DataTemplate>
-                    <CheckBox IsChecked="{Binding IsSelected ,RelativeSource={RelativeSource AncestorType=DataGridRow}}"/>
+                    <CheckBox IsChecked="{Binding DataContext.IsSelected,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}}" />
                 </DataTemplate>
-            </DataGrid.RowHeaderTemplate>-->
+            </DataGrid.RowHeaderTemplate>
 
             <DataGrid.Columns>
-                <DataGridCheckBoxColumn Binding="{Binding IsSelected}" Width="50" CanUserSort="False" CanUserResize="False" Header="选择"/>
+                <!--<DataGridCheckBoxColumn Binding="{Binding IsSelected}" Width="50" CanUserSort="False" CanUserResize="False" Header="选择"/>-->
                 <DataGridTextColumn Binding="{Binding RowNum}" Width="60" CanUserSort="False" CanUserResize="False" Header="序号"/>
                 <DataGridTextColumn IsReadOnly="True" Width="60" CanUserSort="False" CanUserResize="False" Binding="{Binding Id}" Header="主键ID" Visibility="Hidden"/>
                 <DataGridTextColumn IsReadOnly="True"  Width="120" Binding="{Binding Name}" Header="角色"/>

@@ -91,7 +91,16 @@ namespace GZKL.Client.UI.Models
         }
 
 
-        public bool IsSelected { get; set; }
+        /// <summary>
+        /// 是否选中?
+        /// </summary>
+        private bool isSelected = false;
+
+        public bool IsSelected
+        {
+            get { return isSelected; }
+            set { isSelected = value; RaisePropertyChanged(); }
+        }
 
         public string Remark { get; set; }
 

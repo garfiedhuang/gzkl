@@ -333,8 +333,8 @@ namespace GZKL.Client.UI.ViewsModels
                     var parameters = new SqlParameter[] {
                     new SqlParameter("@parentId", SelectedMenuId),
                     new SqlParameter("@name", model.Name),
-                    new SqlParameter("@url", model.Url),
-                    new SqlParameter("@icon", model.Icon),
+                    new SqlParameter("@url", model.Url??""),
+                    new SqlParameter("@icon", model.Icon??""),
                     new SqlParameter("@type", model.Type),
                     new SqlParameter("@sort", model.Sort),
                     new SqlParameter("@is_enabled", model.IsEnabled),

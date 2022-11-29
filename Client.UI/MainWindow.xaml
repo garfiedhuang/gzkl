@@ -185,17 +185,17 @@
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Grid.Row="1" Margin="0 20 0 0">
-                        <ItemsControl ItemsSource="{Binding ModuleGroups}" Grid.Row="1" Name="IC">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <VirtualizingStackPanel/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplateSelector>
-                                <template:MenuTemplateSelector ExpanderTemplate="{StaticResource expanderTemplate}" GroupTemplate="{StaticResource groupTemplate}" />
-                            </ItemsControl.ItemTemplateSelector>
-                        </ItemsControl>
-                    </StackPanel>
+                            <ItemsControl ItemsSource="{Binding ModuleGroups}" Grid.Row="1" Name="IC">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplateSelector>
+                                    <template:MenuTemplateSelector ExpanderTemplate="{StaticResource expanderTemplate}" GroupTemplate="{StaticResource groupTemplate}" />
+                                </ItemsControl.ItemTemplateSelector>
+                            </ItemsControl>
+                        </StackPanel>
                 </Grid>
             </Border>
             <Grid Grid.Column="2">

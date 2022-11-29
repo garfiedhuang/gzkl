@@ -244,6 +244,9 @@
     <Compile Include="Views\SystemMgt\Permission\Permission.xaml.cs">
       <DependentUpon>Permission.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SystemMgt\Role\Bind.xaml.cs">
+      <DependentUpon>Bind.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SystemMgt\Role\Edit.xaml.cs">
       <DependentUpon>Edit.xaml</DependentUpon>
     </Compile>
@@ -345,6 +348,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\SystemMgt\Permission\Permission.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SystemMgt\Role\Bind.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
