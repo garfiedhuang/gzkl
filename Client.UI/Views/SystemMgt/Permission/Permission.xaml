@@ -40,32 +40,28 @@
             <Button Content="重置" Style="{wms:MultiStyle ButtonInfo IconBtn}" bi:IconElement.Icon="&#xe692;"  VerticalAlignment="Center" Margin="10 0 0 0" Command="{Binding ResetCommand}"/>
         </WrapPanel>
         <WrapPanel Grid.Row="1" VerticalAlignment="Center" Height="30" Margin="0,15,0,5">
-            <Button Content="新增" 
-                    Style="{StaticResource AddBtnStyle}" 
-                    VerticalAlignment="Center" 
-                    Margin="15 0 0 0" Command="{Binding AddCommand}"/>
-            <Button Content="修改"  Style="{StaticResource EditBtnStyle}" 
-                    VerticalAlignment="Center" Margin="10 0 0 0" Command="{Binding EditCommand}"/>
-            <Button Content="删除"  VerticalAlignment="Center" Margin="10 0 0 0" Style="{StaticResource DelBtnStyle}" Command="{Binding DeleteCommand}" />
+            <Button Content="新增" Style="{StaticResource AddBtnStyle}" VerticalAlignment="Center" Margin="15 0 0 0" Command="{Binding AddCommand}"/>
+            <Button x:Name="btnEdit" Content="修改" Style="{StaticResource EditBtnStyle}" VerticalAlignment="Center" Margin="10 0 0 0" Click="btnEdit_Click" />
+            <Button x:Name="btnDelete" Content="删除" Style="{StaticResource DelBtnStyle}" VerticalAlignment="Center" Margin="10 0 0 0" Click="btnDelete_Click" />
         </WrapPanel>
 
         <DataGrid Margin="15" Grid.Row="2"
                   x:Name="dgData"
                   hc:DataGridAttach.CanUnselectAllWithBlankArea="True"
                   hc:Empty.ShowEmpty="True"
-                  HeadersVisibility="Column"
+                  HeadersVisibility="All"
                   AutoGenerateColumns="False"
                   ItemsSource="{Binding GridModelList}" 
                   RowHeaderWidth="60" >
 
-            <!--<DataGrid.RowHeaderTemplate>
+            <DataGrid.RowHeaderTemplate>
                 <DataTemplate>
-                    <CheckBox IsChecked="{Binding IsSelected ,RelativeSource={RelativeSource AncestorType=DataGridRow}}"/>
+                    <!--<CheckBox IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}},Path=Item.IsSelected}" />-->
+                    <CheckBox IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=DataGridRow}}" />
                 </DataTemplate>
-            </DataGrid.RowHeaderTemplate>-->
+            </DataGrid.RowHeaderTemplate>
 
             <DataGrid.Columns>
-                <DataGridCheckBoxColumn Binding="{Binding IsSelected}" Width="50" CanUserSort="False" CanUserResize="False" Header="选择"/>
                 <DataGridTextColumn Binding="{Binding RowNum}" Width="60" CanUserSort="False" CanUserResize="False" Header="序号"/>
                 <DataGridTextColumn IsReadOnly="True" Width="60" CanUserSort="False" CanUserResize="False" Binding="{Binding Id}" Header="主键ID" Visibility="Hidden"/>
                 <DataGridTextColumn IsReadOnly="True"  Width="120" Binding="{Binding UserName}" Header="用户名"/>

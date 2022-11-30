@@ -31,10 +31,7 @@ namespace GZKL.Client.UI.ViewsModels
         {
             QueryCommand = new RelayCommand(this.Query);
             ResetCommand = new RelayCommand(this.Reset);
-            EditCommand = new RelayCommand<int>(this.Edit);
-            DeleteCommand = new RelayCommand<int>(this.Delete);
             AddCommand = new RelayCommand(this.Add);
-            BindPermissionCommand = new RelayCommand(this.BindPermission);
             PageUpdatedCommand = new RelayCommand<FunctionEventArgs<int>>(PageUpdated);
 
             RoleModels = new List<RoleModel>();
@@ -131,16 +128,6 @@ namespace GZKL.Client.UI.ViewsModels
         public RelayCommand ResetCommand { get; set; }
 
         /// <summary>
-        /// 编辑
-        /// </summary>
-        public RelayCommand<int> EditCommand { get; set; }
-
-        /// <summary>
-        /// 删除
-        /// </summary>
-        public RelayCommand<int> DeleteCommand { get; set; }
-
-        /// <summary>
         /// 新增
         /// </summary>
         public RelayCommand AddCommand { get; set; }
@@ -149,11 +136,6 @@ namespace GZKL.Client.UI.ViewsModels
         /// 分页
         /// </summary>
         public RelayCommand<FunctionEventArgs<int>> PageUpdatedCommand { get; set; }
-
-        /// <summary>
-        /// 绑定权限
-        /// </summary>
-        public RelayCommand BindPermissionCommand { get; set; }
 
 
         #endregion
@@ -233,20 +215,10 @@ namespace GZKL.Client.UI.ViewsModels
         /// 编辑
         /// </summary>
         /// <param name="id"></param>
-        public void Edit(int id)
+        public void Edit(long id)
         {
             try
             {
-                var selected = GridModelList.Where(w => w.IsSelected == true).ToList();
-
-                if (selected.Count != 1)
-                {
-                    MessageBox.Show($"请选择一条记录进行编辑", "提示信息");
-                    return;
-                }
-
-                id = (int)selected.First().Id;
-
                 var sql = new StringBuilder(@"SELECT [id],[name],[remark],[is_deleted],[create_dt]
                 ,[create_user_id],[update_dt],[update_user_id]
                 FROM [dbo].[sys_role] WHERE [is_deleted]=0 AND [id]=@id");
@@ -308,34 +280,23 @@ namespace GZKL.Client.UI.ViewsModels
         /// 删除
         /// </summary>
         /// <param name="id"></param>
-        public void Delete(int id)
+        public void Delete(List<RoleModel> selected)
         {
             try
             {
-                var selected = GridModelList.Where(w => w.IsSelected == true).ToList();
-
-                if (selected.Count == 0)
+                var r = MessageBox.Show($"确定要删除【{string.Join(",", selected.Select(s => s.Name))}】吗？", "提示", MessageBoxButton.YesNo);
+                if (r == MessageBoxResult.Yes)
                 {
-                    MessageBox.Show($"请至少选择一条记录进行删除", "提示信息");
-                    return;
-                }
-
-                if (selected != null)
-                {
-                    var r = MessageBox.Show($"确定要删除【{string.Join(",", selected.Select(s => s.Name))}】吗？", "提示", MessageBoxButton.YesNo);
-                    if (r == MessageBoxResult.Yes)
+                    foreach (var dr in selected)
                     {
-                        foreach (var dr in selected)
-                        {
-                            //var sql = new StringBuilder(@"DELETE FROM [dbo].[sys_Role] WHERE [id] IN(@id)");
-                            var sql = new StringBuilder(@"UPDATE [dbo].[sys_role] SET [is_deleted]=1 WHERE [id]=@id");
+                        //var sql = new StringBuilder(@"DELETE FROM [dbo].[sys_Role] WHERE [id] IN(@id)");
+                        var sql = new StringBuilder(@"UPDATE [dbo].[sys_role] SET [is_deleted]=1 WHERE [id]=@id");
 
-                            var parameters = new SqlParameter[1] { new SqlParameter("@id", dr.Id) };
-                            var result = SQLHelper.ExecuteNonQuery(sql.ToString(), parameters);
-                        }
-
-                        this.Query();
+                        var parameters = new SqlParameter[1] { new SqlParameter("@id", dr.Id) };
+                        var result = SQLHelper.ExecuteNonQuery(sql.ToString(), parameters);
                     }
+
+                    this.Query();
                 }
             }
             catch (Exception ex)
@@ -395,20 +356,10 @@ namespace GZKL.Client.UI.ViewsModels
         /// <summary>
         /// 绑定权限
         /// </summary>
-        public void BindPermission()
+        public void BindPermission(RoleModel selectedRow)
         {
             try
             {
-
-                var selected = GridModelList.Where(w => w.IsSelected == true).ToList();
-
-                if (selected.Count != 1)
-                {
-                    MessageBox.Show($"请选择一条记录进行编辑", "提示信息");
-                    return;
-                }
-
-                var selectedRow = selected.FirstOrDefault();
                 var sql = new StringBuilder(@"SELECT rm.menu_id,rm.role_id,m.*
   FROM [dbo].[sys_menu] m LEFT JOIN [dbo].[sys_role_menu] rm ON m.id=rm.menu_id AND rm.is_deleted=0 AND rm.[role_id]=@id
   WHERE m.is_deleted=0

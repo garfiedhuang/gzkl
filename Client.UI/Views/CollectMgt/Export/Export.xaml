@@ -90,20 +90,20 @@
                   x:Name="dgData"
                   hc:DataGridAttach.CanUnselectAllWithBlankArea="True"
                   hc:Empty.ShowEmpty="True"
-                  HeadersVisibility="Column"
+                  HeadersVisibility="All"
                   AutoGenerateColumns="False"
                   ItemsSource="{Binding GridData}" 
                   MouseDoubleClick="dgData_MouseDoubleClick"
                   RowHeaderWidth="60" >
 
-            <!--<DataGrid.RowHeaderTemplate>
+            <DataGrid.RowHeaderTemplate>
                 <DataTemplate>
-                    <CheckBox IsChecked="{Binding IsSelected ,RelativeSource={RelativeSource AncestorType=DataGridRow}}"/>
+                    <!--<CheckBox IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}},Path=Item.IsSelected}" />-->
+                    <CheckBox IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=DataGridRow}}" />
                 </DataTemplate>
-            </DataGrid.RowHeaderTemplate>-->
+            </DataGrid.RowHeaderTemplate>
 
             <DataGrid.Columns>
-                <DataGridCheckBoxColumn Binding="{Binding IsSelected, Mode=TwoWay}" Width="50" CanUserSort="False" CanUserResize="False" Header="选择"/>
                 <DataGridTextColumn Binding="{Binding RowNum}" Width="60" CanUserSort="False" CanUserResize="False" Header="序号"/>
                 <DataGridTextColumn IsReadOnly="True" Width="60" CanUserSort="False" CanUserResize="False" Binding="{Binding Id}" Header="主键ID" Visibility="Hidden"/>
                 <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding TestNo}" Header="检测编号"/>
