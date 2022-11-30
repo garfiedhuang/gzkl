@@ -54,12 +54,12 @@
 
                 <StackPanel Grid.Column="1" Margin="0,0,35,0">
                     <hc:TextBox ShowClearButton="True" 
-                                Name="UserNameStr"
+                                x:Name="UserNameStr"
                                 Text="{Binding UserName,Mode=TwoWay}"
                                 hc:InfoElement.Placeholder="用户名" 
                                 BorderBrush="{x:Null}" BorderThickness="0" 
                                 Height="40" Margin="0,30,0,0" FontSize="18" />
-                    <hc:Divider Margin="0"  LineStrokeThickness="2" LineStroke="{DynamicResource DarkPrimaryBrush}"/>
+                    <hc:Divider Margin="0" LineStrokeThickness="2" LineStroke="{DynamicResource DarkPrimaryBrush}"/>
                 </StackPanel>
 
             </Grid>
@@ -70,21 +70,21 @@
                     <ColumnDefinition Width="352*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="1" Margin="0,0,38,0">
-                    <hc:PasswordBox hc:InfoElement.Necessary="True"                             
+                    <hc:PasswordBox hc:InfoElement.Necessary="True"
                                     x:Name="PassWordStr"
                                     hc:InfoElement.Placeholder="密码"     
                                     BorderBrush="{x:Null}" BorderThickness="0" 
                                     Height="40" Margin="0,30,0,0" FontSize="18" 
                                     ShowClearButton="True" 
                                     ShowEyeButton="True" />
-                    <hc:Divider Margin="0"  LineStrokeThickness="2" LineStroke="{DynamicResource DarkPrimaryBrush}"/>
+                    <hc:Divider Margin="0" LineStrokeThickness="2" LineStroke="{DynamicResource DarkPrimaryBrush}"/>
                 </StackPanel>
 
             </Grid>
             <StackPanel Grid.Row="4" Margin="0,21,0,1">
                 <WrapPanel>
-                    <CheckBox  Margin="40,10,20,0"  Content="记住密码" />
-                    <CheckBox  Margin="40,10,20,0"  Content="自动登录" />
+                    <CheckBox x:Name="chkAutoLogin"  Margin="40,10,20,0"  Content="自动登录" />
+                    <CheckBox x:Name="chkRememberMe" Margin="40,10,20,0"  Content="记住密码" />
                 </WrapPanel>
 
                 <Button Content="登录" 

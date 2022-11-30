@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
+using System.Net;
 
 namespace GZKL.Client.UI.Common
 {
@@ -163,9 +164,6 @@ namespace GZKL.Client.UI.Common
                     //Console.WriteLine(mo["SystemFamily"].ToString());
                     computerInfo.SystemFamily = mo["SystemFamily"].ToString();
                 }
-
-                ////获取系统名称2
-                //Console.WriteLine(System.Environment.GetEnvironmentVariable("ComputerName"));
 
                 mc?.Dispose();
                 moc?.Dispose();

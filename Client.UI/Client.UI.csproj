@@ -143,6 +143,7 @@
     <Compile Include="Models\BackupModel.cs" />
     <Compile Include="Models\AutoCollectModel.cs" />
     <Compile Include="Models\ClearModel.cs" />
+    <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\MenuModel.cs" />
     <Compile Include="ViewModels\BaseSearchViewModel.cs" />
     <Compile Include="Models\ExportModel.cs" />
