@@ -184,7 +184,8 @@
                             <TextBlock Text="Admin" Foreground="#959595"/>
                         </StackPanel>
                     </StackPanel>
-                    <StackPanel Grid.Row="1" Margin="0 20 0 0">
+                    <StackPanel x:Name="spMenuTree" Grid.Row="1" Margin="0 20 0 20">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" Height="{Binding ElementName=spMenuTree, Path=ActualHeight}">
                             <ItemsControl ItemsSource="{Binding ModuleGroups}" Grid.Row="1" Name="IC">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
@@ -195,7 +196,8 @@
                                     <template:MenuTemplateSelector ExpanderTemplate="{StaticResource expanderTemplate}" GroupTemplate="{StaticResource groupTemplate}" />
                                 </ItemsControl.ItemTemplateSelector>
                             </ItemsControl>
-                        </StackPanel>
+                        </ScrollViewer>
+                    </StackPanel>
                 </Grid>
             </Border>
             <Grid Grid.Column="2">
