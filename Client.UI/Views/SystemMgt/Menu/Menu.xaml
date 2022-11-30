@@ -66,7 +66,7 @@
                 <TreeView x:Name="tvMenu" Margin="5" ItemsSource="{Binding TreeViewList}">
                     <TreeView.ItemContainerStyle>
                         <Style TargetType="TreeViewItem" BasedOn="{StaticResource TreeViewItemBaseStyle}">
-                            <Setter Property="IsExpanded" Value="True" />
+                            <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
                             <Setter Property="IsSelected" Value="{Binding IsSelected,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
                         </Style>
                     </TreeView.ItemContainerStyle>

@@ -154,6 +154,7 @@ namespace GZKL.Client.UI.ViewsModels
                         Index = Convert.ToInt32(data.Id),
                         Name = data.Name,
                         Type = (MenuType)data.Type,
+                        IsExpanded = data.Type < 2,
                         DataList = GetTreeViewList(MenuModels.Where(w => w.ParentId == data.Id)?.ToList(), MenuModels),
                         IsSelected = SelectedMenuId == data.Id,
                     });

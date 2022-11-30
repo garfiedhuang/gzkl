@@ -102,6 +102,8 @@ namespace GZKL.Client.UI.Models
             set { isSelected = value; RaisePropertyChanged(); }
         }
 
+        public bool IsExpanded { get; set; }
+
         public string Remark { get; set; }
 
         public MenuType Type { get; set; }
