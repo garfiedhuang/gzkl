@@ -101,7 +101,7 @@
                 </Button>
                 <WrapPanel>
 
-                    <TextBlock x:Name="txtLoginError"></TextBlock>
+                    <TextBlock x:Name="txtLoginError" Text="{Binding LoginError,Mode=TwoWay}"></TextBlock>
 
                 </WrapPanel>
             </StackPanel>

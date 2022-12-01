@@ -14,23 +14,17 @@ namespace GZKL.Client.UI.Views
         public LoginView()
         {
             InitializeComponent();
-            Messenger.Default.Register<string>(this, "UserNameErrorToken", UserNameErrorToken);
 
-            Messenger.Default.Register<string>(this, "LoginError", LoginError);
+            Messenger.Default.Register<string>(this, "UserNameErrorToken", UserNameErrorToken);
 
             this.Unloaded += (sender, e) => Messenger.Default.Unregister(this);
         }
+
         private void UserNameErrorToken(string msg)
         {  
             this.UserNameStr.IsError = true;
             this.UserNameStr.ErrorStr = msg;
         }
-
-        private void LoginError(string msg)
-        {
-            this.txtLoginError.Text = msg;
-        }
-
 
         private void LoginWindow_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
@@ -39,6 +33,7 @@ namespace GZKL.Client.UI.Views
                 DragMove();
             }
         }
+
         private void CloseWin_click(object sender, RoutedEventArgs e)
         {
             this.Close();

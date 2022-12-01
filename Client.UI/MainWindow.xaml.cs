@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using GZKL.Client.UI.Common;
 using GZKL.Client.UI.ViewsModels;
 using System.Windows.Controls.Primitives;
+using GZKL.Client.UI.Models;
 
 namespace GZKL.Client.UI
 {
@@ -23,10 +24,14 @@ namespace GZKL.Client.UI
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow(LoginSuccessModel loginSuccessModel)
         {
             InitializeComponent();
+
+            SessionInfo.Instance.Session = loginSuccessModel.User;
+
             this.DataContext = new MainViewModel();
+
             Messenger.Default.Register<string>(this, "ExpandMenu", arg =>
             {
                 if (this.menu.Width < 200)
@@ -43,8 +48,7 @@ namespace GZKL.Client.UI
                 //由于...
                 var template = this.IC.ItemTemplateSelector;
                 this.IC.ItemTemplateSelector = null;
-                this.IC.ItemTemplateSelector = template;
-               
+                this.IC.ItemTemplateSelector = template;              
             });
         }
 
