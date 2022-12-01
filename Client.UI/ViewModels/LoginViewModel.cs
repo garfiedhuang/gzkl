@@ -13,6 +13,7 @@ using System.Net;
 using System.Data.SqlClient;
 using GZKL.Client.UI.Models;
 using System.Data;
+using System.Security;
 
 namespace GZKL.Client.UI.ViewsModels
 {
@@ -53,6 +54,15 @@ namespace GZKL.Client.UI.ViewsModels
         {
             get { return passWord; }
             set { passWord = value; RaisePropertyChanged(); LoginError = ""; }
+        }
+
+
+        private SecureString _password;
+
+        public SecureString Password
+        {
+            get { return _password; }
+            set { _password = value; RaisePropertyChanged(); }
         }
 
         /// <summary>
