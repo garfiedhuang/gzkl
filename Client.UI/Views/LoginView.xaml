@@ -99,6 +99,11 @@
                         </MultiBinding>
                     </Button.CommandParameter>
                 </Button>
+                <WrapPanel>
+
+                    <TextBlock x:Name="txtLoginError"></TextBlock>
+
+                </WrapPanel>
             </StackPanel>
         </Grid>
     </Grid>

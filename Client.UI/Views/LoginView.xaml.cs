@@ -14,7 +14,10 @@ namespace GZKL.Client.UI.Views
         public LoginView()
         {
             InitializeComponent();
-            Messenger.Default.Register<string>(this, "UserNameErrorToken", UserNameErrorToken);           
+            Messenger.Default.Register<string>(this, "UserNameErrorToken", UserNameErrorToken);
+
+            Messenger.Default.Register<string>(this, "LoginError", LoginError);
+
             this.Unloaded += (sender, e) => Messenger.Default.Unregister(this);
         }
         private void UserNameErrorToken(string msg)
@@ -22,6 +25,13 @@ namespace GZKL.Client.UI.Views
             this.UserNameStr.IsError = true;
             this.UserNameStr.ErrorStr = msg;
         }
+
+        private void LoginError(string msg)
+        {
+            this.txtLoginError.Text = msg;
+        }
+
+
         private void LoginWindow_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)

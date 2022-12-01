@@ -101,22 +101,105 @@ namespace GZKL.Client.UI.ViewsModels
 
             PassWord = psdStr;
 
-            //保存登录会话
-            SessionInfo.Instance.Session = new UserModel()
+            try
             {
-                Id = 1,
-                Name = "admin",
-                Phone = "18611111234"
-            };
+                //执行登录
+                var loginResult = Login();
 
-            MainWindow mainView = new MainWindow();
-            (values[0] as System.Windows.Window).Close();
-            mainView.ShowDialog();
+                //保存登录会话
+                SessionInfo.Instance.Session = new UserModel()
+                {
+                    Id = 1,
+                    Name = "admin",
+                    Phone = "18611111234"
+                };
+
+                //关闭登录窗口
+                (values[0] as System.Windows.Window).Close();
+
+                //开启主画面
+                _ = new MainWindow().ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                Messenger.Default.Send(ex?.Message, "LoginError");
+            }
         }
 
+        /// <summary>
+        /// 登录
+        /// </summary>
+        /// <returns></returns>
         public LoginSuccessModel Login()
         {
-            throw new NotImplementedException();
+            var result = new LoginSuccessModel();
+
+
+            //用户
+            var sql = @"SELECT TOP 1 * FROM [sys_user] WHERE [is_deleted]=0 AND [user_name]=@userName AND [password]=@password";
+            var parameters = new SqlParameter[] { new SqlParameter("@usrName", userName), new SqlParameter("@password", passWord) };
+
+            using (var dt = SQLHelper.GetDataTable(sql, parameters))
+            {
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    result.User = new UserModel() { 
+                    
+                    };
+                }
+            }
+
+            if (result.User == null || result.User.Id == 0)
+            {
+                throw new Exception("账号或密码不对！");
+            }
+            else if(result.User.IsEnabled==0)
+            {
+                throw new Exception("当前账号已停用！");
+            }
+
+
+            //角色
+            sql = @"SELECT TOP 1 r.* FROM [sys_role] r INNER JOIN [sys_user_role] ur ON r.id=ur.role_id WHERE r.[is_deleted]=0 AND ur.[is_deleted]=0 AND ur.[user_id]=@userId";
+            parameters = new SqlParameter[] { new SqlParameter("@usrId", result.User.Id) };
+
+            using (var dt = SQLHelper.GetDataTable(sql, parameters))
+            {
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    result.Role = new RoleModel()
+                    {
+
+                    };
+                }
+            }
+
+            if (result.Role == null || result.Role.Id == 0)
+            {
+                throw new Exception("当前账号未分配角色，请联系软件开发商！");
+            }
+
+            //权限
+            sql = @"SELECT m.* FROM [sys_role_menu] rm INNER JOIN [sys_menu] m ON rm.menu_id=m.id WHERE rm.is_deleted=0 AND m.is_deleted=0 AND rm.role_id=@roleId";
+            parameters = new SqlParameter[] { new SqlParameter("@roleId", result.Role.Id) };
+
+            using (var dt = SQLHelper.GetDataTable(sql, parameters))
+            {
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    result.Menus = new List<MenuModel>();
+                    foreach (var dr in dt.Rows)
+                    {
+                        result.Menus.Add(new MenuModel() { 
+                        
+                        
+                        });
+                    }
+                }
+            }
+
+
+            return result;
         }
 
         /// <summary>

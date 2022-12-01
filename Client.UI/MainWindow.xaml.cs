@@ -39,7 +39,6 @@ namespace GZKL.Client.UI
                     this.userName.Visibility = Visibility.Collapsed;
                     AnimationHelper.CreateWidthChangedAnimation(this.menu, 200, 60, new TimeSpan(0, 0, 0, 0, 300));
                 }
-                   
 
                 //由于...
                 var template = this.IC.ItemTemplateSelector;
