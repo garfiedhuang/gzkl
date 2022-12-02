@@ -279,7 +279,7 @@ namespace GZKL.Client.UI.ViewsModels
                             new SqlParameter("@birthday", model.Birthday),
                             new SqlParameter("@is_enabled", model.IsEnabled),
                             new SqlParameter("@update_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
-                            new SqlParameter("@user_id", SessionInfo.Instance.Session.Id),
+                            new SqlParameter("@user_id", SessionInfo.Instance.UserInfo.Id),
                             new SqlParameter("@id", id)
                         };
 
@@ -375,7 +375,7 @@ namespace GZKL.Client.UI.ViewsModels
                     new SqlParameter("@sex", model.Sex),
                     new SqlParameter("@birthday", model.Birthday),
                     new SqlParameter("@create_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
-                    new SqlParameter("@user_id", SessionInfo.Instance.Session.Id)
+                    new SqlParameter("@user_id", SessionInfo.Instance.UserInfo.Id)
                 };
 
                     var result = SQLHelper.ExecuteNonQuery(sql, parameters);

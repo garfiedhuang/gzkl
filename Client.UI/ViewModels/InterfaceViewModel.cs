@@ -241,7 +241,7 @@ AND bi.[is_deleted]=0 AND biti.[is_deleted]=0 AND bti.[is_deleted]=0";
                 var parameters = new SqlParameter[4] { 
                     new SqlParameter("@dbPath", model.AccessDbPath),
                     new SqlParameter("@update_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
-                    new SqlParameter("@user_id", SessionInfo.Instance.Session.Id),
+                    new SqlParameter("@user_id", SessionInfo.Instance.UserInfo.Id),
                     new SqlParameter("@id", model.Id) };
 
                 var result = SQLHelper.ExecuteNonQuery(sql, parameters);
@@ -276,7 +276,7 @@ UPDATE [dbo].[base_interface] SET [is_enabled]=1,[update_dt] = @update_dt,[updat
 END";
                 var parameters = new SqlParameter[3] {
                     new SqlParameter("@update_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
-                    new SqlParameter("@user_id", SessionInfo.Instance.Session.Id),
+                    new SqlParameter("@user_id", SessionInfo.Instance.UserInfo.Id),
                     new SqlParameter("@id", model.Id) };
 
                 var result = SQLHelper.ExecuteNonQuery(sql, parameters);
@@ -348,7 +348,7 @@ END";
                     new SqlParameter("@testItemName", systemTestItemInfo.TestItemName),
                     new SqlParameter("@is_enabled", 1),
                     new SqlParameter("@create_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
-                    new SqlParameter("@user_id", SessionInfo.Instance.Session.Id)
+                    new SqlParameter("@user_id", SessionInfo.Instance.UserInfo.Id)
                 };
 
                 result = SQLHelper.ExecuteNonQuery(sql, parameters);

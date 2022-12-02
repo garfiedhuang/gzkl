@@ -90,7 +90,7 @@ namespace GZKL.Client.UI.Factories
                 new SqlParameter("@sampleNo", data.SampleNo),
                 new SqlParameter("@remark", data.Remark),
                 new SqlParameter("@createDt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
-                new SqlParameter("@userId", SessionInfo.Instance.Session.Id)
+                new SqlParameter("@userId", SessionInfo.Instance.UserInfo.Id)
             };
 
             var result = SQLHelper.ExecuteNonQuery(sql, parameters);
@@ -145,7 +145,7 @@ namespace GZKL.Client.UI.Factories
                 new SqlParameter("@testTime", data.TestNo),
                 new SqlParameter("@deadline", data.Deadline),
                 new SqlParameter("@createDt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
-                new SqlParameter("@userId", SessionInfo.Instance.Session.Id)
+                new SqlParameter("@userId", SessionInfo.Instance.UserInfo.Id)
             };
 
             var result = Convert.ToInt64(SQLHelper.ExecuteScalar(sql, parameters)); //result为新增后的主键ID
@@ -239,7 +239,7 @@ namespace GZKL.Client.UI.Factories
                         new SqlParameter("@loadUnitName", data.LoadUnitName),
                         new SqlParameter("@encription", data.Encryption),
                         new SqlParameter("@createDt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
-                        new SqlParameter("@userId", SessionInfo.Instance.Session.Id)
+                        new SqlParameter("@userId", SessionInfo.Instance.UserInfo.Id)
                 };
 
             var result = Convert.ToInt64(SQLHelper.ExecuteScalar(sql, parameters)); //result为新增后的主键ID
@@ -339,7 +339,7 @@ namespace GZKL.Client.UI.Factories
                                     new SqlParameter("@posiSpeed", data.PosiSpeed),
                                     new SqlParameter("@stressSpeed", data.StressSpeed),
                                     new SqlParameter("@createDt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
-                                    new SqlParameter("@userId", SessionInfo.Instance.Session.Id)
+                                    new SqlParameter("@userId", SessionInfo.Instance.UserInfo.Id)
                 };
 
             var result = SQLHelper.ExecuteNonQuery(sql, parameters);

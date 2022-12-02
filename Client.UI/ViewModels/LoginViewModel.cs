@@ -28,8 +28,9 @@ namespace GZKL.Client.UI.ViewsModels
 
             if (loginModel.RememberPassword)
             {
-                UserName = loginModel.UserName;
-                PassWord = loginModel.Password;
+                var nc = new NetworkCredential(loginModel.UserName, loginModel.Password);
+                UserName = nc.UserName;
+                Password = nc.SecurePassword;
             }
 
             this.AutoLogin = loginModel.AutoLogin;
@@ -46,23 +47,26 @@ namespace GZKL.Client.UI.ViewsModels
             get { return userName; }
             set { userName = value; RaisePropertyChanged(); LoginError = ""; }
         }
+
+        ///// <summary>
+        ///// 密码
+        ///// </summary>
+        //private string passWord="123456";
+        //public string PassWord
+        //{
+        //    get { return passWord; }
+        //    set { passWord = value; RaisePropertyChanged(); LoginError = ""; }
+        //}
+
         /// <summary>
         /// 密码
         /// </summary>
-        private string passWord="123456";
-        public string PassWord
-        {
-            get { return passWord; }
-            set { passWord = value; RaisePropertyChanged(); LoginError = ""; }
-        }
-
-
         private SecureString _password;
 
         public SecureString Password
         {
             get { return _password; }
-            set { _password = value; RaisePropertyChanged(); }
+            set { _password = value; RaisePropertyChanged(); loginError = ""; }
         }
 
         /// <summary>
@@ -118,25 +122,12 @@ namespace GZKL.Client.UI.ViewsModels
                 return;
             }
 
-            PassWord = psdStr;
-
             var loginResult =new LoginSuccessModel();
 
             try
             {
                 //执行登录
                 loginResult = Login();
-
-                //保存登录会话
-
-                /*
-                SessionInfo.Instance.Session = new UserModel()
-                {
-                    Id = 1,
-                    Name = "admin",
-                    Phone = "18611111234"
-                };
-                */
 
                 //关闭登录窗口
                 (values[0] as System.Windows.Window).Close();
@@ -147,8 +138,11 @@ namespace GZKL.Client.UI.ViewsModels
                 LoginError = ex?.Message;
             }
 
-            //开启主画面
-            _ = new MainWindow(loginResult).ShowDialog();
+            if (loginResult.User?.Id > 0)
+            {
+                //开启主画面
+                _ = new MainWindow(loginResult).ShowDialog();
+            }
 
         }
 
@@ -163,7 +157,7 @@ namespace GZKL.Client.UI.ViewsModels
 
             //用户
             var sql = @"SELECT TOP 1 * FROM [sys_user] WHERE [is_deleted]=0 AND [user_name]=@userName AND [password]=@password";
-            var parameters = new SqlParameter[] { new SqlParameter("@usrName", userName), new SqlParameter("@password", passWord) };
+            var parameters = new SqlParameter[] { new SqlParameter("@usrName", userName), new SqlParameter("@password", Password.ToString()) };
 
             using (var dt = SQLHelper.GetDataTable(sql, parameters))
             {

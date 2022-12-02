@@ -1,41 +1,87 @@
-﻿using System;
+﻿using GZKL.Client.UI.Models;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GZKL.Client.UI.Models;
 
 namespace GZKL.Client.UI.API
 {
-     public class MenuApi
+    public class MenuApi
     {
         /// <summary>
         /// 获取模块分组集合
         /// </summary>
         /// <returns></returns>
-        public List<ModuleGroupModel> GetModuleGroups() 
+        public List<ModuleGroupModel> GetModuleGroups(List<MenuModel> menuModels) 
         {
-            List<ModuleGroupModel> list = new List<ModuleGroupModel>();
-            list.Add(new ModuleGroupModel
+            var result = new List<ModuleGroupModel>();
+
+            var primaryMenus = menuModels?.Where(w => w.Type == 1)?.OrderBy(w => w.Sort)?.ToList();
+
+            if (primaryMenus != null)
             {
-                GroupName = "系统管理",
-                Icon= "\ue691",
-                ContractionTemplate = false,
-                Modules = new System.Collections.ObjectModel.ObservableCollection<ModuleModel>(GetModules("系统管理"))
-            });
-            list.Add(new ModuleGroupModel
+                primaryMenus.ForEach(item =>
+                {
+                    result.Add(new ModuleGroupModel()
+                    {
+                        GroupName=item.Name,
+                        Icon=item.Icon,
+                        ContractionTemplate=false,
+                        Modules=GetChildren(item.Id,menuModels)
+                    });
+                });
+            }
+
+            return result;
+
+            //List<ModuleGroupModel> list = new List<ModuleGroupModel>();
+            //list.Add(new ModuleGroupModel
+            //{
+            //    GroupName = "系统管理",
+            //    Icon= "\ue691",
+            //    ContractionTemplate = false,
+            //    Modules = new System.Collections.ObjectModel.ObservableCollection<ModuleModel>(GetModules("系统管理"))
+            //});
+            //list.Add(new ModuleGroupModel
+            //{
+            //    GroupName = "采集管理",
+            //    ContractionTemplate = false,
+            //    Icon = "\ue668",
+            //    Modules = new System.Collections.ObjectModel.ObservableCollection<ModuleModel>(GetModules("采集管理"))
+            //});
+            //list.Add(new ModuleGroupModel { 
+            //  GroupName="统计报表",
+            //  ContractionTemplate=false,
+            //  Icon= "\ue670"
+            //});
+            //return list;
+        }
+
+        private ObservableCollection<ModuleModel> GetChildren(long id, List<MenuModel> menuModels)
+        {
+            var result = new ObservableCollection<ModuleModel>();
+
+            if (menuModels == null || menuModels.Count == 0)
             {
-                GroupName = "采集管理",
-                ContractionTemplate = false,
-                Icon = "\ue668",
-                Modules = new System.Collections.ObjectModel.ObservableCollection<ModuleModel>(GetModules("采集管理"))
-            });
-            list.Add(new ModuleGroupModel { 
-              GroupName="统计报表",
-              ContractionTemplate=false,
-              Icon= "\ue670"
-            });
-            return list;
+                return result;
+            }
+
+            var subMenus = menuModels?.Where(w => w.ParentId == id)?.OrderBy(o => o.Sort).ToList();
+
+            if (subMenus != null && subMenus.Count > 0)
+            {
+                subMenus.ForEach(item =>
+                {
+                    result.Add(new ModuleModel()
+                    {
+                        Code = item.Icon,
+                        Name = item.Name,
+                        TypeName = item.Url
+                    });
+                });
+            }
+
+            return result;
         }
 
         /// <summary>

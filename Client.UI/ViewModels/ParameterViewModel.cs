@@ -165,7 +165,7 @@ END";
                 var properties = typeof(ParameterModel).GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
                 var fullName = $"{_computerInfo.HostName}-{_computerInfo.CPU}";
-                var userInfo = SessionInfo.Instance.Session;
+                var userInfo = SessionInfo.Instance.UserInfo;
 
                 var category = string.Empty;
                 var value = string.Empty;
@@ -329,7 +329,7 @@ END";
             try
             {
                 var fullName = $"{_computerInfo.HostName}-{_computerInfo.CPU}";
-                var userInfo = SessionInfo.Instance.Session;
+                var userInfo = SessionInfo.Instance.UserInfo;
 
                 //查询数据库并赋值
                 var sql = new StringBuilder(@"SELECT [id],[category],[value],[text],[remark]

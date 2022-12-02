@@ -264,7 +264,7 @@ namespace GZKL.Client.UI.ViewsModels
                     new SqlParameter("@remark", remark),
                     new SqlParameter("@is_enabled", 1),
                     new SqlParameter("@create_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
-                    new SqlParameter("@user_id", SessionInfo.Instance.Session.Id)
+                    new SqlParameter("@user_id", SessionInfo.Instance.UserInfo.Id)
                     };
 
                     result += SQLHelper.ExecuteNonQuery(sql, parameters);

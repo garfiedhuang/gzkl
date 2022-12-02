@@ -23,10 +23,10 @@
             <ColumnDefinition Width="217*"/>
             <ColumnDefinition Width="193*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Background="#F2F2F2" Margin="0,0,3.4,0.4">
+        <StackPanel Grid.Row="0" Grid.Column="0" Background="#F2F2F2" Margin="0,0,3.4,0.4">
             <Image x:Name="image" Source="../Assets/Images/login.png" Margin="23,21,23.2,21" Height="399"/>
         </StackPanel>
-        <Grid Grid.ColumnSpan="2" Margin="431,0,0,0.4">
+        <Grid Grid.Row="0" Grid.Column="1" Margin="431,0,0,0.4">
             <Grid.RowDefinitions>
                 <RowDefinition Height="52*"></RowDefinition>
                 <RowDefinition Height="58*"></RowDefinition>
@@ -35,18 +35,32 @@
                 <RowDefinition Height="120*"></RowDefinition>
                 <RowDefinition Height="49*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Button Width="50"  Margin="5" 
+            
+            <Button Grid.Row="0" Width="50" Margin="5" 
                     Foreground="#959595"
                     hc:IconElement.Geometry="{StaticResource DeleteGeometry}" 
                     Click="CloseWin_click" 
-                    BorderBrush="{x:Null}" HorizontalAlignment="Right" />
-            <TextBlock
-                        VerticalAlignment="Center"
-                        FontSize="25"
-                        FontWeight="Bold"
-                        Text="快捷登录" Margin="37,5,221,43" Grid.RowSpan="2" Height="44" Grid.Row="1" />
+                    BorderBrush="{x:Null}" 
+                    HorizontalAlignment="Right" />
+            
+            <!--<TextBlock Grid.Row="1" 
+                       Grid.RowSpan="2" 
+                       VerticalAlignment="Center"
+                       FontSize="25"
+                       FontWeight="Bold"
+                       Text="快捷登录" 
+                       Margin="37,5,221,43"
+                       Height="44" />-->
+            
+            <TextBlock Grid.Row="1"
+                       VerticalAlignment="Center"
+                       FontSize="25"
+                       FontWeight="Bold"
+                       Text="快捷登录"
+                       Margin="37,5,221,43"
+                       Height="44" />
 
-            <Grid  Grid.Row="2">
+            <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="37*"></ColumnDefinition>
                     <ColumnDefinition Width="352*"></ColumnDefinition>
@@ -57,31 +71,45 @@
                                 x:Name="UserNameStr"
                                 Text="{Binding UserName,Mode=TwoWay}"
                                 hc:InfoElement.Placeholder="用户名" 
-                                BorderBrush="{x:Null}" BorderThickness="0" 
-                                Height="40" Margin="0,30,0,0" FontSize="18" />
+                                BorderBrush="{x:Null}" 
+                                BorderThickness="0" 
+                                Height="40" 
+                                Margin="0,30,0,0" 
+                                FontSize="18" />
                     <hc:Divider Margin="0" LineStrokeThickness="2" LineStroke="{DynamicResource DarkPrimaryBrush}"/>
                 </StackPanel>
-
             </Grid>
 
-            <Grid  Grid.Row="3">
+            <Grid Grid.Row="3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="37*"></ColumnDefinition>
                     <ColumnDefinition Width="352*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="1" Margin="0,0,38,0">
-                    <hc:PasswordBox hc:InfoElement.Necessary="True"
+                    <!--<hc:PasswordBox hc:InfoElement.Necessary="True"
                                     x:Name="PassWordStr"
-                                    hc:InfoElement.Placeholder="密码"     
+                                    hc:InfoElement.Placeholder="密码"
                                     BorderBrush="{x:Null}" BorderThickness="0" 
                                     Height="40" Margin="0,30,0,0" FontSize="18" 
                                     ShowClearButton="True" 
-                                    ShowEyeButton="True" />
-                    <!--<hc:PasswordBox common:Password.SecurePassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2"/>-->
+                                    ShowEyeButton="True" />-->
+
+                    <hc:PasswordBox hc:InfoElement.Necessary="True"
+                                    x:Name="PassWordStr"
+                                    hc:InfoElement.Placeholder="密码"
+                                    BorderBrush="{x:Null}" 
+                                    BorderThickness="0" 
+                                    Height="40" 
+                                    Margin="0,30,0,0" 
+                                    FontSize="18" 
+                                    ShowClearButton="True" 
+                                    ShowEyeButton="True"
+                                    common:Password.SecurePassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
                     <hc:Divider Margin="0" LineStrokeThickness="2" LineStroke="{DynamicResource DarkPrimaryBrush}"/>
                 </StackPanel>
-
             </Grid>
+            
             <StackPanel Grid.Row="4" Margin="0,21,0,1">
                 <WrapPanel>
                     <CheckBox x:Name="chkAutoLogin"  Margin="40,10,20,0"  Content="自动登录" />
@@ -92,7 +120,10 @@
                         Width="314"
                         Command="{Binding loginCommand}"
                         Background="{DynamicResource PrimaryBrush}"
-                        Margin="37,20,38,5" Style="{StaticResource ButtonInfo}" FontSize="18" Height="40">
+                        Margin="37,20,38,5" 
+                        Style="{StaticResource ButtonInfo}" 
+                        FontSize="18" 
+                        Height="40">
                     <Button.CommandParameter>
                         <MultiBinding Converter="{StaticResource ParameterConvert}">
                             <Binding  ElementName="LoginWindow"/>
@@ -100,12 +131,12 @@
                         </MultiBinding>
                     </Button.CommandParameter>
                 </Button>
-                <WrapPanel>
-
-                    <TextBlock x:Name="txtLoginError" Text="{Binding LoginError,Mode=TwoWay}"></TextBlock>
-
-                </WrapPanel>
             </StackPanel>
+
+            <WrapPanel Grid.Row="5" Margin="5" Height="45" Background="Red">
+                <TextBlock x:Name="txtLoginError" Text="{Binding LoginError,Mode=TwoWay}" Foreground="Yellow"></TextBlock>
+            </WrapPanel>
+            
         </Grid>
     </Grid>
 

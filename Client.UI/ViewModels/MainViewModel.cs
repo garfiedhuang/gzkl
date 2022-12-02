@@ -1,29 +1,33 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using GZKL.Client.UI.API;
+using GZKL.Client.UI.Models;
+using GZKL.Client.UI.Common;
+using MessageBox = HandyControl.Controls.MessageBox;
 using System;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using GZKL.Client.UI.API;
-using GZKL.Client.UI.Models;
-using MessageBox = HandyControl.Controls.MessageBox;
-using GZKL.Client.UI.Common;
+using System.Collections.Generic;
 
 namespace GZKL.Client.UI.ViewsModels
 {
     public class MainViewModel : ViewModelBase
     {
-        MenuApi api = new MenuApi();
-        
-        public MainViewModel()
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="loginSuccessModel"></param>
+        public MainViewModel(LoginSuccessModel loginSuccessModel)
         {
             ModuleGroups = new ObservableCollection<ModuleGroupModel>();
             TabModels = new ObservableCollection<MenuTabModel>();
-            tabIndex = 0;
+
             ChangeContentCommand = new RelayCommand<object>(NavChanged);
-            ExpandMenuCommand = new RelayCommand(()=> {
+            ExpandMenuCommand = new RelayCommand(() =>
+            {
                 for (int i = 0; i < ModuleGroups.Count; i++)
                 {
                     var item = ModuleGroups[i];
@@ -31,21 +35,26 @@ namespace GZKL.Client.UI.ViewsModels
                 }
                 Messenger.Default.Send("", "ExpandMenu");
             });
-            GetMenu();
 
+            //默认展开首页
             NavChanged("Home");
 
-            GetComputerInfo();//Add by garfield 20221110
+            //初始化数据
+            InitData(loginSuccessModel);
         }
+
         #region =====data
-        private ObservableCollection<ModuleGroupModel> moduleGroups;
-        private ObservableCollection<MenuTabModel> tabModels;
-        private int tabIndex;
+
+        /// <summary>
+        /// 页签索引
+        /// </summary>
+        private int tabIndex = 0;
         public int TabIndex
         {
             get { return tabIndex; }
             set { tabIndex = value; RaisePropertyChanged(); }
         }
+
         /// <summary>
         /// 模块加载
         /// </summary>
@@ -55,23 +64,30 @@ namespace GZKL.Client.UI.ViewsModels
             get { return mainContent; }
             set { mainContent = value; RaisePropertyChanged(); }
         }
-        public ObservableCollection<UserModel> GridModelList { get; set; }
+
         /// <summary>
         /// 已加载模块-分组
         /// </summary>
+        private ObservableCollection<ModuleGroupModel> moduleGroups;
         public ObservableCollection<ModuleGroupModel> ModuleGroups
         {
             get { return moduleGroups; }
             set { moduleGroups = value; RaisePropertyChanged(); }
         }
+
         /// <summary>
         /// 已点击模块
         /// </summary>
+        private ObservableCollection<MenuTabModel> tabModels;
         public ObservableCollection<MenuTabModel> TabModels
         {
             get { return tabModels; }
             set { tabModels = value; RaisePropertyChanged(); }
         }
+
+        public string UserName { get; set; } 
+        public string RoleName { get; set; }
+
         #endregion
 
         #region ====cmd
@@ -80,32 +96,39 @@ namespace GZKL.Client.UI.ViewsModels
 
         #endregion
 
-        private void NavChanged(object o)
+        /// <summary>
+        /// 页签改变事件
+        /// </summary>
+        /// <param name="obj"></param>
+        private void NavChanged(object obj)
         {
             string typeName;
             string tabName;
-            if (o.ToString()=="Home")
+
+            if (obj.ToString() == "Home")
             {
                 typeName = "Home";
                 tabName = "首页";
             }
             else
             {
-                var values = (object[])o;
+                var values = (object[])obj;
                 typeName = values[0].ToString();
                 tabName = values[1].ToString();
             }
-           
-            Type type = Type.GetType("GZKL.Client.UI.Views." + typeName);
+
+            var type = Type.GetType("GZKL.Client.UI.Views." + typeName);
 
             if (type == null)
             {
-                MessageBox.Show($"当前功能【{tabName}】未实现，请与系统管理员联系", "操作提示");
+                MessageBox.Show($"当前功能【{tabName}】未实现，请与软件开发商联系", "操作提示");
                 return;
             }
 
-            ConstructorInfo constructor = type.GetConstructor(Type.EmptyTypes);
-            bool needAdd = true;
+            //获取空构造函数
+            var constructor = type.GetConstructor(Type.EmptyTypes);
+            var needAdd = true;
+
             for (int i = 0; i < TabModels.Count; i++)
             {
                 if (TabModels[i].Code == typeName)
@@ -119,33 +142,43 @@ namespace GZKL.Client.UI.ViewsModels
             var fe = (FrameworkElement)constructor.Invoke(null);
             if (needAdd)
             {
-                MenuTabModel menuTabModel = new MenuTabModel();
-                menuTabModel.Header = tabName;
-                menuTabModel.Code= typeName;
+                var menuTabModel = new MenuTabModel
+                {
+                    Header = tabName,
+                    Code = typeName,
+                    Content = fe
+                };
 
-                //menuTabModel.Content = (FrameworkElement)constructor.Invoke(null);//Todo:暂无用处 mark by garfield 20221109
-                menuTabModel.Content= fe;
                 TabModels.Add(menuTabModel);
                 TabIndex = TabModels.Count - 1;
             }
+
             this.MainContent = fe;
         }
-        private void GetMenu()
-        {
-            MenuApi mApi = new MenuApi();
-            Task.Run(new Action(()=> {
 
+        /// <summary>
+        /// 获取菜单数据
+        /// </summary>
+        /// <param name="menuModels"></param>
+        private void GetMenuData(List<MenuModel> menuModels)
+        {
+            var menuApi = new MenuApi();
+            Task.Run(new Action(() =>
+            {
                 ModuleGroups.Clear();
 
-                var menus = mApi.GetModuleGroups();
+                var menus = menuApi.GetModuleGroups(menuModels);
                 foreach (var item in menus)
-                {                  
+                {
                     ModuleGroups.Add(item);
                 }
             }));
         }
 
-        private void GetComputerInfo()
+        /// <summary>
+        /// 获取电脑和注册数据
+        /// </summary>
+        private void GetPCAndRegisterData()
         {
             Task.Run(new Action(() =>
             {
@@ -155,6 +188,29 @@ namespace GZKL.Client.UI.ViewsModels
 
                 SessionInfo.Instance.RegisterInfo = RegisterInfo.GetInstance().GetRegisterInfo(fullName);
             }));
+        }
+
+        /// <summary>
+        /// 初始化数据
+        /// </summary>
+        /// <param name="loginSuccessModel"></param>
+        private void InitData(LoginSuccessModel loginSuccessModel)
+        {
+            try
+            {
+                SessionInfo.Instance.UserInfo = loginSuccessModel.User;
+
+                GetMenuData(loginSuccessModel.Menus);//异步
+
+                GetPCAndRegisterData();//异步
+
+                this.UserName = loginSuccessModel?.User?.Name;
+                this.RoleName = loginSuccessModel?.Role?.Name;
+            }
+            catch
+            {
+
+            }
         }
     }
 }

@@ -105,7 +105,7 @@ namespace GZKL.Client.UI.ViewsModels
                 }
 
                 var backupName = string.Empty;
-                var userInfo = SessionInfo.Instance.Session;
+                var userInfo = SessionInfo.Instance.UserInfo;
 
                 backupName = $"{_computerInfo.HostName}_gzkldb_{DateTime.Now.ToString("yyyyMMddHHmmss")}.bak";
 

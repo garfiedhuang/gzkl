@@ -1,8 +1,6 @@
-﻿
-using GalaSoft.MvvmLight.Messaging;
+﻿using GalaSoft.MvvmLight.Messaging;
 using System.Windows;
 using System.Windows.Input;
-using GZKL.Client.UI.ViewsModels;
 
 namespace GZKL.Client.UI.Views
 {
@@ -26,7 +24,7 @@ namespace GZKL.Client.UI.Views
             this.UserNameStr.ErrorStr = msg;
         }
 
-        private void LoginWindow_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void LoginWindow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {

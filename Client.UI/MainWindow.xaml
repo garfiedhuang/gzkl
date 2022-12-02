@@ -75,7 +75,7 @@
         </DataTemplate>
         <DataTemplate x:Key="groupTemplate">
             <StackPanel HorizontalAlignment="Center" Margin="0 20 0 0">
-                <Button Height="30" Width="30"  HorizontalAlignment="Center" VerticalAlignment="Center" Click="Button_Click_1" >
+                <Button Height="30" Width="30"  HorizontalAlignment="Center" VerticalAlignment="Center" Click="Button_Click" >
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Template">
@@ -133,7 +133,7 @@
                                                         </ItemsControl>
                                                     </StackPanel>
                                                 </Border>
-                                                
+
                                             </Popup>
                                         </Grid>
                                     </ControlTemplate>
@@ -179,9 +179,9 @@
                                 <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
                             </Image.Clip>
                         </Image>
-                        <StackPanel VerticalAlignment="Center" Margin="5 0 0 0" Name="userName">
-                            <TextBlock Text="系统管理员" Foreground="#BFCBD9"/>
-                            <TextBlock Text="Admin" Foreground="#959595"/>
+                        <StackPanel VerticalAlignment="Center" Margin="5 0 0 0" x:Name="xpUserInfo">
+                            <TextBlock Text="{Binding RoleName}" Foreground="#BFCBD9"/>
+                            <TextBlock Text="{Binding UserName}" Foreground="#959595"/>
                         </StackPanel>
                     </StackPanel>
                     <StackPanel x:Name="spMenuTree" Grid.Row="1" Margin="0 20 0 20">
@@ -257,10 +257,10 @@
                                         <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
                                     </Image.Clip>
                                 </Image>-->
-                              
+
                                 <Button Content="&#xe602;" Foreground="#5a5e66"  Click="MinWin_click" Style="{StaticResource ControlBtnStyle}"/>
                                 <Button Content="&#xe601;" Foreground="#5a5e66"  Click="MaxWin_click" Style="{StaticResource ControlBtnStyle}"/>
-                                <Button Content="&#xe675;" Foreground="#5a5e66"  Click="CloseWin_click"  Style="{StaticResource ControlBtnStyle}" />
+                                <Button Content="&#xe675;" Foreground="#5a5e66"  Click="CloseWin_click" Style="{StaticResource ControlBtnStyle}" />
                             </StackPanel>
                         </StackPanel>
                     </UniformGrid>

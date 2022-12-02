@@ -1,21 +1,12 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using GZKL.Client.UI.Common;
 using GZKL.Client.UI.ViewsModels;
-using System.Windows.Controls.Primitives;
 using GZKL.Client.UI.Models;
+using System;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Controls.Primitives;
 
 namespace GZKL.Client.UI
 {
@@ -28,20 +19,18 @@ namespace GZKL.Client.UI
         {
             InitializeComponent();
 
-            SessionInfo.Instance.Session = loginSuccessModel.User;
-
-            this.DataContext = new MainViewModel();
+            this.DataContext = new MainViewModel(loginSuccessModel);
 
             Messenger.Default.Register<string>(this, "ExpandMenu", arg =>
             {
                 if (this.menu.Width < 200)
                 {
-                    this.userName.Visibility = Visibility.Visible;
+                    this.xpUserInfo.Visibility = Visibility.Visible;
                     AnimationHelper.CreateWidthChangedAnimation(this.menu, 60, 200, new TimeSpan(0, 0, 0, 0, 300));
                 }
                 else
                 {
-                    this.userName.Visibility = Visibility.Collapsed;
+                    this.xpUserInfo.Visibility = Visibility.Collapsed;
                     AnimationHelper.CreateWidthChangedAnimation(this.menu, 200, 60, new TimeSpan(0, 0, 0, 0, 300));
                 }
 
@@ -75,11 +64,6 @@ namespace GZKL.Client.UI
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             Button btn = (Button)sender;
             Grid gridtemp = (Grid) btn.Template.FindName("gridtemp",btn);
