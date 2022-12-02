@@ -21,6 +21,14 @@ namespace GZKL.Client.UI
         private static Mutex AppMutex;
 
         /// <summary>
+        /// 构造函数
+        /// </summary>
+        public App()
+        {
+            this.InitLog();
+        }
+
+        /// <summary>
         /// 启动
         /// </summary>
         /// <param name="e"></param>
@@ -42,8 +50,6 @@ namespace GZKL.Client.UI
                 }
                 Shutdown();
             }
-
-            this.InitLog();
         }
 
         /// <summary>
