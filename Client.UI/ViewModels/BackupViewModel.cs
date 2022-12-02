@@ -30,7 +30,7 @@ namespace GZKL.Client.UI.ViewsModels
             Model = new BackupModel();
 
             //初始化当前备份目录
-            var backupPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Backup");
+            var backupPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "backup");
             if (!System.IO.Directory.Exists(backupPath))
             {
                 System.IO.Directory.CreateDirectory(backupPath);
@@ -68,7 +68,6 @@ namespace GZKL.Client.UI.ViewsModels
         public RelayCommand BackupCommand { get; set; }
 
         #endregion
-
 
         #region Command implement
 

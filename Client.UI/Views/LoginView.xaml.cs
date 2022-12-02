@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
+using GZKL.Client.UI.Common;
 using System.Windows;
 using System.Windows.Input;
 

@@ -41,7 +41,7 @@ namespace GZKL.Client.UI.ViewsModels
         /// <summary>
         /// 用户名
         /// </summary>
-        private string userName="admin";
+        private string userName="";
         public string UserName
         {
             get { return userName; }
@@ -66,7 +66,7 @@ namespace GZKL.Client.UI.ViewsModels
         public SecureString Password
         {
             get { return _password; }
-            set { _password = value; RaisePropertyChanged(); loginError = ""; }
+            set { _password = value; RaisePropertyChanged(); LoginError = ""; }
         }
 
         /// <summary>
@@ -248,7 +248,7 @@ namespace GZKL.Client.UI.ViewsModels
                             result.UserName = dr["category"].ToString();
                             break;
                         case "AutoLogin":
-                            result.AutoLogin =Convert.ToBoolean(dr["AutoLogin"] ??"false");
+                            result.AutoLogin =Convert.ToBoolean(dr["AutoLogin"] ??"true");
                             break;
                         case "RememberPassword":
                             result.RememberPassword = Convert.ToBoolean(dr["RememberPassword"] ?? "false");

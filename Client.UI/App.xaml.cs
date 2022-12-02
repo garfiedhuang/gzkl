@@ -69,13 +69,6 @@ namespace GZKL.Client.UI
             var directoryInfo = new DirectoryInfo(Assembly.GetExecutingAssembly().Location);
             var configFile = Path.Combine(directoryInfo.Parent?.FullName ?? string.Empty, "NLog.config");
             LogHelper.Startup(configFile);
-
-            LogHelper.Trace("trace");
-            LogHelper.Debug("debug");
-            LogHelper.Info("info");
-            LogHelper.Warn("warn");
-            LogHelper.Error("error");
-            LogHelper.Fatal("fatal");
         }
 
         private void CloseLog()

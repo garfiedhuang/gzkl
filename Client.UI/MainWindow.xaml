@@ -8,12 +8,16 @@
         xmlns:common="clr-namespace:GZKL.Client.UI.Common" 
         xmlns:template="clr-namespace:GZKL.Client.UI.CustomControls.Template"
         mc:Ignorable="d"
-        Title="MainWindow"  Height="800" Width="1400" 
+        Title="MainWindow"
+        Height="800"
+        Width="1400" 
         FontFamily="Microsoft Yahei"
         x:Name="MainW"
-        ResizeMode="CanResize"  WindowStartupLocation="CenterScreen"
-        WindowStyle="None" AllowsTransparency="True" Background="{x:Null}"
-        >
+        ResizeMode="CanResize"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None" 
+        AllowsTransparency="True" 
+        Background="{x:Null}">
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" ResizeBorderThickness="20"/>
     </WindowChrome.WindowChrome>

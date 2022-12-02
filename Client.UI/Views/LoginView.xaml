@@ -14,7 +14,10 @@
         WindowStyle="None"
         AllowsTransparency="True" 
         DataContext="{Binding Source={StaticResource Locator},Path=Login}"
-        Title="Login" Height="430" Width="820" MouseLeftButtonDown="LoginWindow_MouseLeftButtonDown">
+        Title="Login" 
+        Height="430" 
+        Width="820" 
+        MouseLeftButtonDown="LoginWindow_MouseLeftButtonDown">
     <Window.Resources>
         <common:ParameterConvert x:Key="ParameterConvert"></common:ParameterConvert>
     </Window.Resources>
@@ -23,10 +26,10 @@
             <ColumnDefinition Width="217*"/>
             <ColumnDefinition Width="193*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Row="0" Grid.Column="0" Background="#F2F2F2" Margin="0,0,3.4,0.4">
+        <StackPanel Background="#F2F2F2" Margin="0,0,3.4,0.4">
             <Image x:Name="image" Source="../Assets/Images/login.png" Margin="23,21,23.2,21" Height="399"/>
         </StackPanel>
-        <Grid Grid.Row="0" Grid.Column="1" Margin="431,0,0,0.4">
+        <Grid Grid.ColumnSpan="2" Margin="431,0,0,0.4">
             <Grid.RowDefinitions>
                 <RowDefinition Height="52*"></RowDefinition>
                 <RowDefinition Height="58*"></RowDefinition>
@@ -42,21 +45,13 @@
                     Click="CloseWin_click" 
                     BorderBrush="{x:Null}" 
                     HorizontalAlignment="Right" />
-            
-            <!--<TextBlock Grid.Row="1" 
+
+            <TextBlock Grid.Row="1" 
                        Grid.RowSpan="2" 
                        VerticalAlignment="Center"
                        FontSize="25"
                        FontWeight="Bold"
                        Text="快捷登录" 
-                       Margin="37,5,221,43"
-                       Height="44" />-->
-            
-            <TextBlock Grid.Row="1"
-                       VerticalAlignment="Center"
-                       FontSize="25"
-                       FontWeight="Bold"
-                       Text="快捷登录"
                        Margin="37,5,221,43"
                        Height="44" />
 
@@ -133,8 +128,8 @@
                 </Button>
             </StackPanel>
 
-            <WrapPanel Grid.Row="5" Margin="5" Height="45" Background="Red">
-                <TextBlock x:Name="txtLoginError" Text="{Binding LoginError,Mode=TwoWay}" Foreground="Yellow"></TextBlock>
+            <WrapPanel Grid.Row="5" Margin="37,0,38,10" Height="45">
+                <TextBlock x:Name="txtLoginError" Text="{Binding LoginError,Mode=TwoWay}" Foreground="Red"></TextBlock>
             </WrapPanel>
             
         </Grid>
