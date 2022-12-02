@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,6 +19,11 @@ namespace GZKL.Client.UI
     public partial class App : Application
     {
         private static Mutex AppMutex;
+
+        /// <summary>
+        /// 启动
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnStartup(StartupEventArgs e)
         {
             AppMutex = new Mutex(true, "GZKL.Client.UI", out var createdNew);
@@ -35,6 +42,40 @@ namespace GZKL.Client.UI
                 }
                 Shutdown();
             }
+
+            this.InitLog();
+        }
+
+        /// <summary>
+        /// 退出
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnExit(ExitEventArgs e)
+        {
+            this.CloseLog();
+
+            base.OnExit(e);
+        }
+
+        private void InitLog()
+        {
+            //启动日志组件
+            var directoryInfo = new DirectoryInfo(Assembly.GetExecutingAssembly().Location);
+            var configFile = Path.Combine(directoryInfo.Parent?.FullName ?? string.Empty, "NLog.config");
+            LogHelper.Startup(configFile);
+
+            LogHelper.Trace("trace");
+            LogHelper.Debug("debug");
+            LogHelper.Info("info");
+            LogHelper.Warn("warn");
+            LogHelper.Error("error");
+            LogHelper.Fatal("fatal");
+        }
+
+        private void CloseLog()
+        {
+            //关闭日志组件
+            LogHelper.Shutdown();
         }
     }
 }

@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Collections.Generic;
+using System.IO;
 
 namespace GZKL.Client.UI.ViewsModels
 {
