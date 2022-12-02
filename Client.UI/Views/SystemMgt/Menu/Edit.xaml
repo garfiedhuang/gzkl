@@ -9,7 +9,7 @@
              WindowStartupLocation="CenterScreen"
              mc:Ignorable="d" 
              Title="新增/编辑菜单信息"
-             Height="550" 
+             Height="560" 
              Width="650" 
              ResizeMode="NoResize">
     <!--<hc:TransitioningContentControl>-->

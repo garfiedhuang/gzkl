@@ -30,7 +30,7 @@
                             Margin="0 20 0 0">
                 <Expander.Header>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Icon}" Foreground="#BFCBD9" FontSize="22" VerticalAlignment="Center" FontFamily="./Fonts/#iconfont"  />
+                        <TextBlock Text="{Binding Icon,Mode=OneTime}" Foreground="#BFCBD9" FontSize="22" VerticalAlignment="Center" FontFamily="./Fonts/#iconfont"  />
                         <TextBlock FontSize="15" Text="{Binding GroupName}" Foreground="#BFCBD9" Margin="16,2,0,0">
                         </TextBlock>
                     </StackPanel>
@@ -86,7 +86,7 @@
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type Button}">
                                         <Grid x:Name="gridtemp">
-                                            <TextBlock x:Name="menuIcon" Text="{Binding Icon}" Foreground="#BFCBD9" FontSize="22" VerticalAlignment="Center" FontFamily="./Fonts/#iconfont"  />
+                                            <TextBlock x:Name="menuIcon" Text="{Binding Icon,Mode=OneTime}" Foreground="#BFCBD9" FontSize="22" VerticalAlignment="Center" FontFamily="./Fonts/#iconfont"  />
                                             <Popup x:Name="menuPop" PlacementTarget="{Binding ElementName=menuIcon}" 
                                                    Grid.Row="1" StaysOpen="False" 
                                                    Placement="Right" 
@@ -167,7 +167,7 @@
                         <RowDefinition Height="135"></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="GZKL" 
+                    <TextBlock Text="GZ" 
                                FontWeight="Bold" 
                                FontSize="30" 
                                Foreground="#3DD0FB" 

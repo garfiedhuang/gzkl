@@ -12,7 +12,7 @@ namespace GZKL.Client.UI.API
         /// 获取模块分组集合
         /// </summary>
         /// <returns></returns>
-        public List<ModuleGroupModel> GetModuleGroups(List<MenuModel> menuModels) 
+        public List<ModuleGroupModel> GetModuleGroups(List<MenuModel> menuModels)
         {
             var result = new List<ModuleGroupModel>();
 
@@ -24,10 +24,10 @@ namespace GZKL.Client.UI.API
                 {
                     result.Add(new ModuleGroupModel()
                     {
-                        GroupName=item.Name,
-                        Icon=item.Icon,
-                        ContractionTemplate=false,
-                        Modules=GetChildren(item.Id,menuModels)
+                        GroupName = item.Name,
+                        Icon = UnicodeToStr(item.Icon),
+                        ContractionTemplate = false,
+                        Modules = GetChildren(item.Id, menuModels)
                     });
                 });
             }
@@ -74,7 +74,7 @@ namespace GZKL.Client.UI.API
                 {
                     result.Add(new ModuleModel()
                     {
-                        Code = item.Icon,
+                        Code = UnicodeToStr(item.Icon),
                         Name = item.Name,
                         TypeName = item.Url
                     });
@@ -82,6 +82,27 @@ namespace GZKL.Client.UI.API
             }
 
             return result;
+        }
+
+        public string UnicodeToStr(string unicodeStr)
+        {
+            string outStr = "";
+            if (!string.IsNullOrEmpty(unicodeStr))
+            {
+                string[] strlist = unicodeStr.Replace("&#", "").Replace(";", "").Split('x');
+                try
+                {
+                    for (int i = 1; i < strlist.Length; i++)
+                    {
+                        outStr += (char)int.Parse(strlist[i], System.Globalization.NumberStyles.HexNumber);
+                    }
+                }
+                catch (FormatException ex)
+                {
+                    outStr = ex.Message;
+                }
+            }
+            return outStr;
         }
 
         /// <summary>
@@ -125,7 +146,7 @@ namespace GZKL.Client.UI.API
                     TypeName = "SystemMgt.Config.Config"
                 });
             }
-            else if(group=="采集管理")
+            else if (group == "采集管理")
             {
                 list.Add(new ModuleModel
                 {

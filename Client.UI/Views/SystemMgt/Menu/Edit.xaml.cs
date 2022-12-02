@@ -73,12 +73,12 @@ namespace GZKL.Client.UI.Views.SystemMgt.Menu
 
             if (_id == 0)
             {//新增
-                sql = "SELECT COUNT(1) FROM [dbo].[base_menu] WHERE [name]=@name AND [type]=@type AND [is_deleted]=0";
+                sql = "SELECT COUNT(1) FROM [dbo].[sys_menu] WHERE [name]=@name AND [type]=@type AND [is_deleted]=0";
                 parameters = new SqlParameter[] { new SqlParameter("@name", txtMenuName.Text), new SqlParameter("@type", cmbMenuType.SelectedValue) };
             }
             else
             { //修改
-                sql = "SELECT COUNT(1) FROM [dbo].[base_menu] WHERE [name]=@name AND [type]=@type AND [is_deleted]=0 AND [id]<>@id";
+                sql = "SELECT COUNT(1) FROM [dbo].[sys_menu] WHERE [name]=@name AND [type]=@type AND [is_deleted]=0 AND [id]<>@id";
                 parameters = new SqlParameter[] { new SqlParameter("@name", txtMenuName.Text), new SqlParameter("@type", cmbMenuType.SelectedValue), new SqlParameter("@id", _id) };
             }
             rowCount = Convert.ToInt32(SQLHelper.ExecuteScalar(sql, parameters) ?? "0");
