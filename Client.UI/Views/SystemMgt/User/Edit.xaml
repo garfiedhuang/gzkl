@@ -5,7 +5,7 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         WindowStartupLocation="CenterScreen"
         Title="新增/编辑用户信息"
-        Height="450" 
+        Height="480" 
         Width="650" 
         ResizeMode="NoResize">
     <!--<hc:TransitioningContentControl>-->

@@ -86,6 +86,7 @@
                     <hc:PasswordBox hc:InfoElement.Necessary="True"
                                     x:Name="PassWordStr"
                                     hc:InfoElement.Placeholder="密码"
+                                    Password="123456"
                                     BorderBrush="{x:Null}" 
                                     BorderThickness="0" 
                                     MaxLength="20"

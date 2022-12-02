@@ -44,7 +44,7 @@ namespace GZKL.Client.UI.ViewsModels
         /// <summary>
         /// 用户名
         /// </summary>
-        private string userName="";
+        private string userName="admin";
         public string UserName
         {
             get { return userName; }
@@ -60,17 +60,6 @@ namespace GZKL.Client.UI.ViewsModels
             get { return password; }
             set { password = value; RaisePropertyChanged(); LoginError = ""; }
         }
-
-        ///// <summary>
-        ///// 密码
-        ///// </summary>
-        //private SecureString _password;
-
-        //public SecureString Password
-        //{
-        //    get { return _password; }
-        //    set { _password = value; RaisePropertyChanged(); LoginError = ""; }
-        //}
 
         /// <summary>
         /// 自动登录
@@ -136,21 +125,22 @@ namespace GZKL.Client.UI.ViewsModels
                 //执行登录
                 loginResult = Login();
 
+                var mainWindow = new MainWindow(loginResult);
+
                 //关闭登录窗口
                 (values[0] as System.Windows.Window).Close();
+
+                if (loginResult.User?.Id > 0)
+                {
+                    //开启主画面
+                   var result = mainWindow.ShowDialog();
+                }
 
             }
             catch (Exception ex)
             {
                 LoginError = ex?.Message;
             }
-
-            if (loginResult.User?.Id > 0)
-            {
-                //开启主画面
-                _ = new MainWindow(loginResult).ShowDialog();
-            }
-
         }
 
         /// <summary>
@@ -161,17 +151,27 @@ namespace GZKL.Client.UI.ViewsModels
         {
             var result = new LoginSuccessModel();
 
-
             //用户
-            var sql = @"SELECT TOP 1 * FROM [sys_user] WHERE [is_deleted]=0 AND [user_name]=@userName AND [password]=@password";
-            var parameters = new SqlParameter[] { new SqlParameter("@usrName", userName), new SqlParameter("@password", Password) };
+            var sql = @"SELECT TOP 1 * FROM [sys_user] WHERE [is_deleted]=0 AND [name]=@userName AND [password]=@password";
+            var parameters = new SqlParameter[] { new SqlParameter("@userName", userName), new SqlParameter("@password", Password) };
 
             using (var dt = SQLHelper.GetDataTable(sql, parameters))
             {
                 if (dt != null && dt.Rows.Count > 0)
                 {
-                    result.User = new UserModel() { 
-                    
+                    var dataRow = dt.Rows[0];
+
+                    result.User = new UserModel() {
+                        Id = Convert.ToInt64(dataRow["id"]),
+                        Name = dataRow["name"].ToString(),
+                        Email = dataRow["email"].ToString(),
+                        Phone = dataRow["phone"].ToString(),
+                        HeadImg = dataRow["head_img"].ToString(),
+                        Sex = Convert.ToInt32(dataRow["sex"]),
+                        Birthday = Convert.ToDateTime(dataRow["birthday"] ?? DateTime.MinValue),
+                        IsEnabled = Convert.ToInt32(dataRow["is_enabled"]),
+                        CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
+                        UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
                     };
                 }
             }
@@ -188,15 +188,21 @@ namespace GZKL.Client.UI.ViewsModels
 
             //角色
             sql = @"SELECT TOP 1 r.* FROM [sys_role] r INNER JOIN [sys_user_role] ur ON r.id=ur.role_id WHERE r.[is_deleted]=0 AND ur.[is_deleted]=0 AND ur.[user_id]=@userId";
-            parameters = new SqlParameter[] { new SqlParameter("@usrId", result.User.Id) };
+            parameters = new SqlParameter[] { new SqlParameter("@userId", result.User.Id) };
 
             using (var dt = SQLHelper.GetDataTable(sql, parameters))
             {
                 if (dt != null && dt.Rows.Count > 0)
                 {
+                    var dataRow = dt.Rows[0];
+
                     result.Role = new RoleModel()
                     {
-
+                        Id = Convert.ToInt64(dataRow["id"]),
+                        Name = dataRow["name"].ToString(),
+                        Remark = dataRow["remark"].ToString(),
+                        CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
+                        UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
                     };
                 }
             }
@@ -215,11 +221,21 @@ namespace GZKL.Client.UI.ViewsModels
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     result.Menus = new List<MenuModel>();
-                    foreach (var dr in dt.Rows)
+                    foreach (DataRow dataRow in dt.Rows)
                     {
-                        result.Menus.Add(new MenuModel() { 
-                        
-                        
+                        result.Menus.Add(new MenuModel() {
+
+                            Id = Convert.ToInt64(dataRow["id"]),
+                            ParentId = Convert.ToInt64(dataRow["parent_id"]),
+                            Name = dataRow["name"].ToString(),
+                            Url = dataRow["url"].ToString(),
+                            Icon = dataRow["icon"].ToString(),
+                            Type = Convert.ToInt32(dataRow["type"]),
+                            Sort = Convert.ToInt32(dataRow["sort"]),
+                            IsEnabled = Convert.ToInt32(dataRow["is_enabled"]),
+                            CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
+                            UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
+
                         });
                     }
                 }

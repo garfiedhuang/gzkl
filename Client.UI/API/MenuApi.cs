@@ -16,7 +16,7 @@ namespace GZKL.Client.UI.API
         {
             var result = new List<ModuleGroupModel>();
 
-            var primaryMenus = menuModels?.Where(w => w.Type == 1)?.OrderBy(w => w.Sort)?.ToList();
+            var primaryMenus = menuModels?.Where(w => w.Type == 2)?.OrderBy(w => w.Sort)?.ToList();
 
             if (primaryMenus != null)
             {
