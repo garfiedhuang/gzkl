@@ -120,13 +120,11 @@
     <Compile Include="Common\CollectionHelper.cs" />
     <Compile Include="Common\DsnHelper.cs" />
     <Compile Include="Common\LogHelper.cs" />
-    <Compile Include="Common\Password.cs" />
     <Compile Include="Common\RegisterInfo.cs" />
     <Compile Include="Common\SecurityHelper.cs" />
     <Compile Include="Common\ComputerInfo.cs" />
     <Compile Include="Common\Enums.cs" />
     <Compile Include="Common\ParameterConvert.cs" />
-    <Compile Include="Common\PasswordHelper.cs" />
     <Compile Include="Common\PlateValueConverter.cs" />
     <Compile Include="Common\PlateValueMuiltConverter.cs" />
     <Compile Include="Common\SessionInfo.cs" />

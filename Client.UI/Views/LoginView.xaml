@@ -68,6 +68,7 @@
                                 hc:InfoElement.Placeholder="用户名" 
                                 BorderBrush="{x:Null}" 
                                 BorderThickness="0" 
+                                MaxLength="20"
                                 Height="40" 
                                 Margin="0,30,0,0" 
                                 FontSize="18" />
@@ -81,25 +82,18 @@
                     <ColumnDefinition Width="352*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="1" Margin="0,0,38,0">
-                    <!--<hc:PasswordBox hc:InfoElement.Necessary="True"
-                                    x:Name="PassWordStr"
-                                    hc:InfoElement.Placeholder="密码"
-                                    BorderBrush="{x:Null}" BorderThickness="0" 
-                                    Height="40" Margin="0,30,0,0" FontSize="18" 
-                                    ShowClearButton="True" 
-                                    ShowEyeButton="True" />-->
-
+                    
                     <hc:PasswordBox hc:InfoElement.Necessary="True"
                                     x:Name="PassWordStr"
                                     hc:InfoElement.Placeholder="密码"
                                     BorderBrush="{x:Null}" 
                                     BorderThickness="0" 
+                                    MaxLength="20"
                                     Height="40" 
                                     Margin="0,30,0,0" 
-                                    FontSize="18" 
+                                    FontSize="18"
                                     ShowClearButton="True" 
-                                    ShowEyeButton="True"
-                                    common:Password.SecurePassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    ShowEyeButton="True"/>
 
                     <hc:Divider Margin="0" LineStrokeThickness="2" LineStroke="{DynamicResource DarkPrimaryBrush}"/>
                 </StackPanel>

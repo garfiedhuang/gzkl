@@ -28,9 +28,12 @@ namespace GZKL.Client.UI.ViewsModels
 
             if (loginModel.RememberPassword)
             {
-                var nc = new NetworkCredential(loginModel.UserName, loginModel.Password);
-                UserName = nc.UserName;
-                Password = nc.SecurePassword;
+                //var nc = new NetworkCredential(loginModel.UserName, loginModel.Password);
+                //UserName = nc.UserName;
+                //Password = nc.SecurePassword;
+
+                UserName= loginModel.UserName;
+                Password= loginModel.Password;
             }
 
             this.AutoLogin = loginModel.AutoLogin;
@@ -48,26 +51,26 @@ namespace GZKL.Client.UI.ViewsModels
             set { userName = value; RaisePropertyChanged(); LoginError = ""; }
         }
 
-        ///// <summary>
-        ///// 密码
-        ///// </summary>
-        //private string passWord="123456";
-        //public string PassWord
-        //{
-        //    get { return passWord; }
-        //    set { passWord = value; RaisePropertyChanged(); LoginError = ""; }
-        //}
-
         /// <summary>
         /// 密码
         /// </summary>
-        private SecureString _password;
-
-        public SecureString Password
+        private string password = "123456";
+        public string Password
         {
-            get { return _password; }
-            set { _password = value; RaisePropertyChanged(); LoginError = ""; }
+            get { return password; }
+            set { password = value; RaisePropertyChanged(); LoginError = ""; }
         }
+
+        ///// <summary>
+        ///// 密码
+        ///// </summary>
+        //private SecureString _password;
+
+        //public SecureString Password
+        //{
+        //    get { return _password; }
+        //    set { _password = value; RaisePropertyChanged(); LoginError = ""; }
+        //}
 
         /// <summary>
         /// 自动登录
@@ -121,6 +124,10 @@ namespace GZKL.Client.UI.ViewsModels
                 psdControl.ErrorStr = "密码不能为空";
                 return;
             }
+            else
+            {
+                Password = psdStr;
+            }
 
             var loginResult =new LoginSuccessModel();
 
@@ -157,7 +164,7 @@ namespace GZKL.Client.UI.ViewsModels
 
             //用户
             var sql = @"SELECT TOP 1 * FROM [sys_user] WHERE [is_deleted]=0 AND [user_name]=@userName AND [password]=@password";
-            var parameters = new SqlParameter[] { new SqlParameter("@usrName", userName), new SqlParameter("@password", Password.ToString()) };
+            var parameters = new SqlParameter[] { new SqlParameter("@usrName", userName), new SqlParameter("@password", Password) };
 
             using (var dt = SQLHelper.GetDataTable(sql, parameters))
             {
