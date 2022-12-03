@@ -1,5 +1,6 @@
 ﻿using GZKL.Client.UI.Common;
 using GZKL.Client.UI.Models;
+using HandyControl.Data;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -25,35 +26,65 @@ namespace GZKL.Client.UI.Views.CollectMgt.Clear
     /// </summary>
     public partial class Edit : Window
     {
+        private ClearQueryModel ClearQueryModel { get; set; }
 
-        public Edit(ClearModel clearModel,ClearQueryModel queryModel)
+        public Edit(ClearModel clearModel, ClearQueryModel queryModel)
         {
             InitializeComponent();
 
-            this.DataContext = new { Model = clearModel,QueryModel =queryModel };
+            ClearQueryModel = queryModel;
+
+            this.DataContext = new { Model = clearModel, QueryModel = queryModel };
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            switch (ClearQueryModel.ClearType)
+            {
+                case "试验日期":
+                    if (ClearQueryModel.StartTestDt == null || ClearQueryModel.EndTestDt == null)
+                    {
+                        HandyControl.Controls.Growl.Warning("试验日期不能为空");
+                        return;
+                    }
+                    else
+                    {
+                        ClearQueryModel.StartTestNo = string.Empty;
+                        ClearQueryModel.EndTestNo = string.Empty;
+                        ClearQueryModel.StartSampleNo = string.Empty;
+                        ClearQueryModel.EndSampleNo = string.Empty;
+                    }
+                    break;
+                case "检测编号":
+                    if (string.IsNullOrEmpty(ClearQueryModel.StartTestNo) || string.IsNullOrEmpty(ClearQueryModel.EndTestNo))
+                    {
+                        HandyControl.Controls.Growl.Warning("检测编号不能为空");
+                        return;
+                    }
+                    else
+                    {
+                        ClearQueryModel.StartTestDt = null;
+                        ClearQueryModel.EndTestDt = null;
+                        ClearQueryModel.StartSampleNo = string.Empty;
+                        ClearQueryModel.EndSampleNo = string.Empty;
+                    }
+                    break;
 
-            //if (string.IsNullOrEmpty(this.txtOrgNo.Text))
-            //{
-            //    this.txtOrgNo.IsError = true;
-            //    this.txtOrgNo.ErrorStr = "不能为空";
-            //    return;
-            //}
-            //if (string.IsNullOrEmpty(this.txtOrgName.Text))
-            //{
-            //    this.txtOrgName.IsError = true;
-            //    this.txtOrgName.ErrorStr = "不能为空";
-            //    return;
-            //}
-            //if (string.IsNullOrEmpty(this.cmbIsEnabled.Text))
-            //{
-            //    this.cmbIsEnabled.IsError = true;
-            //    this.cmbIsEnabled.ErrorStr = "不能为空";
-            //    return;
-            //}
+                case "样品编号":
+                    if (string.IsNullOrEmpty(ClearQueryModel.StartSampleNo) || string.IsNullOrEmpty(ClearQueryModel.EndSampleNo))
+                    {
+                        HandyControl.Controls.Growl.Warning("样品编号不能为空");
+                        return;
+                    }
+                    else
+                    {
+                        ClearQueryModel.StartTestDt = null;
+                        ClearQueryModel.EndTestDt = null;
+                        ClearQueryModel.StartTestNo = string.Empty;
+                        ClearQueryModel.EndTestNo = string.Empty;
+                    }
+                    break;
+            }
 
             this.DialogResult = true;
         }

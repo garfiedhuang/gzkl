@@ -10,8 +10,8 @@
              xmlns:cv="clr-namespace:GZKL.Client.UI.Converters"
              WindowStartupLocation="CenterScreen"
              mc:Ignorable="d" 
-             Title="新增/编辑单位信息"
-             Height="450" 
+             Title="数据清理"
+             Height="400" 
              Width="650" 
              ResizeMode="NoResize">
     <Window.Resources>
@@ -38,17 +38,17 @@
             <WrapPanel Margin="50,0,50,20" Grid.Row="1" VerticalAlignment="Center" Height="30" >
                 <RadioButton x:Name="rbTestNo" IsChecked="{Binding QueryModel.ClearType,Mode=TwoWay,Converter={StaticResource checkConverter},ConverterParameter=检测编号}" Margin="15,0,0,0" HorizontalAlignment="Center" Content="检测编号" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
 
-                <hc:TextBox Width="150" Text="{Binding QueryModel.StartTestNo}" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
+                <hc:TextBox Width="150" Text="{Binding QueryModel.StartTestNo, Mode=TwoWay}" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
                 <TextBlock Margin="15,8,0,0" HorizontalAlignment="Center" Text="到"/>
-                <hc:TextBox Width="150" Text="{Binding QueryModel.EndTestNo}" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
+                <hc:TextBox Width="150" Text="{Binding QueryModel.EndTestNo, Mode=TwoWay}" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
             </WrapPanel>
 
             <WrapPanel Margin="50,0,50,20" Grid.Row="1" VerticalAlignment="Center" Height="30" >
                 <RadioButton x:Name="rbSampleNo" IsChecked="{Binding QueryModel.ClearType,Mode=TwoWay,Converter={StaticResource checkConverter},ConverterParameter=样品编号}" Margin="15,0,0,0" HorizontalAlignment="Center" Content="样品编号" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
 
-                <hc:TextBox Width="150" Text="{Binding QueryModel.StartSampleNo}" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
+                <hc:TextBox Width="150" Text="{Binding QueryModel.StartSampleNo, Mode=TwoWay}" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
                 <TextBlock Margin="15,8,0,0" HorizontalAlignment="Center" Text="到"/>
-                <hc:TextBox Width="150" Text="{Binding QueryModel.EndSampleNo}" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
+                <hc:TextBox Width="150" Text="{Binding QueryModel.EndSampleNo, Mode=TwoWay}" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
             </WrapPanel>
 
         </StackPanel>

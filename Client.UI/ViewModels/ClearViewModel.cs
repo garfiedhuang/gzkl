@@ -165,6 +165,7 @@ namespace GZKL.Client.UI.ViewsModels
            ,[contents]
            ,[status]
            ,[remark]
+           ,[clear_time]
            ,[is_enabled]
            ,[is_deleted]
            ,[create_dt]
@@ -177,6 +178,7 @@ namespace GZKL.Client.UI.ViewsModels
            ,@contents
            ,@status
            ,@remark
+           ,@create_dt
            ,1
            ,0
            ,@create_dt
@@ -201,6 +203,7 @@ namespace GZKL.Client.UI.ViewsModels
                         Task.Run(() =>
                         {
 
+                            //ToDo：执行数据库清理操作 by garfield 20221203
 
 
                         });

@@ -59,6 +59,7 @@
                   HeadersVisibility="All"
                   AutoGenerateColumns="False"
                   ItemsSource="{Binding GridData}" 
+                  MouseDoubleClick="dgData_MouseDoubleClick"
                   RowHeaderWidth="60" >
 
             <DataGrid.RowHeaderTemplate>
@@ -71,11 +72,11 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding RowNum}" Width="60" CanUserSort="False" CanUserResize="False" Header="序号"/>
                 <DataGridTextColumn IsReadOnly="True" Width="60" CanUserSort="False" CanUserResize="False" Binding="{Binding Id}" Header="主键ID" Visibility="Hidden"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="200" Binding="{Binding ClearNo}" Header="清理编号"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="80" Binding="{Binding Status}" Header="状态"/>
+                <DataGridTextColumn IsReadOnly="True" Width="150" Binding="{Binding ClearNo}" Header="清理编号"/>
+                <DataGridTextColumn IsReadOnly="True" Width="80" Binding="{Binding Status}" Header="状态"/>
                 
-                <DataGridTextColumn IsReadOnly="True"  Width="200" Binding="{Binding Conditions}" Header="条件"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="200" Binding="{Binding Contents}" Header="内容"/>
+                <DataGridTextColumn IsReadOnly="True" Width="200" Binding="{Binding Conditions}" Header="条件"/>
+                <DataGridTextColumn IsReadOnly="True" Width="200" Binding="{Binding Contents}" Header="内容"/>
                 <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding ClearTime, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="ClearTime" Header="清理时间"/>
                 <DataGridTextColumn IsReadOnly="True" Width="200" Binding="{Binding Remark}" Header="备注"/>
                 <!--<DataGridTextColumn IsReadOnly="True" Width="60" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>-->

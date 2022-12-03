@@ -200,6 +200,9 @@
     <Compile Include="Views\CollectMgt\Clear\Edit.xaml.cs">
       <DependentUpon>Edit.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\CollectMgt\Clear\View.xaml.cs">
+      <DependentUpon>View.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CollectMgt\Export\Export.xaml.cs">
       <DependentUpon>Export.xaml</DependentUpon>
     </Compile>
@@ -296,6 +299,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\CollectMgt\Clear\Edit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CollectMgt\Clear\View.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
