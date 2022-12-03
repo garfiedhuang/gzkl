@@ -22,7 +22,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="90"/>
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" Grid.Row="0">
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="0">
             <StackPanel Margin="25" Width="150">
                 <ComboBox x:Name="cmbSerialPort" 
                           Margin="0,0,0,20" 
@@ -173,7 +173,7 @@
             </StackPanel>
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="1">
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="1">
             <TextBox x:Name="txtSavePath" 
                      Margin="40,0,0,0" 
                      Width="650" 
@@ -195,7 +195,7 @@
                     hc:BorderElement.CornerRadius="5"/>
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="2">
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="2">
 
             <StackPanel Margin="20,0,0,0" Width="550">
                 <GroupBox x:Name="gbCollectType" Header="采集类型" Margin="10" Style="{StaticResource GroupBoxOriginal}" hc:InfoElement.Necessary="True"  hc:InfoElement.Symbol="*" HorizontalContentAlignment="Left">
