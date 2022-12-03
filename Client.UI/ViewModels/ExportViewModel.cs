@@ -5,7 +5,7 @@ using HandyControl.Controls;
 using HandyControl.Data;
 using GZKL.Client.UI.Common;
 using GZKL.Client.UI.Models;
-using GZKL.Client.UI.Views.CollectMgt.Clear;
+using GZKL.Client.UI.Views.CollectMgt.Export;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -34,7 +34,7 @@ namespace GZKL.Client.UI.ViewsModels
         /// <summary>
         /// 检测开始日期
         /// </summary>
-        private DateTime startTestDate = DateTime.Now.AddDays(-7);
+        private DateTime startTestDate = DateTime.Now.AddMonths(-3);
         public DateTime StartTestDate { get { return startTestDate; } set { startTestDate = value; RaisePropertyChanged(); } }
 
         /// <summary>
@@ -60,18 +60,12 @@ namespace GZKL.Client.UI.ViewsModels
         /// </summary>
         public ExportViewModel()
         {
-            SelectCommand = new RelayCommand<string>(this.Select);
             ExportCommand = new RelayCommand<string>(this.Export);
         }
 
         #endregion
 
         #region Command
-
-        /// <summary>
-        /// 选择
-        /// </summary>
-        public RelayCommand<string> SelectCommand { get; set; }
 
         /// <summary>
         /// 导出
@@ -140,7 +134,7 @@ WHERE m.is_deleted=0 AND d.is_deleted=0");
                                 Deadline = dataRow["deadline"].ToString(),
                                 ExperimentNo = dataRow["experiment_no"].ToString(),
                                 PlayTime = Convert.ToDateTime(dataRow["play_time"].ToString()),
-                                TestPreceptName = dataRow["test_precept_name"].ToString(),
+                                LoadUnitName = dataRow["load_unit_name"].ToString(),
                                 FileName = dataRow["file_name"].ToString(),
                                 SampleShape = dataRow["sample_shape"].ToString(),
                                 Area = dataRow["area"].ToString(),
@@ -154,7 +148,7 @@ WHERE m.is_deleted=0 AND d.is_deleted=0");
                                 SampleMinDia = dataRow["sample_min_dia"].ToString(),
                                 SampleOutDia = dataRow["sample_out_dia"].ToString(),
                                 SampleInnerDia = dataRow["sample_inner_dia"].ToString(),
-                                DeformSensorName = dataRow["deform_sensor_name"].ToString(),
+                                PressUnitName = dataRow["press_unit_name"].ToString(),
                                 CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
                                 UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
                             });
@@ -184,28 +178,6 @@ WHERE m.is_deleted=0 AND d.is_deleted=0");
             this.EndTestNo = string.Empty;
 
             this.Query();
-        }
-
-        /// <summary>
-        /// 选择
-        /// </summary>
-        /// <param name="obj"></param>
-        public void Select(string obj)
-        {
-            if (obj== "CheckAll")
-            {//全选
-                foreach (var item in GridData)
-                {
-                    if (!item.IsSelected) item.IsSelected = true;
-                }
-            }
-            else
-            { //反选
-                foreach (var item in GridData)
-                {
-                    item.IsSelected = !item.IsSelected;
-                }
-            }
         }
 
         /// <summary>
@@ -364,133 +336,6 @@ begin
   CompactDatabase(CurrentDir+'Export\'+filename,'AutoAcs');
 end;
              */
-        }
-
-        /// <summary>
-        /// 编辑
-        /// </summary>
-        /// <param name="id"></param>
-        public override void Edit(int id)
-        {
-            try
-            {
-
-                /*
-                var selected = GridData.Where(w => w.IsSelected == true).ToList();
-
-                if (selected.Count != 1)
-                {
-                    MessageBox.Show($"请选择一条记录进行编辑", "提示信息");
-                    return;
-                }
-
-                id = (int)selected.First().Id;
-
-                var sql = new StringBuilder(@"SELECT [id],[category],[value],[text],[remark],[is_enabled],[is_deleted],[create_dt]
-                ,[create_user_id],[update_dt],[update_user_id]
-                FROM [dbo].[sys_Export] WHERE [is_deleted]=0 AND [id]=@id");
-
-                var parameters = new SqlParameter[1] { new SqlParameter("@id", id) };
-                using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
-                {
-                    if (data == null || data.Rows.Count == 0)
-                    {
-                        MessageBox.Show($"数据库不存在 主键ID={id} 的记录", "提示信息");
-                        return;
-                    }
-
-                    var dataRow = data.Rows[0];
-                    var model = new ExportModel()
-                    {
-                        Id = Convert.ToInt64(dataRow["id"]),
-                        Category = dataRow["category"].ToString(),
-                        Value = dataRow["value"].ToString(),
-                        Text = dataRow["text"].ToString(),
-                        Remark = dataRow["remark"].ToString(),
-                        IsEnabled = Convert.ToInt32(dataRow["is_enabled"]),
-                        CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
-                        UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
-                    };
-
-                    if (model != null)
-                    {
-                        Edit view = new Edit(model);
-                        var r = view.ShowDialog();
-                        if (r.Value)
-                        {
-                            sql.Clear();
-                            sql.Append(@"UPDATE [dbo].[sys_Export]
-   SET [category] = @category
-      ,[value] = @value
-      ,[text] = @text
-      ,[remark] = @remark
-      ,[is_enabled] = @is_enabled
-      ,[update_dt] = @update_dt
-      ,[update_user_id] = @user_id
- WHERE [id]=@id");
-                            parameters = new SqlParameter[] {
-                            new SqlParameter("@category", model.Category),
-                            new SqlParameter("@value", model.Value),
-                            new SqlParameter("@text", model.Text),
-                            new SqlParameter("@remark", model.Remark),
-                            new SqlParameter("@is_enabled", model.IsEnabled),
-                            new SqlParameter("@update_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
-                            new SqlParameter("@user_id", SessionInfo.Instance.Session.Id),
-                            new SqlParameter("@id", id)
-                        };
-
-                            var result = SQLHelper.ExecuteNonQuery(sql.ToString(), parameters);
-
-                            this.Query();
-                        }
-                    }
-                }
-                */
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "提示信息");
-            }
-        }
-
-        /// <summary>
-        /// 删除
-        /// </summary>
-        /// <param name="id"></param>
-        public override void Delete(int id)
-        {
-            try
-            {
-                var selected = GridData.Where(w => w.IsSelected == true).ToList();
-
-                if (selected.Count == 0)
-                {
-                    MessageBox.Show($"请至少选择一条记录进行删除", "提示信息");
-                    return;
-                }
-
-                if (selected != null)
-                {
-                    var r = MessageBox.Show($"确定要删除【{string.Join(",", selected.Select(s => $"{s.OrgNo}|{s.TestNo}|{s.SampleNo}"))}】吗？", "提示", MessageBoxButton.YesNo);
-                    if (r == MessageBoxResult.Yes)
-                    {
-                        foreach (var dr in selected)
-                        {
-                            //var sql = new StringBuilder(@"DELETE FROM [dbo].[sys_Export] WHERE [id] IN(@id)");
-                            var sql = new StringBuilder(@"UPDATE [dbo].[sys_Export] SET [is_deleted]=1 WHERE [id]=@id");
-
-                            var parameters = new SqlParameter[1] { new SqlParameter("@id", dr.Id) };
-                            var result = SQLHelper.ExecuteNonQuery(sql.ToString(), parameters);
-                        }
-
-                        this.Query();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "提示信息");
-            }
         }
 
         #endregion

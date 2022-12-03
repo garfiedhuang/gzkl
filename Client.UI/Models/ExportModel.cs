@@ -62,11 +62,17 @@ namespace GZKL.Client.UI.Models
         public DateTime PlayTime { set; get; }
 
         /// <summary>
-        /// 备注
+        /// 负载单位名称
         /// </summary>
-        public string TestPreceptName { set; get; }
+        public string LoadUnitName { set; get; }
+
         /// <summary>
-        /// 备注
+        /// 压力单位名称
+        /// </summary>
+        public string PressUnitName { set; get; }
+
+        /// <summary>
+        /// 文件名
         /// </summary>
         public string FileName { set; get; }
 
@@ -123,11 +129,6 @@ namespace GZKL.Client.UI.Models
         /// 备注
         /// </summary>
         public string SampleInnerDia { set; get; }
-
-        /// <summary>
-        /// 备注
-        /// </summary>
-        public string DeformSensorName { set; get; }
 
         /// <summary>
         /// 创建时间

@@ -60,28 +60,32 @@
 							Command="{Binding ResetCommand}"/>
 
                     <Button Content="全选"
+                            x:Name="btnCheckAll"
 							Width="65"
 						    VerticalAlignment="Center"
 						    Margin="15 0 0 0"
-							Command="{Binding SelectCommand}" CommandParameter="CheckAll"/>
+							Click="btnCheckAll_Click"/>
 
                     <Button Content="反选"
+                            x:Name="btnInverse"
 							Width="65"
 						    VerticalAlignment="Center"
 						    Margin="15 0 0 0"
-							Command="{Binding SelectCommand}" CommandParameter="Inverse"/>
+							Click="btnInverse_Click"/>
 
                     <Button Content="导出"
+                            x:Name="btnExport"
 							Width="65"
 						    VerticalAlignment="Center"
 						    Margin="15 0 0 0"
-							Command="{Binding ExportCommand}" CommandParameter=""/>
+							Click="btnExport_Click"/>
 					
 					<Button Content="全部导出" 
+                            x:Name="btnExportAll"
 							Width="70" 
 							VerticalAlignment="Center" 
 							Margin="10 0 0 0" 
-							Command="{Binding ExportCommand}" CommandParameter="All" />
+							Click="btnExportAll_Click" />
 				</WrapPanel>
 			</Grid>
 		</WrapPanel>
@@ -132,7 +136,7 @@
                 <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
             </DataGrid.Columns>
         </DataGrid>
-        <hc:Pagination x:Name="dgPagination"  Background="Red"
+        <hc:Pagination x:Name="dgPagination"
                        Grid.Row="2" 
                        MaxPageCount="{Binding MaxPageCount}" 
                        PageIndex="{Binding PageIndex}" 

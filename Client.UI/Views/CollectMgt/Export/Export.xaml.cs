@@ -70,5 +70,48 @@ begin
 end;
              */
         }
+
+
+        /// <summary>
+        /// 全选
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnCheckAll_Click(object sender, RoutedEventArgs e)
+        {
+            this.dgData.SelectAll();
+        }
+
+        /// <summary>
+        /// 反选
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnInverse_Click(object sender, RoutedEventArgs e)
+        {
+            var rowNums = new List<long>();
+            foreach (object o in dgData.SelectedItems)
+            {
+                rowNums.Add((o as ExportModel).RowNum);
+            }
+            dgData.SelectAll();
+            foreach (object z in dgData.Items)
+            {
+                if (rowNums.Contains<long>((z as ExportModel).RowNum))
+                {
+                    dgData.SelectedItems.Remove(z);
+                }
+            }
+        }
+
+        private void btnExport_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnExportAll_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

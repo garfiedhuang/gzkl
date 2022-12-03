@@ -176,12 +176,12 @@ namespace GZKL.Client.UI.ViewsModels
         /// <param name="pageIndex"></param>
         public virtual void Paging(int pageIndex = 0)
         {
-            //当前页数
-            PageIndex = TModels.Count > 0 ? 1 : 0;
-            MaxPageCount = 0;
-
-            if (pageIndex == -1)
+            if (pageIndex == -1)//第一次查询或者重置查询
             {
+                //当前页数
+                PageIndex = TModels.Count > 0 ? 1 : 0;
+                MaxPageCount = 0;
+
                 pageIndex = PageIndex;
             }
 
