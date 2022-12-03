@@ -36,8 +36,8 @@
         </WrapPanel>
         <WrapPanel Grid.Row="1" VerticalAlignment="Center" Height="30" Margin="0,15,0,5">
             <Button Content="新增" Style="{StaticResource AddBtnStyle}" VerticalAlignment="Center" Margin="15 0 0 0" Command="{Binding AddCommand}"/>
-            <!--<Button x:Name="btnEdit" Content="修改" Style="{StaticResource EditBtnStyle}" VerticalAlignment="Center" Margin="10 0 0 0" Click="btnEdit_Click" />
-            <Button x:Name="btnDelete" Content="删除" Style="{StaticResource DelBtnStyle}" VerticalAlignment="Center" Margin="10 0 0 0" Click="btnDelete_Click" />-->
+            <Button x:Name="btnOpen" Content="打开目录" Style="{StaticResource EditBtnStyle}" Width="100" VerticalAlignment="Center" Margin="10 0 0 0" Click="btnOpen_Click" />
+            <!--<Button x:Name="btnDelete" Content="删除" Style="{StaticResource DelBtnStyle}" VerticalAlignment="Center" Margin="10 0 0 0" Click="btnDelete_Click" />-->
         </WrapPanel>
 
         <DataGrid Margin="15" Grid.Row="2"
@@ -64,11 +64,12 @@
 
                 <DataGridTextColumn IsReadOnly="True" Width="150*" Binding="{Binding FileName}" Header="文件名"/>
                 <DataGridTextColumn IsReadOnly="True" Width="200*" Binding="{Binding SavePath}" Header="路径"/>
+                <DataGridTextColumn IsReadOnly="True" Width="80" Binding="{Binding FileSize}" Header="大小(MB)"/>
                 <DataGridTextColumn IsReadOnly="True" Width="150" Binding="{Binding BackupTime, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="BackupTime" Header="备份时间"/>
                 <DataGridTextColumn IsReadOnly="True" Width="100" Binding="{Binding Remark}" Header="备注"/>
                 <!--<DataGridTextColumn IsReadOnly="True" Width="60" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>-->
                 <DataGridTextColumn IsReadOnly="True" Width="150" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
-                <DataGridTextColumn IsReadOnly="True" Width="150" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
+                <!--<DataGridTextColumn IsReadOnly="True" Width="150" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>-->
             </DataGrid.Columns>
         </DataGrid>
         <hc:Pagination x:Name="dgPagination"

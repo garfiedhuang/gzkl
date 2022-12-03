@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -31,6 +32,25 @@ namespace GZKL.Client.UI.Views.CollectMgt.Backup
         public Backup()
         {
             InitializeComponent();
+        }
+
+        private void btnOpen_Click(object sender, RoutedEventArgs e)
+        {
+            var selected = this.dgData.SelectedItems;
+
+            if (selected.Count != 1)
+            {
+                MessageBox.Show($"请选择一条记录进行操作", "提示信息");
+                return;
+            }
+
+            var model = selected[0] as BackupModel;
+
+            if (File.Exists(model.SavePath))
+            {
+                var fileInfo = new FileInfo(model.SavePath);
+                System.Diagnostics.Process.Start(fileInfo.DirectoryName);
+            }            
         }
     }
 }

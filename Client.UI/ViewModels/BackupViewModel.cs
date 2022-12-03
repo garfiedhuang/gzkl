@@ -13,6 +13,7 @@ using Microsoft.WindowsAPICodePack.Dialogs;
 using Newtonsoft.Json;
 using GZKL.Client.UI.Views.CollectMgt.Backup;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace GZKL.Client.UI.ViewsModels
 {
@@ -92,6 +93,7 @@ namespace GZKL.Client.UI.ViewsModels
                                 BackupTime = GetTime(dataRow["backup_time"].ToString()),
                                 SavePath = dataRow["save_path"].ToString(),
                                 FileName = dataRow["file_name"].ToString(),
+                                FileSize=Convert.ToDouble(dataRow["file_size"]),
                                 Status = dataRow["status"].ToString(),
                                 Remark = dataRow["remark"].ToString(),
                                 CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
@@ -222,6 +224,7 @@ namespace GZKL.Client.UI.ViewsModels
             var message = "处理成功";
             var ds = new DataSet("myDs");
             var remark = "ok";
+            var dbSize = 0D;
 
             try
             {
@@ -231,6 +234,11 @@ namespace GZKL.Client.UI.ViewsModels
 
                 var result = SQLHelper.ExecuteNonQuery(sql.ToString(), sqlParameters);
 
+                if (File.Exists(model.SavePath))
+                {
+                    var fileInfo = new FileInfo(model.SavePath);
+                    dbSize = Math.Round(fileInfo.Length*1.0/(1024*1024),4);
+                }
             }
             catch (Exception ex)
             {
@@ -243,10 +251,11 @@ namespace GZKL.Client.UI.ViewsModels
             try
             {
                 //更新执行状态
-                var sql = @"UPDATE sys_db_backup SET backup_time=getdate(),[status]=@status,update_dt=getdate(),update_user_id=@userId,remark=@remark WHERE id=@id";
+                var sql = @"UPDATE sys_db_backup SET backup_time=getdate(),[status]=@status,[file_size]=@fileSize,update_dt=getdate(),update_user_id=@userId,remark=@remark WHERE id=@id";
                 var parameters = new SqlParameter[] {
                 new SqlParameter("@contents", JsonConvert.SerializeObject(ds)),
                 new SqlParameter("@status", message),
+                new SqlParameter("@fileSize", dbSize),
                 new SqlParameter("@userId", SessionInfo.Instance.UserInfo.Id),
                 new SqlParameter("@remark", remark),
                 new SqlParameter("@id", id) };

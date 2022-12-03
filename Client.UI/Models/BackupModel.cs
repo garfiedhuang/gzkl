@@ -53,6 +53,11 @@ namespace GZKL.Client.UI.Models
         public string Status { get; set; }
 
         /// <summary>
+        /// 文件大小
+        /// </summary>
+        public double FileSize { get; set; }
+
+        /// <summary>
         /// 备注
         /// </summary>
         public string Remark { set; get; } = "";
