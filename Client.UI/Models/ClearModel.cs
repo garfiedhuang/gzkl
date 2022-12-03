@@ -24,19 +24,34 @@ namespace GZKL.Client.UI.Models
         public long RowNum { get; set; }
 
         /// <summary>
-        /// 机构编号
+        /// 清理编号
         /// </summary>
-        public string OrgNo { get; set; }
+        public string ClearNo { get; set; }
 
         /// <summary>
-        /// 机构名称
+        /// 清理时间
         /// </summary>
-        public string OrgName { get; set; }
+        public DateTime? ClearTime { get; set; }
 
         /// <summary>
-        /// 等级
+        /// 清理类型
         /// </summary>
-        public string OrgLevel { get; set; }
+        public string ClearType { get; set; } = "试验日期";
+
+        /// <summary>
+        /// 条件
+        /// </summary>
+        public string Conditions { get; set; }
+
+        /// <summary>
+        /// 内容
+        /// </summary>
+        public string Contents { get; set; }
+
+        /// <summary>
+        /// 状态
+        /// </summary>
+        public string Status { get; set; }
 
         /// <summary>
         /// 备注
@@ -69,5 +84,47 @@ namespace GZKL.Client.UI.Models
             set { isSelected = value; RaisePropertyChanged("IsSelected"); }
         }
 
+    }
+
+    /// <summary>
+    /// 查下模型
+    /// </summary>
+    public class ClearQueryModel
+    {
+        /// <summary>
+        /// 清理类型
+        /// </summary>
+        public string ClearType { get; set; } = "试验日期";
+
+
+        /// <summary>
+        /// 试验开始日期
+        /// </summary>
+        public DateTime? StartTestDt { get; set; } = DateTime.Now.AddDays(-7);
+
+        /// <summary>
+        /// 试验结束日期
+        /// </summary>
+        public DateTime? EndTestDt { get; set; } = DateTime.Now;
+
+        /// <summary>
+        /// 检测开始编号
+        /// </summary>
+        public string StartTestNo { get; set; }
+
+        /// <summary>
+        /// 检测结束编号
+        /// </summary>
+        public string EndTestNo { get; set; }
+
+        /// <summary>
+        /// 样品开始编号
+        /// </summary>
+        public string StartSampleNo { get; set; }
+
+        /// <summary>
+        /// 样品结束编号
+        /// </summary>
+        public string EndSampleNo { get; set; }
     }
 }

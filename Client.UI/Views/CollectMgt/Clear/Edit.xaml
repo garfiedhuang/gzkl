@@ -1,0 +1,63 @@
+﻿<Window x:Class="GZKL.Client.UI.Views.CollectMgt.Clear.Edit"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GZKL.Client.UI.Views.CollectMgt.Clear"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:converter="clr-namespace:GZKL.Client.UI.Converters"
+             xmlns:cv="clr-namespace:GZKL.Client.UI.Converters"
+             WindowStartupLocation="CenterScreen"
+             mc:Ignorable="d" 
+             Title="新增/编辑单位信息"
+             Height="450" 
+             Width="650" 
+             ResizeMode="NoResize">
+    <Window.Resources>
+        <converter:EnumConverter x:Key="enumConverter"/>
+        <cv:CheckConverter x:Key="checkConverter"/>
+    </Window.Resources>
+    <!--<hc:TransitioningContentControl>-->
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="90"/>
+        </Grid.RowDefinitions>
+        <!--<StackPanel Grid.Row="0" Orientation="Vertical">-->
+        <StackPanel Grid.Row="0" Margin="32" HorizontalAlignment="Center">
+
+            <WrapPanel Margin="50,0,50,20" Grid.Row="0" VerticalAlignment="Bottom" Height="30" >
+                <RadioButton x:Name="rbClearTime" IsChecked="{Binding QueryModel.ClearType,Mode=TwoWay,Converter={StaticResource checkConverter},ConverterParameter=试验日期}" Margin="15,0,0,0" HorizontalAlignment="Center" Content="试验日期" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+
+                <hc:DatePicker Width="150" SelectedDate="{Binding QueryModel.StartTestDt, StringFormat=\{0:yyyy-MM-dd\}, Mode=TwoWay}" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
+                <TextBlock Margin="15,8,0,0" HorizontalAlignment="Center"  Text="到"/>
+                <hc:DatePicker Width="150" SelectedDate="{Binding QueryModel.EndTestDt, StringFormat=\{0:yyyy-MM-dd\}, Mode=TwoWay}" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
+
+            </WrapPanel>
+            <WrapPanel Margin="50,0,50,20" Grid.Row="1" VerticalAlignment="Center" Height="30" >
+                <RadioButton x:Name="rbTestNo" IsChecked="{Binding QueryModel.ClearType,Mode=TwoWay,Converter={StaticResource checkConverter},ConverterParameter=检测编号}" Margin="15,0,0,0" HorizontalAlignment="Center" Content="检测编号" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+
+                <hc:TextBox Width="150" Text="{Binding QueryModel.StartTestNo}" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
+                <TextBlock Margin="15,8,0,0" HorizontalAlignment="Center" Text="到"/>
+                <hc:TextBox Width="150" Text="{Binding QueryModel.EndTestNo}" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
+            </WrapPanel>
+
+            <WrapPanel Margin="50,0,50,20" Grid.Row="1" VerticalAlignment="Center" Height="30" >
+                <RadioButton x:Name="rbSampleNo" IsChecked="{Binding QueryModel.ClearType,Mode=TwoWay,Converter={StaticResource checkConverter},ConverterParameter=样品编号}" Margin="15,0,0,0" HorizontalAlignment="Center" Content="样品编号" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+
+                <hc:TextBox Width="150" Text="{Binding QueryModel.StartSampleNo}" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
+                <TextBlock Margin="15,8,0,0" HorizontalAlignment="Center" Text="到"/>
+                <hc:TextBox Width="150" Text="{Binding QueryModel.EndSampleNo}" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
+            </WrapPanel>
+
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="保存" Width="100" Margin="10" Click="btnSave_Click" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource TextIconBrush}" hc:BorderElement.CornerRadius="5"/>
+            <Button Content="取消" Width="100" Margin="10" Click="btnCancel_Click" hc:BorderElement.CornerRadius="5"/>
+        </StackPanel>
+
+        <!--</StackPanel>-->
+    </Grid>
+    <!--</hc:TransitioningContentControl>-->
+</Window>

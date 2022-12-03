@@ -17,42 +17,87 @@
     </UserControl.Resources>
     <Grid Background="White">
         <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="90"/>
+            <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Vertical">
-            <StackPanel Margin="32" HorizontalAlignment="Center">
+        <WrapPanel  VerticalAlignment="Bottom" Height="30" >
+            <!--<hc:TextBox x:Name="textBox" 
+                    HorizontalAlignment="Left" 
+                    Height="23" Margin="15,0,0,0" 
+                    TextWrapping="Wrap" 
+                    Text="{Binding Search}" 
+                    FontWeight="Bold"
+                    Foreground="#5a5e66"
+                    hc:InfoElement.TitlePlacement="Left"
+                    hc:InfoElement.Title="编码|名称"
+                    FontSize="13"
+                    VerticalAlignment="Center" 
+                    Width="193"/>-->
+            <WrapPanel Grid.Row="0" VerticalAlignment="Bottom" Height="30" >
 
-                <WrapPanel Margin="50,0,50,20" Grid.Row="0" VerticalAlignment="Bottom" Height="30" >
-                    <RadioButton x:Name="rbTestDate" IsChecked="{Binding QueryType,Mode=TwoWay,Converter={StaticResource checkConverter},ConverterParameter=TD}" Margin="15,0,0,0" HorizontalAlignment="Center" Content="试验日期" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                <TextBlock Height="23" HorizontalAlignment="Center" FontWeight="Bold" Foreground="#5a5e66" FontSize="13" Margin="15,8,0,0" Text="清理日期"></TextBlock>
+                <hc:DatePicker Width="150" SelectedDate="{Binding StartClearTime, StringFormat=\{0:yyyy-MM-dd\}, Mode=TwoWay}" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
+                <TextBlock Margin="15,8,0,0" HorizontalAlignment="Center" Text="到"/>
+                <hc:DatePicker Width="150" SelectedDate="{Binding EndClearTime, StringFormat=\{0:yyyy-MM-dd\}, Mode=TwoWay}" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
 
-                    <hc:DatePicker Width="150" SelectedDate="{Binding StartTestDate, StringFormat=\{0:yyyy-MM-dd\}, Mode=TwoWay}" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
-                    <TextBlock Margin="15,8,0,0" HorizontalAlignment="Center"  Text="到"/>
-                    <hc:DatePicker Width="150" SelectedDate="{Binding EndTestDate, StringFormat=\{0:yyyy-MM-dd\}, Mode=TwoWay}" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
+            </WrapPanel>
+            <Button Content="搜索" Width="70" Style="{wms:MultiStyle ButtonPrimary IconBtn}" bi:IconElement.Icon="&#xe696;"  VerticalAlignment="Center" Margin="10 0 0 0" Command="{Binding QueryCommand}"/>
+            <Button Content="重置" Style="{wms:MultiStyle ButtonInfo IconBtn}" bi:IconElement.Icon="&#xe692;"  VerticalAlignment="Center" Margin="10 0 0 0" Command="{Binding ResetCommand}"/>
+        </WrapPanel>
+        <WrapPanel Grid.Row="1" VerticalAlignment="Center" Height="30" Margin="0,15,0,5">
+            <Button Content="新增" Style="{StaticResource AddBtnStyle}" VerticalAlignment="Center" Margin="15 0 0 0" Command="{Binding AddCommand}"/>
+            <!--<Button x:Name="btnEdit" Content="修改" Style="{StaticResource EditBtnStyle}" VerticalAlignment="Center" Margin="10 0 0 0" Click="btnEdit_Click" />
+            <Button x:Name="btnDelete" Content="删除" Style="{StaticResource DelBtnStyle}" VerticalAlignment="Center" Margin="10 0 0 0" Click="btnDelete_Click" />-->
+        </WrapPanel>
 
-                </WrapPanel>
-                <WrapPanel Margin="50,0,50,20" Grid.Row="1" VerticalAlignment="Center" Height="30" >
-                    <RadioButton x:Name="rbTestNo" IsChecked="{Binding QueryType,Mode=TwoWay,Converter={StaticResource checkConverter},ConverterParameter=TN}" Margin="15,0,0,0" HorizontalAlignment="Center" Content="检测编号" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
+        <DataGrid Margin="15" Grid.Row="2"
+                  x:Name="dgData"
+                  hc:DataGridAttach.CanUnselectAllWithBlankArea="True"
+                  hc:Empty.ShowEmpty="True"
+                  HeadersVisibility="All"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding GridData}" 
+                  RowHeaderWidth="60" >
 
-                    <hc:TextBox Width="150" Text="{Binding StartTestNo}" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
-                    <TextBlock Margin="15,8,0,0" HorizontalAlignment="Center" Text="到"/>
-                    <hc:TextBox Width="150" Text="{Binding EndTestNo}" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
-                </WrapPanel>
+            <DataGrid.RowHeaderTemplate>
+                <DataTemplate>
+                    <!--<CheckBox IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}},Path=Item.IsSelected}" />-->
+                    <CheckBox IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=DataGridRow}}" />
+                </DataTemplate>
+            </DataGrid.RowHeaderTemplate>
 
-                <WrapPanel Margin="50,0,50,20" Grid.Row="1" VerticalAlignment="Center" Height="30" >
-                    <RadioButton x:Name="rbSampleNo" IsChecked="{Binding QueryType,Mode=TwoWay,Converter={StaticResource checkConverter},ConverterParameter=TN}" Margin="15,0,0,0" HorizontalAlignment="Center" Content="样品编号" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource PrimaryTextBrush}"/>
-
-                    <hc:TextBox Width="150" Text="{Binding StartSampleNo}" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
-                    <TextBlock Margin="15,8,0,0" HorizontalAlignment="Center" Text="到"/>
-                    <hc:TextBox Width="150" Text="{Binding EndSampleNo}" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
-                </WrapPanel>
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding RowNum}" Width="60" CanUserSort="False" CanUserResize="False" Header="序号"/>
+                <DataGridTextColumn IsReadOnly="True" Width="60" CanUserSort="False" CanUserResize="False" Binding="{Binding Id}" Header="主键ID" Visibility="Hidden"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="200" Binding="{Binding ClearNo}" Header="清理编号"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="80" Binding="{Binding Status}" Header="状态"/>
                 
-            </StackPanel>
-            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button x:Name="btnRegister" Visibility="{Binding RegisterButtonVisibility}" Content="清理" Width="100" Margin="10" Command="{Binding RegisterCommand}" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource TextIconBrush}" hc:BorderElement.CornerRadius="5"/>
-                <Button x:Name="btnReset" Visibility="{Binding RegisterButtonVisibility}" Content="重置" Width="100" Margin="10" Command="{Binding RegisterCommand}" hc:BorderElement.CornerRadius="5"/>
-            </StackPanel>
+                <DataGridTextColumn IsReadOnly="True"  Width="200" Binding="{Binding Conditions}" Header="条件"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="200" Binding="{Binding Contents}" Header="内容"/>
+                <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding ClearTime, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="ClearTime" Header="清理时间"/>
+                <DataGridTextColumn IsReadOnly="True" Width="200" Binding="{Binding Remark}" Header="备注"/>
+                <!--<DataGridTextColumn IsReadOnly="True" Width="60" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>-->
+                <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
+                <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <hc:Pagination x:Name="dgPagination"
+                       Grid.Row="3" 
+                       MaxPageCount="{Binding MaxPageCount}" 
+                       PageIndex="{Binding PageIndex}" 
+                       DataCountPerPage="{Binding DataCountPerPage}" 
+                       IsJumpEnabled="True" 
+                       HorizontalAlignment="Right" 
+                       
+                       Margin="20,0,20,5">
+            <hc:Interaction.Triggers>
+                <hc:EventTrigger EventName="PageUpdated">
+                    <hc:EventToCommand  PassEventArgsToCommand="True" Command="{Binding PageUpdatedCommand}" />
+                </hc:EventTrigger>
+            </hc:Interaction.Triggers>
+        </hc:Pagination>
 
-        </StackPanel>
     </Grid>
 </UserControl>

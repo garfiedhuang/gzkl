@@ -121,7 +121,7 @@ namespace GZKL.Client.UI.Factories
            ,[create_dt]
            ,[create_user_id]
            ,[update_dt]
-           ,[update_user_id]) OUTPUT [biz_execute_test].[id]
+           ,[update_user_id]) OUTPUT Inserted.[id]
      VALUES
            (@orgNo
            ,@testNo
@@ -191,7 +191,7 @@ namespace GZKL.Client.UI.Factories
            ,[create_dt]
            ,[create_user_id]
            ,[update_dt]
-           ,[update_user_id]) OUTPUT [biz_execute_test_detail].[id]
+           ,[update_user_id]) OUTPUT Inserted.[id]
      VALUES
            (@testId
            ,@experimentNo
