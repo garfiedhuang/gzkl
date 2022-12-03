@@ -4,43 +4,88 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:bi="clr-namespace:GZKL.Client.UI.CustomControls.Attach"
+             xmlns:wms="clr-namespace:WpfMultiStyle;assembly=WpfMultiStyle"
+             xmlns:converter="clr-namespace:GZKL.Client.UI.Converters"
+             xmlns:cv="clr-namespace:GZKL.Client.UI.Converters"
              mc:Ignorable="d" 
              DataContext="{Binding Source={StaticResource Locator},Path=Backup}"
              d:DesignHeight="700" d:DesignWidth="850">
+    <UserControl.Resources>
+        <converter:EnumConverter x:Key="enumConverter"/>
+        <cv:CheckConverter x:Key="checkConverter"/>
+    </UserControl.Resources>
     <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" Grid.Row="0">
-            <TextBox x:Name="txtSavePath" 
-                     Margin="40,50,0,0" 
-                     Width="500" 
-                     Height="20" 
-                     hc:InfoElement.TitlePlacement="Left" 
-                     hc:InfoElement.Placeholder="请选择保存路径" 
-                     hc:InfoElement.Title="保存路径" 
-                     Style="{StaticResource TextBoxExtend}"  
-                     hc:InfoElement.Symbol="*"
-                     hc:InfoElement.Necessary="True"
-                     Text="{Binding Model.SavePath,Mode=TwoWay}"/>
+        <WrapPanel  VerticalAlignment="Bottom" Height="30" >
+            <WrapPanel Grid.Row="0" VerticalAlignment="Bottom" Height="30" >
 
-            <Button x:Name="btnSelect" 
-                    Margin="10,50,0,0" 
-                    Visibility="Visible" 
-                    Content="选择..." 
-                    Width="60" 
-                    Command="{Binding SelectCommand}"
-                    hc:BorderElement.CornerRadius="5"/>
-            
-            <Button x:Name="btnBackup" 
-                    Content="备份" 
-                    Width="100" 
-                    Margin="10,50,0,0" 
-                    Command="{Binding BackupCommand}" 
-                    Background="{DynamicResource PrimaryBrush}" 
-                    Foreground="{DynamicResource TextIconBrush}" 
-                    hc:BorderElement.CornerRadius="5"/>
+                <TextBlock Height="23" HorizontalAlignment="Center" FontWeight="Bold" Foreground="#5a5e66" FontSize="13" Margin="15,8,0,0" Text="备份日期"></TextBlock>
+                <hc:DatePicker Width="150" SelectedDate="{Binding StartTime, StringFormat=\{0:yyyy-MM-dd\}, Mode=TwoWay}" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
+                <TextBlock Margin="15,8,0,0" HorizontalAlignment="Center" Text="到"/>
+                <hc:DatePicker Width="150" SelectedDate="{Binding EndTime, StringFormat=\{0:yyyy-MM-dd\}, Mode=TwoWay}" HorizontalAlignment="Left" Height="23" Margin="15,0,0,0"/>
 
-        </StackPanel>
+            </WrapPanel>
+            <Button Content="搜索" Width="70" Style="{wms:MultiStyle ButtonPrimary IconBtn}" bi:IconElement.Icon="&#xe696;"  VerticalAlignment="Center" Margin="10 0 0 0" Command="{Binding QueryCommand}"/>
+            <Button Content="重置" Style="{wms:MultiStyle ButtonInfo IconBtn}" bi:IconElement.Icon="&#xe692;"  VerticalAlignment="Center" Margin="10 0 0 0" Command="{Binding ResetCommand}"/>
+        </WrapPanel>
+        <WrapPanel Grid.Row="1" VerticalAlignment="Center" Height="30" Margin="0,15,0,5">
+            <Button Content="新增" Style="{StaticResource AddBtnStyle}" VerticalAlignment="Center" Margin="15 0 0 0" Command="{Binding AddCommand}"/>
+            <!--<Button x:Name="btnEdit" Content="修改" Style="{StaticResource EditBtnStyle}" VerticalAlignment="Center" Margin="10 0 0 0" Click="btnEdit_Click" />
+            <Button x:Name="btnDelete" Content="删除" Style="{StaticResource DelBtnStyle}" VerticalAlignment="Center" Margin="10 0 0 0" Click="btnDelete_Click" />-->
+        </WrapPanel>
+
+        <DataGrid Margin="15" Grid.Row="2"
+                  x:Name="dgData"
+                  hc:DataGridAttach.CanUnselectAllWithBlankArea="True"
+                  hc:Empty.ShowEmpty="True"
+                  HeadersVisibility="All"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding GridData}"
+                  RowHeaderWidth="60" >
+
+            <DataGrid.RowHeaderTemplate>
+                <DataTemplate>
+                    <!--<CheckBox IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}},Path=Item.IsSelected}" />-->
+                    <CheckBox IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=DataGridRow}}" />
+                </DataTemplate>
+            </DataGrid.RowHeaderTemplate>
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding RowNum}" Width="60" CanUserSort="False" CanUserResize="False" Header="序号"/>
+                <DataGridTextColumn IsReadOnly="True" Width="60" CanUserSort="False" CanUserResize="False" Binding="{Binding Id}" Header="主键ID" Visibility="Hidden"/>
+                <DataGridTextColumn IsReadOnly="True" Width="150" Binding="{Binding BackupNo}" Header="备份编号"/>
+                <DataGridTextColumn IsReadOnly="True" Width="80" Binding="{Binding Status}" Header="状态"/>
+
+                <DataGridTextColumn IsReadOnly="True" Width="150*" Binding="{Binding FileName}" Header="文件名"/>
+                <DataGridTextColumn IsReadOnly="True" Width="200*" Binding="{Binding SavePath}" Header="路径"/>
+                <DataGridTextColumn IsReadOnly="True" Width="150" Binding="{Binding BackupTime, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="BackupTime" Header="备份时间"/>
+                <DataGridTextColumn IsReadOnly="True" Width="100" Binding="{Binding Remark}" Header="备注"/>
+                <!--<DataGridTextColumn IsReadOnly="True" Width="60" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>-->
+                <DataGridTextColumn IsReadOnly="True" Width="150" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
+                <DataGridTextColumn IsReadOnly="True" Width="150" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <hc:Pagination x:Name="dgPagination"
+                       Grid.Row="3" 
+                       MaxPageCount="{Binding MaxPageCount}" 
+                       PageIndex="{Binding PageIndex}" 
+                       DataCountPerPage="{Binding DataCountPerPage}" 
+                       IsJumpEnabled="True" 
+                       HorizontalAlignment="Right" 
+                       
+                       Margin="20,0,20,5">
+            <hc:Interaction.Triggers>
+                <hc:EventTrigger EventName="PageUpdated">
+                    <hc:EventToCommand  PassEventArgsToCommand="True" Command="{Binding PageUpdatedCommand}" />
+                </hc:EventTrigger>
+            </hc:Interaction.Triggers>
+        </hc:Pagination>
+
     </Grid>
 </UserControl>

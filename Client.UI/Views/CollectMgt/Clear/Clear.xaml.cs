@@ -32,11 +32,6 @@ namespace GZKL.Client.UI.Views.CollectMgt.Clear
             InitializeComponent();
         }
 
-        private void OrgControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            (this.DataContext as OrgViewModel).Query();
-        }
-
         private void dgData_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var selected = this.dgData.SelectedItems;

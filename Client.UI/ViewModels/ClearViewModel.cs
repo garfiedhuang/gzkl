@@ -208,11 +208,12 @@ namespace GZKL.Client.UI.ViewsModels
                     }
 
                     this.Query();
+                    HandyControl.Controls.Growl.Info("数据库清理任务创建成功！");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "提示信息");
+                HandyControl.Controls.Growl.Error(ex?.Message);
             }
         }
 

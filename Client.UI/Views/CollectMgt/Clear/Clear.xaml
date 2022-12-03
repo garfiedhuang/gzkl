@@ -23,18 +23,6 @@
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <WrapPanel  VerticalAlignment="Bottom" Height="30" >
-            <!--<hc:TextBox x:Name="textBox" 
-                    HorizontalAlignment="Left" 
-                    Height="23" Margin="15,0,0,0" 
-                    TextWrapping="Wrap" 
-                    Text="{Binding Search}" 
-                    FontWeight="Bold"
-                    Foreground="#5a5e66"
-                    hc:InfoElement.TitlePlacement="Left"
-                    hc:InfoElement.Title="编码|名称"
-                    FontSize="13"
-                    VerticalAlignment="Center" 
-                    Width="193"/>-->
             <WrapPanel Grid.Row="0" VerticalAlignment="Bottom" Height="30" >
 
                 <TextBlock Height="23" HorizontalAlignment="Center" FontWeight="Bold" Foreground="#5a5e66" FontSize="13" Margin="15,8,0,0" Text="清理日期"></TextBlock>

@@ -1,0 +1,54 @@
+﻿<Window x:Class="GZKL.Client.UI.Views.CollectMgt.Backup.Edit"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GZKL.Client.UI.Views.CollectMgt.Backup"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:converter="clr-namespace:GZKL.Client.UI.Converters"
+             xmlns:cv="clr-namespace:GZKL.Client.UI.Converters"
+             WindowStartupLocation="CenterScreen"
+             mc:Ignorable="d" 
+             Title="数据备份"
+             Height="400" 
+             Width="650" 
+             ResizeMode="NoResize">
+    <Window.Resources>
+        <converter:EnumConverter x:Key="enumConverter"/>
+        <cv:CheckConverter x:Key="checkConverter"/>
+    </Window.Resources>
+    <!--<hc:TransitioningContentControl>-->
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="90"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Margin="32" Orientation="Horizontal" HorizontalAlignment="Center">
+
+            <TextBox x:Name="txtSavePath"
+                     Width="400" 
+                     Height="20" 
+                     hc:InfoElement.TitlePlacement="Left" 
+                     hc:InfoElement.Placeholder="请选择保存路径" 
+                     hc:InfoElement.Title="保存路径" 
+                     Style="{StaticResource TextBoxExtend}"  
+                     hc:InfoElement.Symbol="*"
+                     hc:InfoElement.Necessary="True"
+                     Text="{Binding Model.SavePath,Mode=TwoWay}"/>
+
+            <Button x:Name="btnSelect" 
+                    Visibility="Visible" 
+                    Content="选择..." 
+                    Width="60" 
+                    Click="btnSelect_Click"
+                    hc:BorderElement.CornerRadius="5"/>
+
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="备份" Width="100" Margin="10" Click="btnSave_Click" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource TextIconBrush}" hc:BorderElement.CornerRadius="5"/>
+            <Button Content="取消" Width="100" Margin="10" Click="btnCancel_Click" hc:BorderElement.CornerRadius="5"/>
+        </StackPanel>
+    </Grid>
+    <!--</hc:TransitioningContentControl>-->
+</Window>
