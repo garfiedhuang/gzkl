@@ -200,12 +200,10 @@ namespace GZKL.Client.UI.ViewsModels
 
                     if (result > 0)//记录插入成功
                     {
-                        Task.Run(() =>
+                        Task.Run(async () =>
                         {
-
-                            //ToDo：执行数据库清理操作 by garfield 20221203
-
-
+                           await Task.Delay(10000);
+                            ClearDataBaseData(result,queryModel);
                         });
                     }
 
@@ -215,6 +213,110 @@ namespace GZKL.Client.UI.ViewsModels
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "提示信息");
+            }
+        }
+
+        /// <summary>
+        /// 清理数据库数据
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="queryModel"></param>
+        private static void ClearDataBaseData(long id,ClearQueryModel queryModel)
+        {
+            var message = "处理成功";
+            var ds =new DataSet("myDs");
+            var remark = "ok";
+
+            try
+            {
+                var querySql = string.Empty;
+                var deleteSql = string.Empty;
+                var parameters1 = new SqlParameter[] { };
+                var parameters2 = new SqlParameter[] { };
+
+                if (queryModel.ClearType == "试验日期")
+                {
+                    querySql = @"BEGIN
+SELECT a.* FROM biz_original_data a INNER JOIN biz_execute_test b ON a.test_id=b.id WHERE b.test_time>=@startTime AND b.test_time<=@endTime;
+SELECT a.* FROM biz_execute_test_detail a INNER JOIN biz_execute_test b ON a.test_id=b.id WHERE b.test_time>=@startTime AND b.test_time<=@endTime;
+SELECT a.* FROM biz_execute_test a WHERE a.test_time>=@startTime AND a.test_time<=@endTime;
+END";
+
+                    deleteSql = @"BEGIN
+DELETE a FROM biz_original_data a INNER JOIN biz_execute_test b ON a.test_id=b.id WHERE b.test_time>=@startTime AND b.test_time<=@endTime;
+DELETE a FROM biz_execute_test_detail a INNER JOIN biz_execute_test b ON a.test_id=b.id WHERE b.test_time>=@startTime AND b.test_time<=@endTime;
+DELETE a FROM biz_execute_test a WHERE a.test_time>=@startTime AND a.test_time<=@endTime;
+END";
+                    parameters1 = new SqlParameter[] { new SqlParameter("@startTime", queryModel.StartTestDt), new SqlParameter("@endTime", queryModel.EndTestDt) };
+                    parameters2 = new SqlParameter[] { new SqlParameter("@startTime", queryModel.StartTestDt), new SqlParameter("@endTime", queryModel.EndTestDt) };
+
+                }
+                else if (queryModel.ClearType == "检测编号")
+                {
+                    querySql = @"BEGIN
+SELECT a.* FROM biz_original_data a INNER JOIN biz_execute_test b ON a.test_id=b.id WHERE b.test_no>=@startTestNo AND b.test_no<=@endTestNo;
+SELECT a.* FROM biz_execute_test_detail a INNER JOIN biz_execute_test b ON a.test_id=b.id WHERE b.test_no>=@startTestNo AND b.test_no<=@endTestNo;
+SELECT a.* FROM biz_execute_test a WHERE a.test_no>=@startTestNo AND a.test_no<=@endTestNo;
+END";
+
+                    deleteSql = @"BEGIN
+DELETE a FROM biz_original_data a INNER JOIN biz_execute_test b ON a.test_id=b.id WHERE b.test_no>=@startTestNo AND b.test_no<=@endTestNo;
+DELETE a FROM biz_execute_test_detail a INNER JOIN biz_execute_test b ON a.test_id=b.id WHERE b.test_no>=@startTestNo AND b.test_no<=@endTestNo;
+DELETE a FROM biz_execute_test a WHERE a.test_no>=@startTestNo AND a.test_no<=@endTestNo;
+END";
+                    parameters1 = new SqlParameter[] { new SqlParameter("@startTestNo", queryModel.StartTestNo), new SqlParameter("@endTestNo", queryModel.EndTestNo) };
+                    parameters2 = new SqlParameter[] { new SqlParameter("@startTestNo", queryModel.StartTestNo), new SqlParameter("@endTestNo", queryModel.EndTestNo) };
+
+                }
+                else if (queryModel.ClearType == "样品编号")
+                {
+                    querySql = @"BEGIN
+SELECT a.* FROM biz_original_data a INNER JOIN biz_execute_test b ON a.test_id=b.id WHERE b.sample_no>=@startSampleNo AND b.sample_no<=@endSampleNo;
+SELECT a.* FROM biz_execute_test_detail a INNER JOIN biz_execute_test b ON a.test_id=b.id WHERE b.sample_no>=@startSampleNo AND b.sample_no<=@endSampleNo;
+SELECT a.* FROM biz_execute_test a WHERE a.sample_no>=@startSampleNo AND a.sample_no<=@endSampleNo;
+END";
+
+                    deleteSql = @"BEGIN
+DELETE a FROM biz_original_data a INNER JOIN biz_execute_test b ON a.test_id=b.id WHERE b.sample_no>=@startSampleNo AND b.sample_no<=@endSampleNo;
+DELETE a FROM biz_execute_test_detail a INNER JOIN biz_execute_test b ON a.test_id=b.id WHERE b.sample_no>=@startSampleNo AND b.sample_no<=@endSampleNo;
+DELETE a FROM biz_execute_test a WHERE a.sample_no>=@startSampleNo AND a.sample_no<=@endSampleNo;
+END";
+                    parameters1 = new SqlParameter[] { new SqlParameter("@startSampleNo", queryModel.StartSampleNo), new SqlParameter("@endSampleNo", queryModel.EndSampleNo) };
+                    parameters2 = new SqlParameter[] { new SqlParameter("@startSampleNo", queryModel.StartSampleNo), new SqlParameter("@endSampleNo", queryModel.EndSampleNo) };
+
+                }
+
+                ds =SQLHelper.GetDataSet(querySql, parameters1);
+                _ = SQLHelper.ExecuteNonQuery(deleteSql, parameters2);
+            }
+            catch (Exception ex)
+            {
+                message= "处理失败";
+                remark = ex?.Message;
+                HandyControl.Controls.Growl.Warning(ex?.Message);
+                LogHelper.Error(ex?.Message);
+            }
+
+            try
+            {
+                //更新执行状态
+                var sql = @"UPDATE sys_db_clear SET contents=@contents,clear_time=getdate(),[status]=@status,update_dt=getdate(),update_user_id=@userId,remark=@remark WHERE id=@id";
+                var parameters = new SqlParameter[] {
+                new SqlParameter("@contents", JsonConvert.SerializeObject(ds)),
+                new SqlParameter("@status", message),
+                new SqlParameter("@userId", SessionInfo.Instance.UserInfo.Id),
+                new SqlParameter("@remark", remark),
+                new SqlParameter("@id", id) };
+                _ = SQLHelper.ExecuteNonQuery(sql, parameters);
+            }
+            catch (Exception ex)
+            {
+                HandyControl.Controls.Growl.Warning(ex?.Message);
+                LogHelper.Error(ex?.Message);
+            }
+            finally
+            {
+                HandyControl.Controls.Growl.Info("数据清理执行完毕！");
             }
         }
 
