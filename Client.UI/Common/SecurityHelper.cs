@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Security.Cryptography;
+using System.IO;
 
 namespace GZKL.Client.UI.Common
 {
@@ -107,7 +108,7 @@ namespace GZKL.Client.UI.Common
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static string SHA512Encrypt(string source)
+        public static string SHA512EAncrypt(string source)
         {
             string result = "";
             byte[] buffer = Encoding.UTF8.GetBytes(source);//UTF-8 编码
@@ -120,5 +121,54 @@ namespace GZKL.Client.UI.Common
 
             return result.ToLower();
         }
+
+
+        #region Access数据库加解密
+
+        //对应MDB文件的前16个字节
+        private static byte[] _originalFileHeader = new byte[16] { 0x00, 0x01, 0x00, 0x00, 0x53, 0x74, 0x61, 0x6E, 0x64, 0x61, 0x72, 0x64, 0x20, 0x4A, 0x65, 0x74 };
+
+        //更改后的MDB文件的前16个字节
+        private static byte[] _newFileHeader = new byte[16] { 0x48, 0x4A, 0x00, 0x58, 0x55, 0x43, 0x48, 0x41, 0x4E, 0x47, 0x59, 0x4F, 0x55, 0x00, 0x20, 0x20 };
+
+        /// <summary>
+        /// 加密Access数据库，用_newFileHeader内容替换MDB前16个字节，以便实现加密的作用
+        /// </summary>
+        /// <param name="fileName"></param>
+        public static void EncrptAccessDb(string fileName)
+        {
+            if (!File.Exists(fileName))
+            {
+                throw new FileNotFoundException(fileName);
+            }
+
+            using (FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.ReadWrite))
+            {
+                fs.Seek(0, SeekOrigin.Begin);
+                fs.Write(_newFileHeader, 0, 16);
+                fs.Close();
+            }
+        }
+
+        /// <summary>
+        /// 解密Access数据库,还原MDB前16个字节
+        /// </summary>
+        /// <param name="fileName"></param>
+        public static void UncrptAccessDb(string fileName)
+        {
+            if (!File.Exists(fileName))
+            {
+                throw new FileNotFoundException(fileName);
+            }
+
+            using (FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.ReadWrite))
+            {
+                fs.Seek(0, SeekOrigin.Begin);
+                fs.Write(_originalFileHeader, 0, 16);
+                fs.Close();
+            }
+        }
+
+        #endregion
     }
 }

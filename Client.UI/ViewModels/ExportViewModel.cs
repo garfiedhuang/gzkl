@@ -62,7 +62,10 @@ namespace GZKL.Client.UI.ViewsModels
         /// </summary>
         public ExportViewModel()
         {
-   
+
+            var templateFile = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "Press1.mdb");
+            SecurityHelper.UncrptAccessDb(templateFile);
+
         }
 
         #endregion
@@ -310,7 +313,7 @@ END";
             }
 
             //压缩数据库文件
-
+            
         }
 
         #endregion
