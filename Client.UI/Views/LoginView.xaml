@@ -86,7 +86,6 @@
                     <hc:PasswordBox hc:InfoElement.Necessary="True"
                                     x:Name="PassWordStr"
                                     hc:InfoElement.Placeholder="密码"
-                                    Password="123456"
                                     BorderBrush="{x:Null}" 
                                     BorderThickness="0" 
                                     MaxLength="20"
@@ -99,16 +98,16 @@
                     <hc:Divider Margin="0" LineStrokeThickness="2" LineStroke="{DynamicResource DarkPrimaryBrush}"/>
                 </StackPanel>
             </Grid>
-            
+
             <StackPanel Grid.Row="4" Margin="0,21,0,1">
                 <WrapPanel>
-                    <CheckBox x:Name="chkAutoLogin"  Margin="40,10,20,0"  Content="自动登录" />
-                    <CheckBox x:Name="chkRememberMe" Margin="40,10,20,0"  Content="记住密码" />
+                    <CheckBox x:Name="chkAutoLogin" IsChecked="{Binding AutoLogin,Mode=TwoWay}" Margin="40,10,20,0" Content="自动登录" />
+                    <CheckBox x:Name="chkRememberMe" IsChecked="{Binding RememberPassword,Mode=TwoWay}" Margin="40,10,20,0" Content="记住密码" />
                 </WrapPanel>
 
-                <Button Content="登录" 
+                <Button x:Name="btnLogin" Content="登录" 
                         Width="314"
-                        Command="{Binding loginCommand}"
+                        Click="btnLogin_Click"
                         Background="{DynamicResource PrimaryBrush}"
                         Margin="37,20,38,5" 
                         Style="{StaticResource ButtonInfo}" 

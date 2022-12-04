@@ -17,34 +17,27 @@ using System.Security;
 
 namespace GZKL.Client.UI.ViewsModels
 {
-     public class LoginViewModel: ViewModelBase
+    public class LoginViewModel : ViewModelBase
     {
 
         public LoginViewModel()
         {
-            loginCommand = new RelayCommand<object>(LoginMethod);
+            //var loginModel = GetLoginSetting();
+            //if (loginModel.RememberPassword)
+            //{
+            //    UserName= loginModel.UserName;
+            //    Password= loginModel.Password;
+            //}
 
-            var loginModel = GetLoginSetting();
-
-            if (loginModel.RememberPassword)
-            {
-                //var nc = new NetworkCredential(loginModel.UserName, loginModel.Password);
-                //UserName = nc.UserName;
-                //Password = nc.SecurePassword;
-
-                UserName= loginModel.UserName;
-                Password= loginModel.Password;
-            }
-
-            this.AutoLogin = loginModel.AutoLogin;
-            this.RememberPassword = loginModel.RememberPassword;
+            //this.AutoLogin = loginModel.AutoLogin;
+            //this.RememberPassword = loginModel.RememberPassword;
         }
 
         #region =====Data
         /// <summary>
         /// 用户名
         /// </summary>
-        private string userName="admin";
+        private string userName = "";
         public string UserName
         {
             get { return userName; }
@@ -54,7 +47,7 @@ namespace GZKL.Client.UI.ViewsModels
         /// <summary>
         /// 密码
         /// </summary>
-        private string password = "123456";
+        private string password = "";
         public string Password
         {
             get { return password; }
@@ -94,48 +87,40 @@ namespace GZKL.Client.UI.ViewsModels
         #endregion
 
         #region ====Command
-        public RelayCommand<object> loginCommand { get; set; }
+
         #endregion
 
-        private void LoginMethod(object o)
+        public void LoginMethod(object o)
         {
-            var values = (object[])o;
-            var psdControl =(PasswordBox) values[1];
-            string psdStr = psdControl.Password;
-            if (string.IsNullOrEmpty(userName))
-            {
-                Messenger.Default.Send("登录名不能为空", "UserNameErrorToken");
-                return;
-            }
-            if (string.IsNullOrEmpty(psdStr))
-            {
-                psdControl.IsError = true;
-                psdControl.ErrorStr = "密码不能为空";
-                return;
-            }
-            else
-            {
-                Password = psdStr;
-            }
-
-            var loginResult =new LoginSuccessModel();
+            var loginResult = new LoginSuccessModel();
 
             try
             {
                 //执行登录
-                loginResult = Login();
+                loginResult = DbLogin();
+
+                //保存登录设置
+                if (!autoLogin)
+                {
+                    this.SaveLoginSetting(new LoginModel()
+                    {
+                        AutoLogin = autoLogin,
+                        RememberPassword = rememberPassword,
+                        UserName = userName,
+                        Password = password
+                    });
+                }
 
                 var mainWindow = new MainWindow(loginResult);
 
                 //关闭登录窗口
-                (values[0] as System.Windows.Window).Close();
+                (o as System.Windows.Window).Close();
 
                 if (loginResult.User?.Id > 0)
                 {
                     //开启主画面
-                   var result = mainWindow.ShowDialog();
+                    var result = mainWindow.ShowDialog();
                 }
-
             }
             catch (Exception ex)
             {
@@ -147,7 +132,7 @@ namespace GZKL.Client.UI.ViewsModels
         /// 登录
         /// </summary>
         /// <returns></returns>
-        public LoginSuccessModel Login()
+        public LoginSuccessModel DbLogin()
         {
             var result = new LoginSuccessModel();
 
@@ -161,7 +146,8 @@ namespace GZKL.Client.UI.ViewsModels
                 {
                     var dataRow = dt.Rows[0];
 
-                    result.User = new UserModel() {
+                    result.User = new UserModel()
+                    {
                         Id = Convert.ToInt64(dataRow["id"]),
                         Name = dataRow["name"].ToString(),
                         Email = dataRow["email"].ToString(),
@@ -180,7 +166,7 @@ namespace GZKL.Client.UI.ViewsModels
             {
                 throw new Exception("账号或密码不对！");
             }
-            else if(result.User.IsEnabled==0)
+            else if (result.User.IsEnabled == 0)
             {
                 throw new Exception("当前账号已停用！");
             }
@@ -223,7 +209,8 @@ namespace GZKL.Client.UI.ViewsModels
                     result.Menus = new List<MenuModel>();
                     foreach (DataRow dataRow in dt.Rows)
                     {
-                        result.Menus.Add(new MenuModel() {
+                        result.Menus.Add(new MenuModel()
+                        {
 
                             Id = Convert.ToInt64(dataRow["id"]),
                             ParentId = Convert.ToInt64(dataRow["parent_id"]),
@@ -255,26 +242,26 @@ namespace GZKL.Client.UI.ViewsModels
             var hostName = Dns.GetHostName().ToUpper();
 
             var sql = @"SELECT * FROM [sys_config] WHERE [category]=@category AND [is_deleted]=0";
-            var parameters = new SqlParameter[] { new SqlParameter("@category",hostName) };
+            var parameters = new SqlParameter[] { new SqlParameter("@category", hostName) };
 
             using (var dt = SQLHelper.GetDataTable(sql, parameters))
             {
                 foreach (DataRow dr in dt?.Rows)
                 {
-                    var category = dr["category"].ToString();
+                    var category = dr["value"].ToString();
                     switch (category)
                     {
                         case "UserName":
-                            result.UserName= dr["category"].ToString();
+                            result.UserName = dr["text"].ToString();
                             break;
                         case "Password":
-                            result.UserName = dr["category"].ToString();
+                            result.Password = dr["text"].ToString();
                             break;
                         case "AutoLogin":
-                            result.AutoLogin =Convert.ToBoolean(dr["AutoLogin"] ??"true");
+                            result.AutoLogin = Convert.ToBoolean(dr["text"] ?? "true");
                             break;
                         case "RememberPassword":
-                            result.RememberPassword = Convert.ToBoolean(dr["RememberPassword"] ?? "false");
+                            result.RememberPassword = Convert.ToBoolean(dr["text"] ?? "false");
                             break;
                     }
                 }
@@ -289,11 +276,12 @@ namespace GZKL.Client.UI.ViewsModels
         /// <param name="loginModel"></param>
         public void SaveLoginSetting(LoginModel loginModel)
         {
-            var hostName = Dns.GetHostName().ToUpper();
+            Task.Run(() =>
+            {
+                var hostName = Dns.GetHostName().ToUpper();
 
-            var sql = $@"BEGIN
+                var sql = $@"BEGIN
    DECLARE @iRC INT;
-
    SELECT @iRC=COUNT(1) FROM [sys_config] WHERE [category]='{hostName}' AND [value]='UserName' AND [is_deleted]=0;
 
    IF @iRC=0
@@ -311,7 +299,6 @@ namespace GZKL.Client.UI.ViewsModels
 	  END
 
    SELECT @iRC=COUNT(1) FROM [sys_config] WHERE [category]='{hostName}' AND [value]='Password' AND [is_deleted]=0;
-
    IF @iRC=0
       BEGIN
 	  INSERT INTO [dbo].[sys_config]
@@ -327,7 +314,6 @@ namespace GZKL.Client.UI.ViewsModels
 	  END
 
    SELECT @iRC=COUNT(1) FROM [sys_config] WHERE [category]='{hostName}' AND [value]='AutoLogin' AND [is_deleted]=0;
-
    IF @iRC=0
       BEGIN
 	  INSERT INTO [dbo].[sys_config]
@@ -343,7 +329,6 @@ namespace GZKL.Client.UI.ViewsModels
 	  END
 
    SELECT @iRC=COUNT(1) FROM [sys_config] WHERE [category]='{hostName}' AND [value]='RememberPassword' AND [is_deleted]=0;
-
    IF @iRC=0
       BEGIN
 	  INSERT INTO [dbo].[sys_config]
@@ -359,7 +344,8 @@ namespace GZKL.Client.UI.ViewsModels
 	  END
 END";
 
-            var result =SQLHelper.ExecuteNonQuery(sql);
+                var result = SQLHelper.ExecuteNonQuery(sql);
+            });
         }
     }
 }
