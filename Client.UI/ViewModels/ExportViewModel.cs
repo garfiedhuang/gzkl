@@ -275,7 +275,7 @@ END";
 
                 DsnHelper.CreateDSN(dsnName, pwd, database);//创建DSN
 
-                var sqls = new StringBuilder();
+                var sqls = new List<string>();
 
                 for (var i = 0; i < ds.Tables.Count; i++)
                 {
@@ -292,20 +292,20 @@ END";
                         {
                             if (i == 0)
                             {
-                                sqls.Append("sql1");
+                                sqls.Add("sql1");
                             }
                             else if (i == 1)
                             {
-                                sqls.Append("sql1");
+                                sqls.Add("sql1");
                             }
                             else if (i == 2)
                             {
-                                sqls.Append("sql1");
+                                sqls.Add("sql1");
                             }
                         }
 
                         //每个表提交一次数据
-                        OdbcHelper.ExcuteSql(sqls.ToString(), database);
+                        OdbcHelper.ExcuteSql(sqls, database);
                     }
                 }
 

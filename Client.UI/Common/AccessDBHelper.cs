@@ -331,6 +331,41 @@ namespace GZKL.Client.UI.Common
         }
 
         /// <summary>
+        /// 执行sql语句
+        /// </summary>
+        /// <param name="sqlstr"></param>
+        public static void ExcuteSql(List<string> sqlstrs, string path)
+        {
+
+            OpenConnection(path);
+
+            using (var ts = conn.BeginTransaction(IsolationLevel.ReadCommitted))
+            {
+                try
+                {
+                    foreach (var sqlstr in sqlstrs)
+                    {
+                        comm.CommandType = CommandType.Text;
+                        comm.CommandText = sqlstr;
+                        comm.ExecuteNonQuery();
+                    }
+
+                    ts.Commit();
+
+                }
+                catch (Exception e)
+                {
+                    ts.Rollback();
+
+                    throw new Exception(e.Message);
+                }
+                finally
+                { CloseConnection(); }
+            }
+
+        }
+
+        /// <summary>
         /// 返回指定sql语句的OdbcDataReader对象，使用时请注意关闭这个对象。
         /// </summary>
         /// <param name="sqlstr"></param>
