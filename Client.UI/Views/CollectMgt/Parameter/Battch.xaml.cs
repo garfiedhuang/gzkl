@@ -18,6 +18,7 @@ using System.Windows.Shapes;
 using GZKL.Client.UI.Common;
 using GZKL.Client.UI.Models;
 using GZKL.Client.UI.ViewsModels;
+using HandyControl.Interactivity;
 using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace GZKL.Client.UI.Views.CollectMgt.Parameter
@@ -25,7 +26,7 @@ namespace GZKL.Client.UI.Views.CollectMgt.Parameter
     /// <summary>
     /// Battch.xaml 的交互逻辑
     /// </summary>
-    public partial class Battch : UserControl
+    public partial class Battch : Window
     {
         public Battch()
         {
@@ -230,6 +231,8 @@ namespace GZKL.Client.UI.Views.CollectMgt.Parameter
             }
 
             model.Save(collectType, decimalDigitType);
+
+            this.DialogResult = true;
         }
 
         private void cmbTester_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -237,6 +240,11 @@ namespace GZKL.Client.UI.Views.CollectMgt.Parameter
             var model = this.DataContext as BattchViewModel;
 
             model.TesterSelectionChanged();
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = false;
         }
     }
 }

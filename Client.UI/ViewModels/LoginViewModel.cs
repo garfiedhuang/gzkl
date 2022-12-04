@@ -100,16 +100,13 @@ namespace GZKL.Client.UI.ViewsModels
                 loginResult = DbLogin();
 
                 //保存登录设置
-                if (!autoLogin)
+                this.SaveLoginSetting(new LoginModel()
                 {
-                    this.SaveLoginSetting(new LoginModel()
-                    {
-                        AutoLogin = autoLogin,
-                        RememberPassword = rememberPassword,
-                        UserName = userName,
-                        Password = password
-                    });
-                }
+                    AutoLogin = autoLogin,
+                    RememberPassword = rememberPassword,
+                    UserName = userName,
+                    Password = password
+                });
 
                 var mainWindow = new MainWindow(loginResult);
 

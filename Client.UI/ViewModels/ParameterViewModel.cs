@@ -20,7 +20,7 @@ using GalaSoft.MvvmLight.Messaging;
 
 namespace GZKL.Client.UI.ViewsModels
 {
-    public class ParameterViewModel : ViewModelBase
+    public class ParameterViewModel : BaseSearchViewModel<ParameterModel>
     {
         #region Construct and property
 
@@ -29,28 +29,10 @@ namespace GZKL.Client.UI.ViewsModels
         /// </summary>
         public ParameterViewModel()
         {
-            QueryCommand = new RelayCommand(this.Query);
-            ResetCommand = new RelayCommand(this.Reset);
-            AddCommand = new RelayCommand(this.Add);
-            PageUpdatedCommand = new RelayCommand<FunctionEventArgs<int>>(PageUpdated);
+            //每页最大记录数
+            base.DataCountPerPage = 50;
 
-            ParameterModels = new List<ParameterModel>();
-            GridModelList = new ObservableCollection<ParameterModel>();
-        }
-
-        /// <summary>
-        /// 查询之后的结果数据，用于分页显示
-        /// </summary>
-        private static List<ParameterModel> ParameterModels { get; set; }
-
-        /// <summary>
-        /// 网格数据集合
-        /// </summary>
-        private ObservableCollection<ParameterModel> gridModelList;
-        public ObservableCollection<ParameterModel> GridModelList
-        {
-            get { return gridModelList; }
-            set { gridModelList = value; RaisePropertyChanged(); }
+            BackupCommand = new RelayCommand(this.Backup);
         }
 
         /// <summary>
@@ -68,75 +50,14 @@ namespace GZKL.Client.UI.ViewsModels
             }
         }
 
-        /// <summary>
-        /// 最大页面数
-        /// </summary>
-        private int maxPageCount = 1;
-
-        public int MaxPageCount
-        {
-            get { return maxPageCount; }
-            set
-            {
-                maxPageCount = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// 当前页数
-        /// </summary>
-        private int pageIndex = 1;
-
-        public int PageIndex
-        {
-            get { return pageIndex; }
-            set
-            {
-                pageIndex = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// 分页大小
-        /// </summary>
-        private int dataCountPerPage = 20;
-
-        public int DataCountPerPage
-        {
-            get { return dataCountPerPage; }
-            set
-            {
-                dataCountPerPage = value;
-                RaisePropertyChanged();
-            }
-        }
-
         #endregion
 
         #region Command
 
         /// <summary>
-        /// 查询命令
+        /// 备份
         /// </summary>
-        public RelayCommand QueryCommand { get; set; }
-
-        /// <summary>
-        /// 重置命令
-        /// </summary>
-        public RelayCommand ResetCommand { get; set; }
-
-        /// <summary>
-        /// 新增
-        /// </summary>
-        public RelayCommand AddCommand { get; set; }
-
-        /// <summary>
-        /// 分页
-        /// </summary>
-        public RelayCommand<FunctionEventArgs<int>> PageUpdatedCommand { get; set; }
-
+        public RelayCommand BackupCommand { get; set; }
 
         #endregion
 
@@ -145,37 +66,38 @@ namespace GZKL.Client.UI.ViewsModels
         /// <summary>
         /// 查询
         /// </summary>
-        public void Query()
+        public override void Query()
         {
             try
             {
-                var sql = new StringBuilder(@"SELECT row_number()over(order by update_dt desc )as row_num
-                ,[id],[category],[value],[text],[remark],[is_enabled],[is_deleted],[create_dt]
-                ,[create_user_id],[update_dt],[update_user_id]
-                FROM [dbo].[sys_config] WHERE [is_deleted]=0");
+                var computerInfo = SessionInfo.Instance.ComputerInfo;
+                var commonParams = $"CommonParams-{computerInfo.HostName}-{computerInfo.CPU}";
+                var channelParams = $"ChannelParams-{computerInfo.HostName}-{computerInfo.CPU}-%";
+
+                var sql = new StringBuilder($@"SELECT a.* FROM [dbo].[sys_config] a WHERE a.[is_deleted]=0 AND (a.category='{commonParams}' OR a.category LIKE '{channelParams}')");
 
                 SqlParameter[] parameters = null;
 
                 if (!string.IsNullOrEmpty(Search.Trim()))
                 {
-                    sql.Append($" AND ([category] LIKE @search or [value] LIKE @search or [text] LIKE @search)");
+                    sql.Append($" AND (a.[value] LIKE @search or a.[text] LIKE @search)");
                     parameters = new SqlParameter[1] { new SqlParameter("@search", $"%{Search}%") };
                 }
 
-                //sql.Append($" ORDER BY [category] DESC");
+                sql.Append($" ORDER BY a.[category] ASC,a.[value] ASC");
 
-                ParameterModels.Clear();//清空前端分页数据
+                TModels.Clear();//清空前端分页数据
 
                 using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
                 {
                     if (data != null && data.Rows.Count > 0)
                     {
+                        var tempData = new List<ParameterModel>();
                         foreach (DataRow dataRow in data.Rows)
                         {
-                            ParameterModels.Add(new ParameterModel()
+                            tempData.Add(new ParameterModel()
                             {
                                 Id = Convert.ToInt64(dataRow["id"]),
-                                RowNum = Convert.ToInt64(dataRow["row_num"]),
                                 Category = dataRow["category"].ToString(),
                                 Value = dataRow["value"].ToString(),
                                 Text = dataRow["text"].ToString(),
@@ -185,18 +107,25 @@ namespace GZKL.Client.UI.ViewsModels
                                 UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
                             });
                         }
+
+                        var currentChannel = tempData.FirstOrDefault(w => w.Value == "通道号").Text;
+
+                        //通用参数
+                        TModels.AddRange(tempData.Where(w=>w.Category==commonParams));
+
+                        //通道参数
+                        TModels.AddRange(tempData.Where(w => w.Category == channelParams.Replace("%",currentChannel)));
+
+                        var rowNum = 1;
+                        TModels.ForEach(item => {
+                            item.RowNum = rowNum;
+                            ++rowNum;
+                        });
                     }
                 }
 
-                //当前页数
-                PageIndex = ParameterModels.Count > 0 ? 1 : 0;
-                MaxPageCount = 0;
-
-                //最大页数
-                MaxPageCount = PageIndex > 0 ? (int)Math.Ceiling((decimal)ParameterModels.Count / DataCountPerPage) : 0;
-
                 //数据分页
-                Paging(PageIndex);
+                Paging(-1);
 
             }
             catch (Exception ex)
@@ -208,7 +137,7 @@ namespace GZKL.Client.UI.ViewsModels
         /// <summary>
         /// 重置
         /// </summary>
-        public void Reset()
+        public override void Reset()
         {
             this.Search = string.Empty;
             this.Query();
@@ -288,122 +217,93 @@ namespace GZKL.Client.UI.ViewsModels
             }
         }
 
+
         /// <summary>
-        /// 删除
+        /// 备份
         /// </summary>
-        /// <param name="selected"></param>
-        public void Delete(List<ParameterModel> selected)
+        public void Backup()
         {
             try
             {
-                var r = MessageBox.Show($"确定要删除【{string.Join(",", selected.Select(s => $"{s.Category}|{s.Value}|{s.Text}"))}】吗？", "提示", MessageBoxButton.YesNo);
-                if (r == MessageBoxResult.Yes)
-                {
-                    foreach (var dr in selected)
-                    {
-                        //var sql = new StringBuilder(@"DELETE FROM [dbo].[sys_config] WHERE [id] IN(@id)");
-                        var sql = new StringBuilder(@"UPDATE [dbo].[sys_config] SET [is_deleted]=1 WHERE [id]=@id");
+                var _computerInfo = SessionInfo.Instance.ComputerInfo;
+                var fullName = $"{_computerInfo.HostName}-{_computerInfo.CPU}";
+                var userInfo = SessionInfo.Instance.UserInfo;
 
-                        var parameters = new SqlParameter[1] { new SqlParameter("@id", dr.Id) };
-                        var result = SQLHelper.ExecuteNonQuery(sql.ToString(), parameters);
-                    }
+                //查询数据库并赋值
+                var sql = new StringBuilder(@"SELECT [id],[category],[value],[text],[remark]
+                ,[is_enabled],[is_deleted],[create_dt],[create_user_id],[update_dt],[update_user_id]
+                FROM [dbo].[sys_config] WHERE ([category] =@category1 OR [category] LIKE @category2) AND [is_deleted]=0");
 
-                    this.Query();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "提示信息");
-            }
-        }
+                var category1 = $"CommonParams-{fullName}";//CommonParams-{HostName}-{CPU}
+                var category2 = $"ChannelParams-{fullName}-";//ChannelParams-{HostName}-{CPU}-{No}
 
-        /// <summary>
-        /// 新增
-        /// </summary>
-        public void Add()
-        {
-            try
-            {
-                ParameterModel model = new ParameterModel();
-                Edit view = new Edit(model);
-                var r = view.ShowDialog();
-                if (r.Value)
-                {
-                    var sql = @"INSERT INTO [dbo].[sys_config]
-           ([category]
-           ,[value]
-           ,[text]
-           ,[remark]
-           ,[is_enabled]
-           ,[is_deleted]
-           ,[create_dt]
-           ,[create_user_id]
-           ,[update_dt]
-           ,[update_user_id])
-     VALUES
-           (@category
-           ,@value
-           ,@text
-           ,@remark
-           ,@is_enabled
-           ,0
-           ,@create_dt
-           ,@user_id
-           ,@create_dt
-           ,@user_id)";
-
-                    var parameters = new SqlParameter[] {
-                    new SqlParameter("@category", model.Category),
-                    new SqlParameter("@value", model.Value),
-                    new SqlParameter("@text", model.Text),
-                    new SqlParameter("@remark", model.Remark),
-                    new SqlParameter("@is_enabled", model.IsEnabled),
-                    new SqlParameter("@create_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
-                    new SqlParameter("@user_id", SessionInfo.Instance.UserInfo.Id)
+                var parameters = new SqlParameter[] {
+                    new SqlParameter("@category1", category1),
+                    new SqlParameter("@category2", $"{category2}%")
                 };
 
-                    var result = SQLHelper.ExecuteNonQuery(sql, parameters);
+                var paramsConfigs = new List<ConfigModel>();
 
-                    this.Query();
+                using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
+                {
+                    if (data != null && data.Rows.Count > 0)
+                    {
+                        foreach (DataRow dataRow in data.Rows)
+                        {
+                            paramsConfigs.Add(new ConfigModel()
+                            {
+                                Id = Convert.ToInt64(dataRow["id"]),
+                                Category = dataRow["category"].ToString(),
+                                Value = dataRow["value"].ToString(),
+                                Text = dataRow["text"].ToString(),
+                                Remark = dataRow["remark"].ToString(),
+                                IsEnabled = Convert.ToInt32(dataRow["is_enabled"]),
+                                CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
+                                UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
+                            });
+                        }
+                    }
+                }
+
+                if (paramsConfigs.Count > 0)
+                {
+                    sql.Clear();
+                    sql.Append(@"INSERT INTO [dbo].[sys_params_backup]
+                                       ([backup_no],[json_content],[remark],[is_enabled]
+                                       ,[is_deleted],[create_dt],[create_user_id],[update_dt],[update_user_id])
+                                 VALUES
+                                       (@backupNo,@contents,@remark,1
+                                       ,0,GETDATE(),@userId,GETDATE(),@userId)");
+
+                    var backupNo = $"BK-{fullName}-{DateTime.Now.ToString("yyyyMMddHHmmss")}".ToUpper();
+                    var jsonContent = Newtonsoft.Json.JsonConvert.SerializeObject(paramsConfigs);
+
+                    parameters = new SqlParameter[] {
+                    new SqlParameter("@backupNo", backupNo),
+                    new SqlParameter("@contents", jsonContent),
+                    new SqlParameter("@remark", "采集参数备份"),
+                    new SqlParameter("@userId", userInfo.Id),
+                    };
+
+                    var result = SQLHelper.ExecuteNonQuery(sql.ToString(), parameters);
+                    MessageBox.Show($"参数备份成功，备份码：{backupNo}", "提示信息");
+
+                }
+                else
+                {
+                    throw new Exception("当前无可用的备份数据，备份失败");
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "提示信息");
             }
-        }
-
-        /// <summary>
-        /// 页面更新事件
-        /// </summary>
-        public void PageUpdated(FunctionEventArgs<int> e)
-        {
-            Paging(e.Info);
         }
 
         #endregion
 
         #region Privates
 
-        /// <summary>
-        /// 分页
-        /// </summary>
-        /// <param name="pageIndex"></param>
-        private void Paging(int pageIndex)
-        {
-
-            GridModelList.Clear();//清空依赖属性
-
-            var pagedData = ParameterModels.Skip((pageIndex - 1) * DataCountPerPage).Take(DataCountPerPage).ToList();
-
-            if (pagedData.Count > 0)
-            {
-                pagedData.ForEach(item =>
-                {
-                    GridModelList.Add(item);
-                });
-            }
-        }
 
         #endregion
     }

@@ -31,7 +31,7 @@
                     FontWeight="Bold"
                     Foreground="#5a5e66"
                     hc:InfoElement.TitlePlacement="Left"
-                    hc:InfoElement.Title="分类|键|值"
+                    hc:InfoElement.Title="参数名"
                     FontSize="13"
                     VerticalAlignment="Center" 
                     Width="193"/>
@@ -39,9 +39,10 @@
             <Button Content="重置" Style="{wms:MultiStyle ButtonInfo IconBtn}" bi:IconElement.Icon="&#xe692;"  VerticalAlignment="Center" Margin="10 0 0 0" Command="{Binding ResetCommand}"/>
         </WrapPanel>
         <WrapPanel Grid.Row="1" VerticalAlignment="Center" Height="30" Margin="0,15,0,5">
-            <Button Content="新增" Style="{StaticResource AddBtnStyle}" VerticalAlignment="Center" Margin="15 0 0 0" Command="{Binding AddCommand}"/>
             <Button x:Name="btnEdit" Content="修改" Style="{StaticResource EditBtnStyle}" VerticalAlignment="Center" Margin="10 0 0 0" Click="btnEdit_Click" />
-            <Button x:Name="btnDelete" Content="删除" Style="{StaticResource DelBtnStyle}" VerticalAlignment="Center" Margin="10 0 0 0" Click="btnDelete_Click" />
+            <Button x:Name="btnBattchEdit" Content="批量修改" Style="{StaticResource EditBtnStyle}" VerticalAlignment="Center" Margin="15 0 0 0" Width="100" Click="btnBattchEdit_Click"/>
+
+            <Button x:Name="btnBackup" Content="参数备份" Style="{StaticResource AddBtnStyle}" Command="{Binding BackupCommand}" VerticalAlignment="Center" Margin="10 0 0 0" Width="100" />
         </WrapPanel>
 
         <DataGrid Margin="15" Grid.Row="2"
@@ -50,7 +51,7 @@
                   hc:Empty.ShowEmpty="True"
                   HeadersVisibility="All"
                   AutoGenerateColumns="False"
-                  ItemsSource="{Binding GridModelList}" 
+                  ItemsSource="{Binding GridData}" 
                   RowHeaderWidth="60" >
 
             <DataGrid.RowHeaderTemplate>
@@ -63,16 +64,16 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding RowNum}" Width="60" CanUserSort="False" CanUserResize="False" Header="序号"/>
                 <DataGridTextColumn IsReadOnly="True" Width="60" CanUserSort="False" CanUserResize="False" Binding="{Binding Id}" Header="主键ID" Visibility="Hidden"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="220*" Binding="{Binding Category}" Header="分类"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100*" Binding="{Binding Value}" Header="键"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="100*" Binding="{Binding Text}" Header="值"/>
-                <DataGridTextColumn IsReadOnly="True" Width="150" Binding="{Binding Remark}" Header="备注"/>
-                <DataGridTextColumn IsReadOnly="True" Width="60" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>
-                <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
+                <!--<DataGridTextColumn IsReadOnly="True"  Width="220*" Binding="{Binding Category}" Header="分类"/>-->
+                <DataGridTextColumn IsReadOnly="True"  Width="150*" Binding="{Binding Value}" Header="参数名"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="150*" Binding="{Binding Text}" Header="参数值"/>
+                <DataGridTextColumn IsReadOnly="True" Width="150*" Binding="{Binding Remark}" Header="备注"/>
+                <!--<DataGridTextColumn IsReadOnly="True" Width="60" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>-->
+                <!--<DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>-->
                 <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
             </DataGrid.Columns>
         </DataGrid>
-        <hc:Pagination x:Name="dgPagination"  Background="Red"
+        <hc:Pagination x:Name="dgPagination"
                        Grid.Row="3" 
                        MaxPageCount="{Binding MaxPageCount}" 
                        PageIndex="{Binding PageIndex}" 

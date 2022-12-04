@@ -37,7 +37,6 @@ namespace GZKL.Client.UI.ViewsModels
             AutoSwitchCheckedCommand = new RelayCommand(this.AutoSwitchChecked);
             TesterSelectionChangedCommand = new RelayCommand(this.TesterSelectionChanged);
             SelectCommand = new RelayCommand(this.Select);
-            BackupCommand = new RelayCommand(this.Backup);
 
             GetDropdownListData();
 
@@ -122,11 +121,6 @@ namespace GZKL.Client.UI.ViewsModels
         /// 选择
         /// </summary>
         public RelayCommand SelectCommand { get; set; }
-
-        /// <summary>
-        /// 备份
-        /// </summary>
-        public RelayCommand BackupCommand { get; set; }
 
         #endregion
 
@@ -313,87 +307,6 @@ END";
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
                     Model.SavePath = dialog.FileName;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "提示信息");
-            }
-        }
-
-        /// <summary>
-        /// 备份
-        /// </summary>
-        public void Backup()
-        {
-            try
-            {
-                var fullName = $"{_computerInfo.HostName}-{_computerInfo.CPU}";
-                var userInfo = SessionInfo.Instance.UserInfo;
-
-                //查询数据库并赋值
-                var sql = new StringBuilder(@"SELECT [id],[category],[value],[text],[remark]
-                ,[is_enabled],[is_deleted],[create_dt],[create_user_id],[update_dt],[update_user_id]
-                FROM [dbo].[sys_config] WHERE ([category] =@category1 OR [category] LIKE @category2) AND [is_deleted]=0");
-
-                var category1 = $"CommonParams-{fullName}";//CommonParams-{HostName}-{CPU}
-                var category2 = $"ChannelParams-{fullName}-";//ChannelParams-{HostName}-{CPU}-{No}
-
-                var parameters = new SqlParameter[] {
-                    new SqlParameter("@category1", category1),
-                    new SqlParameter("@category2", $"{category2}%")
-                };
-
-                var paramsConfigs = new List<ConfigModel>();
-
-                using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
-                {
-                    if (data != null && data.Rows.Count > 0)
-                    {
-                        foreach (DataRow dataRow in data.Rows)
-                        {
-                            paramsConfigs.Add(new ConfigModel()
-                            {
-                                Id = Convert.ToInt64(dataRow["id"]),
-                                Category = dataRow["category"].ToString(),
-                                Value = dataRow["value"].ToString(),
-                                Text = dataRow["text"].ToString(),
-                                Remark = dataRow["remark"].ToString(),
-                                IsEnabled = Convert.ToInt32(dataRow["is_enabled"]),
-                                CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
-                                UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
-                            });
-                        }
-                    }
-                }
-
-                if (paramsConfigs.Count > 0)
-                {
-                    sql.Clear();
-                    sql.Append(@"INSERT INTO [dbo].[sys_params_backup]
-                                       ([backup_no],[content],[remark],[is_enabled]
-                                       ,[is_deleted],[create_dt],[create_user_id],[update_dt],[update_user_id])
-                                 VALUES
-                                       (@backupNo,@content,@remark,1
-                                       ,0,GETDATE(),@userId,GETDATE(),@userId)");
-
-                    var backupNo = $"BK-{fullName}-{DateTime.Now.ToString("yyyyMMddHHmmss")}".ToUpper();
-                    var jsonContent = Newtonsoft.Json.JsonConvert.SerializeObject(paramsConfigs);
-
-                    parameters = new SqlParameter[] {
-                    new SqlParameter("@backupNo", backupNo),
-                    new SqlParameter("@content", jsonContent),
-                    new SqlParameter("@remark", "采集参数备份"),
-                    new SqlParameter("@userId", userInfo.Id),
-                    };
-
-                    var result = SQLHelper.ExecuteNonQuery(sql.ToString(), parameters);
-                    MessageBox.Show($"参数备份成功，备份码：{backupNo}", "提示信息");
-
-                }
-                else
-                {
-                    throw new Exception("当前无可用的备份数据，备份失败");
                 }
             }
             catch (Exception ex)

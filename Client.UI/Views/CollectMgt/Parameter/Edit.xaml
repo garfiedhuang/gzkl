@@ -9,7 +9,7 @@
              WindowStartupLocation="CenterScreen"
              mc:Ignorable="d" 
              Title="编辑参数信息"
-             Height="535" 
+             Height="400" 
              Width="650" 
              ResizeMode="NoResize">
     <!--<hc:TransitioningContentControl>-->
@@ -24,18 +24,19 @@
                             x:Name="txtCategory" 
                             hc:InfoElement.Placeholder="请输入分类" 
                             hc:InfoElement.Title="分类" 
-                            Text="{Binding Model.Category,Mode=TwoWay}" 
+                            Text="{Binding Model.Category,Mode=TwoWay}"
+                            Visibility="Collapsed"
                          hc:InfoElement.Necessary="True"/>
                 <hc:TextBox Margin="0,0,0,10" Width="250" 
                             x:Name="txtValue" 
-                            hc:InfoElement.Placeholder="请输入键" 
-                            hc:InfoElement.Title="键" 
+                            hc:InfoElement.Placeholder="请输入参数名" 
+                            hc:InfoElement.Title="参数名" 
                             Text="{Binding Model.Value,Mode=TwoWay}" 
                          hc:InfoElement.Necessary="True"/>
                 <hc:TextBox Margin="0,0,0,10" Width="250" 
                             x:Name="txtText" 
-                            hc:InfoElement.Placeholder="请输入值" 
-                            hc:InfoElement.Title="值" 
+                            hc:InfoElement.Placeholder="请输入参数值" 
+                            hc:InfoElement.Title="参数值" 
                             Text="{Binding Model.Text,Mode=TwoWay}" 
                          hc:InfoElement.Necessary="True"/>
                 <hc:ComboBox Margin="0,0,0,10" Width="250" 
@@ -48,6 +49,7 @@
                              SelectedValuePath="Key"
                              ItemsSource="{Binding IsEnabledData}"
                              SelectedValue="{Binding Model.IsEnabled}"
+                             Visibility="Collapsed"
                              hc:InfoElement.Title="是否启用" 
                              hc:InfoElement.Necessary="False">
                 </hc:ComboBox>

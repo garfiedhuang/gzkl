@@ -81,12 +81,12 @@ namespace GZKL.Client.UI.Views.CollectMgt.Parameter
 
             if (_id == 0)
             {//新增
-                sql = "SELECT COUNT(1) FROM [dbo].[sys_Parameter] WHERE [category]=@category AND [value]=@value AND [is_deleted]=0";
+                sql = "SELECT COUNT(1) FROM [dbo].[sys_config] WHERE [category]=@category AND [value]=@value AND [is_deleted]=0";
                 parameters = new SqlParameter[] { new SqlParameter("@category", txtCategory.Text), new SqlParameter("@value", txtValue.Text) };
             }
             else
             { //修改
-                sql = "SELECT COUNT(1) FROM [dbo].[sys_Parameter] WHERE [category]=@category AND [value]=@value AND [is_deleted]=0 AND [id]<>@id";
+                sql = "SELECT COUNT(1) FROM [dbo].[sys_config] WHERE [category]=@category AND [value]=@value AND [is_deleted]=0 AND [id]<>@id";
                 parameters = new SqlParameter[] { new SqlParameter("@category", txtCategory.Text), new SqlParameter("@value", txtValue.Text), new SqlParameter("@id", _id) };
             }
             rowCount = Convert.ToInt32(SQLHelper.ExecuteScalar(sql, parameters) ?? "0");

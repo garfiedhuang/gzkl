@@ -14,7 +14,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using GZKL.Client.UI.Models;
+using GZKL.Client.UI.Views.CollectMgt.Clear;
 using GZKL.Client.UI.ViewsModels;
+using HandyControl.Tools.Extension;
 
 namespace GZKL.Client.UI.Views.CollectMgt.Parameter
 {
@@ -50,26 +52,15 @@ namespace GZKL.Client.UI.Views.CollectMgt.Parameter
             viewModel.Edit(id);
         }
 
-        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        private void btnBattchEdit_Click(object sender, RoutedEventArgs e)
         {
-            var selected = this.dgData.SelectedItems;
+            //HandyControl.Controls.Dialog.Show(new Battch());
 
-            if (selected.Count == 0)
-            {
-                MessageBox.Show($"请至少选择一条记录进行删除", "提示信息");
-                return;
-            }
+            var battch = new Battch();
+            _ = battch.ShowDialog();
 
-            var models = new List<ParameterModel>();
-
-            foreach (var item in selected)
-            {
-                models.Add(item as ParameterModel);
-            }
-
-            var viewModel = this.DataContext as ParameterViewModel;
-
-            viewModel.Delete(models);
+            
         }
+
     }
 }
