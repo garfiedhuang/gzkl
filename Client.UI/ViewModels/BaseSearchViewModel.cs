@@ -35,7 +35,7 @@ namespace GZKL.Client.UI.ViewsModels
         /// <summary>
         /// 查询之后的结果数据，用于分页显示
         /// </summary>
-        public static List<TModel> TModels { get; set; }
+        public List<TModel> TModels { get; set; }
 
         /// <summary>
         /// 网格数据集合

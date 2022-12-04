@@ -448,5 +448,10 @@
   <ItemGroup>
     <Resource Include="Assets\Images\icon.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Templates\Press1.mdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

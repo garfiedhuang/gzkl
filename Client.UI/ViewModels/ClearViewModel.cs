@@ -294,7 +294,7 @@ END";
             {
                 message= "处理失败";
                 remark = ex?.Message;
-                HandyControl.Controls.Growl.Warning(ex?.Message);
+                HandyControl.Controls.Growl.Error(ex?.Message);
                 LogHelper.Error(ex?.Message);
             }
 
@@ -312,7 +312,7 @@ END";
             }
             catch (Exception ex)
             {
-                HandyControl.Controls.Growl.Warning(ex?.Message);
+                HandyControl.Controls.Growl.Error(ex?.Message);
                 LogHelper.Error(ex?.Message);
             }
             finally

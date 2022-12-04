@@ -18,6 +18,8 @@ using System.Windows;
 using System.Windows.Controls;
 using MessageBox = HandyControl.Controls.MessageBox;
 using static Microsoft.WindowsAPICodePack.Shell.PropertySystem.SystemProperties.System;
+using System.IO;
+using GZKL.Client.UI.Factories.Collect;
 
 namespace GZKL.Client.UI.ViewsModels
 {
@@ -60,17 +62,12 @@ namespace GZKL.Client.UI.ViewsModels
         /// </summary>
         public ExportViewModel()
         {
-            ExportCommand = new RelayCommand<string>(this.Export);
+   
         }
 
         #endregion
 
         #region Command
-
-        /// <summary>
-        /// 导出
-        /// </summary>
-        public RelayCommand<string> ExportCommand { get; set; }
 
         #endregion
 
@@ -180,169 +177,141 @@ WHERE m.is_deleted=0 AND d.is_deleted=0");
             this.Query();
         }
 
-        /// <summary>
-        /// 导出/全部导出
-        /// </summary>
-        /// <param name="obj"></param>
-        public void Export(string obj)
-        {
-            MessageBox.Show("小伙钓鱼去了，暂时没有时间写代码！");
-
-            /* ==> 导出逻辑
-             procedure TfrmDataEpt.Button5Click(Sender: TObject);
-var
-  constr: string;
-  filename: string;
-  testMain_id: string;
-begin
-  if dxMemData1.RecordCount=0 then
-  begin
-    showmessage('没有要导出的数据！');
-    exit;
-  end;
-
-  if rd1.ItemIndex=0 then
-    filename := formatdatetime('yyyymmdd-hhnnss',now())+'.mdb'
-  else
-    filename := edtmin.Text+'~'+edtMax.Text+'.mdb';
-
-  if FileExists(CurrentDir+'Export\'+filename) then
-    deletefile(CurrentDir+'Export\'+filename);
-
-  frmMain.adoconn.Close;
-  CopyFile(Pchar(CurrentDir+'DB\Press1.mdb'),Pchar(CurrentDir+'Export\'+filename),false);
-
-  adoconn.Close;
-  CreateDSN(CurrentDir+'Export\'+filename, 'AutoAcsDBout', 'AutoAcs');
-  constr:='FILE NAME='+CurrentDir+'DBEPTLink.udl';
-
-  adoconn.Close;
-  adoconn.ConnectionString:=constr;
-
-  adoconn.Close;
-  adoconn.ConnectionString:=constr;
-  try
-    adoconn.Connected :=true;
-  except
-    showmessage('无法连接数据库，请检测数据库是否存在！');
-    EncrypMDB(CurrentDir+'Export\'+filename);
-    exit;
-  end;
-
-  testMain_id:='0,';
-  dxMemData1.DisableControls;
-  dxMemData1.first;
-  while not dxMemData1.Eof do
-  begin
-    if dxMemData1.FieldByName('flag').AsBoolean then
-    begin
-      if Pos(','+dxMemData1.fieldbyname('testMain_id').AsString+',', testMain_id)=0 then
-       testMain_id :=testMain_id+dxMemData1.fieldbyname('testMain_id').AsString+',';
-    end;
-    dxMemData1.Next;
-  end;
-  testMain_id:=testMain_id+'0';
-  dxMemData1.EnableControls;
-  //清除不需要的数据
-  acddel.CommandText:='delete from testno where testMain_id not in ('+testMain_id+')';
-  acddel.Execute;
-
-  acddel.CommandText:='delete from OriginalData where testMain_id not in ('+testMain_id+')';
-  acddel.Execute;
-
-  acddel.CommandText:='delete from testMain where id  not in ('+testMain_id+')';
-  acddel.Execute;
-
-  showmessage('数据已成功导出到'+CurrentDir+'Export\'+filename);
-  adoconn.Close;
-  dxMemData1.Close;
-
-  CompactDatabase(CurrentDir+'Export\'+filename,'AutoAcs');
-end;
-             
-             */
-
-
-
-            /* ==> 全部导出逻辑
-             procedure TfrmDataEpt.Button1Click(Sender: TObject);
-var
-  constr: string;
-  filename: string;
-begin
-  if dxMemData1.RecordCount=0 then
-  begin
-    showmessage('没有要导出的数据！');
-    exit;
-  end;
-
-  if rd1.ItemIndex=0 then
-    filename := formatdatetime('yyyymmdd-hhnnss',now())+'.mdb'
-  else
-    filename := edtmin.Text+'~'+edtMax.Text+'.mdb';
-
-  if FileExists(CurrentDir+'Export\'+filename) then
-    deletefile(CurrentDir+'Export\'+filename);
-
-  frmMain.adoconn.Close;
-  CopyFile(Pchar(CurrentDir+'DB\Press1.mdb'),Pchar(CurrentDir+'Export\'+filename),false);
-
-  adoconn.Close;
-  CreateDSN(CurrentDir+'Export\'+filename, 'AutoAcsDBout', 'AutoAcs');
-  constr:='FILE NAME='+CurrentDir+'DBEPTLink.udl';
-
-  adoconn.Close;
-  adoconn.ConnectionString:=constr;
-  try
-    adoconn.Connected :=true;
-  except
-    showmessage('无法连接数据库，请检测数据库是否存在！');
-    EncrypMDB(CurrentDir+'Export\'+filename);
-    exit;
-  end;
-  //清除不需要的数据
-
-  if rd1.ItemIndex=0 then
-  begin
-    acddel.CommandText:='delete from testno where testMain_id not in ( select id from testMain where dates>=#'+testdate.Text+'# and dates<=#'+testdate1.Text+'#)';
-    acddel.Execute;
-
-    acddel.CommandText:='delete from OriginalData where testMain_id not in ( select id from testMain where dates>=#'+testdate.Text+'# and dates<=#'+testdate1.Text+'#)';
-    acddel.Execute;
-
-    acddel.CommandText:='delete from testMain where dates<#'+testdate.Text+'#';
-    acddel.Execute;
-    acddel.CommandText:='delete from testMain where dates>#'+testdate1.Text+'#';
-    acddel.Execute;
-  end
-  else
-  begin
-    acddel.CommandText:='delete from testno where testMain_id not in ( select id from testMain where TestNo>='''+trim(edtmin.Text)+''' and TestNo<='''+Trim(edtmax.Text)+''')';
-    acddel.Execute;
-
-    acddel.CommandText:='delete from OriginalData where testMain_id not in ( select id from testMain where TestNo>='''+trim(edtmin.Text)+''' and TestNo<='''+Trim(edtmax.Text)+''')';
-    acddel.Execute;
-
-    acddel.CommandText:='delete from testMain where TestNo<'''+trim(edtmin.Text)+'''';
-    acddel.Execute;
-    acddel.CommandText:='delete from testMain where TestNo>'''+Trim(edtmax.Text)+'''';
-    acddel.Execute;
-  end;
-
-  showmessage('数据已成功导出到'+CurrentDir+'Export\'+filename);
-  adoconn.Close;
-  dxMemData1.Close;
-  
-  CompactDatabase(CurrentDir+'Export\'+filename,'AutoAcs');
-end;
-             */
-        }
-
         #endregion
 
         #region Privates
 
+        public void Export(List<ExportModel> exportModels)
+        {
+            try
+            {
+                SaveData2AccessDb(exportModels);
+            }
+            catch (Exception ex)
+            {
+                HandyControl.Controls.Growl.Error(ex?.Message);
+                LogHelper.Error(ex?.Message);
+            }
 
+        }
+
+        public void ExportAll()
+        {
+            try
+            {
+                SaveData2AccessDb(TModels);
+            }
+            catch (Exception ex)
+            {
+                HandyControl.Controls.Growl.Error(ex?.Message);
+                LogHelper.Error(ex?.Message);
+            }
+        }
+
+        private void SaveData2AccessDb(List<ExportModel> exportModels)
+        {
+            var fileName = string.Empty;
+            var savePath = string.Empty;
+
+            if (QueryType == "TD")
+            {
+                fileName = $"{DateTime.Now:yyyyMMdd-HHmmss}.mdb";
+            }
+            else if (QueryType == "TN")
+            {
+                fileName = $"{startTestNo}~{endTestNo}.mdb";
+            }
+
+            savePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "export");
+
+            if (!System.IO.Directory.Exists(savePath))
+            {
+                System.IO.Directory.CreateDirectory(savePath);
+            }
+
+            //将导出的Access数据库模板文件，复制到当前目录下并重命名
+            savePath = System.IO.Path.Combine(savePath, fileName);
+            if (File.Exists(savePath))
+            {
+                File.Delete(savePath);
+            }
+
+            var templateFile = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "Press1.mdb");
+            if (!File.Exists(templateFile))
+            {
+                throw new Exception($"Access模板文件不存在，{templateFile}");
+            }
+
+            File.Copy(templateFile, savePath);
+
+            //查询原始数据
+            var sql = @"
+BEGIN
+SELECT * FROM biz_execute_test WHERE is_deleted=0 AND id IN(@ids);
+SELECT * FROM biz_execute_test_detail WHERE is_deleted=0 AND test_id IN(@ids);
+SELECT * FROM biz_original_data WHERE is_deleted=0 AND test_id IN(@ids);
+END";
+            var parameters = new SqlParameter[1] { new SqlParameter("@ids", string.Join(",", exportModels.Select(s => s.Id).Distinct())) };
+
+            var ds = SQLHelper.GetDataSet(sql, parameters);
+
+            //写入Access模板数据库
+            if (ds != null && ds.Tables.Count > 0)
+            {
+                var tableMasterSql = $"";
+                var tableDetailSql = $"";
+                var tableOriginalSql = $"";
+
+                var dsnName = $"AutoAcsDBout";
+                var pwd = "AutoAcs";
+                var database = savePath;
+                var path = $"DSN={dsnName}";
+
+                if (string.IsNullOrEmpty(database) || !System.IO.File.Exists(database))
+                {
+                    throw new Exception($"数据库文件不存在，请检查！{database}");
+                }
+
+                DsnHelper.CreateDSN(dsnName, pwd, database);//创建DSN
+
+                var sqls = new StringBuilder();
+
+                for (var i = 0; i < ds.Tables.Count; i++)
+                {
+                    using (var dt = ds.Tables[i])
+                    {
+                        if (dt == null || dt.Rows.Count == 0)
+                        {
+                            continue;
+                        }
+
+                        sqls.Clear();
+
+                        foreach (DataRow dr in dt.Rows)
+                        {
+                            if (i == 0)
+                            {
+                                sqls.Append("sql1");
+                            }
+                            else if (i == 1)
+                            {
+                                sqls.Append("sql1");
+                            }
+                            else if (i == 2)
+                            {
+                                sqls.Append("sql1");
+                            }
+                        }
+
+                        //每个表提交一次数据
+                        OdbcHelper.ExcuteSql(sqls.ToString(), database);
+                    }
+                }
+            }
+
+            //压缩数据库文件
+
+        }
 
         #endregion
     }

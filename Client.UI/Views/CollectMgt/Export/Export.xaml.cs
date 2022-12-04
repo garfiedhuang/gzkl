@@ -104,14 +104,46 @@ end;
             }
         }
 
+        /// <summary>
+        /// 导出
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnExport_Click(object sender, RoutedEventArgs e)
         {
+            var selected = this.dgData.SelectedItems;
 
+            if (selected.Count == 0)
+            {
+                MessageBox.Show($"请至少选择一条记录进行操作", "提示信息");
+                return;
+            }
+
+            var exportModels =new List<ExportModel>();
+            foreach (var item in selected)
+            {
+                exportModels.Add(item as ExportModel);
+            }
+
+            (this.DataContext as ExportViewModel).Export(exportModels);
         }
 
+        /// <summary>
+        /// 全部导出
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnExportAll_Click(object sender, RoutedEventArgs e)
         {
+            var viewModel = this.DataContext as ExportViewModel;
 
+            if (viewModel.TModels?.Count == 0)
+            {
+                MessageBox.Show($"未有可导出数据，请重新查询", "提示信息");
+                return;
+            }
+
+            viewModel.ExportAll();
         }
     }
 }
