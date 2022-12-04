@@ -108,7 +108,7 @@ namespace GZKL.Client.UI.Common
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static string SHA512EAncrypt(string source)
+        public static string SHA512Encrypt(string source)
         {
             string result = "";
             byte[] buffer = Encoding.UTF8.GetBytes(source);//UTF-8 编码

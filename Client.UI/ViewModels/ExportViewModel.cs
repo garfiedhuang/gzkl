@@ -11,15 +11,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using MessageBox = HandyControl.Controls.MessageBox;
-using static Microsoft.WindowsAPICodePack.Shell.PropertySystem.SystemProperties.System;
-using System.IO;
-using GZKL.Client.UI.Factories.Collect;
 
 namespace GZKL.Client.UI.ViewsModels
 {
@@ -63,8 +61,8 @@ namespace GZKL.Client.UI.ViewsModels
         public ExportViewModel()
         {
 
-            var templateFile = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "Press1.mdb");
-            SecurityHelper.UncrptAccessDb(templateFile);
+            //var templateFile = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "Press1.mdb");
+            //SecurityHelper.UncrptAccessDb(templateFile);
 
         }
 
@@ -310,10 +308,37 @@ END";
                         OdbcHelper.ExcuteSql(sqls.ToString(), database);
                     }
                 }
+
+                //压缩数据库文件
+                CompactDatabase(savePath, pwd);
+
+                //加密数据库
+                SecurityHelper.EncrptAccessDb(savePath);
             }
 
-            //压缩数据库文件
-            
+        }
+
+        /// <summary>
+        /// 压缩数据库
+        /// </summary>
+        /// <param name="accessDbPath"></param>
+        /// <param name="password"></param>
+        /// <exception cref="Exception"></exception>
+        private void CompactDatabase(string accessDbPath, string password)
+        {
+            var fileInfo = new FileInfo(accessDbPath);
+            var tempDbPath = Path.Combine(fileInfo.DirectoryName, $"{DateTime.Now:yyyyMMddHHmmss}_temp.mdb");
+
+            var connectString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source={0};Jet OLEDB:Database Password={1}";
+            var tempDbConnectiongString = string.Format(connectString, tempDbPath, password);
+            var targetDbConnectiongString = string.Format(connectString, accessDbPath, password);
+
+            JRO.JetEngine dbEngin = new JRO.JetEngine();
+            dbEngin.CompactDatabase(targetDbConnectiongString, tempDbConnectiongString);//压缩
+
+            File.Copy(tempDbPath, accessDbPath, true);
+
+            File.Delete(tempDbPath);
         }
 
         #endregion
