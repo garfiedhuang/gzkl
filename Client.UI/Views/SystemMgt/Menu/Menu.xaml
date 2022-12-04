@@ -108,7 +108,7 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn IsReadOnly="True" Width="60" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Id}" Header="ID"/>
                             <DataGridTextColumn IsReadOnly="True"  Width="80*" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Name}" Header="菜单名称"/>
-                            <DataGridTextColumn IsReadOnly="True"  Width="80*" Binding="{Binding Url}" Header="菜单路径"/>
+                            <DataGridTextColumn IsReadOnly="True"  Width="120*" Binding="{Binding Url}" Header="菜单路径"/>
                             <DataGridTextColumn IsReadOnly="True"  Width="80*" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Type,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=menuType}" Header="类型"/>
                             <DataGridTextColumn IsReadOnly="True"  Width="80*" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Sort}" Header="排序"/>
                             <DataGridTextColumn IsReadOnly="True"  Width="80*" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Icon}" Header="菜单图标"/>

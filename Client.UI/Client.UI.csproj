@@ -151,12 +151,13 @@
     <Compile Include="Models\BackupModel.cs" />
     <Compile Include="Models\AutoCollectModel.cs" />
     <Compile Include="Models\ClearModel.cs" />
+    <Compile Include="Models\ParameterModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\MenuModel.cs" />
     <Compile Include="ViewModels\BaseSearchViewModel.cs" />
     <Compile Include="Models\ExportModel.cs" />
     <Compile Include="Models\InterfaceModel.cs" />
-    <Compile Include="Models\ParameterModel.cs" />
+    <Compile Include="Models\BattchModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\OrgModel.cs" />
     <Compile Include="Models\ModuleModel.cs" />
@@ -173,12 +174,13 @@
     <Compile Include="CustomControls\Template\MenuTemplateSelector.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\BackupViewModel.cs" />
+    <Compile Include="ViewModels\ParameterViewModel.cs" />
     <Compile Include="ViewModels\MenuViewModel.cs" />
     <Compile Include="ViewModels\ExportViewModel.cs" />
     <Compile Include="ViewModels\AutoCollectViewModel.cs" />
     <Compile Include="ViewModels\InterfaceViewModel.cs" />
     <Compile Include="ViewModels\ClearViewModel.cs" />
-    <Compile Include="ViewModels\ParameterViewModel.cs" />
+    <Compile Include="ViewModels\BattchViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\OrgViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
@@ -230,6 +232,12 @@
     </Compile>
     <Compile Include="Views\CollectMgt\Parameter\Parameter.xaml.cs">
       <DependentUpon>Parameter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CollectMgt\Parameter\Edit.xaml.cs">
+      <DependentUpon>Edit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CollectMgt\Parameter\Battch.xaml.cs">
+      <DependentUpon>Battch.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CollectMgt\Register\Register.xaml.cs">
       <DependentUpon>Register.xaml</DependentUpon>
@@ -342,6 +350,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\CollectMgt\Parameter\Parameter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CollectMgt\Parameter\Edit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CollectMgt\Parameter\Battch.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
