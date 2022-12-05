@@ -19,9 +19,14 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="90"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Vertical">
+        <StackPanel Grid.Row="0" Orientation="Vertical" VerticalAlignment="Center">
 
-            
+            <hc:StepBar>
+                <hc:StepBarItem Content="Register"/>
+                <hc:StepBarItem Content="Basic Info"/>
+                <hc:StepBarItem Content="Upload File"/>
+                <hc:StepBarItem Content="Complete"/>
+            </hc:StepBar>
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Vertical">
 
