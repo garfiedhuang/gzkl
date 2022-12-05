@@ -192,12 +192,17 @@ namespace GZKL.Client.UI.Models
     /// <summary>
     /// 接口与检测项关系
     /// </summary>
-    public class InterfaceTestItemRelationInfo
+    public class InterfaceTestItemRelationInfo : ObservableObject
     {
         /// <summary>
         /// 主键ID
         /// </summary>
         public long Id { get; set; }
+
+        /// <summary>
+        /// 行号
+        /// </summary>
+        public long RowNum { get; set; }
 
         /// <summary>
         /// 接口ID
@@ -230,5 +235,15 @@ namespace GZKL.Client.UI.Models
         /// 系统检测项名称
         /// </summary>
         public string SystemTestItemName { get; set; }
+
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        public DateTime CreateDt { get; set; }
+
+        /// <summary>
+        /// 更新时间
+        /// </summary>
+        public DateTime UpdateDt { get; set; }
     }
 }

@@ -10,11 +10,12 @@
              mc:Ignorable="d" 
              Title="设置接口与检测项目对应关系"
              Height="650" 
-             Width="650" 
+             Width="1000" 
              ResizeMode="NoResize">
     <!--<hc:TransitioningContentControl>-->
     <Grid Background="White">
         <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="90"/>
         </Grid.RowDefinitions>
@@ -22,7 +23,11 @@
 
             
         </StackPanel>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+        <StackPanel Grid.Row="1" Orientation="Vertical">
+
+
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Content="保存" Width="100" Margin="10" Click="btnSave_Click" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource TextIconBrush}" hc:BorderElement.CornerRadius="5"/>
             <Button Content="取消" Width="100" Margin="10" Click="btnCancel_Click" hc:BorderElement.CornerRadius="5"/>
         </StackPanel>

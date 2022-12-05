@@ -176,6 +176,7 @@
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\BackupViewModel.cs" />
     <Compile Include="ViewModels\InterfaceBaseViewModel.cs" />
+    <Compile Include="ViewModels\SetupViewModel.cs" />
     <Compile Include="ViewModels\ParameterViewModel.cs" />
     <Compile Include="ViewModels\MenuViewModel.cs" />
     <Compile Include="ViewModels\ExportViewModel.cs" />

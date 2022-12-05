@@ -25,7 +25,7 @@ namespace GZKL.Client.UI.Views.CollectMgt.Interface
     /// </summary>
     public partial class SetupEdit : Window
     {
-        public SetupEdit(InterfaceBaseModel interfaceBaseModel)
+        public SetupEdit(InterfaceTestItemRelationInfo interfaceBaseModel)
         {
             InitializeComponent();
 
@@ -59,9 +59,9 @@ namespace GZKL.Client.UI.Views.CollectMgt.Interface
             //    return;
             //}
 
-            string sql = "";
-            SqlParameter[] parameters = null;
-            int rowCount = 0;
+            //string sql = "";
+            //SqlParameter[] parameters = null;
+            //int rowCount = 0;
 
             //if (_id == 0)
             //{//新增

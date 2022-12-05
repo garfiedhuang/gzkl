@@ -30,7 +30,7 @@ namespace GZKL.Client.UI.Views.CollectMgt.Interface
 
         private void SetupControl_Loaded(object sender, RoutedEventArgs e)
         {
-            (this.DataContext as InterfaceViewModel).Query();
+            (this.DataContext as SetupViewModel).Query();
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
@@ -50,8 +50,8 @@ namespace GZKL.Client.UI.Views.CollectMgt.Interface
                 models.Add(item as InterfaceTestItemRelationInfo);
             }
 
-            var viewModel = this.DataContext as InterfaceViewModel;
-            //viewModel.Delete(models);
+            var viewModel = this.DataContext as SetupViewModel;
+            viewModel.Delete(models);
         }
     }
 }
