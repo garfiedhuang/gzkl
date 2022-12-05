@@ -1,15 +1,11 @@
 ﻿using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace GZKL.Client.UI.ViewsModels
 {
-     public class ViewModelLocator
+    public class ViewModelLocator
     {
         /// <summary>
         /// 嘿巴扎嘿

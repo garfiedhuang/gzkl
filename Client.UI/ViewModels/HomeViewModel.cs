@@ -1,14 +1,12 @@
 ﻿using GalaSoft.MvvmLight;
+using GZKL.Client.UI.Common;
+using GZKL.Client.UI.Models;
 using LiveCharts;
 using LiveCharts.Defaults;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using GZKL.Client.UI.Common;
-using GZKL.Client.UI.Models;
 
 namespace GZKL.Client.UI.ViewsModels
 {

@@ -1,23 +1,17 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using HandyControl.Controls;
+using GZKL.Client.UI.Common;
+using GZKL.Client.UI.Models;
+using GZKL.Client.UI.Views.SystemMgt.Menu;
+using MessageBox = HandyControl.Controls.MessageBox;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using GZKL.Client.UI.Models;
 using System.Windows;
-using HandyControl.Data;
-using System.Data.SqlClient;
-using GZKL.Client.UI.Common;
-using System.Data;
-using System.Windows.Controls;
-using MessageBox = HandyControl.Controls.MessageBox;
-using GZKL.Client.UI.Views.SystemMgt.Menu;
-using GalaSoft.MvvmLight.Messaging;
-using System.Windows.Markup;
 
 namespace GZKL.Client.UI.ViewsModels
 {

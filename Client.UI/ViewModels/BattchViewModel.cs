@@ -1,27 +1,17 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using HandyControl.Controls;
+using GZKL.Client.UI.Common;
+using GZKL.Client.UI.Models;
+using MessageBox = HandyControl.Controls.MessageBox;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GZKL.Client.UI.Models;
-using System.Windows;
-using HandyControl.Data;
-using System.Data.SqlClient;
-using GZKL.Client.UI.Common;
-using System.Data;
-using System.Windows.Controls;
-using MessageBox = HandyControl.Controls.MessageBox;
-using GZKL.Client.UI.Views.CollectMgt.Parameter;
-using GalaSoft.MvvmLight.Messaging;
-using System.Reflection;
 using System.ComponentModel;
-using System.Security.Cryptography;
-using System.Windows.Media.Media3D;
-using Microsoft.WindowsAPICodePack.Dialogs;
+using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Reflection;
+using System.Text;
 
 namespace GZKL.Client.UI.ViewsModels
 {

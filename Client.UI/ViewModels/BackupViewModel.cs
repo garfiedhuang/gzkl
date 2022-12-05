@@ -1,19 +1,14 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using GZKL.Client.UI.Models;
-using System.Data.SqlClient;
+﻿using GZKL.Client.UI.Models;
 using GZKL.Client.UI.Common;
-using System.Data;
-using MessageBox = HandyControl.Controls.MessageBox;
-using Microsoft.WindowsAPICodePack.Dialogs;
-using Newtonsoft.Json;
 using GZKL.Client.UI.Views.CollectMgt.Backup;
-using System.Threading.Tasks;
+using MessageBox = HandyControl.Controls.MessageBox;
+using Newtonsoft.Json;
+using System;
+using System.Data;
+using System.Data.SqlClient;
 using System.IO;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace GZKL.Client.UI.ViewsModels
 {
