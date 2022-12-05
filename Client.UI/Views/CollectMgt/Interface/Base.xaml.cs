@@ -46,7 +46,6 @@ namespace GZKL.Client.UI.Views.CollectMgt.Interface
             var id = (selected[0] as InterfaceBaseModel).Id;
 
             var viewModel = this.DataContext as InterfaceBaseViewModel;
-
             viewModel.Edit(id);
         }
 
@@ -68,8 +67,37 @@ namespace GZKL.Client.UI.Views.CollectMgt.Interface
             }
 
             var viewModel = this.DataContext as InterfaceBaseViewModel;
-
             viewModel.Delete(models);
+        }
+
+        private void btnSelectInterfaceDatabase_Click(object sender, RoutedEventArgs e)
+        {
+            var selected = this.dgData.SelectedItems;
+
+            if (selected.Count != 1)
+            {
+                MessageBox.Show($"请选择一条记录进行操作", "提示信息");
+                return;
+            }
+
+            var model = selected[0] as InterfaceBaseModel;
+            var viewModel = this.DataContext as InterfaceBaseViewModel;
+            viewModel.SelectInterfaceDatabase(model);
+        }
+
+        private void btnSetCurrentInterface_Click(object sender, RoutedEventArgs e)
+        {
+            var selected = this.dgData.SelectedItems;
+
+            if (selected.Count != 1)
+            {
+                MessageBox.Show($"请选择一条记录进行操作", "提示信息");
+                return;
+            }
+
+            var model = selected[0] as InterfaceBaseModel;
+            var viewModel = this.DataContext as InterfaceBaseViewModel;
+            viewModel.SetCurrentInterface(model);
         }
     }
 }

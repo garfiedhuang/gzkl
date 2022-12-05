@@ -9,6 +9,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using GalaSoft.MvvmLight.Command;
+using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace GZKL.Client.UI.ViewsModels
 {
@@ -42,7 +44,6 @@ namespace GZKL.Client.UI.ViewsModels
         #endregion
 
         #region Command
-
 
         #endregion
 
@@ -279,6 +280,117 @@ namespace GZKL.Client.UI.ViewsModels
             {
                 MessageBox.Show(ex.Message, "提示信息");
             }
+        }
+
+        /// <summary>
+        /// 设置当前接口
+        /// </summary>
+        /// <param name="model"></param>
+        public void SetCurrentInterface(InterfaceBaseModel model)
+        {
+            try
+            {
+                var sql = @"BEGIN
+UPDATE [dbo].[base_interface] SET [is_enabled]=0 WHERE 1=1;
+UPDATE [dbo].[base_interface] SET [is_enabled]=1,[update_dt] = @update_dt,[update_user_id] = @user_id WHERE [id]=@id;
+END";
+                var parameters = new SqlParameter[3] {
+                    new SqlParameter("@update_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
+                    new SqlParameter("@user_id", SessionInfo.Instance.UserInfo.Id),
+                    new SqlParameter("@id", model.Id) };
+
+                var result = SQLHelper.ExecuteNonQuery(sql, parameters);
+
+                if (result > 0)
+                {
+                    this.Query();
+                    MessageBox.Show("本机接口设置成功", "提示信息");
+                }
+                else
+                {
+                    MessageBox.Show("本机接口设置失败", "提示信息");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "提示信息");
+            }
+
+        }
+
+        /// <summary>
+        /// 数据库接口数据库
+        /// </summary>
+        /// <param name="model"></param>
+        public void SelectInterfaceDatabase(InterfaceBaseModel model)
+        {
+            try
+            {
+                var fileName = string.Empty;
+
+                CommonOpenFileDialog dialog = new CommonOpenFileDialog("请选择一个文件");
+                dialog.Filters.Add(new CommonFileDialogFilter("Access Files", "*.mdb"));
+                dialog.IsFolderPicker = false;
+                if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+                {
+                    fileName = dialog.FileName;
+                }
+                else
+                {
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(fileName))
+                {
+                    MessageBox.Show("请选择数据库文件", "提示信息");
+                    return;
+                }
+
+                if (model.Id != 4 && !fileName.Contains(model.AccessDbName))
+                {
+                    MessageBox.Show("选择的数据库文件不正确，请重新选择", "提示信息");
+                    return;
+                }
+                else if (model.Id == 4 && !fileName.Contains("Tests"))
+                {
+                    MessageBox.Show("选择的数据库文件不正确，请重新选择", "提示信息");
+                    return;
+                }
+
+                if (model.Id == 4)
+                {
+                    //adsBase_Interface.FieldByName('FilePath').AsString:=copy(RzOpenDialog1.FileName,1, Pos('\Tests\',RzOpenDialog1.FileName)+6)
+                    model.AccessDbPath = fileName.Substring(0, fileName.IndexOf("\\Tests\\") + 7);
+                }
+                else
+                {
+                    model.AccessDbPath = fileName;
+                }
+
+                var sql = @"UPDATE [dbo].[base_interface] SET [access_db_path]=@dbPath,[update_dt] = @update_dt,[update_user_id] = @user_id WHERE [id]=@id";
+                var parameters = new SqlParameter[4] {
+                    new SqlParameter("@dbPath", model.AccessDbPath),
+                    new SqlParameter("@update_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
+                    new SqlParameter("@user_id", SessionInfo.Instance.UserInfo.Id),
+                    new SqlParameter("@id", model.Id) };
+
+                var result = SQLHelper.ExecuteNonQuery(sql, parameters);
+
+                if (result > 0)
+                {
+                    this.Query();
+                    MessageBox.Show("接口数据库设置成功", "提示信息");
+                }
+                else
+                {
+                    MessageBox.Show("接口数据库设置失败", "提示信息");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "提示信息");
+            }
+
         }
 
         #endregion

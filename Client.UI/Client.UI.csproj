@@ -220,6 +220,12 @@
     <Compile Include="Views\CollectMgt\Export\ViewCurve.xaml.cs">
       <DependentUpon>ViewCurve.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\CollectMgt\Interface\SetupEdit.xaml.cs">
+      <DependentUpon>SetupEdit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CollectMgt\Interface\Setup.xaml.cs">
+      <DependentUpon>Setup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CollectMgt\Interface\BaseEdit.xaml.cs">
       <DependentUpon>BaseEdit.xaml</DependentUpon>
     </Compile>
@@ -335,6 +341,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\CollectMgt\Export\ViewCurve.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CollectMgt\Interface\SetupEdit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CollectMgt\Interface\Setup.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
