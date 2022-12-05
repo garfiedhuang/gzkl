@@ -11,7 +11,7 @@
              mc:Ignorable="d" 
              DataContext="{Binding Source={StaticResource Locator},Path=InterfaceBase}"
              Loaded="BaseControl_Loaded"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="480" d:DesignWidth="800">
     <UserControl.Resources>
         <converter:EnumConverter x:Key="enumConverter"/>
     </UserControl.Resources>

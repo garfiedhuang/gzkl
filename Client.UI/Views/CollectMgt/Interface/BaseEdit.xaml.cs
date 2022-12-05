@@ -1,5 +1,6 @@
 ﻿using GZKL.Client.UI.Common;
 using GZKL.Client.UI.Models;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -25,13 +26,15 @@ namespace GZKL.Client.UI.Views.CollectMgt.Interface
     /// </summary>
     public partial class BaseEdit : Window
     {
-        private long _id;
+        private InterfaceBaseModel BaseModel { get; set; }
 
         public BaseEdit(InterfaceBaseModel interfaceBaseModel)
         {
             InitializeComponent();
 
-            _id = interfaceBaseModel.Id;
+            this.Owner = Application.Current.MainWindow;
+
+            BaseModel = interfaceBaseModel;
 
             var isEnabledData = new List<KeyValuePair<int, string>>();
             isEnabledData.Add(new KeyValuePair<int, string>(0, "0-否"));
@@ -71,7 +74,7 @@ namespace GZKL.Client.UI.Views.CollectMgt.Interface
             SqlParameter[] parameters = null;
             int rowCount = 0;
 
-            if (_id == 0)
+            if (BaseModel.Id == 0)
             {//新增
                 sql = "SELECT COUNT(1) FROM [dbo].[base_interface] WHERE ([interface_name]=@interface_name OR [access_db_path]=@accessDbPath) AND [is_deleted]=0";
                 parameters = new SqlParameter[] { new SqlParameter("@interface_name", txtInterfaceName.Text), new SqlParameter("@accessDbPath", txtAccessDbPath.Text) };
@@ -79,7 +82,7 @@ namespace GZKL.Client.UI.Views.CollectMgt.Interface
             else
             { //修改
                 sql = "SELECT COUNT(1) FROM [dbo].[base_interface] WHERE ([interface_name]=@interface_name OR [access_db_path]=@accessDbPath) AND [is_deleted]=0 AND [id]<>@id";
-                parameters = new SqlParameter[] { new SqlParameter("@interface_name", txtInterfaceName.Text), new SqlParameter("@accessDbPath", txtAccessDbPath.Text), new SqlParameter("@id", _id) };
+                parameters = new SqlParameter[] { new SqlParameter("@interface_name", txtInterfaceName.Text), new SqlParameter("@accessDbPath", txtAccessDbPath.Text), new SqlParameter("@id", BaseModel.Id) };
             }
             rowCount = Convert.ToInt32(SQLHelper.ExecuteScalar(sql, parameters) ?? "0");
 
@@ -95,6 +98,39 @@ namespace GZKL.Client.UI.Views.CollectMgt.Interface
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             this.DialogResult = false;
+        }
+
+        private void btnSelect_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var fileName = string.Empty;
+
+                CommonOpenFileDialog dialog = new CommonOpenFileDialog("请选择一个文件");
+                dialog.Filters.Add(new CommonFileDialogFilter("Access Files", "*.mdb"));
+                dialog.IsFolderPicker = false;
+                if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+                {
+                    fileName = dialog.FileName;
+                }
+                else
+                {
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(fileName))
+                {
+                    MessageBox.Show("请选择数据库文件", "提示信息");
+                    return;
+                }
+
+                BaseModel.AccessDbPath = fileName;
+                BaseModel.AccessDbName = new System.IO.FileInfo(fileName).Name;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "提示信息");
+            }
         }
     }
 }

@@ -199,16 +199,23 @@ namespace GZKL.Client.UI.ViewsModels
         {
             try
             {
+                var sql = $"SELECT COUNT(1) FROM [dbo].[base_interface] WHERE [id] IN ({string.Join(",",selected.Select(s=>s.Id))})";
+                var result = Convert.ToInt32(SQLHelper.ExecuteScalar(sql));
+                if (result > 0)
+                {
+                    MessageBox.Show($"待删除的接口【{string.Join(",", selected.Select(s => $"{s.InterfaceName}"))}】已被使用，请勿删除", "提示信息");
+                    return;
+                }
                 var r = MessageBox.Show($"确定要删除【{string.Join(",", selected.Select(s => $"{s.InterfaceName}"))}】吗？", "提示", MessageBoxButton.YesNo);
                 if (r == MessageBoxResult.Yes)
                 {
                     foreach (var dr in selected)
                     {
                         //var sql = new StringBuilder(@"DELETE FROM [dbo].[base_InterfaceBase] WHERE [id] IN(@id)");
-                        var sql = new StringBuilder(@"UPDATE [dbo].[base_InterfaceBase] SET [is_deleted]=1 WHERE [id]=@id");
+                        sql = @"UPDATE [dbo].[base_interface] SET [is_deleted]=1 WHERE [id]=@id";
 
                         var parameters = new SqlParameter[1] { new SqlParameter("@id", dr.Id) };
-                        var result = SQLHelper.ExecuteNonQuery(sql.ToString(), parameters);
+                        result = SQLHelper.ExecuteNonQuery(sql.ToString(), parameters);
                     }
 
                     this.Query();

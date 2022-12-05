@@ -28,15 +28,25 @@ namespace GZKL.Client.UI.Models
         /// </summary>
         public string InterfaceName { get; set; }
 
+        private string _accessDbPath;
         /// <summary>
         /// 数据库路径
         /// </summary>
-        public string AccessDbPath { get; set; }
+        public string AccessDbPath
+        {
+            get { return _accessDbPath; }
+            set { _accessDbPath = value; RaisePropertyChanged(); }
+        }
 
+        private string _accessDbName;
         /// <summary>
         /// 数据库名称
         /// </summary>
-        public string AccessDbName { get; set; }
+        public string AccessDbName
+        {
+            get { return _accessDbName; }
+            set { _accessDbName = value; RaisePropertyChanged(); }
+        }
 
         /// <summary>
         /// 数据库用户

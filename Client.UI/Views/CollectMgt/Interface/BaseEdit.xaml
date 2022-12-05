@@ -9,7 +9,7 @@
              WindowStartupLocation="CenterScreen"
              mc:Ignorable="d" 
              Title="新增/编辑接口信息"
-             Height="650" 
+             Height="680" 
              Width="650" 
              ResizeMode="NoResize">
     <!--<hc:TransitioningContentControl>-->
@@ -47,8 +47,7 @@
                             Visibility="Visible" 
                             Content="选择..." 
                             Width="60" 
-                            Command="{Binding SelectCommand}"
-                            CommandParameter="{Binding Model}"
+                            Click="btnSelect_Click"
                             hc:BorderElement.CornerRadius="5"/>
                 </WrapPanel>
 
