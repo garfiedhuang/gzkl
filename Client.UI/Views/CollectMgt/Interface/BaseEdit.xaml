@@ -1,4 +1,4 @@
-﻿<Window x:Class="GZKL.Client.UI.Views.CollectMgt.Interface.Edit"
+﻿<Window x:Class="GZKL.Client.UI.Views.CollectMgt.Interface.BaseEdit"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,7 +9,7 @@
              WindowStartupLocation="CenterScreen"
              mc:Ignorable="d" 
              Title="新增/编辑接口信息"
-             Height="500" 
+             Height="650" 
              Width="650" 
              ResizeMode="NoResize">
     <!--<hc:TransitioningContentControl>-->
@@ -36,8 +36,8 @@
                              Margin="0,0,0,10" 
                              Width="350" 
                              HorizontalAlignment="Left"
-                             hc:InfoElement.Placeholder="请选择保存路径" 
-                             hc:InfoElement.Title="保存路径" 
+                             hc:InfoElement.Placeholder="请选择数据库文件" 
+                             hc:InfoElement.Title="数据库文件" 
                              Style="{StaticResource TextBoxExtend}" 
                              hc:InfoElement.Necessary="True"
                              Text="{Binding Model.AccessDbPath,Mode=TwoWay}"/>
@@ -48,7 +48,7 @@
                             Content="选择..." 
                             Width="60" 
                             Command="{Binding SelectCommand}"
-                             CommandParameter="{Binding Model}"
+                            CommandParameter="{Binding Model}"
                             hc:BorderElement.CornerRadius="5"/>
                 </WrapPanel>
 
@@ -57,10 +57,30 @@
                                 Width="350"  
                                 HorizontalAlignment="Left"
                                 x:Name="txtAccessDbName" 
-                                hc:InfoElement.Placeholder="请输入实例名称" 
-                                hc:InfoElement.Title="实例名称" 
+                                hc:InfoElement.Placeholder="请输入数据库名" 
+                                hc:InfoElement.Title="数据库名" 
                                 Text="{Binding Model.AccessDbName,Mode=TwoWay}" 
                                 hc:InfoElement.Necessary="True"/>
+                </WrapPanel>
+                <WrapPanel>
+                    <hc:TextBox Margin="0,0,0,10" 
+                                Width="350"  
+                                HorizontalAlignment="Left"
+                                x:Name="txtUid" 
+                                hc:InfoElement.Placeholder="请输入用户名" 
+                                hc:InfoElement.Title="用户名" 
+                                Text="{Binding Model.Uid,Mode=TwoWay}" 
+                                hc:InfoElement.Necessary="False"/>
+                </WrapPanel>
+                <WrapPanel>
+                    <hc:TextBox Margin="0,0,0,10" 
+                                Width="350"  
+                                HorizontalAlignment="Left"
+                                x:Name="txtPwd" 
+                                hc:InfoElement.Placeholder="请输入密码" 
+                                hc:InfoElement.Title="密码" 
+                                Text="{Binding Model.Pwd,Mode=TwoWay}" 
+                                hc:InfoElement.Necessary="False"/>
                 </WrapPanel>
 
                 <WrapPanel>
@@ -70,6 +90,7 @@
                                  x:Name="cmbIsEnabled"
                                  ShowClearButton="True" 
                                  IsEditable="False" 
+                                 IsReadOnly="True"
                                  hc:InfoElement.Placeholder="请选择是否启用"
                                  DisplayMemberPath="Value" 
                                  SelectedValuePath="Key"

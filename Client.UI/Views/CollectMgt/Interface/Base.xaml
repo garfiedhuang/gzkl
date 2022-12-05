@@ -1,0 +1,96 @@
+﻿<UserControl x:Class="GZKL.Client.UI.Views.CollectMgt.Interface.Base"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GZKL.Client.UI.Views"
+             xmlns:converter="clr-namespace:GZKL.Client.UI.Converters"
+             xmlns:bi="clr-namespace:GZKL.Client.UI.CustomControls.Attach"
+             xmlns:wms="clr-namespace:WpfMultiStyle;assembly=WpfMultiStyle"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             mc:Ignorable="d" 
+             DataContext="{Binding Source={StaticResource Locator},Path=InterfaceBase}"
+             Loaded="BaseControl_Loaded"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <converter:EnumConverter x:Key="enumConverter"/>
+    </UserControl.Resources>
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <WrapPanel  VerticalAlignment="Bottom" Height="30" >
+            <hc:TextBox x:Name="textBox" 
+                    HorizontalAlignment="Left" 
+                    Height="23" Margin="15,0,0,0" 
+                    TextWrapping="Wrap" 
+                    Text="{Binding Search}" 
+                    FontWeight="Bold"
+                    Foreground="#5a5e66"
+                    hc:InfoElement.TitlePlacement="Left"
+                    hc:InfoElement.Title="关键字"
+                    FontSize="13"
+                    VerticalAlignment="Center" 
+                    Width="193"/>
+            <Button Content="搜索" Width="70" Style="{wms:MultiStyle ButtonPrimary IconBtn}" bi:IconElement.Icon="&#xe696;"  VerticalAlignment="Center" Margin="10 0 0 0" Command="{Binding QueryCommand}"/>
+            <Button Content="重置" Style="{wms:MultiStyle ButtonInfo IconBtn}" bi:IconElement.Icon="&#xe692;"  VerticalAlignment="Center" Margin="10 0 0 0" Command="{Binding ResetCommand}"/>
+        </WrapPanel>
+        <WrapPanel Grid.Row="1" VerticalAlignment="Center" Height="30" Margin="0,15,0,5">
+            <Button Content="新增" Style="{StaticResource AddBtnStyle}" VerticalAlignment="Center" Margin="15 0 0 0" Command="{Binding AddCommand}"/>
+            <Button x:Name="btnEdit" Content="修改" Style="{StaticResource EditBtnStyle}" VerticalAlignment="Center" Margin="10 0 0 0" Click="btnEdit_Click" />
+            <Button x:Name="btnDelete" Content="删除" Style="{StaticResource DelBtnStyle}" VerticalAlignment="Center" Margin="10 0 0 0" Click="btnDelete_Click" />
+
+            <Button x:Name="btnSelectInterfaceDatabase" Content="选择接口数据库" Command="{Binding SelectInterfaceDatabaseCommand}" Width="120" Style="{StaticResource EditBtnStyle}" VerticalAlignment="Center" Margin="10 0 0 0" />
+            <Button x:Name="btnSetCurrentInterface" Content="设置为当前接口" Command="{Binding SetCurrentInterfaceCommand}" Width="120" Style="{StaticResource EditBtnStyle}" VerticalAlignment="Center" Margin="10 0 0 0" />
+        </WrapPanel>
+
+        <DataGrid Margin="15" Grid.Row="2"
+                  x:Name="dgData"
+                  hc:DataGridAttach.CanUnselectAllWithBlankArea="True"
+                  hc:Empty.ShowEmpty="True"
+                  HeadersVisibility="All"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding GridData}" 
+                  RowHeaderWidth="60" >
+
+            <DataGrid.RowHeaderTemplate>
+                <DataTemplate>
+                    <!--<CheckBox IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}},Path=Item.IsSelected}" />-->
+                    <CheckBox IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=DataGridRow}}" />
+                </DataTemplate>
+            </DataGrid.RowHeaderTemplate>
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding RowNum}" Width="60" CanUserSort="False" CanUserResize="False" Header="序号"/>
+                <DataGridTextColumn IsReadOnly="True" Width="60" CanUserSort="False" CanUserResize="False" Binding="{Binding Id}" Header="主键ID" Visibility="Hidden"/>
+                <DataGridTextColumn IsReadOnly="True" Width="180*" Binding="{Binding InterfaceName}" Header="接口名称"/>
+                <DataGridTextColumn IsReadOnly="True" Width="300*" Binding="{Binding AccessDbPath}" Header="数据库文件"/>
+                <DataGridTextColumn IsReadOnly="True" Width="150*" Binding="{Binding AccessDbName}" Header="数据库"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Uid}" Header="用户"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Pwd}" Header="密码"/>
+                <DataGridTextColumn IsReadOnly="True" Width="100*" Binding="{Binding Remark}" Header="备注" Visibility="Hidden"/>
+                <DataGridTextColumn IsReadOnly="True" Width="60" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>
+                <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
+                <DataGridTextColumn IsReadOnly="True" Width="180" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <hc:Pagination x:Name="dgPagination"
+                       Grid.Row="3" 
+                       MaxPageCount="{Binding MaxPageCount}" 
+                       PageIndex="{Binding PageIndex}" 
+                       DataCountPerPage="{Binding DataCountPerPage}" 
+                       IsJumpEnabled="True" 
+                       HorizontalAlignment="Right" 
+                       Margin="20,0,20,5">
+            <hc:Interaction.Triggers>
+                <hc:EventTrigger EventName="PageUpdated">
+                    <hc:EventToCommand  PassEventArgsToCommand="True" Command="{Binding PageUpdatedCommand}" />
+                </hc:EventTrigger>
+            </hc:Interaction.Triggers>
+        </hc:Pagination>
+
+    </Grid>
+</UserControl>

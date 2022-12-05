@@ -151,6 +151,7 @@
     <Compile Include="Models\BackupModel.cs" />
     <Compile Include="Models\AutoCollectModel.cs" />
     <Compile Include="Models\ClearModel.cs" />
+    <Compile Include="Models\InterfaceBaseModel.cs" />
     <Compile Include="Models\ParameterModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\MenuModel.cs" />
@@ -174,6 +175,7 @@
     <Compile Include="CustomControls\Template\MenuTemplateSelector.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\BackupViewModel.cs" />
+    <Compile Include="ViewModels\InterfaceBaseViewModel.cs" />
     <Compile Include="ViewModels\ParameterViewModel.cs" />
     <Compile Include="ViewModels\MenuViewModel.cs" />
     <Compile Include="ViewModels\ExportViewModel.cs" />
@@ -218,11 +220,14 @@
     <Compile Include="Views\CollectMgt\Export\ViewCurve.xaml.cs">
       <DependentUpon>ViewCurve.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CollectMgt\Interface\Edit.xaml.cs">
-      <DependentUpon>Edit.xaml</DependentUpon>
+    <Compile Include="Views\CollectMgt\Interface\BaseEdit.xaml.cs">
+      <DependentUpon>BaseEdit.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CollectMgt\Interface\Interface.xaml.cs">
       <DependentUpon>Interface.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CollectMgt\Interface\Base.xaml.cs">
+      <DependentUpon>Base.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CollectMgt\Org\Org.xaml.cs">
       <DependentUpon>Org.xaml</DependentUpon>
@@ -333,11 +338,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\CollectMgt\Interface\Edit.xaml">
+    <Page Include="Views\CollectMgt\Interface\BaseEdit.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\CollectMgt\Interface\Interface.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CollectMgt\Interface\Base.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

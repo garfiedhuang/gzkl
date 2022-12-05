@@ -20,8 +20,8 @@ namespace GZKL.Client.UI.ViewsModels
         {
             QueryCommand = new RelayCommand(this.Query);
             ResetCommand = new RelayCommand(this.Reset);
-            EditCommand = new RelayCommand<int>(this.Edit);
-            DeleteCommand = new RelayCommand<int>(this.Delete);
+            EditCommand = new RelayCommand<long>(this.Edit);
+            DeleteCommand = new RelayCommand<long>(this.Delete);
             AddCommand = new RelayCommand(this.Add);
             PageUpdatedCommand = new RelayCommand<FunctionEventArgs<int>>(PageUpdated);
 
@@ -109,12 +109,12 @@ namespace GZKL.Client.UI.ViewsModels
         /// <summary>
         /// 编辑
         /// </summary>
-        public RelayCommand<int> EditCommand { get; set; }
+        public RelayCommand<long> EditCommand { get; set; }
 
         /// <summary>
         /// 删除
         /// </summary>
-        public RelayCommand<int> DeleteCommand { get; set; }
+        public RelayCommand<long> DeleteCommand { get; set; }
 
         /// <summary>
         /// 新增
@@ -144,13 +144,13 @@ namespace GZKL.Client.UI.ViewsModels
         /// 编辑
         /// </summary>
         /// <param name="obj"></param>
-        public virtual void Edit(int obj) { }
+        public virtual void Edit(long obj) { }
 
         /// <summary>
         /// 删除
         /// </summary>
         /// <param name="obj"></param>
-        public virtual void Delete(int obj) { }
+        public virtual void Delete(long obj) { }
 
         /// <summary>
         /// 新增
