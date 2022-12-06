@@ -140,30 +140,30 @@
                             hc:InfoElement.Title="接口名称：" 
                             hc:BorderThickness="0" 
                             IsReadOnly="True"
-                            Text="{Binding Status,Mode=OneWay}" />
+                            Text="{Binding Model.InterfaceName,Mode=OneWay}" />
 
                     <hc:TextBox Margin="5" 
                             hc:InfoElement.TitleWidth="100" 
                             hc:InfoElement.TitlePlacement="Left" 
-                            hc:InfoElement.Title="接口项目名称：" 
+                            hc:InfoElement.Title="接口检测项：" 
                             hc:BorderThickness="0" 
                             IsReadOnly="True"
-                            Text="{Binding HostName,Mode=OneWay}" />
+                            Text="{Binding Model.InterfaceTestItemName,Mode=OneWay}" />
 
                     <hc:TextBox Margin="5" 
                             hc:InfoElement.TitleWidth="100" 
                             hc:InfoElement.TitlePlacement="Left" 
-                            hc:InfoElement.Title="系统项目名称：" 
+                            hc:InfoElement.Title="系统检测项：" 
                             hc:BorderThickness="0" 
                             IsReadOnly="True"
-                            Text="{Binding CPU,Mode=OneWay}" />
+                            Text="{Binding Model.SystemTestItemName,Mode=OneWay}" />
                 </StackPanel>
 
             </hc:SimplePanel>
 
         </StackPanel>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button x:Name="btnPre" Content="上一步" Width="100" Margin="10" Style="{StaticResource ButtonPrimary}" hc:BorderElement.CornerRadius="5" Click="btnPre_Click" />
+            <Button x:Name="btnPre" IsEnabled="False" Content="上一步" Width="100" Margin="10" Style="{StaticResource ButtonPrimary}" hc:BorderElement.CornerRadius="5" Click="btnPre_Click" />
             <Button x:Name="btnNext" Content="下一步" Width="100" Margin="10" Style="{StaticResource ButtonPrimary}" hc:BorderElement.CornerRadius="5" Click="btnNext_Click"/>
         </StackPanel>
     </Grid>
