@@ -51,7 +51,7 @@ namespace GZKL.Client.UI.ViewsModels
         public ExportViewModel()
         {
 
-            //var templateFile = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "Press1.mdb");
+            //var templateFile = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "aa.mdb");
             //SecurityHelper.UncrptAccessDb(templateFile);
 
         }

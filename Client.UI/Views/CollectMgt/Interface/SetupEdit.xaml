@@ -73,6 +73,7 @@
                 <DataGrid Margin="20" Height="400"
                           Background="White"
                           x:Name="dgInterfaceSelectData"
+                          SelectionChanged="dgInterfaceSelectData_Selected"
                           ItemsSource="{Binding InterfaceInfos}">
 
                     <DataGrid.RowHeaderTemplate>
@@ -84,9 +85,11 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn IsReadOnly="True" Width="60" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Id}" Header="ID"/>
                         <DataGridTextColumn IsReadOnly="True" Width="100*" Binding="{Binding InterfaceName}" Header="接口名称"/>
-                        <DataGridTextColumn IsReadOnly="True" Width="200*" Binding="{Binding AccessDbPath}" Header="数据库文件"/>
+                        <!--<DataGridTextColumn IsReadOnly="True" Width="200*" Binding="{Binding AccessDbPath}" Header="数据库文件"/>-->
                         <DataGridTextColumn IsReadOnly="True" Width="150*" Binding="{Binding AccessDbName}" Header="数据库"/>
                         <DataGridTextColumn IsReadOnly="True" Width="80*" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>
+                        <DataGridTextColumn IsReadOnly="True" Width="180" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
+                        <DataGridTextColumn IsReadOnly="True" Width="180" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
                     </DataGrid.Columns>
                 </DataGrid>
 
@@ -96,6 +99,7 @@
                 <DataGrid Margin="20" Height="400"
                           Background="White"
                           x:Name="dgInterfaceTestItemData"
+                          SelectionChanged="dgInterfaceTestItemData_Selected"
                           ItemsSource="{Binding InterfaceTestItemInfos}" >
 
                     <DataGrid.RowHeaderTemplate>
@@ -106,7 +110,9 @@
 
                     <DataGrid.Columns>
                         <DataGridTextColumn IsReadOnly="True" Width="60" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Id}" Header="ID"/>
-                        <DataGridTextColumn IsReadOnly="True"  Width="250*" Binding="{Binding TestItemName}" Header="检测项目"/>
+                        <DataGridTextColumn IsReadOnly="True"  Width="200*" Binding="{Binding TestItemName}" Header="检测项目"/>
+                        <DataGridTextColumn IsReadOnly="True" Width="180" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
+                        <DataGridTextColumn IsReadOnly="True" Width="180" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
                     </DataGrid.Columns>
                 </DataGrid>
 
@@ -116,6 +122,7 @@
                 <DataGrid Margin="20" Height="400"
                             Background="White"
                             x:Name="dgSystemTestItemData"
+                            SelectionChanged="dgSystemTestItemData_Selected"
                             ItemsSource="{Binding SystemTestItemInfos}" >
 
                     <DataGrid.RowHeaderTemplate>
@@ -126,37 +133,43 @@
 
                     <DataGrid.Columns>
                         <DataGridTextColumn IsReadOnly="True" Width="60" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Id}" Header="ID"/>
-                        <DataGridTextColumn IsReadOnly="True"  Width="100*" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding TestItemNo}" Header="系统项目编号"/>
-                        <DataGridTextColumn IsReadOnly="True"  Width="300*" Binding="{Binding TestItemName}" Header="系统项目名称"/>
+                        <DataGridTextColumn IsReadOnly="True"  Width="80*" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding TestItemNo}" Header="系统项目编号"/>
+                        <DataGridTextColumn IsReadOnly="True"  Width="200*" Binding="{Binding TestItemName}" Header="系统项目名称"/>
+                        <DataGridTextColumn IsReadOnly="True" Width="180" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding CreateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="CreateDt" Header="创建时间"/>
+                        <DataGridTextColumn IsReadOnly="True" Width="180" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding UpdateDt, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}, Mode=OneWay}"  SortMemberPath="UpdateDt" Header="更新时间"/>
                     </DataGrid.Columns>
                 </DataGrid>
 
             </hc:SimplePanel>
             <hc:SimplePanel x:Name="spStep4" Visibility="Collapsed">
-                <StackPanel Margin="250,100,250,0">
-                    <hc:TextBox Margin="5" 
+                <StackPanel Margin="250,50,250,0">
+                    <hc:TextBox Margin="0" 
                             hc:InfoElement.TitleWidth="100" 
                             hc:InfoElement.TitlePlacement="Left" 
                             hc:InfoElement.Title="接口名称：" 
                             hc:BorderThickness="0" 
                             IsReadOnly="True"
                             Text="{Binding Model.InterfaceName,Mode=OneWay}" />
+                    <hc:Divider LineStrokeDashArray="2,2"/>
 
-                    <hc:TextBox Margin="5" 
+                    <hc:TextBox Margin="0" 
                             hc:InfoElement.TitleWidth="100" 
                             hc:InfoElement.TitlePlacement="Left" 
                             hc:InfoElement.Title="接口检测项：" 
                             hc:BorderThickness="0" 
                             IsReadOnly="True"
                             Text="{Binding Model.InterfaceTestItemName,Mode=OneWay}" />
+                    <hc:Divider LineStrokeDashArray="2,2"/>
 
-                    <hc:TextBox Margin="5" 
+                    <hc:TextBox Margin="0" 
                             hc:InfoElement.TitleWidth="100" 
                             hc:InfoElement.TitlePlacement="Left" 
                             hc:InfoElement.Title="系统检测项：" 
                             hc:BorderThickness="0" 
                             IsReadOnly="True"
                             Text="{Binding Model.SystemTestItemName,Mode=OneWay}" />
+                    <hc:Divider LineStrokeDashArray="2,2"/>
+                    
                 </StackPanel>
 
             </hc:SimplePanel>

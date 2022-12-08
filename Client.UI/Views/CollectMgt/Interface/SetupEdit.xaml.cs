@@ -26,7 +26,7 @@ namespace GZKL.Client.UI.Views.CollectMgt.Interface
     /// </summary>
     public partial class SetupEdit : Window
     {
-
+        private InterfaceTestItemRelationInfo _model;
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -41,6 +41,8 @@ namespace GZKL.Client.UI.Views.CollectMgt.Interface
             List<SystemTestItemInfo> systemTestItemInfos)
         {
             InitializeComponent();
+
+            this._model = interfaceBaseModel;
 
             this.DataContext = new
             {
@@ -167,6 +169,29 @@ namespace GZKL.Client.UI.Views.CollectMgt.Interface
             {
                 this.btnNext.Content = "下一步";
             }
+        }
+
+        private void dgInterfaceSelectData_Selected(object sender, RoutedEventArgs e)
+        {
+            var item = this.dgInterfaceSelectData.SelectedItem as InterfaceInfo;
+
+            this._model.InterfaceId = item.Id;
+            this._model.InterfaceName = item.InterfaceName;
+        }
+
+        private void dgInterfaceTestItemData_Selected(object sender, RoutedEventArgs e)
+        {
+            var item = this.dgInterfaceTestItemData.SelectedItem as InterfaceTestItemInfo;
+
+            this._model.InterfaceTestItemId = item.Id;
+            this._model.InterfaceTestItemName = item.TestItemName;
+        }
+
+        private void dgSystemTestItemData_Selected(object sender, RoutedEventArgs e)
+        {
+            var item = this.dgSystemTestItemData.SelectedItem as SystemTestItemInfo;
+            this._model.SystemTestItemNo = item.TestItemNo;
+            this._model.SystemTestItemName= item.TestItemName;
         }
     }
 }

@@ -207,34 +207,62 @@ namespace GZKL.Client.UI.Models
         /// <summary>
         /// 接口ID
         /// </summary>
-        public long InterfaceId { get; set; }
+        private long interfaceId;
+        public long InterfaceId
+        {
+            get { return interfaceId; }
+            set { interfaceId = value; RaisePropertyChanged(); }
+        }
 
         /// <summary>
         /// 接口名称
         /// </summary>
-        public string InterfaceName { get; set; }
+        private string interfaceName;
+        public string InterfaceName
+        {
+            get { return interfaceName; }
+            set { interfaceName = value; RaisePropertyChanged(); }
+        }
 
         /// <summary>
         /// 接口检测项ID
         /// </summary>
-
-        public long InterfaceTestItemId { get; set; }
+        private long interfaceTestItemId;
+        public long InterfaceTestItemId
+        {
+            get { return interfaceTestItemId; }
+            set { interfaceTestItemId = value; RaisePropertyChanged(); }
+        }
 
         /// <summary>
         /// 接口检测项名称
         /// </summary>
-
-        public string InterfaceTestItemName { get; set; }
+        private string interfaceTestName;
+        public string InterfaceTestItemName
+        {
+            get { return interfaceTestName; }
+            set { interfaceTestName = value; RaisePropertyChanged(); }
+        }
 
         /// <summary>
         /// 系统检测项编号
         /// </summary>
-        public string SystemTestItemNo { get; set; }
+        private string systemTestItemNo;
+        public string SystemTestItemNo
+        {
+            get { return interfaceTestName; }
+            set { interfaceTestName = value; RaisePropertyChanged(); }
+        }
 
         /// <summary>
         /// 系统检测项名称
         /// </summary>
-        public string SystemTestItemName { get; set; }
+        private string systemTestItemName;
+        public string SystemTestItemName
+        {
+            get { return systemTestItemName; }
+            set { systemTestItemName = value; RaisePropertyChanged(); }
+        }
 
         /// <summary>
         /// 创建时间

@@ -133,7 +133,9 @@ AND bi.[is_deleted]=0 AND biti.[is_deleted]=0 AND bti.[is_deleted]=0";
                                 TestItemName = dataRow["test_item_name"].ToString(),
                                 TableMaster = dataRow["table_master"].ToString(),
                                 TableDetail = dataRow["table_detail"].ToString(),
-                                TableDot = dataRow["table_dot"].ToString()
+                                TableDot = dataRow["table_dot"].ToString(),
+                                CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
+                                UpdateDt = Convert.ToDateTime(dataRow["update_dt"])
                             });
                         }
                     }
@@ -155,7 +157,9 @@ AND bi.[is_deleted]=0 AND biti.[is_deleted]=0 AND bti.[is_deleted]=0";
                             {
                                 Id = Convert.ToInt64(dataRow["id"]),
                                 TestItemNo = dataRow["test_item_no"].ToString(),
-                                TestItemName = dataRow["test_item_name"].ToString()
+                                TestItemName = dataRow["test_item_name"].ToString(),
+                                CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
+                                UpdateDt = Convert.ToDateTime(dataRow["update_dt"])
                             });
                         }
                     }
@@ -265,25 +269,24 @@ AND bi.[is_deleted]=0 AND biti.[is_deleted]=0 AND bti.[is_deleted]=0";
             }
         }
 
-
         /// <summary>
         /// 新增测试项目
         /// </summary>
         /// <param name="model"></param>
-        public void AddTestItem(InterfaceInfo interfaceInfo, InterfaceTestItemInfo interfaceTestItemInfo, SystemTestItemInfo systemTestItemInfo)
+        public void AddTestItem(long interfaceId, long interfaceTestItemId, string systemTestItemNo, string systemTestItemName)
         {
             try
             {
                 var sql = @"SELECT COUNT(1) FROM [dbo].[base_interface_relation] WHERE test_item_id=@interfaceTestItemId AND test_item_no=@systemTestItemNo";
                 var parameters = new SqlParameter[] { 
-                    new SqlParameter("@interfaceTestItemId", interfaceTestItemInfo.Id),
-                    new SqlParameter("@systemTestItemNo", systemTestItemInfo.TestItemNo)};
+                    new SqlParameter("@interfaceTestItemId", interfaceTestItemId),
+                    new SqlParameter("@systemTestItemNo", systemTestItemNo)};
 
                 var result =Convert.ToInt32(SQLHelper.ExecuteScalar(sql, parameters));
 
                 if (result > 0)
                 {
-                    MessageBox.Show($"记录{interfaceTestItemInfo.InterfaceId}|{systemTestItemInfo.TestItemNo}已存在，请勿重复添加", "提示信息");
+                    MessageBox.Show($"记录{interfaceTestItemId}|{systemTestItemNo}已存在，请勿重复添加", "提示信息");
                     return;
                 }
 
@@ -311,10 +314,10 @@ AND bi.[is_deleted]=0 AND biti.[is_deleted]=0 AND bti.[is_deleted]=0";
                                    ,@user_id)";
 
                 parameters = new SqlParameter[] {
-                    new SqlParameter("@interfaceId", interfaceInfo.Id),
-                    new SqlParameter("@testItemId", interfaceTestItemInfo.Id),
-                    new SqlParameter("@testItemNo", systemTestItemInfo.TestItemNo),
-                    new SqlParameter("@testItemName", systemTestItemInfo.TestItemName),
+                    new SqlParameter("@interfaceId", interfaceId),
+                    new SqlParameter("@testItemId", interfaceTestItemId),
+                    new SqlParameter("@testItemNo", systemTestItemNo),
+                    new SqlParameter("@testItemName", systemTestItemName),
                     new SqlParameter("@is_enabled", 1),
                     new SqlParameter("@create_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
                     new SqlParameter("@user_id", SessionInfo.Instance.UserInfo.Id)
@@ -333,13 +336,13 @@ AND bi.[is_deleted]=0 AND biti.[is_deleted]=0 AND bti.[is_deleted]=0";
         /// <summary>
         /// 删除测试项目
         /// </summary>
-        /// <param name="model"></param>
-        public void DeleteTestItem(InterfaceTestItemRelationInfo model)
+        /// <param name="id"></param>
+        public void DeleteTestItem(long id)
         {
             try
             {
                 var sql = @"DELETE FROM base_interface_relation WHERE id=@id";
-                var parameters = new SqlParameter[1] { new SqlParameter("@id", model.Id) };
+                var parameters = new SqlParameter[1] { new SqlParameter("@id", id) };
 
                 var result = SQLHelper.ExecuteNonQuery(sql, parameters);
 
