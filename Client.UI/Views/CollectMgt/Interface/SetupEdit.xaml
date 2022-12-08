@@ -6,14 +6,52 @@
              xmlns:local="clr-namespace:GZKL.Client.UI.Views.CollectMgt.Interface"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:converter="clr-namespace:GZKL.Client.UI.Converters"
              WindowStartupLocation="CenterScreen"
              mc:Ignorable="d" 
              Title="设置接口与检测项目对应关系"
              Height="650" 
              Width="1000" 
              ResizeMode="NoResize">
+    <Window.Resources>
+        <converter:EnumConverter x:Key="enumConverter"/>
+        <Style TargetType="DataGrid">
+            <Setter Property="RowHeaderWidth" Value="25"></Setter>
+            <Setter Property="AutoGenerateColumns" Value="False"></Setter>
+            <Setter Property="CanUserAddRows" Value="False"></Setter>
+            <Setter Property="CanUserResizeColumns" Value="False"></Setter>
+            <Setter Property="CanUserResizeRows" Value="False"></Setter>
+            <Setter Property="HorizontalGridLinesBrush" Value="LightGray"></Setter>
+            <Setter Property="VerticalGridLinesBrush" Value="LightGray"></Setter>
+            <Setter Property="IsReadOnly" Value="True"></Setter>
+            <Setter Property="BorderThickness" Value="1"></Setter>
+            <Setter Property="BorderBrush" Value="LightGray"></Setter>
+            <Setter Property="RowHeight" Value="25"></Setter>
+        </Style>
+
+        <!--DataGrid表头样式-->
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="FontSize" Value="12"></Setter>
+            <Setter Property="Height" Value="28"></Setter>
+            <Setter Property="BorderThickness" Value="0,0,1,1"></Setter>
+            <Setter Property="BorderBrush" Value="LightGray"></Setter>
+            <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+        </Style>
+
+        <!--DataGrid行头样式-->
+        <Style TargetType="DataGridRowHeader">
+            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        </Style>
+
+        <!-- DataGridTextColumn 文字居中 -->
+        <Style x:Key="CenterAlignmentStyle" TargetType="TextBlock">
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
     <!--<hc:TransitioningContentControl>-->
-    <Grid Background="White">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
             <RowDefinition Height="*"/>
@@ -21,20 +59,112 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Vertical" VerticalAlignment="Center">
 
-            <hc:StepBar>
-                <hc:StepBarItem Content="Register"/>
-                <hc:StepBarItem Content="Basic Info"/>
-                <hc:StepBarItem Content="Upload File"/>
-                <hc:StepBarItem Content="Complete"/>
+            <hc:StepBar x:Name="sbStep">
+                <hc:StepBarItem Content="选择接口"/>
+                <hc:StepBarItem Content="选择接口检测项"/>
+                <hc:StepBarItem Content="选择系统检测项"/>
+                <hc:StepBarItem Content="完成"/>
             </hc:StepBar>
+            
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Vertical">
 
+            <hc:SimplePanel x:Name="spStep1" Visibility="Visible">
+                <DataGrid Margin="20" Height="400"
+                          Background="White"
+                          x:Name="dgInterfaceSelectData"
+                          ItemsSource="{Binding InterfaceInfos}">
+
+                    <DataGrid.RowHeaderTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding IsSelected ,RelativeSource={RelativeSource AncestorType=DataGridRow}}"/>
+                        </DataTemplate>
+                    </DataGrid.RowHeaderTemplate>
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn IsReadOnly="True" Width="60" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Id}" Header="ID"/>
+                        <DataGridTextColumn IsReadOnly="True" Width="100*" Binding="{Binding InterfaceName}" Header="接口名称"/>
+                        <DataGridTextColumn IsReadOnly="True" Width="200*" Binding="{Binding AccessDbPath}" Header="数据库文件"/>
+                        <DataGridTextColumn IsReadOnly="True" Width="150*" Binding="{Binding AccessDbName}" Header="数据库"/>
+                        <DataGridTextColumn IsReadOnly="True" Width="80*" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding IsEnabled,Converter={StaticResource ResourceKey=enumConverter},ConverterParameter=isEnabled}" Header="启用"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+            </hc:SimplePanel>
+            <hc:SimplePanel x:Name="spStep2" Visibility="Collapsed">
+
+                <DataGrid Margin="20" Height="400"
+                          Background="White"
+                          x:Name="dgInterfaceTestItemData"
+                          ItemsSource="{Binding InterfaceTestItemInfos}" >
+
+                    <DataGrid.RowHeaderTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding IsSelected ,RelativeSource={RelativeSource AncestorType=DataGridRow}}"/>
+                        </DataTemplate>
+                    </DataGrid.RowHeaderTemplate>
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn IsReadOnly="True" Width="60" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Id}" Header="ID"/>
+                        <DataGridTextColumn IsReadOnly="True"  Width="250*" Binding="{Binding TestItemName}" Header="检测项目"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+            </hc:SimplePanel>
+            <hc:SimplePanel x:Name="spStep3" Visibility="Collapsed">
+
+                <DataGrid Margin="20" Height="400"
+                            Background="White"
+                            x:Name="dgSystemTestItemData"
+                            ItemsSource="{Binding SystemTestItemInfos}" >
+
+                    <DataGrid.RowHeaderTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding IsSelected ,RelativeSource={RelativeSource AncestorType=DataGridRow}}"/>
+                        </DataTemplate>
+                    </DataGrid.RowHeaderTemplate>
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn IsReadOnly="True" Width="60" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding Id}" Header="ID"/>
+                        <DataGridTextColumn IsReadOnly="True"  Width="100*" ElementStyle="{StaticResource CenterAlignmentStyle}" Binding="{Binding TestItemNo}" Header="系统项目编号"/>
+                        <DataGridTextColumn IsReadOnly="True"  Width="300*" Binding="{Binding TestItemName}" Header="系统项目名称"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+            </hc:SimplePanel>
+            <hc:SimplePanel x:Name="spStep4" Visibility="Collapsed">
+                <StackPanel Margin="250,100,250,0">
+                    <hc:TextBox Margin="5" 
+                            hc:InfoElement.TitleWidth="100" 
+                            hc:InfoElement.TitlePlacement="Left" 
+                            hc:InfoElement.Title="接口名称：" 
+                            hc:BorderThickness="0" 
+                            IsReadOnly="True"
+                            Text="{Binding Model.InterfaceName,Mode=OneWay}" />
+
+                    <hc:TextBox Margin="5" 
+                            hc:InfoElement.TitleWidth="100" 
+                            hc:InfoElement.TitlePlacement="Left" 
+                            hc:InfoElement.Title="接口检测项：" 
+                            hc:BorderThickness="0" 
+                            IsReadOnly="True"
+                            Text="{Binding Model.InterfaceTestItemName,Mode=OneWay}" />
+
+                    <hc:TextBox Margin="5" 
+                            hc:InfoElement.TitleWidth="100" 
+                            hc:InfoElement.TitlePlacement="Left" 
+                            hc:InfoElement.Title="系统检测项：" 
+                            hc:BorderThickness="0" 
+                            IsReadOnly="True"
+                            Text="{Binding Model.SystemTestItemName,Mode=OneWay}" />
+                </StackPanel>
+
+            </hc:SimplePanel>
 
         </StackPanel>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Content="保存" Width="100" Margin="10" Click="btnSave_Click" Background="{DynamicResource PrimaryBrush}" Foreground="{DynamicResource TextIconBrush}" hc:BorderElement.CornerRadius="5"/>
-            <Button Content="取消" Width="100" Margin="10" Click="btnCancel_Click" hc:BorderElement.CornerRadius="5"/>
+            <Button x:Name="btnPre" IsEnabled="False" Content="上一步" Width="100" Margin="10" Style="{StaticResource ButtonPrimary}" hc:BorderElement.CornerRadius="5" Click="btnPre_Click" />
+            <Button x:Name="btnNext" Content="下一步" Width="100" Margin="10" Style="{StaticResource ButtonPrimary}" hc:BorderElement.CornerRadius="5" Click="btnNext_Click"/>
         </StackPanel>
     </Grid>
     <!--</hc:TransitioningContentControl>-->

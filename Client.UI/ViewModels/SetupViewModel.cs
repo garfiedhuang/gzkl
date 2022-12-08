@@ -251,7 +251,7 @@ AND bi.[is_deleted]=0 AND biti.[is_deleted]=0 AND bti.[is_deleted]=0";
             try
             {
                 InterfaceTestItemRelationInfo model = new InterfaceTestItemRelationInfo();
-                SetupEdit view = new SetupEdit(model);
+                SetupEdit view = new SetupEdit(model, Model.InterfaceInfos.ToList(), Model.InterfaceTestItemInfos.ToList(), Model.SystemTestItemInfos.ToList());
                 var r = view.ShowDialog();
                 if (r.Value)
                 {
