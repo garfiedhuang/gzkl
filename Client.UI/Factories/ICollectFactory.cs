@@ -186,7 +186,7 @@ namespace GZKL.Client.UI.Factories
            ,[sample_out_dia]
            ,[sample_inner_dia]
            ,[load_unit_name]
-           ,[encription]
+           ,[ciphertext]
            ,[is_deleted]
            ,[create_dt]
            ,[create_user_id]
@@ -211,7 +211,7 @@ namespace GZKL.Client.UI.Factories
            ,@sampleOutDia
            ,@sampleInnerDia
            ,@loadUnitName
-           ,@encription
+           ,@ciphertext
            ,0
            ,@createDt
            ,@userId
@@ -237,7 +237,7 @@ namespace GZKL.Client.UI.Factories
                         new SqlParameter("@sampleOutDia", data.SampleOutDia),
                         new SqlParameter("@sampleInnerDia", data.SampleInnerDia),
                         new SqlParameter("@loadUnitName", data.LoadUnitName),
-                        new SqlParameter("@encription", data.Encryption),
+                        new SqlParameter("@ciphertext", data.Encryption),
                         new SqlParameter("@createDt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
                         new SqlParameter("@userId", SessionInfo.Instance.UserInfo.Id)
                 };
@@ -249,11 +249,11 @@ namespace GZKL.Client.UI.Factories
                 throw new Exception($"本样品[{sampleNo}]数据，写入[biz_execute_test_detail]表失败！");
             }
 
-            //更新加密字段encription
-            sql = @"UPDATE [dbo].[biz_execute_test_detail] SET [encription]=@encription WHERE [id]=@id";
+            //更新加密字段ciphertext
+            sql = @"UPDATE [dbo].[biz_execute_test_detail] SET [ciphertext]=@ciphertext WHERE [id]=@id";
             parameters = new SqlParameter[2] {
                         new SqlParameter("@id", result),
-                        new SqlParameter("@encription",EncryptMaxDot(result,data.MaxDot))
+                        new SqlParameter("@ciphertext",EncryptMaxDot(result,data.MaxDot))
             };
             
             result = SQLHelper.ExecuteNonQuery(sql, parameters);
@@ -348,109 +348,6 @@ namespace GZKL.Client.UI.Factories
             {
                 throw new Exception($"本样品[{sampleNo}]数据，写入[biz_original_data]表失败！");
             }
-
-            /* old logic 
-             * 
-            var result = 0;
-
-            foreach (DataRow dr in viewModel.Model.UnfinishTestDetailData?.Rows)
-            {
-                //写入数据库
-                var sql = @"INSERT INTO [dbo].[biz_original_data]
-           ([test_id]
-           ,[experiment_no]
-           ,[play_time]
-           ,[load_value]
-           ,[position_value]
-           ,[extend_value]
-           ,[big_deform_value]
-           ,[deform_switch]
-           ,[ctrl_step]
-           ,[extend_device1]
-           ,[extend_device2]
-           ,[extend_device3]
-           ,[extend_device4]
-           ,[extend_device5]
-           ,[extend_device6]
-           ,[posi_speed]
-           ,[stress_speed]
-           ,[is_deleted]
-           ,[create_dt]
-           ,[create_user_id]
-           ,[update_dt]
-           ,[update_user_id])
-     VALUES
-           (@testId
-           ,@experimentNo
-           ,@playTime
-           ,@loadValue
-           ,@positionValue
-           ,@extendValue
-           ,@bigDeformValue
-           ,@deformSwitch
-           ,@ctrlStep
-           ,@extendDevice1
-           ,@extendDevice2
-           ,@extendDevice3
-           ,@extendDevice4
-           ,@extendDevice5
-           ,@extendDevice6
-           ,@posiSpeed
-           ,@stressSpeed
-           ,0
-           ,@createDt
-           ,@userId
-           ,@createDt
-           ,@userId)";
-
-                var experimentNo = viewModel.Model.UnfinishTestData.Rows[0]["experiment_no"].ToString();
-                var playTime = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-                var loadValue = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-                var positionValue = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-                var extendValue = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-                var bigDeformValue = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-                var deformSwitch = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-                var ctrlStep = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-                var extendDevice1 = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-                var extendDevice2 = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-                var extendDevice3 = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-                var extendDevice4 = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-                var extendDevice5 = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-                var extendDevice6 = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-                var posiSpeed = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-                var stressSpeed = viewModel.Model.UnfinishTestData.Rows[0]["Dates"].ToString();
-
-                var parameters = new SqlParameter[19] {
-                                    new SqlParameter("@testId", testId),
-                                    new SqlParameter("@experimentNo", experimentNo),
-                                    new SqlParameter("@playTime", playTime),
-                                    new SqlParameter("@loadValue", loadValue),
-                                    new SqlParameter("@positionValue", positionValue),
-                                    new SqlParameter("@extendValue", extendValue),
-                                    new SqlParameter("@bigDeformValue", bigDeformValue),
-                                    new SqlParameter("@deformSwitch", deformSwitch),
-                                    new SqlParameter("@ctrlStep", ctrlStep),
-                                    new SqlParameter("@extendDevice1", extendDevice1),
-                                    new SqlParameter("@extendDevice2", extendDevice2),
-                                    new SqlParameter("@extendDevice3", extendDevice3),
-                                    new SqlParameter("@extendDevice4", extendDevice4),
-                                    new SqlParameter("@extendDevice5", extendDevice5),
-                                    new SqlParameter("@extendDevice6", extendDevice6),
-                                    new SqlParameter("@posiSpeed", posiSpeed),
-                                    new SqlParameter("@stressSpeed", stressSpeed),
-                                    new SqlParameter("@createDt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
-                                    new SqlParameter("@userId", SessionInfo.Instance.Session.Id)
-                };
-
-                result += SQLHelper.ExecuteNonQuery(sql, parameters);
-            }
-
-            if (result != viewModel.Model.UnfinishTestDetailData?.Rows.Count)
-            {
-                throw new Exception($"本样品[{viewModel.Model.QuerySampleNo}]数据，写入[biz_original_data]表失败！");
-            }
-
-            */
         }
 
         /// <summary>
@@ -488,7 +385,7 @@ namespace GZKL.Client.UI.Factories
         internal string EncryptMaxDot(long id,string maxDot)
         {
             var plaintext = $"ontall_{id}_{maxDot}";
-            var ciphertext = SecurityHelper.SHA512Encrypt(plaintext);
+            var ciphertext = SecurityHelper.Xp_Sha2_512Encrypt(plaintext);
 
             return ciphertext;
         }

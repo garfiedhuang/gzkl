@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Security.Cryptography;
 using System.IO;
+using JavaScriptEngineSwitcher.Core;
+using JavaScriptEngineSwitcher.Jint;
+using System.Xml.Linq;
 
 namespace GZKL.Client.UI.Common
 {
@@ -104,22 +107,49 @@ namespace GZKL.Client.UI.Common
         }
 
         /// <summary>
-        /// SHA 512加密
+        /// SHA2 512加密
         /// </summary>
-        /// <param name="source"></param>
-        /// <returns></returns>
-        public static string SHA512Encrypt(string source)
+        /// <param name="plaintext">明文</param>
+        /// <returns>密文</returns>
+        public static string Xp_Sha2_512Encrypt(string plaintext)
         {
-            string result = "";
-            byte[] buffer = Encoding.UTF8.GetBytes(source);//UTF-8 编码
+            //string result = "";
+            //byte[] buffer = Encoding.UTF8.GetBytes(plaintext);//UTF-8 编码
 
-            //64字节,512位
-            SHA512CryptoServiceProvider SHA512 = new SHA512CryptoServiceProvider();
-            byte[] h5 = SHA512.ComputeHash(buffer);
+            ////64字节,512位
+            //SHA512CryptoServiceProvider SHA512 = new SHA512CryptoServiceProvider();
+            //byte[] h5 = SHA512.ComputeHash(buffer);
 
-            result = BitConverter.ToString(h5).Replace("-", string.Empty);
+            //result = BitConverter.ToString(h5).Replace("-", string.Empty);
 
-            return result.ToLower();
+            //return result.ToLower();
+
+
+            var shaJsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"Assets","Scripts","sha.js");
+            var shaJsText =File.ReadAllText(shaJsPath);
+
+            IJsEngine jsEngine = new JintJsEngine(new JintSettings() { StrictMode = true }) ;
+
+            jsEngine.Execute(shaJsText);
+
+            return jsEngine.CallFunction<string>("xp_sha2_512", plaintext);
+        }
+
+        /// <summary>
+        /// SHA3 512加密，实际加密算法是Keccak-512
+        /// </summary>
+        /// <param name="plaintext"></param>
+        /// <returns></returns>
+        public static string Xp_Sha3_512Encrypt(string plaintext)
+        {
+            var shaJsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "Scripts", "sha.js");
+            var shaJsText = File.ReadAllText(shaJsPath);
+
+            IJsEngine jsEngine = new JintJsEngine(new JintSettings() { StrictMode = true });
+
+            jsEngine.Execute(shaJsText);
+
+            return jsEngine.CallFunction<string>("xp_sha3_512", plaintext);
         }
 
 

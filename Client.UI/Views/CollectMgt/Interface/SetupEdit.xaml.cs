@@ -55,52 +55,34 @@ namespace GZKL.Client.UI.Views.CollectMgt.Interface
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            //if (string.IsNullOrEmpty(this.txtInterfaceName.Text))
-            //{
-            //    this.txtInterfaceName.IsError = true;
-            //    this.txtInterfaceName.ErrorStr = "不能为空";
-            //    return;
-            //}
-            //if (string.IsNullOrEmpty(this.txtAccessDbPath.Text))
-            //{
-            //    this.txtAccessDbPath.IsError = true;
-            //    this.txtAccessDbPath.ErrorStr = "不能为空";
-            //    return;
-            //}
-            //if (string.IsNullOrEmpty(this.txtAccessDbName.Text))
-            //{
-            //    this.txtAccessDbName.IsError = true;
-            //    this.txtAccessDbName.ErrorStr = "不能为空";
-            //    return;
-            //}
-            //if (string.IsNullOrEmpty(this.cmbIsEnabled.Text))
-            //{
-            //    this.cmbIsEnabled.IsError = true;
-            //    this.cmbIsEnabled.ErrorStr = "不能为空";
-            //    return;
-            //}
+            if (_model.InterfaceId == 0)
+            {
+                HandyControl.Controls.Growl.Warning("请选择接口！");
+                return;
+            }
+            if (_model.InterfaceTestItemId == 0)
+            {
+                HandyControl.Controls.Growl.Warning("请选择接口检测项！");
+                return;
+            }
+            if (string.IsNullOrEmpty(_model.SystemTestItemNo))
+            {
+                HandyControl.Controls.Growl.Warning("请选择系统检测项！");
+                return;
+            }
 
-            //string sql = "";
-            //SqlParameter[] parameters = null;
-            //int rowCount = 0;
+            var sql = @"SELECT COUNT(1) FROM [dbo].[base_interface_relation] WHERE test_item_id=@interfaceTestItemId AND test_item_no=@systemTestItemNo";
+            var parameters = new SqlParameter[] {
+                    new SqlParameter("@interfaceTestItemId", _model.InterfaceTestItemId),
+                    new SqlParameter("@systemTestItemNo", _model.SystemTestItemNo)};
 
-            //if (_id == 0)
-            //{//新增
-            //    sql = "SELECT COUNT(1) FROM [dbo].[base_interface] WHERE ([interface_name]=@interface_name OR [access_db_path]=@accessDbPath) AND [is_deleted]=0";
-            //    parameters = new SqlParameter[] { new SqlParameter("@interface_name", txtInterfaceName.Text), new SqlParameter("@accessDbPath", txtAccessDbPath.Text) };
-            //}
-            //else
-            //{ //修改
-            //    sql = "SELECT COUNT(1) FROM [dbo].[base_interface] WHERE ([interface_name]=@interface_name OR [access_db_path]=@accessDbPath) AND [is_deleted]=0 AND [id]<>@id";
-            //    parameters = new SqlParameter[] { new SqlParameter("@interface_name", txtInterfaceName.Text), new SqlParameter("@accessDbPath", txtAccessDbPath.Text), new SqlParameter("@id", _id) };
-            //}
-            //rowCount = Convert.ToInt32(SQLHelper.ExecuteScalar(sql, parameters) ?? "0");
+            var result = Convert.ToInt32(SQLHelper.ExecuteScalar(sql, parameters));
 
-            //if (rowCount > 0)
-            //{
-            //    MessageBox.Show($"数据库中已存在【{txtInterfaceName.Text}|{txtAccessDbPath.Text}】记录", "提示信息");
-            //    return;
-            //}
+            if (result > 0)
+            {
+                HandyControl.Controls.Growl.Warning($"记录{_model.InterfaceTestItemId}|{_model.SystemTestItemNo}已存在，请勿重复添加");
+                return;
+            }
 
             this.DialogResult = true;
         }
@@ -128,8 +110,8 @@ namespace GZKL.Client.UI.Views.CollectMgt.Interface
             {
 
                 case 0:
-                    this.spStep1.Visibility= Visibility.Visible;
-                    this.spStep2.Visibility= Visibility.Collapsed;
+                    this.spStep1.Visibility = Visibility.Visible;
+                    this.spStep2.Visibility = Visibility.Collapsed;
                     this.spStep3.Visibility = Visibility.Collapsed;
                     this.spStep4.Visibility = Visibility.Collapsed;
                     break;
@@ -191,7 +173,7 @@ namespace GZKL.Client.UI.Views.CollectMgt.Interface
         {
             var item = this.dgSystemTestItemData.SelectedItem as SystemTestItemInfo;
             this._model.SystemTestItemNo = item.TestItemNo;
-            this._model.SystemTestItemName= item.TestItemName;
+            this._model.SystemTestItemName = item.TestItemName;
         }
     }
 }

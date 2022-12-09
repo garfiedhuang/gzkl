@@ -44,6 +44,11 @@ namespace GZKL.Client.UI.Models
         public string Remark { set; get; } = "";
 
         /// <summary>
+        /// 密文（OrgNo+OrgName加密）
+        /// </summary>
+        public string Ciphertext { get; set; }
+
+        /// <summary>
         /// 是否启用 0-否 1-是
         /// </summary>
         public int IsEnabled { get; set; } = 1;

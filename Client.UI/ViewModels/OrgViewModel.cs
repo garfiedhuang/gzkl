@@ -145,10 +145,7 @@ namespace GZKL.Client.UI.ViewsModels
         {
             try
             {
-                var sql = new StringBuilder(@"SELECT row_number()over(order by update_dt desc )as row_num
-                ,[id],[org_no],[org_name],[org_level],[remark],[is_enabled],[is_deleted],[create_dt]
-                ,[create_user_id],[update_dt],[update_user_id]
-                FROM [dbo].[base_org] WHERE [is_deleted]=0");
+                var sql = new StringBuilder(@"SELECT row_number()over(order by update_dt desc )as row_num,* FROM [dbo].[base_org] WHERE [is_deleted]=0");
 
                 SqlParameter[] parameters = null;
 
@@ -176,6 +173,7 @@ namespace GZKL.Client.UI.ViewsModels
                                 OrgName = dataRow["org_name"].ToString(),
                                 OrgLevel = dataRow["org_level"].ToString(),
                                 Remark = dataRow["remark"].ToString(),
+                                Ciphertext = dataRow["ciphertext"].ToString(),
                                 IsEnabled = Convert.ToInt32(dataRow["is_enabled"]),
                                 CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
                                 UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
@@ -218,9 +216,7 @@ namespace GZKL.Client.UI.ViewsModels
         {
             try
             {
-                var sql = new StringBuilder(@"SELECT [id],[org_no],[org_name],[org_level],[remark]
-                ,[is_enabled],[is_deleted],[create_dt],[create_user_id],[update_dt],[update_user_id]
-                FROM [dbo].[base_org] WHERE [is_deleted]=0 AND [id]=@id");
+                var sql = new StringBuilder(@"SELECT * FROM [dbo].[base_org] WHERE [is_deleted]=0 AND [id]=@id");
 
                 var parameters = new SqlParameter[1] { new SqlParameter("@id", id) };
                 using (var data = SQLHelper.GetDataTable(sql.ToString(), parameters))
@@ -239,6 +235,7 @@ namespace GZKL.Client.UI.ViewsModels
                         OrgName = dataRow["org_name"].ToString(),
                         OrgLevel = dataRow["org_level"].ToString(),
                         Remark = dataRow["remark"].ToString(),
+                        Ciphertext = dataRow["ciphertext"].ToString(),
                         IsEnabled = Convert.ToInt32(dataRow["is_enabled"]),
                         CreateDt = Convert.ToDateTime(dataRow["create_dt"]),
                         UpdateDt = Convert.ToDateTime(dataRow["update_dt"]),
@@ -255,6 +252,7 @@ namespace GZKL.Client.UI.ViewsModels
    SET [org_name] = @org_name
       ,[org_level] = @org_level
       ,[remark] = @remark
+      ,[ciphertext] =@ciphertext
       ,[is_enabled] = @is_enabled
       ,[update_dt] = @update_dt
       ,[update_user_id] = @user_id
@@ -263,6 +261,7 @@ namespace GZKL.Client.UI.ViewsModels
                             new SqlParameter("@org_name", model.OrgName),
                             new SqlParameter("@org_level", model.OrgLevel),
                             new SqlParameter("@remark", model.Remark),
+                            new SqlParameter("@ciphertext", SecurityHelper.Xp_Sha3_512Encrypt($"{model.OrgNo}{model.OrgName}")),
                             new SqlParameter("@is_enabled", model.IsEnabled),
                             new SqlParameter("@update_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
                             new SqlParameter("@user_id", SessionInfo.Instance.UserInfo.Id),
@@ -328,6 +327,7 @@ namespace GZKL.Client.UI.ViewsModels
            ,[org_name]
            ,[org_level]
            ,[remark]
+           ,[ciphertext]
            ,[is_enabled]
            ,[is_deleted]
            ,[create_dt]
@@ -339,6 +339,7 @@ namespace GZKL.Client.UI.ViewsModels
            ,@org_name
            ,@org_level
            ,@remark
+           ,@ciphertext
            ,@is_enabled
            ,0
            ,@create_dt
@@ -351,6 +352,7 @@ namespace GZKL.Client.UI.ViewsModels
                     new SqlParameter("@org_name", model.OrgName),
                     new SqlParameter("@org_level", model.OrgLevel),
                     new SqlParameter("@remark", model.Remark),
+                    new SqlParameter("@ciphertext", SecurityHelper.Xp_Sha3_512Encrypt($"{model.OrgNo}{model.OrgName}")),
                     new SqlParameter("@is_enabled", model.IsEnabled),
                     new SqlParameter("@create_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
                     new SqlParameter("@user_id", SessionInfo.Instance.UserInfo.Id)
