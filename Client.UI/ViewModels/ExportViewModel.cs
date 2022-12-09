@@ -121,7 +121,7 @@ WHERE m.is_deleted=0 AND d.is_deleted=0");
                                 TestItemNo = dataRow["test_item_no"].ToString(),
                                 Deadline = dataRow["deadline"].ToString(),
                                 ExperimentNo = dataRow["experiment_no"].ToString(),
-                                TestTime = Convert.ToDateTime(dataRow["play_time"].ToString()),
+                                TestTime = Convert.ToDateTime(dataRow["test_time"].ToString()),
                                 LoadUnitName = dataRow["load_unit_name"].ToString(),
                                 FileName = dataRow["file_name"].ToString(),
                                 SampleShape = dataRow["sample_shape"].ToString(),
