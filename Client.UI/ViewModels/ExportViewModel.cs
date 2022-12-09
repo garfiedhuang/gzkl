@@ -213,21 +213,21 @@ WHERE m.is_deleted=0 AND d.is_deleted=0");
                 fileName = $"{startTestNo}~{endTestNo}.mdb";
             }
 
-            savePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "export");
+            savePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "export");
 
-            if (!System.IO.Directory.Exists(savePath))
+            if (!Directory.Exists(savePath))
             {
-                System.IO.Directory.CreateDirectory(savePath);
+                Directory.CreateDirectory(savePath);
             }
 
             //将导出的Access数据库模板文件，复制到当前目录下并重命名
-            savePath = System.IO.Path.Combine(savePath, fileName);
+            savePath = Path.Combine(savePath, fileName);
             if (File.Exists(savePath))
             {
                 File.Delete(savePath);
             }
 
-            var templateFile = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "Press1.mdb");
+            var templateFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates", "Press1.mdb");
             if (!File.Exists(templateFile))
             {
                 throw new Exception($"Access模板文件不存在，{templateFile}");
@@ -238,6 +238,7 @@ WHERE m.is_deleted=0 AND d.is_deleted=0");
             //查询原始数据
             var sql = @"
 BEGIN
+SELECT * FROM base_org WHERE is_deleted=0;
 SELECT * FROM biz_execute_test WHERE is_deleted=0 AND id IN(@ids);
 SELECT * FROM biz_execute_test_detail WHERE is_deleted=0 AND test_id IN(@ids);
 SELECT * FROM biz_original_data WHERE is_deleted=0 AND test_id IN(@ids);
@@ -249,16 +250,17 @@ END";
             //写入Access模板数据库
             if (ds != null && ds.Tables.Count > 0)
             {
-                var tableMasterSql = $"";
-                var tableDetailSql = $"";
-                var tableOriginalSql = $"";
+                var tableOrgSql = @"INSERT INTO Base_COMPA VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21})";
+                var tableMasterSql = @"INSERT INTO TestMain(Id,UnitNo,TestNo,No,JCNo,PMItemNo,Age_Int,Dates) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8})";
+                var tableDetailSql = @"INSERT INTO TestNo(Id,TestMain_Id,Experiment,PlayTime,TestPreceptName,SaveFileName,sampleShape,Area,GaugeLength,UpYieldDot,DownYieldDot,MaxDot,) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21})";
+                var tableOriginalSql = @"INSERT INTO OriginalData VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21})";
 
                 var dsnName = $"AutoAcsDBout";
                 var pwd = "AutoAcs";
                 var database = savePath;
                 var path = $"DSN={dsnName}";
 
-                if (string.IsNullOrEmpty(database) || !System.IO.File.Exists(database))
+                if (string.IsNullOrEmpty(database) || !File.Exists(database))
                 {
                     throw new Exception($"数据库文件不存在，请检查！{database}");
                 }
@@ -267,6 +269,7 @@ END";
 
                 var sqls = new List<string>();
 
+                //写入测试数据
                 for (var i = 0; i < ds.Tables.Count; i++)
                 {
                     using (var dt = ds.Tables[i])
@@ -282,15 +285,19 @@ END";
                         {
                             if (i == 0)
                             {
-                                sqls.Add("sql1");
+                                sqls.Add(string.Format(tableOrgSql));
                             }
                             else if (i == 1)
                             {
-                                sqls.Add("sql1");
+                                sqls.Add(string.Format(tableMasterSql));
                             }
                             else if (i == 2)
                             {
-                                sqls.Add("sql1");
+                                sqls.Add(string.Format(tableDetailSql));
+                            }
+                            else if (i == 3)
+                            {
+                                sqls.Add(string.Format(tableOriginalSql));
                             }
                         }
 

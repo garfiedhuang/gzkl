@@ -21,11 +21,11 @@ namespace GZKL.Client.UI.ViewsModels
         {
 
 #if DEBUG
-/*
-            DsnHelper.CreateDSN("AutoAcsDB", "AutoAcs", "F:\\gzkl\\gzkl-source\\db\\Press2.mdb");
-            var dt = OdbcDBHelper.DataTable("select * from base_compa", "");
-            //var dt = AccessDBHelper.DataTable("select * from base_compa", "");
-*/
+            /*
+                        DsnHelper.CreateDSN("AutoAcsDB", "AutoAcs", "F:\\gzkl\\gzkl-source\\db\\Press2.mdb");
+                        var dt = OdbcDBHelper.DataTable("select * from base_compa", "");
+                        //var dt = AccessDBHelper.DataTable("select * from base_compa", "");
+            */
 #endif
 
             SelectorData = new List<SelectorModel>();
@@ -49,7 +49,7 @@ namespace GZKL.Client.UI.ViewsModels
         public List<SelectorModel> SelectorData
         {
             get { return selectorData; }
-            set { selectorData= value; RaisePropertyChanged(); }
+            set { selectorData = value; RaisePropertyChanged(); }
         }
 
         /// <summary>
@@ -118,51 +118,7 @@ namespace GZKL.Client.UI.ViewsModels
         {
             try
             {
-                /*
-                AutoCollectModel model = new AutoCollectModel();
-                Edit view = new Edit(model);
-                var r = view.ShowDialog();
-                if (r.Value)
-                {
-                    var sql = @"INSERT INTO [dbo].[base_AutoCollect]
-           ([AutoCollect_name]
-           ,[access_db_path]
-           ,[access_db_name]
-           ,[remark]
-           ,[is_enabled]
-           ,[is_deleted]
-           ,[create_dt]
-           ,[create_user_id]
-           ,[update_dt]
-           ,[update_user_id])
-     VALUES
-           (@AutoCollect_name
-           ,@access_db_path
-           ,@access_db_name
-           ,@remark
-           ,@is_enabled
-           ,0
-           ,@create_dt
-           ,@user_id
-           ,@create_dt
-           ,@user_id)";
 
-                    var parameters = new SqlParameter[] {
-                    new SqlParameter("@AutoCollect_name", model.AutoCollectName),
-                    new SqlParameter("@access_db_path", model.AccessDbPath),
-                    new SqlParameter("@access_db_name", model.AccessDbName),
-                    new SqlParameter("@remark", model.Remark),
-                    new SqlParameter("@is_enabled", model.IsEnabled),
-                    new SqlParameter("@create_dt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
-                    new SqlParameter("@user_id", SessionInfo.Instance.Session.Id)
-                };
-
-                    var result = SQLHelper.ExecuteNonQuery(sql, parameters);
-
-                    this.Query();
-                }
-
-                */
             }
             catch (Exception ex)
             {
@@ -341,7 +297,8 @@ namespace GZKL.Client.UI.ViewsModels
         /// <summary>
         /// 获取系统检测项数据
         /// </summary>
-        public void GetSystemTestItemData(bool filter=true)
+        /// <param name="filter"></param>
+        public void GetSystemTestItemData(bool filter = true)
         {
             try
             {
@@ -360,7 +317,6 @@ namespace GZKL.Client.UI.ViewsModels
                     sql = @"SELECT * FROM [dbo].[base_test_item] WHERE [is_deleted]=0";
                     parameters = null;
                 }
-                
 
                 //系统对应检测项目
                 using (var data = SQLHelper.GetDataTable(sql, parameters))
@@ -442,7 +398,7 @@ namespace GZKL.Client.UI.ViewsModels
                 }
 
                 //如果过滤查询不到数据，仍需要返回基础表数据
-                if (filter&& InterfaceTestItemData?.Count==0)
+                if (filter && InterfaceTestItemData?.Count == 0)
                 {
                     GetInterfaceTestItemData(false);
                 }
@@ -509,15 +465,11 @@ namespace GZKL.Client.UI.ViewsModels
         /// <summary>
         /// 查询数据
         /// </summary>
-        /// <param name="orgNo"></param>
-        /// <param name="testItemNo"></param>
-        /// <param name="testNo"></param>
         public void QueryData()
         {
-
-            var orgNo = model.OrgNo;//机构代码
-            var testItemNo = model.SystemTestItemNo;//检测项编号
-            var testNo = model.QueryTestNo;//检测编号
+            var orgNo = model.OrgNo;                 //机构代码
+            var testItemNo = model.SystemTestItemNo; //检测项编号
+            var testNo = model.QueryTestNo;          //检测编号
 
             var sql = @"SELECT * FROM [dbo].[biz_execute_test] WHERE [is_deleted]=0 AND [org_no]=@orgNo AND [test_item_no]=@testItemNo AND [test_no]=@testNo";
             var parameters = new SqlParameter[3] {
@@ -527,7 +479,7 @@ namespace GZKL.Client.UI.ViewsModels
             };
 
             //检测主表信息
-            using (var data = SQLHelper.GetDataTable(sql))
+            using (var data = SQLHelper.GetDataTable(sql,parameters))
             {
                 if (Model.TestData?.Count > 0)
                 {
