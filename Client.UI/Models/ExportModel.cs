@@ -57,14 +57,19 @@ namespace GZKL.Client.UI.Models
         /// </summary>
         public string ExperimentNo { set; get; }
         /// <summary>
-        /// 记录时间
+        /// 检测时间
         /// </summary>
-        public DateTime PlayTime { set; get; }
+        public DateTime TestTime { set; get; }
 
         /// <summary>
-        /// 负载单位名称
+        /// 力的单位名称
         /// </summary>
         public string LoadUnitName { set; get; }
+
+        /// <summary>
+        /// 变形的单位名称
+        /// </summary>
+        public string DeformUnitName { set; get; }
 
         /// <summary>
         /// 压力单位名称
@@ -72,63 +77,72 @@ namespace GZKL.Client.UI.Models
         public string PressUnitName { set; get; }
 
         /// <summary>
-        /// 文件名
+        /// 存盘文件名
         /// </summary>
         public string FileName { set; get; }
 
         /// <summary>
-        /// 备注
+        /// 样品的形状
         /// </summary>
         public string SampleShape { set; get; }
         /// <summary>
-        /// 备注
+        /// 样品的面积
         /// </summary>
         public string Area { set; get; }
 
         /// <summary>
-        /// 备注
+        /// 标距
         /// </summary>
         public string GaugeLength { set; get; }
         /// <summary>
-        /// 备注
+        /// 上屈服点力值
         /// </summary>
         public string UpYieldDot { set; get; }
 
         /// <summary>
-        /// 备注
+        /// 下屈服点力值
         /// </summary>
         public string DownYieldDot { set; get; }
         /// <summary>
-        /// 备注
+        /// 最大值(力值)
         /// </summary>
         public string MaxDot { set; get; }
 
         /// <summary>
-        /// 备注
+        /// 样品的宽度
         /// </summary>
         public string SampleWidth { set; get; }
         /// <summary>
-        /// 备注
+        /// 样品的厚度
         /// </summary>
         public string SampleThick { set; get; }
 
         /// <summary>
-        /// 备注
+        /// 样品的直径
         /// </summary>
         public string SampleDia { set; get; }
         /// <summary>
-        /// 备注
+        /// 样品的最小直径
         /// </summary>
         public string SampleMinDia { set; get; }
 
         /// <summary>
-        /// 备注
+        /// 样品的外径
         /// </summary>
         public string SampleOutDia { set; get; }
         /// <summary>
-        /// 备注
+        /// 样品的内径
         /// </summary>
         public string SampleInnerDia { set; get; }
+
+        /// <summary>
+        /// 检测方案名称
+        /// </summary>
+        public string TestPreceptName { set; get; }
+        /// <summary>
+        /// 传感器名称
+        /// </summary>
+        public string DeformSensorName { set; get; }
 
         /// <summary>
         /// 创建时间

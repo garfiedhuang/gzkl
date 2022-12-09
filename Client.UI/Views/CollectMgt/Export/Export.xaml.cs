@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,7 +47,7 @@ var openfile:string;
 begin
  if not dxMemData1.Active then exit;
  if dxMemData1.RecordCount=0 then exit;
- openfile:=formatdatetime('yyyymmdd',dxMemData1.fieldbyname('PlayTime').AsDateTime)+'-'+dxMemData1.fieldbyname('testno').AsString
+ openfile:=formatdatetime('yyyymmdd',dxMemData1.fieldbyname('TestTime').AsDateTime)+'-'+dxMemData1.fieldbyname('testno').AsString
             +'-'+dxMemData1.fieldbyname('No').AsString+'-'+dxMemData1.fieldbyname('ExperimentNo').AsString;
  openfile:=saveDataDir+openfile+'.bmp';
 // openfile:='c:\aaa.JPG';
@@ -144,6 +145,24 @@ end;
             }
 
             viewModel.ExportAll();
+        }
+
+        private void btnOpen_Click(object sender, RoutedEventArgs e)
+        {
+            var selected = this.dgData.SelectedItems;
+
+            if (selected.Count != 1)
+            {
+                MessageBox.Show($"请选择一条记录进行操作", "提示信息");
+                return;
+            }
+
+            var directry = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"export");
+
+            if (Directory.Exists(directry))
+            {
+                System.Diagnostics.Process.Start(directry);
+            }
         }
     }
 }

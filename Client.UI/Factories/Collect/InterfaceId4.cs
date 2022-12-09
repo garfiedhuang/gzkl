@@ -57,7 +57,7 @@ namespace GZKL.Client.UI.Factories.Collect
 
                     testDetail.TestId = testId;
                     testDetail.ExperimentNo = Convert.ToInt32(dr["testcode"]);
-                    testDetail.PlayTime = Convert.ToDateTime(dr["TestDate"] ?? DateTime.MinValue);
+                    testDetail.TestTime = Convert.ToDateTime(dr["TestDate"] ?? DateTime.MinValue);
 
                     //获取测试参数
                     var tempTestId = dr["testid"].ToString();

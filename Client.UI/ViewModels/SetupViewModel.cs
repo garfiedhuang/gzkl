@@ -12,6 +12,7 @@ using System.Windows;
 using System.Linq;
 using ADODB;
 using GZKL.Client.UI.Views.CollectMgt.Interface;
+using System.Runtime.InteropServices;
 
 namespace GZKL.Client.UI.ViewsModels
 {
@@ -239,11 +240,13 @@ AND bi.[is_deleted]=0 AND biti.[is_deleted]=0 AND bti.[is_deleted]=0";
                     }
 
                     this.Query();
+
+                    HandyControl.Controls.Growl.Info("删除成功！");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "提示信息");
+                HandyControl.Controls.Growl.Info($"删除失败！{ex.Message}");
             }
         }
 
@@ -295,11 +298,13 @@ AND bi.[is_deleted]=0 AND biti.[is_deleted]=0 AND bti.[is_deleted]=0";
                     var result = SQLHelper.ExecuteNonQuery(sql, parameters);
 
                     this.Query();
+
+                    HandyControl.Controls.Growl.Info("保存成功！");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "提示信息");
+                HandyControl.Controls.Growl.Info($"保存失败！{ex.Message}");
             }
         }
 

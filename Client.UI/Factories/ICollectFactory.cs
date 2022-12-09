@@ -195,7 +195,7 @@ namespace GZKL.Client.UI.Factories
      VALUES
            (@testId
            ,@experimentNo
-           ,@playTime
+           ,@TestTime
            ,@pressUnitName
            ,@fileName
            ,@sampleShape
@@ -221,7 +221,7 @@ namespace GZKL.Client.UI.Factories
             var parameters = new SqlParameter[21] {
                         new SqlParameter("@testId", data.TestId),
                         new SqlParameter("@experimentNo", data.ExperimentNo),
-                        new SqlParameter("@playTime", data.PlayTime),
+                        new SqlParameter("@TestTime", data.TestTime),
                         new SqlParameter("@pressUnitName", data.PressUnitName),
                         new SqlParameter("@fileName", data.FileName),//系统检测项编号
                         new SqlParameter("@sampleShape", data.SampleShape),
@@ -299,7 +299,7 @@ namespace GZKL.Client.UI.Factories
      VALUES
            (@testId
            ,@experimentNo
-           ,@playTime
+           ,@TestTime
            ,@loadValue
            ,@positionValue
            ,@extendValue
@@ -323,7 +323,7 @@ namespace GZKL.Client.UI.Factories
             var parameters = new SqlParameter[19] {
                                     new SqlParameter("@testId", data.TestId),
                                     new SqlParameter("@experimentNo", data.ExperimentNo),
-                                    new SqlParameter("@playTime", data.PlayTime),
+                                    new SqlParameter("@TestTime", data.TestTime),
                                     new SqlParameter("@loadValue", data.LoadValue),
                                     new SqlParameter("@positionValue", data.PositionValue),
                                     new SqlParameter("@extendValue", data.ExtendValue),

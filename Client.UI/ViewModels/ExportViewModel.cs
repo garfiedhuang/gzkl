@@ -121,7 +121,7 @@ WHERE m.is_deleted=0 AND d.is_deleted=0");
                                 TestItemNo = dataRow["test_item_no"].ToString(),
                                 Deadline = dataRow["deadline"].ToString(),
                                 ExperimentNo = dataRow["experiment_no"].ToString(),
-                                PlayTime = Convert.ToDateTime(dataRow["play_time"].ToString()),
+                                TestTime = Convert.ToDateTime(dataRow["play_time"].ToString()),
                                 LoadUnitName = dataRow["load_unit_name"].ToString(),
                                 FileName = dataRow["file_name"].ToString(),
                                 SampleShape = dataRow["sample_shape"].ToString(),
@@ -250,10 +250,21 @@ END";
             //写入Access模板数据库
             if (ds != null && ds.Tables.Count > 0)
             {
-                var tableOrgSql = @"INSERT INTO Base_COMPA VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21})";
-                var tableMasterSql = @"INSERT INTO TestMain(Id,UnitNo,TestNo,No,JCNo,PMItemNo,Age_Int,Dates) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8})";
-                var tableDetailSql = @"INSERT INTO TestNo(Id,TestMain_Id,Experiment,PlayTime,TestPreceptName,SaveFileName,sampleShape,Area,GaugeLength,UpYieldDot,DownYieldDot,MaxDot,) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21})";
-                var tableOriginalSql = @"INSERT INTO OriginalData VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21})";
+                var tableOrgSql = @"INSERT INTO Base_COMPA(Id,UnitNo,UnitName,nLevel,BaseDates,ADDRESS,ZIP,Email,Fax,Scope,Remark,EditPermit,Htd_Ids,Economy,BaseDates,BaseInfoDates,ModiInfoDates,SGMAN,SGTEL,flag,encryption)
+                                    VALUES({0},'{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}','{17}','{18}','{19}','{20}','{21}')";
+
+                var tableMasterSql = @"INSERT INTO TestMain(Id,UnitNo,TestNo,No,JCNo,PMItemNo,Age_Int,Dates) 
+                                     VALUES({0},'{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}')";
+
+                var tableDetailSql = @"INSERT INTO TestNo(Id,TestMain_Id,ExperimentNo,TestTime,TestPreceptName,LoadUnitName,DeformUnitName,PressUnitName,SaveFileName,sampleShape,Area,GaugeLength,UpYieldDot,DownYieldDot,MaxDot,
+                                                          SampleWidth,SampleThick,SampleDia,SampleMinDia,SampleOutDia,SampleInnerDia,DeformSensorName,flag,encryption)
+                                     VALUES({0},'{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}',
+                                           '{16}','{17}','{18}','{19}','{20}','{21}','{22}','{23}','{24}')";
+
+                var tableOriginalSql = @"INSERT INTO OriginalData(ID,TestMain_Id,ExperimentNo,LoadValue,PositionValue,ExtendValue,BigDeformValue,DeformSwitch,
+                                                                  CtrlStep,ExtendDevice1,,ExtendDevice2,ExtendDevice3,ExtendDevice4,ExtendDevice5,ExtendDevice6,PosiSpeed,StressSpeed)
+                                       VALUES({0},'{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}',
+                                              '{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}','{17}','{18}')";
 
                 var dsnName = $"AutoAcsDBout";
                 var pwd = "AutoAcs";
@@ -285,19 +296,27 @@ END";
                         {
                             if (i == 0)
                             {
-                                sqls.Add(string.Format(tableOrgSql));
+                                sqls.Add(string.Format(tableOrgSql, dr["id"].ToString(), dr["org_no"].ToString(), dr["org_name"].ToString(), dr["org_level"].ToString(), "", "",
+                                                                    "","", "","", dr["remark"].ToString(),"", "",
+                                                                    "", "", "", "", "", "",
+                                                                    "", "", ""));
                             }
                             else if (i == 1)
                             {
-                                sqls.Add(string.Format(tableMasterSql));
+                                sqls.Add(string.Format(tableMasterSql, dr["id"].ToString(), dr["org_no"].ToString(), dr["test_no"].ToString(), dr["sample_no"].ToString(), dr["test_type_no"].ToString(), dr["test_item_no"].ToString(),dr["deadline"].ToString(), dr["test_time"].ToString()));
                             }
                             else if (i == 2)
                             {
-                                sqls.Add(string.Format(tableDetailSql));
+                                sqls.Add(string.Format(tableDetailSql, dr["id"].ToString(), dr["test_id"].ToString(), dr["experiment_no"].ToString(), dr["test_time"].ToString(), dr["test_precept_name"].ToString(), dr["load_unit_name"].ToString(),
+                                                                    dr["deform_unit_name"].ToString(), dr["press_unit_name"].ToString(), dr["file_name"].ToString(), dr["sample_shape"].ToString(), dr["area"].ToString(), dr["gauge_length"].ToString(),
+                                                                    dr["up_yield_dot"].ToString(), dr["down_yield_dot"].ToString(), dr["max_dot"].ToString(), dr["sample_width"].ToString(), dr["sample_thick"].ToString(), dr["sample_dia"].ToString(),
+                                                                    dr["sample_min_dia"].ToString(), dr["sample_out_dia"].ToString(), dr["sample_inner_dia"].ToString(), dr["deform_sensor_name"].ToString(), dr["is_deleted"].ToString(), dr["ciphertext"].ToString()));
                             }
                             else if (i == 3)
                             {
-                                sqls.Add(string.Format(tableOriginalSql));
+                                sqls.Add(string.Format(tableOriginalSql, dr["id"].ToString(), dr["test_id"].ToString(), dr["experiment_no"].ToString(), dr["load_value"].ToString(), dr["position_value"].ToString(), dr["extend_value"].ToString(),
+                                                                    dr["big_deform_value"].ToString(), dr["deform_switch"].ToString(), dr["ctrl_step"].ToString(), dr["extend_device1"].ToString(), dr["extend_device2"].ToString(), dr["extend_device3"].ToString(),
+                                                                    dr["extend_device4"].ToString(), dr["extend_device5"].ToString(), dr["extend_device6"].ToString(), dr["posi_speed"].ToString(), dr["stress_speed"].ToString()));
                             }
                         }
 

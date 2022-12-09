@@ -42,7 +42,7 @@ namespace GZKL.Client.UI.Factories.Collect
             {
                 test.Deadline = "0";
             }
-            test.TestTime = Convert.ToDateTime(testDataRow["PlayTime"] ?? DateTime.MinValue);
+            test.TestTime = Convert.ToDateTime(testDataRow["TestTime"] ?? DateTime.MinValue);
 
             test.OrgNo = viewModel.Model.OrgNo;
             test.TestItemNo = viewModel.Model.SystemTestItemNo;
@@ -65,7 +65,7 @@ namespace GZKL.Client.UI.Factories.Collect
 
                     testDetail.TestId = testId;
                     testDetail.ExperimentNo = Convert.ToInt32(tempTestNo);
-                    testDetail.PlayTime = test.TestTime;
+                    testDetail.TestTime = test.TestTime;
 
                     //获取测试参数
                     var tempArea = testDataRow["Area"].ToString();

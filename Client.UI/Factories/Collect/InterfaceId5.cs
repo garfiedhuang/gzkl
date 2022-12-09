@@ -71,7 +71,7 @@ namespace GZKL.Client.UI.Factories.Collect
                     }
 
 
-                    testDetail.PlayTime = test.TestTime;
+                    testDetail.TestTime = test.TestTime;
 
                     if (!testDataRow.IsNull("最大力"))
                     {

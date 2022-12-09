@@ -100,8 +100,15 @@ namespace GZKL.Client.UI.Views.CollectMgt.Interface
 
         private void btnNext_Click(object sender, RoutedEventArgs e)
         {
-            this.sbStep.Next();
-            this.ChangeStep();
+            if (this.btnNext.Content.ToString() == "保存")
+            {
+                this.btnSave_Click(sender, e);
+            }
+            else
+            {
+                this.sbStep.Next();
+                this.ChangeStep();
+            }
         }
 
         private void ChangeStep()

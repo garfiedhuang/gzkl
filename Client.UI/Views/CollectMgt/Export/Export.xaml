@@ -59,6 +59,8 @@
 							Margin="10 0 0 0" 
 							Command="{Binding ResetCommand}"/>
 
+                    <Button x:Name="btnOpen" Content="打开目录" Style="{StaticResource EditBtnStyle}" Width="100" VerticalAlignment="Center" Margin="10 0 0 0" Click="btnOpen_Click" />
+
                     <Button Content="全选"
                             x:Name="btnCheckAll"
 							Width="65"
@@ -79,14 +81,15 @@
 						    VerticalAlignment="Center"
 						    Margin="15 0 0 0"
 							Click="btnExport_Click"/>
-					
-					<Button Content="全部导出" 
+
+                    <Button Content="全部导出" 
                             x:Name="btnExportAll"
 							Width="70" 
 							VerticalAlignment="Center" 
 							Margin="10 0 0 0" 
 							Click="btnExportAll_Click" />
-				</WrapPanel>
+
+                </WrapPanel>
 			</Grid>
 		</WrapPanel>
 
@@ -116,7 +119,7 @@
                 <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding TestTypeNo}" Header="类型编号"/>
                 <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding TestItemNo}" Header="项目编号"/>
                 <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding Deadline}" Header="龄期"/>
-                <DataGridTextColumn IsReadOnly="True"  Width="160" Binding="{Binding PlayTime, StringFormat=\{0:yyyy-MM-dd\}}" Header="试验日期"/>
+                <DataGridTextColumn IsReadOnly="True"  Width="160" Binding="{Binding TestTime, StringFormat=\{0:yyyy-MM-dd\}}" Header="试验日期"/>
                 <DataGridTextColumn IsReadOnly="True"  Width="160" Binding="{Binding CreateDt, StringFormat=\{0:HH:mm:ss\}}" Header="试验时间"/>
                 <!--<DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding TestPreceptName}" Header="XXX"/>-->
                 <DataGridTextColumn IsReadOnly="True"  Width="100" Binding="{Binding SampleShape}" Header="试样的形状"/>

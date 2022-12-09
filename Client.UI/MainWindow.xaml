@@ -167,7 +167,7 @@
                         <RowDefinition Height="135"></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="GZ" 
+                    <TextBlock Text="GZKL" 
                                FontWeight="Bold" 
                                FontSize="30" 
                                Foreground="#3DD0FB" 

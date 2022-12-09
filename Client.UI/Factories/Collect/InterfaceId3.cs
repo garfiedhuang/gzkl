@@ -57,7 +57,7 @@ namespace GZKL.Client.UI.Factories.Collect
 
                         testDetail.TestId = testId;
                         testDetail.ExperimentNo = Convert.ToInt32(dr["ShunXu"]);
-                        testDetail.PlayTime = Convert.ToDateTime(dr["ExpDate"] ?? DateTime.MinValue);
+                        testDetail.TestTime = Convert.ToDateTime(dr["ExpDate"] ?? DateTime.MinValue);
 
                         var tempTestDetailDeadline = (dr["LingQi"]??"").ToString();
                         if (tempTestDetailDeadline.Contains("天"))

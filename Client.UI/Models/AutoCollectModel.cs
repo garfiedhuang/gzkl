@@ -411,7 +411,7 @@ namespace GZKL.Client.UI.Models
         /// <summary>
         /// 试验时间
         /// </summary>
-        public DateTime PlayTime { set; get; }
+        public DateTime TestTime { set; get; }
 
         /// <summary>
         /// 试样的面积
@@ -467,7 +467,7 @@ namespace GZKL.Client.UI.Models
         /// <summary>
         /// 试验时间（时间值）
         /// </summary>
-        public DateTime PlayTime { set; get; }
+        public DateTime TestTime { set; get; }
 
         /// <summary>
         /// 试件序号

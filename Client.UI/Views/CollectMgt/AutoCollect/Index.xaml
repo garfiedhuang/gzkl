@@ -261,7 +261,7 @@
 
                                     <DataGrid.Columns>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding Id}" Header="ID"/>
-                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding PlayTime}" Header="时间值"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding TestTime}" Header="时间值"/>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding LoadValue}" Header="力值"/>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding PositionValue}" Header="位移的值"/>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding ExtendValue}" Header="引伸记的值"/>
@@ -344,7 +344,7 @@
 
                                     <!--<DataGrid.Columns>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="60" Binding="{Binding Id}" Header="ID"/>
-                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding PlayTime}" Header="时间值"/>
+                                        <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding TestTime}" Header="时间值"/>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding LoadValue}" Header="力值"/>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding PositionValue}" Header="位移的值"/>
                                         <DataGridTextColumn IsReadOnly="True" MinWidth="70" Binding="{Binding ExtendValue}" Header="引伸记的值"/>

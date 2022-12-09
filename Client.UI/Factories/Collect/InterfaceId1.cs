@@ -52,7 +52,7 @@ namespace GZKL.Client.UI.Factories.Collect
 
                         testDetail.TestId = testId;
                         testDetail.ExperimentNo = Convert.ToInt32(dr["ShunXu"]);
-                        testDetail.PlayTime = Convert.ToDateTime(dr["ExpDate"] ?? DateTime.MinValue);
+                        testDetail.TestTime = Convert.ToDateTime(dr["ExpDate"] ?? DateTime.MinValue);
                         testDetail.MaxDot = DataAmpt(Convert.ToDouble(dr["OneKn"] ?? "0") * 0.001);
 
                         testDetail.SampleWidth = (dr["WidAV"] ?? "0").ToString();

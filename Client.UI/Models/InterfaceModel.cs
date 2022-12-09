@@ -250,8 +250,8 @@ namespace GZKL.Client.UI.Models
         private string systemTestItemNo;
         public string SystemTestItemNo
         {
-            get { return interfaceTestName; }
-            set { interfaceTestName = value; RaisePropertyChanged(); }
+            get { return systemTestItemNo; }
+            set { systemTestItemNo = value; RaisePropertyChanged(); }
         }
 
         /// <summary>

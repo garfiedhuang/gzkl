@@ -51,7 +51,7 @@ namespace GZKL.Client.UI.Factories.Collect
 
                     testDetail.TestId = testId;
                     testDetail.ExperimentNo = Convert.ToInt32(dr["IntestID"]);
-                    testDetail.PlayTime = Convert.ToDateTime(dr["testdate"] ?? DateTime.MinValue);
+                    testDetail.TestTime = Convert.ToDateTime(dr["testdate"] ?? DateTime.MinValue);
 
                     if (!dr.IsNull("最大力(Fm)"))
                     {
@@ -144,7 +144,7 @@ namespace GZKL.Client.UI.Factories.Collect
                         var originDataRow = viewModel.Model.UnfinishOriginalData.Rows[0];
 
                         originalData.ExperimentNo = Convert.ToInt32(originDataRow["IntestID"] ?? "0");
-                        originalData.PlayTime = Convert.ToDateTime(originDataRow["TimeValue"] ?? DateTime.MinValue);
+                        originalData.TestTime = Convert.ToDateTime(originDataRow["TimeValue"] ?? DateTime.MinValue);
                         originalData.LoadValue = (originDataRow["LoadValue"] ?? "0").ToString();
                         originalData.PositionValue = (originDataRow["PosiValue"] ?? "0").ToString();
                         originalData.ExtendValue = (originDataRow["ExtnValue"] ?? "0").ToString();
@@ -152,7 +152,7 @@ namespace GZKL.Client.UI.Factories.Collect
 
                         rowCount = viewModel.Model.OriginalData?.Count(w => w.TestId == testId &&
                                                                           w.ExperimentNo == originalData.ExperimentNo &&
-                                                                          w.PlayTime == originalData.PlayTime) ?? 0;
+                                                                          w.TestTime == originalData.TestTime) ?? 0;
 
                         if (rowCount == 0)
                         {
