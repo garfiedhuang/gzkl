@@ -199,7 +199,7 @@ namespace GZKL.Client.UI.ViewsModels
         {
             try
             {
-                var sql = $"SELECT COUNT(1) FROM [dbo].[base_interface] WHERE [id] IN ({string.Join(",",selected.Select(s=>s.Id))})";
+                var sql = $"SELECT COUNT(1) FROM [dbo].[base_interface] WHERE [id] IN ({string.Join(",", selected.Select(s => s.Id))})";
                 var result = Convert.ToInt32(SQLHelper.ExecuteScalar(sql));
                 if (result > 0)
                 {
@@ -219,11 +219,12 @@ namespace GZKL.Client.UI.ViewsModels
                     }
 
                     this.Query();
+                    HandyControl.Controls.Growl.Success("操作成功！");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "提示信息");
+                HandyControl.Controls.Growl.Error($"操作失败！{ex.Message}");
             }
         }
 
@@ -281,11 +282,13 @@ namespace GZKL.Client.UI.ViewsModels
                     var result = SQLHelper.ExecuteNonQuery(sql, parameters);
 
                     this.Query();
+
+                    HandyControl.Controls.Growl.Success("操作成功！");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "提示信息");
+                HandyControl.Controls.Growl.Error($"操作失败！{ex.Message}");
             }
         }
 
@@ -308,19 +311,14 @@ END";
 
                 var result = SQLHelper.ExecuteNonQuery(sql, parameters);
 
-                if (result > 0)
-                {
-                    this.Query();
-                    MessageBox.Show("本机接口设置成功", "提示信息");
-                }
-                else
-                {
-                    MessageBox.Show("本机接口设置失败", "提示信息");
-                }
+
+                this.Query();
+
+                HandyControl.Controls.Growl.Success("操作成功！");
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "提示信息");
+                HandyControl.Controls.Growl.Error($"操作失败！{ex.Message}");
             }
 
         }
@@ -349,18 +347,18 @@ END";
 
                 if (string.IsNullOrEmpty(fileName))
                 {
-                    MessageBox.Show("请选择数据库文件", "提示信息");
+                    HandyControl.Controls.Growl.Warning("请选择数据库文件！");
                     return;
                 }
 
                 if (model.Id != 4 && !fileName.Contains(model.AccessDbName))
                 {
-                    MessageBox.Show("选择的数据库文件不正确，请重新选择", "提示信息");
+                    HandyControl.Controls.Growl.Warning("选择的数据库文件不正确，请重新选择！");
                     return;
                 }
                 else if (model.Id == 4 && !fileName.Contains("Tests"))
                 {
-                    MessageBox.Show("选择的数据库文件不正确，请重新选择", "提示信息");
+                    HandyControl.Controls.Growl.Warning("选择的数据库文件不正确，请重新选择！");
                     return;
                 }
 
@@ -383,19 +381,13 @@ END";
 
                 var result = SQLHelper.ExecuteNonQuery(sql, parameters);
 
-                if (result > 0)
-                {
-                    this.Query();
-                    MessageBox.Show("接口数据库设置成功", "提示信息");
-                }
-                else
-                {
-                    MessageBox.Show("接口数据库设置失败", "提示信息");
-                }
+                this.Query();
+
+                HandyControl.Controls.Growl.Success("操作成功！");
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "提示信息");
+                HandyControl.Controls.Growl.Error($"操作失败！{ex.Message}");
             }
 
         }

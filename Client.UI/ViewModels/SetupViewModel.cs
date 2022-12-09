@@ -241,12 +241,12 @@ AND bi.[is_deleted]=0 AND biti.[is_deleted]=0 AND bti.[is_deleted]=0";
 
                     this.Query();
 
-                    HandyControl.Controls.Growl.Info("删除成功！");
+                    HandyControl.Controls.Growl.Success("删除成功！");
                 }
             }
             catch (Exception ex)
             {
-                HandyControl.Controls.Growl.Info($"删除失败！{ex.Message}");
+                HandyControl.Controls.Growl.Error($"删除失败！{ex.Message}");
             }
         }
 
@@ -299,12 +299,12 @@ AND bi.[is_deleted]=0 AND biti.[is_deleted]=0 AND bti.[is_deleted]=0";
 
                     this.Query();
 
-                    HandyControl.Controls.Growl.Info("保存成功！");
+                    HandyControl.Controls.Growl.Success("保存成功！");
                 }
             }
             catch (Exception ex)
             {
-                HandyControl.Controls.Growl.Info($"保存失败！{ex.Message}");
+                HandyControl.Controls.Growl.Error($"保存失败！{ex.Message}");
             }
         }
 
